@@ -119,6 +119,7 @@ const Table = forwardRef(
       tr: { ...TableTR },
       en: { ...TableEN },
     });
+
     useImperativeHandle(ref, () => _innerRef.current as HTMLTableElementWithCustomAttributes);
 
     if (config && Object.keys(config.scroll || {}).length > 0) {
