@@ -159,4 +159,4 @@ class DATE {
   };
 }
 
-export default DATE;
+export default new DATE();
