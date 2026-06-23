@@ -1,0 +1,49 @@
+.ar-paper {
+  background-color: var(--white);
+  padding: 1rem;
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0px 10px 15px -5px rgba(var(--black-rgb), 0.1);
+
+  > .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: transparent;
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* --- [KÜÇÜK MOBİL - IPHONE SE VB.] --- */
+/* Çok dar ekranlar için özel düzeltmeler */
+@media (max-width: 375px) {
+}
+
+/* --- [MOBİL - STANDART] --- */
+/* Ekran 576px ve altına düştüğünde çalışır */
+@media (max-width: 576px) {
+  .ar-paper {
+    border-radius: 0;
+    box-shadow: none;
+
+    > .header {
+    }
+  }
+}
+
+/* --- [TABLET DİKEY & BÜYÜK TELEFONLAR] --- */
+/* Ekran 768px ve altına düştüğünde çalışır */
+@media (max-width: 768px) {
+  .ar-paper {
+    border-radius: 0;
+    box-shadow: none;
+
+    > .header {
+    }
+  }
+}
+
+/* --- [TABLET & KÜÇÜK LAPTOP] --- */
+/* Ekran 1024px ve altına düştüğünde çalışır */
+@media (max-width: 1024px) {
+}

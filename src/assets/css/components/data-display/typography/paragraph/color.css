@@ -1,0 +1,51 @@
+.ar-typography-paragraph.gray-100 {
+  color: var(--gray-100);
+}
+.ar-typography-paragraph.gray-200 {
+  color: var(--gray-200);
+}
+.ar-typography-paragraph.gray-300 {
+  color: var(--gray-300);
+}
+.ar-typography-paragraph.gray-400 {
+  color: var(--gray-400);
+}
+.ar-typography-paragraph.gray-500 {
+  color: var(--gray-500);
+}
+.ar-typography-paragraph.gray-600 {
+  color: var(--gray-600);
+}
+.ar-typography-paragraph.gray-700 {
+  color: var(--gray-700);
+}
+.ar-typography-paragraph.gray-800 {
+  color: var(--gray-800);
+}
+.ar-typography-paragraph.gray-900 {
+  color: var(--gray-900);
+}
+.ar-typography-paragraph.primary {
+  color: var(--primary);
+}
+.ar-typography-paragraph.secondary {
+  color: var(--secondary);
+}
+.ar-typography-paragraph.success {
+  color: var(--success);
+}
+.ar-typography-paragraph.danger {
+  color: var(--danger);
+}
+.ar-typography-paragraph.warning {
+  color: var(--warning);
+}
+.ar-typography-paragraph.information {
+  color: var(--information);
+}
+.ar-typography-paragraph.dark {
+  color: var(--dark);
+}
+.ar-typography-paragraph.light {
+  color: var(--light);
+}

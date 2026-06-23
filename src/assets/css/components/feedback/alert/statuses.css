@@ -1,0 +1,224 @@
+/* #region PRIMARY */
+.ar-alert {
+  &.filled {
+    &.primary {
+      background-color: var(--blue-100);
+      color: var(--blue-700);
+    }
+  }
+  &.surface {
+    &.primary {
+      background-color: var(--blue-100);
+      border: solid 1px var(--blue-300);
+      color: var(--blue-700);
+    }
+  }
+  &.dashed {
+    &.primary {
+      border: dashed 1px var(--blue-300);
+      color: var(--blue-700);
+    }
+  }
+}
+/* #endregion */
+/* PRIMARY */
+
+/* #region PRIMARY-LIGHT */
+.ar-alert {
+  &.filled {
+    &.primary-light {
+      background-color: var(--blue-100);
+      color: var(--blue-700);
+    }
+  }
+  &.surface {
+    &.primary-light {
+      background-color: var(--blue-100);
+      border: solid 1px var(--blue-300);
+      color: var(--blue-700);
+    }
+  }
+  &.dashed {
+    &.primary-light {
+      border: dashed 1px var(--blue-300);
+      color: var(--blue-700);
+    }
+  }
+}
+/* #endregion */
+/* PRIMARY-LIGHT */
+
+/* #region SECONDARY */
+.ar-alert {
+  &.filled {
+    &.secondary {
+      background-color: var(--blue-100);
+      color: var(--blue-700);
+    }
+  }
+  &.surface {
+    &.secondary {
+      background-color: var(--blue-100);
+      border: solid 1px var(--blue-300);
+      color: var(--blue-700);
+    }
+  }
+  &.dashed {
+    &.secondary {
+      border: dashed 1px var(--blue-300);
+      color: var(--blue-700);
+    }
+  }
+}
+/* #endregion */
+/* SECONDARY */
+
+/* #region SUCCESS */
+.ar-alert {
+  &.filled {
+    &.success {
+      background-color: var(--green-100);
+      color: var(--green-700);
+    }
+  }
+  &.surface {
+    &.success {
+      background-color: var(--green-100);
+      border: solid 1px var(--green-300);
+      color: var(--green-700);
+    }
+  }
+  &.dashed {
+    &.success {
+      border: dashed 1px var(--green-300);
+      color: var(--green-700);
+    }
+  }
+}
+/* #endregion */
+/* SUCCESS */
+
+/* #region WARNING */
+.ar-alert {
+  &.filled {
+    &.warning {
+      background-color: var(--orange-100);
+      color: var(--orange-700);
+    }
+  }
+  &.surface {
+    &.warning {
+      background-color: var(--orange-100);
+      border: solid 1px var(--orange-300);
+      color: var(--orange-700);
+    }
+  }
+  &.dashed {
+    &.warning {
+      border: dashed 1px var(--orange-300);
+      color: var(--orange-700);
+    }
+  }
+}
+/* #endregion */
+/* WARNING */
+
+/* #region DANGER */
+.ar-alert {
+  &.filled {
+    &.danger {
+      background-color: var(--red-100);
+      color: var(--red-700);
+    }
+  }
+  &.surface {
+    &.danger {
+      background-color: var(--red-100);
+      border: solid 1px var(--red-300);
+      color: var(--red-700);
+    }
+  }
+  &.dashed {
+    &.danger {
+      border: dashed 1px var(--red-300);
+      color: var(--red-700);
+    }
+  }
+}
+/* #endregion */
+/* DANGER */
+
+/* #region INFORMATION */
+.ar-alert {
+  &.filled {
+    &.information {
+      background-color: var(--red-100);
+      color: var(--red-700);
+    }
+  }
+  &.surface {
+    &.information {
+      background-color: var(--red-100);
+      border: solid 1px var(--red-300);
+      color: var(--red-700);
+    }
+  }
+  &.dashed {
+    &.information {
+      border: dashed 1px var(--red-300);
+      color: var(--red-700);
+    }
+  }
+}
+/* #endregion */
+/* INFORMATION */
+
+/* #region DARK */
+.ar-alert {
+  &.filled {
+    &.dark {
+      background-color: var(--red-100);
+      color: var(--red-700);
+    }
+  }
+  &.surface {
+    &.dark {
+      background-color: var(--red-100);
+      border: solid 1px var(--red-300);
+      color: var(--red-700);
+    }
+  }
+  &.dashed {
+    &.dark {
+      border: dashed 1px var(--red-300);
+      color: var(--red-700);
+    }
+  }
+}
+/* #endregion */
+/* DARK */
+
+/* #region LIGHT */
+.ar-alert {
+  &.filled {
+    &.light {
+      background-color: var(--red-100);
+      color: var(--red-700);
+    }
+  }
+  &.surface {
+    &.light {
+      background-color: var(--red-100);
+      border: solid 1px var(--red-300);
+      color: var(--red-700);
+    }
+  }
+  &.dashed {
+    &.light {
+      border: dashed 1px var(--red-300);
+      color: var(--red-700);
+    }
+  }
+}
+/* #endregion */
+/* LIGHT */

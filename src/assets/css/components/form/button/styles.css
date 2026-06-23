@@ -1,0 +1,32 @@
+/* Core Css */
+@import url("./core/shape.css");
+@import url("./core/icon.css");
+@import url("./core/position.css");
+@import url("./core/size.css");
+
+.ar-button {
+  position: relative;
+  min-width: fit-content;
+  padding: 0 1rem;
+  font-family: var(--system);
+  font-size: 1rem;
+  cursor: pointer;
+  transition:
+    background-color 150ms,
+    border 150ms,
+    color 150ms ease-in-out;
+  outline: none;
+}
+.ar-button.disabled {
+  cursor: no-drop;
+}
+.ar-button.full-width {
+  min-width: 100%;
+}
+
+.ar-button > .text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-wrap: nowrap;
+}

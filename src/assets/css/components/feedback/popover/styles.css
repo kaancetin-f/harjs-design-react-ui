@@ -1,0 +1,53 @@
+.ar-popover-wrapper {
+  position: relative;
+  width: max-content;
+}
+.ar-popover-wrapper.full-width {
+  width: 100%;
+}
+
+.ar-popover {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--white);
+  width: 250px;
+  border: solid 1px var(--gray-200);
+  border-radius: var(--border-radius-sm);
+  box-shadow: 0 0 15px -2.5px rgba(var(--black-rgb), 0.1);
+  z-index: 1051;
+  transition: visibility 250ms, opacity 250ms;
+}
+
+.ar-popover > .title {
+  background-color: var(--gray-100);
+  padding: 0.5rem 1rem;
+  border-bottom: solid 1px var(--gray-200);
+}
+
+.ar-popover > .content {
+  max-height: 200px;
+  padding: 0.5rem 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.ar-popover > .message {
+  position: relative;
+  padding: 0.5rem 1rem;
+  color: var(--gray-700);
+  font-size: 0.8rem;
+  text-wrap: wrap;
+}
+
+.ar-popover > .footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0 0.5rem;
+  padding: 0.5rem 1rem;
+  border-top: solid 1px var(--gray-200);
+}

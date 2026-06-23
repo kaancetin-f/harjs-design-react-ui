@@ -1,0 +1,58 @@
+@import url("./core/jsx.template.css");
+
+.ar-syntax {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--border-radius-lg);
+}
+
+.ar-syntax > .preview {
+  position: relative;
+  gap: 1rem;
+  border: solid 1px var(--gray-200);
+  border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+  padding: 1rem;
+}
+.ar-syntax > .preview.left {
+  justify-content: left;
+}
+.ar-syntax > .preview.center {
+  justify-content: center;
+}
+.ar-syntax > .preview.right {
+  justify-content: right;
+}
+
+.ar-syntax > .ar-syntax-button-group {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0.5rem;
+  border: solid 1px transparent;
+  border-top-color: var(--gray-200);
+}
+
+.ar-syntax > .pre {
+  background-color: var(--gray-900);
+  margin: 0;
+
+  border-top: solid 2.5px var(--custom-tag-color);
+  border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+  overflow: hidden;
+}
+.ar-syntax > .pre.hidden {
+  display: none;
+}
+.ar-syntax > .pre.visible {
+  display: block;
+}
+.ar-syntax > .pre > code {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem 0;
+  padding: 1rem;
+  font-family: var(--jetBrainsMonoRegular) !important;
+  font-size: 0.9rem;
+  overflow-x: auto;
+}

@@ -1,0 +1,13 @@
+.ar-chip {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0 0.5rem;
+  width: max-content;
+  height: 1.75rem;
+  padding: 0 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  white-space: nowrap;
+  user-select: none;
+}

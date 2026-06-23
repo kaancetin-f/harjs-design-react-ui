@@ -1,0 +1,10 @@
+@keyframes progress {
+  0% {
+    background-color: rgba(var(--white-rgb), 0.75);
+    width: 0%;
+  }
+  100% {
+    background-color: transparent;
+    width: 100%;
+  }
+}

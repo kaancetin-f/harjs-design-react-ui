@@ -1,0 +1,20 @@
+.ar-input-otp-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+
+  > span {
+    > .ar-input-wrapper {
+      > .ar-input {
+        > .input {
+          > input {
+            text-align: center !important;
+          }
+        }
+      }
+    }
+  }
+}

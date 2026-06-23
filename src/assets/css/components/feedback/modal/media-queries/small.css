@@ -1,0 +1,11 @@
+@media (width <= 767px) {
+  .ar-modal-wrapper > .ar-modal.large {
+    width: 95% !important;
+  }
+  .ar-modal-wrapper > .ar-modal.normal {
+    width: 95% !important;
+  }
+  .ar-modal-wrapper > .ar-modal.small {
+    width: 95% !important;
+  }
+}

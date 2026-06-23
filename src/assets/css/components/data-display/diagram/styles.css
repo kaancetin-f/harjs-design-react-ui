@@ -1,0 +1,125 @@
+.ar-diagram {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+
+  > .content {
+    position: absolute;
+    inset: 0;
+    background-color: var(--gray-100);
+    background-image: radial-gradient(circle, var(--gray-400) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-repeat: repeat;
+    height: 100%;
+    cursor: grab;
+    overflow: hidden;
+    z-index: 1;
+
+    &:active {
+      cursor: grabbing;
+    }
+
+    > .nodes-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      > .edges {
+        position: absolute;
+        inset: 0;
+
+        > .edge,
+        .edge-temp {
+          position: absolute;
+          overflow: visible;
+        }
+      }
+
+      > .nodes {
+        .node {
+          position: absolute;
+          /* background-color: var(--white); */
+          /* padding: 0.5rem 1rem; */
+          /* border-radius: var(--border-radius-sm); */
+          /* box-shadow: 0px 10px 5px -5px rgba(var(--black-rgb), 0.1); */
+          cursor: grab;
+          user-select: none;
+
+          &:active {
+            cursor: grabbing;
+          }
+
+          > .port {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--white);
+            width: 0.5rem;
+            height: 0.5rem;
+            border: solid 1px var(--purple-500);
+            border-radius: var(--border-radius-pill);
+            z-index: 2;
+            cursor: crosshair;
+
+            &.top {
+              top: -5px;
+            }
+
+            &.right {
+              right: -5px;
+              top: 50%;
+              left: auto;
+              transform: translateY(-50%);
+            }
+
+            &.bottom {
+              bottom: -5px;
+            }
+
+            &.left {
+              left: -5px;
+              top: 50%;
+              transform: translateY(-50%);
+            }
+          }
+
+          > span {
+            color: var(--gray-700);
+            font-family: var(--system);
+            text-wrap: nowrap;
+          }
+        }
+      }
+    }
+  }
+
+  > .zoom-buttons {
+    position: absolute;
+    right: 2rem;
+    bottom: 2rem;
+    background-color: var(--white);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--border-radius-sm);
+    box-shadow: 0px 10px 5px -5px rgba(var(--black-rgb), 0.1);
+    z-index: 5;
+    user-select: none;
+
+    .zoom-percent {
+      background-color: var(--gray-100);
+      padding: 0.4rem 0;
+      width: 3rem;
+      border-radius: var(--border-radius-sm);
+      font-family: var(--system);
+      text-align: center;
+    }
+  }
+}
+
+@keyframes moveLine {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 20px 0;
+  }
+}

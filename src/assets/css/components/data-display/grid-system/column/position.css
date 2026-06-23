@@ -1,0 +1,21 @@
+.row > [class^="col"].left,
+.row > [class*="col"].left,
+.row > [class^="col"].center,
+.row > [class*="col"].center,
+.row > [class^="col"].right,
+.row > [class*="col"].right {
+  position: relative;
+  display: flex;
+}
+.row > [class^="col"].left,
+.row > [class*="col"].left {
+  justify-content: flex-start;
+}
+.row > [class^="col"].center,
+.row > [class*="col"].center {
+  justify-content: center;
+}
+.row > [class^="col"].right,
+.row > [class*="col"].right {
+  justify-content: flex-end;
+}

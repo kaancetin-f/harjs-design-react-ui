@@ -1,0 +1,362 @@
+/* #region BLUE */
+.dashed:not(.disabled) {
+  &.blue {
+    border: dashed 1px var(--blue-500);
+    color: var(--blue-500);
+
+    &.active {
+      animation: clicked-blue ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+
+input.dashed:not(.disabled),
+iframe.dashed:not(.disabled) {
+  &.blue {
+    &:focus,
+    &.focused {
+      border-color: var(--);
+      box-shadow: 0 0 0 3.5px rgba(var(---rgb), 0.25);
+    }
+  }
+}
+
+button.dashed:not(.disabled) {
+  &.blue { 
+    &:hover {
+      background-color: var(--blue-100);
+    }
+  }
+}
+/* #endregion */
+/* BLUE */
+
+/* #region PURPLE */
+.dashed:not(.disabled) {
+  &.purple {
+    border: dashed 1px var(--purple-500);
+    color: var(--purple-500);
+
+    &.active {
+      animation: clicked-purple ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+
+input.dashed:not(.disabled),
+iframe.dashed:not(.disabled) {
+  &.purple {
+    &:focus,
+    &.focused {
+      border-color: var(--);
+      box-shadow: 0 0 0 3.5px rgba(var(---rgb), 0.25);
+    }
+  }
+}
+
+button.dashed:not(.disabled) {
+  &.purple { 
+    &:hover {
+      background-color: var(--purple-100);
+    }
+  }
+}
+/* #endregion */
+/* PURPLE */
+
+/* #region PINK */
+.dashed:not(.disabled) {
+  &.pink {
+    border: dashed 1px var(--pink-500);
+    color: var(--pink-500);
+
+    &.active {
+      animation: clicked-pink ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+
+input.dashed:not(.disabled),
+iframe.dashed:not(.disabled) {
+  &.pink {
+    &:focus,
+    &.focused {
+      border-color: var(--);
+      box-shadow: 0 0 0 3.5px rgba(var(---rgb), 0.25);
+    }
+  }
+}
+
+button.dashed:not(.disabled) {
+  &.pink { 
+    &:hover {
+      background-color: var(--pink-100);
+    }
+  }
+}
+/* #endregion */
+/* PINK */
+
+/* #region RED */
+.dashed:not(.disabled) {
+  &.red {
+    border: dashed 1px var(--red-500);
+    color: var(--red-500);
+
+    &.active {
+      animation: clicked-red ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+
+input.dashed:not(.disabled),
+iframe.dashed:not(.disabled) {
+  &.red {
+    &:focus,
+    &.focused {
+      border-color: var(--);
+      box-shadow: 0 0 0 3.5px rgba(var(---rgb), 0.25);
+    }
+  }
+}
+
+button.dashed:not(.disabled) {
+  &.red { 
+    &:hover {
+      background-color: var(--red-100);
+    }
+  }
+}
+/* #endregion */
+/* RED */
+
+/* #region ORANGE */
+.dashed:not(.disabled) {
+  &.orange {
+    border: dashed 1px var(--orange-500);
+    color: var(--orange-500);
+
+    &.active {
+      animation: clicked-orange ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+
+input.dashed:not(.disabled),
+iframe.dashed:not(.disabled) {
+  &.orange {
+    &:focus,
+    &.focused {
+      border-color: var(--);
+      box-shadow: 0 0 0 3.5px rgba(var(---rgb), 0.25);
+    }
+  }
+}
+
+button.dashed:not(.disabled) {
+  &.orange { 
+    &:hover {
+      background-color: var(--orange-100);
+    }
+  }
+}
+/* #endregion */
+/* ORANGE */
+
+/* #region YELLOW */
+.dashed:not(.disabled) {
+  &.yellow {
+    border: dashed 1px var(--yellow-500);
+    color: var(--yellow-500);
+
+    &.active {
+      animation: clicked-yellow ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+
+input.dashed:not(.disabled),
+iframe.dashed:not(.disabled) {
+  &.yellow {
+    &:focus,
+    &.focused {
+      border-color: var(--);
+      box-shadow: 0 0 0 3.5px rgba(var(---rgb), 0.25);
+    }
+  }
+}
+
+button.dashed:not(.disabled) {
+  &.yellow { 
+    &:hover {
+      background-color: var(--yellow-100);
+    }
+  }
+}
+/* #endregion */
+/* YELLOW */
+
+/* #region GREEN */
+.dashed:not(.disabled) {
+  &.green {
+    border: dashed 1px var(--green-500);
+    color: var(--green-500);
+
+    &.active {
+      animation: clicked-green ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+
+input.dashed:not(.disabled),
+iframe.dashed:not(.disabled) {
+  &.green {
+    &:focus,
+    &.focused {
+      border-color: var(--);
+      box-shadow: 0 0 0 3.5px rgba(var(---rgb), 0.25);
+    }
+  }
+}
+
+button.dashed:not(.disabled) {
+  &.green { 
+    &:hover {
+      background-color: var(--green-100);
+    }
+  }
+}
+/* #endregion */
+/* GREEN */
+
+/* #region TEAL */
+.dashed:not(.disabled) {
+  &.teal {
+    border: dashed 1px var(--teal-500);
+    color: var(--teal-500);
+
+    &.active {
+      animation: clicked-teal ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+
+input.dashed:not(.disabled),
+iframe.dashed:not(.disabled) {
+  &.teal {
+    &:focus,
+    &.focused {
+      border-color: var(--);
+      box-shadow: 0 0 0 3.5px rgba(var(---rgb), 0.25);
+    }
+  }
+}
+
+button.dashed:not(.disabled) {
+  &.teal { 
+    &:hover {
+      background-color: var(--teal-100);
+    }
+  }
+}
+/* #endregion */
+/* TEAL */
+
+/* #region CYAN */
+.dashed:not(.disabled) {
+  &.cyan {
+    border: dashed 1px var(--cyan-500);
+    color: var(--cyan-500);
+
+    &.active {
+      animation: clicked-cyan ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+
+input.dashed:not(.disabled),
+iframe.dashed:not(.disabled) {
+  &.cyan {
+    &:focus,
+    &.focused {
+      border-color: var(--);
+      box-shadow: 0 0 0 3.5px rgba(var(---rgb), 0.25);
+    }
+  }
+}
+
+button.dashed:not(.disabled) {
+  &.cyan { 
+    &:hover {
+      background-color: var(--cyan-100);
+    }
+  }
+}
+/* #endregion */
+/* CYAN */
+
+/* #region GRAY */
+.dashed:not(.disabled) {
+  &.gray {
+    border: dashed 1px var(--gray-500);
+    color: var(--gray-500);
+
+    &.active {
+      animation: clicked-gray ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+
+input.dashed:not(.disabled),
+iframe.dashed:not(.disabled) {
+  &.gray {
+    &:focus,
+    &.focused {
+      border-color: var(--);
+      box-shadow: 0 0 0 3.5px rgba(var(---rgb), 0.25);
+    }
+  }
+}
+
+button.dashed:not(.disabled) {
+  &.gray { 
+    &:hover {
+      background-color: var(--gray-100);
+    }
+  }
+}
+/* #endregion */
+/* GRAY */
+
+/* #region LIGHT */
+.dashed:not(.disabled) {
+  &.light {
+    border: dashed 1px var(--light-500);
+    color: var(--light-500);
+
+    &.active {
+      animation: clicked-light ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+
+input.dashed:not(.disabled),
+iframe.dashed:not(.disabled) {
+  &.light {
+    &:focus,
+    &.focused {
+      border-color: var(--);
+      box-shadow: 0 0 0 3.5px rgba(var(---rgb), 0.25);
+    }
+  }
+}
+
+button.dashed:not(.disabled) {
+  &.light { 
+    &:hover {
+      background-color: var(--light-100);
+    }
+  }
+}
+/* #endregion */
+/* LIGHT */

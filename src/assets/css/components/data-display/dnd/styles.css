@@ -1,0 +1,72 @@
+@import url("./animations.css");
+@import url("./shadow.css");
+
+.ar-dnd {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem 0;
+
+  > .item {
+    display: flex;
+    position: relative;
+    min-width: 1px;
+    cursor: move;
+    overflow: hidden;
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease;
+
+    &.drag-item {
+      opacity: 0.25;
+    }
+
+    &.over-item {
+      position: relative;
+    }
+
+    &.over-item::after {
+      position: absolute;
+      content: "";
+      background-color: var(--success);
+      left: 1rem;
+      right: 1rem;
+      bottom: 0;
+      height: 5px;
+      border-radius: var(--border-radius-pill);
+    }
+
+    &.end-item {
+      /* Sırasıyla; Ad, Süre, Hız, Gecikme Süresi, Tekrar Sayısı, Yön, Bitiş Süreci */
+      animation: endItem ease-in-out 1s 0s 1 normal both;
+    }
+
+    > .move {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    > .content {
+      flex: 100%;
+      max-width: 100%;
+    }
+  }
+
+  > .placeholder {
+    position: relative;
+    border-bottom: solid 2px var(--blue-500);
+    border-radius: var(--border-radius-pill);
+
+    &::before {
+      position: absolute;
+      left: 0;
+      top: -3px;
+      content: "";
+      background-color: var(--gray-100);
+      width: 7.5px;
+      height: 7.5px;
+      border: solid 2px var(--blue-500);
+      border-radius: var(--border-radius-pill);
+    }
+  }
+}

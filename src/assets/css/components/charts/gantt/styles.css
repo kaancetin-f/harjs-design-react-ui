@@ -1,0 +1,62 @@
+.ar-gantt-chart {
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0px 10px 15px -5px rgba(var(--black-rgb), 0.1);
+  overflow: hidden;
+
+  .ar-gantt-chart-svg {
+    background-color: var(--white);
+    font-family: var(--system);
+
+    > .header {
+      fill: var(--white);
+      height: 75px;
+
+      > .title-group {
+        > .title {
+          fill: var(--gray-700);
+          font-size: 16px;
+          font-weight: bold;
+        }
+
+        > .title-description {
+          fill: var(--gray-500);
+          font-size: 13.28px;
+        }
+      }
+    }
+
+    > .body {
+      > .time-and-bars {
+        /* transition: transform 250ms ease-in-out; */
+
+        &.dragging {
+          /* transition: none !important; */
+        }
+      }
+
+      > .left-axis {
+        fill: var(--white);
+
+        > .label-list {
+          > .label-row {
+            > .label-text {
+              fill: var(--gray-700);
+              font-size: 14px;
+              dominant-baseline: central;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  > .footer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--white);
+    padding: 1rem 1.5rem;
+  }
+}

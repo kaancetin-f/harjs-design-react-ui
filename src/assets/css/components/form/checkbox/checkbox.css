@@ -1,0 +1,53 @@
+@import url("./core/border.css");
+
+.ar-checkbox-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: max-content;
+  height: var(--input-height);
+}
+.ar-checkbox-wrapper > label > :is(input[type="checkbox"]) {
+  display: none;
+}
+.ar-checkbox-wrapper > label > span {
+  display: flex;
+  align-items: center;
+  gap: 0 0.5rem;
+  user-select: none;
+}
+.ar-checkbox-wrapper > label > span > .ar-checkbox {
+  position: relative;
+  display: inline-block;
+  min-width: 1rem;
+  min-height: 1rem;
+}
+.ar-checkbox-wrapper > label > :is(input[type="checkbox"]):checked + span > .ar-checkbox {
+  z-index: 2;
+}
+.ar-checkbox-wrapper > label > :is(input[type="checkbox"]):checked + span > .ar-checkbox::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  display: inline-block;
+  content: "";
+  width: 0.25rem;
+  height: 0.5rem;
+  border: solid 1px transparent;
+  border-right-color: var(--white);
+  border-bottom-color: var(--white);
+}
+
+.ar-checkbox-wrapper > label > span > .trace {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-block;
+  content: "";
+  width: 1rem;
+  height: 1rem;
+  border-radius: var(--border-radius-pill);
+  z-index: 1;
+}

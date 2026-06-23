@@ -1,0 +1,12 @@
+.ar-menu > ul li ul {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: 250ms ease-in-out;
+}
+.ar-menu > ul li ul > div {
+  overflow: hidden;
+  margin-left: 1rem;
+}
+.ar-menu > ul li ul.opened {
+  grid-template-rows: 1fr;
+}

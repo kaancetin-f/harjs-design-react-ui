@@ -1,0 +1,11 @@
+@keyframes endItem {
+  0% {
+    box-shadow: 0 0 0 0px var(--blue-500);
+  }
+  50% {
+    box-shadow: 0 0 0 5px var(--blue-100);
+  }
+  100% {
+    box-shadow: 0 0 0 7.5px transparent;
+  }
+}

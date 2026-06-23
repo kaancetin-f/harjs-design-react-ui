@@ -1,0 +1,188 @@
+/* #region PRIMARY */
+.ar-progress {
+  > .ar-progress-bar {
+    &.filled {
+      &.primary {
+        background-color: var(--blue-500);
+      }
+    }
+  }
+
+  > .ar-progress-value {
+    &.filled {
+      &.primary {
+        background-color: var(--blue-400);
+      }
+    }
+  }
+}
+/* #endregion */
+/* PRIMARY */
+
+/* #region PRIMARY-LIGHT */
+.ar-progress {
+  > .ar-progress-bar {
+    &.filled {
+      &.primary-light {
+        background-color: var(--blue-500);
+      }
+    }
+  }
+
+  > .ar-progress-value {
+    &.filled {
+      &.primary-light {
+        background-color: var(--blue-400);
+      }
+    }
+  }
+}
+/* #endregion */
+/* PRIMARY-LIGHT */
+
+/* #region SECONDARY */
+.ar-progress {
+  > .ar-progress-bar {
+    &.filled {
+      &.secondary {
+        background-color: var(--blue-500);
+      }
+    }
+  }
+
+  > .ar-progress-value {
+    &.filled {
+      &.secondary {
+        background-color: var(--blue-400);
+      }
+    }
+  }
+}
+/* #endregion */
+/* SECONDARY */
+
+/* #region SUCCESS */
+.ar-progress {
+  > .ar-progress-bar {
+    &.filled {
+      &.success {
+        background-color: var(--green-500);
+      }
+    }
+  }
+
+  > .ar-progress-value {
+    &.filled {
+      &.success {
+        background-color: var(--green-400);
+      }
+    }
+  }
+}
+/* #endregion */
+/* SUCCESS */
+
+/* #region WARNING */
+.ar-progress {
+  > .ar-progress-bar {
+    &.filled {
+      &.warning {
+        background-color: var(--orange-500);
+      }
+    }
+  }
+
+  > .ar-progress-value {
+    &.filled {
+      &.warning {
+        background-color: var(--orange-400);
+      }
+    }
+  }
+}
+/* #endregion */
+/* WARNING */
+
+/* #region DANGER */
+.ar-progress {
+  > .ar-progress-bar {
+    &.filled {
+      &.danger {
+        background-color: var(--red-500);
+      }
+    }
+  }
+
+  > .ar-progress-value {
+    &.filled {
+      &.danger {
+        background-color: var(--red-400);
+      }
+    }
+  }
+}
+/* #endregion */
+/* DANGER */
+
+/* #region INFORMATION */
+.ar-progress {
+  > .ar-progress-bar {
+    &.filled {
+      &.information {
+        background-color: var(--red-500);
+      }
+    }
+  }
+
+  > .ar-progress-value {
+    &.filled {
+      &.information {
+        background-color: var(--red-400);
+      }
+    }
+  }
+}
+/* #endregion */
+/* INFORMATION */
+
+/* #region DARK */
+.ar-progress {
+  > .ar-progress-bar {
+    &.filled {
+      &.dark {
+        background-color: var(--red-500);
+      }
+    }
+  }
+
+  > .ar-progress-value {
+    &.filled {
+      &.dark {
+        background-color: var(--red-400);
+      }
+    }
+  }
+}
+/* #endregion */
+/* DARK */
+
+/* #region LIGHT */
+.ar-progress {
+  > .ar-progress-bar {
+    &.filled {
+      &.light {
+        background-color: var(--red-500);
+      }
+    }
+  }
+
+  > .ar-progress-value {
+    &.filled {
+      &.light {
+        background-color: var(--red-400);
+      }
+    }
+  }
+}
+/* #endregion */
+/* LIGHT */

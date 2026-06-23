@@ -1,0 +1,11 @@
+/* Title Css */
+@import url("./title/core.css");
+@import url("./title/color.css");
+@import url("./title/align.css");
+@import url("./title/size.css");
+
+/* Paragraph Css */
+@import url("./paragraph/core.css");
+@import url("./paragraph/color.css");
+@import url("./paragraph/align.css");
+@import url("./paragraph/size.css");

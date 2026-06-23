@@ -1,0 +1,50 @@
+@import url("./animations.css");
+@import url("./statuses.css");
+
+.ar-progress {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 0.75rem;
+}
+.ar-progress > .ar-progress-bar {
+  position: absolute;
+  inset: 0;
+  opacity: 0.1;
+}
+.ar-progress > .ar-progress-value {
+  position: absolute;
+  inset: 0;
+}
+.ar-progress > .ar-progress-value::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--border-radius-pill);
+  /* Sırasıyla; Ad, Süre, Hız, Gecikme Süresi, Tekrar Sayısı, Yön, Bitiş Süreci */
+  animation: progress cubic-bezier(0.23, 1, 0.32, 1) 2.5s 0s infinite normal both;
+}
+.ar-progress > .ar-progress-value > span {
+  position: absolute;
+  top: -20px;
+  right: 0;
+  background-color: var(--black);
+  width: auto;
+  height: 1rem;
+  padding: 0 0.25rem;
+  border-radius: var(--border-radius-pill);
+  color: var(--white);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  /* -webkit-text-stroke: 0.75px var(--white); */
+  z-index: 1;
+}
+.ar-progress > .ar-progress-value > span::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: solid 2.5px transparent;
+  border-top-color: var(--black);
+}

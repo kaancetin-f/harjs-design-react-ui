@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "jsx": "react",
+    "moduleDetection": "auto",
+
+    /* Modules */
+    "module": "ESNext",
+    "rootDir": "./src",
+    "moduleResolution": "bundler",
+
+    /* Doğru Path Eşlemeleri (src klasörünü referans almalı ve /* tamamlanmalı) */
+    "paths": {
+      "@config/*": ["./src/libs/core/application/contexts/*"],
+      "@hooks/*": ["./src/libs/core/application/hooks/*"],
+      "@types/*": ["./src/libs/types/*"],
+      "@utils/*": ["./src/libs/infrastructure/shared/*"]
+    },
+    "types": ["node"],
+
+    /* Emit */
+    "declaration": true,
+    "outDir": "./dist",
+    "importHelpers": true,
+
+    /* Interop Constraints */
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Type Checking */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* Completeness */
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "global.d.ts"],
+  "exclude": ["node_modules", "dist"]
+}

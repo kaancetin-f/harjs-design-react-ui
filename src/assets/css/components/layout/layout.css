@@ -1,0 +1,130 @@
+/* Media Queries */
+/* .... */
+@import url("./media-queries/xxx-large.css");
+@import url("./media-queries/xx-large.css");
+@import url("./media-queries/x-large.css");
+@import url("./media-queries/large.css");
+@import url("./media-queries/medium.css");
+@import url("./media-queries/small.css");
+@import url("./media-queries/x-small.css");
+
+.ar-layout {
+  display: flex;
+  flex-direction: row;
+
+  > aside.ar-aside {
+    position: sticky;
+    top: 0;
+    background-color: var(--gray-100);
+    height: 100vh;
+    box-sizing: border-box;
+  }
+
+  > aside.ar-aside.left {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    min-width: 280px;
+    max-width: 280px;
+    border-right: solid 1px var(--gray-200);
+    user-select: none;
+    transition: all 250ms ease-in-out;
+    z-index: 11;
+
+    &.un-locked {
+      position: absolute;
+      min-width: 4.85rem;
+      max-width: 4.85rem;
+
+      &:hover {
+        min-width: 280px;
+        max-width: 280px;
+      }
+
+      + main {
+        > section {
+          &.full-width {
+            padding-left: 7.5rem;
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    > .button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: calc(2.5rem - (1.75rem / 2));
+      right: -0.875rem;
+      background-color: var(--white);
+      width: 1.75rem;
+      height: 1.75rem;
+      border-radius: var(--border-radius-lg);
+      color: var(--gray-400);
+      cursor: pointer;
+      box-shadow: 0 0 10px -5px rgba(var(--black-rgb), 0.25);
+      z-index: 1;
+    }
+
+    > .logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      width: 100%;
+      height: 5rem;
+
+      &::after {
+        position: absolute;
+        top: 100%;
+        content: "";
+        background-color: rgba(var(--black-rgb), 0.1);
+        width: 100%;
+        height: 1px;
+      }
+    }
+
+    > footer {
+      position: fixed;
+      bottom: 1rem;
+    }
+  }
+
+  > aside.ar-aside.right {
+  }
+
+  > main {
+    display: flex;
+    flex-direction: column;
+
+    > header {
+      display: flex;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      background-color: rgba(var(--white-rgb), 0.5);
+      backdrop-filter: blur(5px);
+      box-shadow: 0 10px 10px -15px rgba(var(--black-rgb), 0.25);
+      z-index: 10;
+
+      > .actions {
+        margin-left: auto;
+      }
+    }
+
+    > section {
+      width: 100%;
+      height: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 2.5rem;
+
+      &.full-width {
+        width: 100%;
+      }
+    }
+  }
+}

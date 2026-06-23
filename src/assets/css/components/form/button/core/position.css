@@ -1,0 +1,19 @@
+.ar-button.fixed {
+  position: fixed;
+}
+.ar-button.absolute {
+  position: absolute;
+}
+
+.ar-button.top {
+  top: 0.5rem;
+}
+.ar-button.right {
+  right: 0.5rem;
+}
+.ar-button.bottom {
+  bottom: 0.5rem;
+}
+.ar-button.left {
+  left: 0.5rem;
+}

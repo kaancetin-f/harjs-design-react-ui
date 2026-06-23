@@ -1,0 +1,377 @@
+/* #region PRIMARY */
+.ar-card {
+  &.filled {
+    &.primary {
+      background-color: var(--blue-400);
+      border: solid 1px var(--blue-500) !important;
+      color: var(--white);
+
+      > .title {
+        border-bottom: solid 1px var(--blue-500) !important;
+      }
+    }
+  }
+  &.surface {
+    &.primary {
+      background-color: var(--white);
+      border: solid 1px var(--blue-500) !important;
+      color: var(--gray-700);
+
+      > .title {
+        background-color: var(--blue-100);
+        border-bottom: solid 1px var(--blue-200) !important;
+        color: var(--blue-500) !important;
+      }
+    }
+  }
+  &.outlined {
+    &.primary {
+      background-color: transparent;
+      border: solid 1px var(--blue-500);
+      color: var(--blue-500);
+
+      > .title {
+        background-color: var(--gray-100);
+        border-bottom: solid 1px var(--blue-100) !important;
+      }
+    }
+  }
+}
+/* #endregion */
+/* PRIMARY */
+
+/* #region PRIMARY-LIGHT */
+.ar-card {
+  &.filled {
+    &.primary-light {
+      background-color: var(--light-400);
+      border: solid 1px var(--light-500) !important;
+      color: var(--gray-700);
+
+      > .title {
+        border-bottom: solid 1px var(--light-500) !important;
+      }
+    }
+  }
+  &.surface {
+    &.primary-light {
+      background-color: var(--white);
+      border: solid 1px var(--light-500) !important;
+      color: var(--gray-700);
+
+      > .title {
+        background-color: var(--light-100);
+        border-bottom: solid 1px var(--light-200) !important;
+        color: var(--light-500) !important;
+      }
+    }
+  }
+  &.outlined {
+    &.primary-light {
+      background-color: transparent;
+      border: solid 1px var(--light-500);
+      color: var(--light-500);
+
+      > .title {
+        background-color: var(--gray-100);
+        border-bottom: solid 1px var(--light-100) !important;
+      }
+    }
+  }
+}
+/* #endregion */
+/* PRIMARY-LIGHT */
+
+/* #region SECONDARY */
+.ar-card {
+  &.filled {
+    &.secondary {
+      background-color: var(--light-400);
+      border: solid 1px var(--light-500) !important;
+      color: var(--gray-700);
+
+      > .title {
+        border-bottom: solid 1px var(--light-500) !important;
+      }
+    }
+  }
+  &.surface {
+    &.secondary {
+      background-color: var(--white);
+      border: solid 1px var(--light-500) !important;
+      color: var(--gray-700);
+
+      > .title {
+        background-color: var(--light-100);
+        border-bottom: solid 1px var(--light-200) !important;
+        color: var(--light-500) !important;
+      }
+    }
+  }
+  &.outlined {
+    &.secondary {
+      background-color: transparent;
+      border: solid 1px var(--light-500);
+      color: var(--light-500);
+
+      > .title {
+        background-color: var(--gray-100);
+        border-bottom: solid 1px var(--light-100) !important;
+      }
+    }
+  }
+}
+/* #endregion */
+/* SECONDARY */
+
+/* #region SUCCESS */
+.ar-card {
+  &.filled {
+    &.success {
+      background-color: var(--green-400);
+      border: solid 1px var(--green-500) !important;
+      color: var(--white);
+
+      > .title {
+        border-bottom: solid 1px var(--green-500) !important;
+      }
+    }
+  }
+  &.surface {
+    &.success {
+      background-color: var(--white);
+      border: solid 1px var(--green-500) !important;
+      color: var(--gray-700);
+
+      > .title {
+        background-color: var(--green-100);
+        border-bottom: solid 1px var(--green-200) !important;
+        color: var(--green-500) !important;
+      }
+    }
+  }
+  &.outlined {
+    &.success {
+      background-color: transparent;
+      border: solid 1px var(--green-500);
+      color: var(--green-500);
+
+      > .title {
+        background-color: var(--gray-100);
+        border-bottom: solid 1px var(--green-100) !important;
+      }
+    }
+  }
+}
+/* #endregion */
+/* SUCCESS */
+
+/* #region WARNING */
+.ar-card {
+  &.filled {
+    &.warning {
+      background-color: var(--orange-400);
+      border: solid 1px var(--orange-500) !important;
+      color: var(--orange-700);
+
+      > .title {
+        border-bottom: solid 1px var(--orange-500) !important;
+      }
+    }
+  }
+  &.surface {
+    &.warning {
+      background-color: var(--white);
+      border: solid 1px var(--orange-500) !important;
+      color: var(--gray-700);
+
+      > .title {
+        background-color: var(--orange-100);
+        border-bottom: solid 1px var(--orange-200) !important;
+        color: var(--orange-500) !important;
+      }
+    }
+  }
+  &.outlined {
+    &.warning {
+      background-color: transparent;
+      border: solid 1px var(--orange-500);
+      color: var(--orange-500);
+
+      > .title {
+        background-color: var(--gray-100);
+        border-bottom: solid 1px var(--orange-100) !important;
+      }
+    }
+  }
+}
+/* #endregion */
+/* WARNING */
+
+/* #region DANGER */
+.ar-card {
+  &.filled {
+    &.danger {
+      background-color: var(--red-400);
+      border: solid 1px var(--red-500) !important;
+      color: var(--white);
+
+      > .title {
+        border-bottom: solid 1px var(--red-500) !important;
+      }
+    }
+  }
+  &.surface {
+    &.danger {
+      background-color: var(--white);
+      border: solid 1px var(--red-500) !important;
+      color: var(--gray-700);
+
+      > .title {
+        background-color: var(--red-100);
+        border-bottom: solid 1px var(--red-200) !important;
+        color: var(--red-500) !important;
+      }
+    }
+  }
+  &.outlined {
+    &.danger {
+      background-color: transparent;
+      border: solid 1px var(--red-500);
+      color: var(--red-500);
+
+      > .title {
+        background-color: var(--gray-100);
+        border-bottom: solid 1px var(--red-100) !important;
+      }
+    }
+  }
+}
+/* #endregion */
+/* DANGER */
+
+/* #region INFORMATION */
+.ar-card {
+  &.filled {
+    &.information {
+      background-color: var(--light-400);
+      border: solid 1px var(--light-500) !important;
+      color: var(--gray-700);
+
+      > .title {
+        border-bottom: solid 1px var(--light-500) !important;
+      }
+    }
+  }
+  &.surface {
+    &.information {
+      background-color: var(--white);
+      border: solid 1px var(--light-500) !important;
+      color: var(--gray-700);
+
+      > .title {
+        background-color: var(--light-100);
+        border-bottom: solid 1px var(--light-200) !important;
+        color: var(--light-500) !important;
+      }
+    }
+  }
+  &.outlined {
+    &.information {
+      background-color: transparent;
+      border: solid 1px var(--light-500);
+      color: var(--light-500);
+
+      > .title {
+        background-color: var(--gray-100);
+        border-bottom: solid 1px var(--light-100) !important;
+      }
+    }
+  }
+}
+/* #endregion */
+/* INFORMATION */
+
+/* #region DARK */
+.ar-card {
+  &.filled {
+    &.dark {
+      background-color: var(--light-400);
+      border: solid 1px var(--light-500) !important;
+      color: var(--gray-700);
+
+      > .title {
+        border-bottom: solid 1px var(--light-500) !important;
+      }
+    }
+  }
+  &.surface {
+    &.dark {
+      background-color: var(--white);
+      border: solid 1px var(--light-500) !important;
+      color: var(--gray-700);
+
+      > .title {
+        background-color: var(--light-100);
+        border-bottom: solid 1px var(--light-200) !important;
+        color: var(--light-500) !important;
+      }
+    }
+  }
+  &.outlined {
+    &.dark {
+      background-color: transparent;
+      border: solid 1px var(--light-500);
+      color: var(--light-500);
+
+      > .title {
+        background-color: var(--gray-100);
+        border-bottom: solid 1px var(--light-100) !important;
+      }
+    }
+  }
+}
+/* #endregion */
+/* DARK */
+
+/* #region LIGHT */
+.ar-card {
+  &.filled {
+    &.light {
+      background-color: var(--light-400);
+      border: solid 1px var(--light-500) !important;
+      color: var(--gray-700);
+
+      > .title {
+        border-bottom: solid 1px var(--light-500) !important;
+      }
+    }
+  }
+  &.surface {
+    &.light {
+      background-color: var(--white);
+      border: solid 1px var(--light-500) !important;
+      color: var(--gray-700);
+
+      > .title {
+        background-color: var(--light-100);
+        border-bottom: solid 1px var(--light-200) !important;
+        color: var(--light-500) !important;
+      }
+    }
+  }
+  &.outlined {
+    &.light {
+      background-color: transparent;
+      border: solid 1px var(--light-500);
+      color: var(--light-500);
+
+      > .title {
+        background-color: var(--gray-100);
+        border-bottom: solid 1px var(--light-100) !important;
+      }
+    }
+  }
+}
+/* #endregion */
+/* LIGHT */

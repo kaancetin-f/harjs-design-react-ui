@@ -1,0 +1,13 @@
+.ar-button.ar-button-shape {
+  align-items: center;
+  min-width: 2rem;
+  min-height: 2rem;
+  max-width: 2rem;
+  max-height: 2rem;
+  padding: 0 !important;
+}
+.ar-button.ar-button-shape.circle {
+  border-radius: var(--border-radius-pill);
+}
+.ar-button.ar-button-shape.square {
+}

@@ -1,0 +1,56 @@
+.ar-drawer-wrapper > .ar-drawer > .header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 3.5rem;
+  padding: 0 2rem;
+  border-bottom: solid 1px var(--gray-200);
+}
+.ar-drawer-wrapper > .ar-drawer > .header > .ar-typography-title {
+  width: calc(100% - 2.75rem);
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.ar-drawer-wrapper > .ar-drawer > .header > .close {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--white);
+  min-width: 2rem;
+  min-height: 2rem;
+  border: solid 1px var(--gray-300);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  user-select: none;
+  transition: background 250ms, border 250ms ease-in-out;
+}
+.ar-drawer-wrapper > .ar-drawer > .header > .close::before,
+.ar-drawer-wrapper > .ar-drawer > .header > .close::after {
+  position: absolute;
+  content: "";
+  width: 2px;
+  height: 15px;
+  background-color: var(--gray-300);
+  transform-origin: center;
+  transform: rotate(-45deg);
+  transition: transform 250ms ease-in-out;
+}
+.ar-drawer-wrapper > .ar-drawer > .header > .close::after {
+  transform: rotate(45deg);
+}
+.ar-drawer-wrapper > .ar-drawer > .header > .close:hover {
+  background-color: rgba(var(--danger-rgb), 0.1);
+  border: solid 1px var(--danger);
+  color: rgba(var(--danger-rgb), 0.75);
+}
+.ar-drawer-wrapper > .ar-drawer > .header > .close:hover::before,
+.ar-drawer-wrapper > .ar-drawer > .header > .close:hover::after {
+  background-color: var(--danger);
+  transform: rotate(45deg);
+}
+.ar-drawer-wrapper > .ar-drawer > .header > .close:hover::after {
+  transform: rotate(-45deg);
+}

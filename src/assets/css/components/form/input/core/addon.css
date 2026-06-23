@@ -1,0 +1,11 @@
+.ar-input-wrapper > .addon-before,
+.ar-input-wrapper > .addon-after {
+  height: var(--input-height);
+  padding: 0 0.75rem;
+  color: var(--gray-600);
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: var(--input-height);
+  user-select: none;
+  cursor: no-drop;
+}

@@ -1,0 +1,26 @@
+.ar-dnd-shadow {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--white);
+  min-width: 150px;
+  height: 50px;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+
+  > i {
+    position: absolute;
+    left: -15px;
+    color: var(--gray-100);
+    font-size: 4rem;
+    z-index: 0;
+  }
+
+  > span {
+    color: var(--gray-500);
+    font-family: var(--system);
+    font-weight: 700;
+    z-index: 1;
+  }
+}

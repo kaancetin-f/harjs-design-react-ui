@@ -1,0 +1,144 @@
+.ar-calendar {
+  > .ar-calendar-week-view {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    background-color: var(--white);
+    padding: 0.75rem 0.75rem 0.75rem 2rem;
+    border-radius: var(--border-radius-sm);
+
+    > .head {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      padding-left: 50px;
+
+      > .item {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        align-items: center;
+        gap: 1rem;
+        width: calc(100% / 7);
+        padding: 0.5rem 0;
+        text-align: center;
+
+        > .day-name {
+          color: var(--gray-400);
+          font-size: 0.75rem;
+        }
+
+        > .date {
+          font-size: 1.5rem;
+        }
+      }
+    }
+
+    > .body {
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+
+      > .clocks {
+        position: relative;
+        width: 50px;
+        z-index: 1;
+
+        > div {
+          height: 60px;
+
+          > span {
+            color: var(--gray-700);
+            font-size: 0.75rem;
+          }
+        }
+      }
+
+      > .grid {
+        position: relative;
+        width: 100%;
+        height: calc(24 * 60px);
+        border: solid 1px transparent;
+        border-top-color: var(--gray-200);
+        z-index: 1;
+
+        > .row {
+          position: relative;
+          height: 60px;
+          margin: auto;
+
+          &:nth-child(2) {
+            > .cell {
+              &::before {
+                content: "";
+                position: absolute;
+                left: -1px;
+                background-color: var(--gray-200);
+                width: 1px;
+                height: 25px;
+                transform: translateY(-25px);
+              }
+            }
+          }
+
+          &:last-child {
+            > .cell {
+              border-bottom-color: transparent;
+            }
+          }
+
+          > .cell {
+            position: relative;
+            width: calc(100% / 7);
+            height: 60px;
+            padding: 0;
+            border: solid 1px transparent;
+            border-left-color: var(--gray-200);
+            border-bottom-color: var(--gray-200);
+
+            &:first-child {
+              &::after {
+                content: "";
+                position: absolute;
+                top: -2px;
+                left: 0;
+                background-color: var(--gray-200);
+                width: 15px;
+                height: 1px;
+                transform: translateX(-15px);
+              }
+            }
+          }
+        }
+      }
+
+      > .events-layer {
+        position: absolute;
+        right: 0;
+        width: calc(100% - 50px); /* Solda yer alan clocks'dan dolayı -50px yapıldı. */
+        height: calc(24 * 60px);
+        z-index: 2;
+
+        > .event-box {
+          position: absolute;
+          width: calc(100% / 7);
+          padding: 0.5rem;
+          color: var(--white);
+          font-size: 12px;
+          overflow: hidden;
+        }
+      }
+    }
+  }
+}
+
+.ar-calendar-tooltip {
+  position: fixed;
+  background-color: var(--black);
+  padding: 1rem;
+  border-radius: var(--border-radius-sm);
+  color: var(--white);
+  pointer-events: none;
+  z-index: 200;
+}

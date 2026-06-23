@@ -1,0 +1,62 @@
+.ar-date-calendar > .content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  margin: 0.5rem;
+}
+.ar-date-calendar > .content > .calendar {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 1rem 0;
+}
+
+/* #region Weekdays */
+.ar-date-calendar > .content > .calendar > .weekdays {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.ar-date-calendar > .content > .calendar > .weekdays > span {
+  width: calc(100% / 7);
+  color: var(--gray-600);
+  font-size: 0.8rem;
+  text-align: center;
+  user-select: none;
+}
+/* #endregion Weekdays */
+/* Weekdays */
+
+/* #region Days */
+.ar-date-calendar > .content > .calendar > .days {
+  display: flex;
+  flex-wrap: wrap;
+  user-select: none;
+}
+.ar-date-calendar > .content > .calendar > .days > span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(100% / 7);
+  height: var(--input-height);
+  cursor: pointer;
+}
+.ar-date-calendar > .content > .calendar > .days > span > span {
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  width: 75%;
+  height: 75%;
+  border-radius: var(--border-radius-sm);
+}
+.ar-date-picker > .calendar-wrapper > .content > .calendar > .days > span:not(.empty-day) > span:hover {
+  background-color: var(--gray-200);
+  color: var(--gray-700);
+}
+.ar-date-calendar > .content > .calendar > .days > span.selection-day > span {
+  background-color: var(--primary);
+  color: var(--white);
+  box-shadow: 0 0 0 2px var(--white), 0 0 0 4px var(--primary);
+}
+/* #endregion Days */
+/* Days */

@@ -1,0 +1,10 @@
+.ar-date-calendar > .footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0 0.5rem;
+  height: var(--footer-height);
+  padding: 0 0.5rem;
+  border-top: solid 1px var(--gray-200);
+}

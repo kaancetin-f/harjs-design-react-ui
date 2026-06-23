@@ -1,0 +1,8 @@
+@keyframes in-progress {
+  0% {
+    transform: rotate(0turn);
+  }
+  100% {
+    transform: rotate(1turn);
+  }
+}

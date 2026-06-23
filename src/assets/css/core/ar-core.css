@@ -1,0 +1,192 @@
+@import url("./color-palette.css");
+@import url("./animation.css");
+@import url("./variants/filled.css");
+@import url("./variants/surface.css");
+@import url("./variants/outlined.css");
+@import url("./variants/dashed.css");
+@import url("./variants/borderless.css");
+@import url("./variants/border.css");
+@import url("./utils.css");
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: "JetBrainsMono-Bold";
+  src: url("../../../assets/fonts/JetBrainsMono-Bold.ttf");
+}
+
+@font-face {
+  font-family: "JetBrainsMono-Regular";
+  src: url("../../../assets/fonts/JetBrainsMono-Regular.ttf");
+}
+
+/* #region Height */
+:root {
+  --input-height: 2.25rem;
+}
+/* #endregion */
+/* Height */
+
+/* #region Color Palette */
+
+:root {
+  --white: #fff;
+  --white-rgb: 255, 255, 255;
+  --black: #000000;
+  --black-rgb: 0, 0, 0;
+
+  /* ... */
+  --primary: var(--blue-500);
+  --primary-light: #92c7ff;
+  --primary-rgb: 13, 110, 253;
+  --secondary: var(--gray-500);
+  --secondary-rgb: 108, 117, 125;
+  --success: var(--green-500);
+  --success-rgb: 40, 167, 69;
+  --warning: var(--orange-500);
+  --warning-rgb: 255, 193, 7;
+  --danger: var(--red-500);
+  --danger-rgb: 220, 53, 69;
+  --information: var(--cyan-500);
+  --information-rgb: 23, 162, 184;
+  --light: var(--light-500);
+  --light-rgb: 222, 226, 230;
+  --dark: var(--gray-500);
+  --dark-rgb: 52, 58, 64;
+}
+/* #endregion */
+/* Color Palette */
+
+/* #region Fonts */
+:root {
+  --system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --jetBrainsMonoBold: "JetBrainsMono-Bold";
+  --jetBrainsMonoRegular: "JetBrainsMono-Regular";
+}
+/* #endregion */
+/* Fonts */
+
+/* #region Code Editor */
+:root {
+  --bg-color: #282c34;
+  --color: #abb2bf;
+  --tag-color: #679ad1;
+  --custom-tag-color: #6fc2ae;
+  --attribute-key-color: #a9d9f9;
+  --string-value-color: #c5947c;
+  --number-value-color: #bacdab;
+  --boolean-value-color: #57b0fe;
+  --object-value-color: #57b0fe;
+  --curly-bracket-color: #e4e49c;
+  --child-curly-bracket-color: #df6ed2;
+}
+/* #endregion */
+/* Color Palette */
+
+/* #region Border */
+:root {
+  /* Border */
+
+  /* Border Radius */
+  --border-radius: 0.465rem;
+  --border-radius-sm: 0.25rem;
+  --border-radius-lg: 0.5rem;
+  --border-radius-xl: 1rem;
+  --border-radius-xxl: 2rem;
+  --border-radius-pill: 50rem;
+}
+/* #endregion */
+/* Border */
+
+/* #region Box Shadow */
+:root {
+  --box-shadow: 0 0.5rem 1.5rem -0.5rem var(--gray-500);
+}
+/* #endregion */
+/* Box Shadow */
+
+/* #region Variants */
+
+.filled {
+  border-color: transparent;
+  transition:
+    border 250ms,
+    box-shadow 250ms ease-in-out;
+}
+
+.surface {
+  transition:
+    border 250ms,
+    box-shadow 250ms ease-in-out;
+}
+
+.outlined {
+  background-color: transparent;
+  border-style: solid;
+  border-width: 1px !important;
+  border-color: transparent;
+  transition:
+    border 250ms,
+    box-shadow 250ms ease-in-out;
+}
+
+.dashed {
+  background-color: transparent;
+  border-style: dashed;
+  border-width: 1px !important;
+  border-color: transparent;
+  transition:
+    border 250ms,
+    box-shadow 250ms ease-in-out;
+}
+
+.borderless {
+  background-color: transparent;
+  border-width: 1px;
+  border-color: transparent;
+  transition:
+    border 250ms,
+    box-shadow 250ms ease-in-out;
+}
+.borderless:disabled {
+  background-color: var(--gray-100) !important;
+  border: none !important;
+  color: var(--gray-500) !important;
+  cursor: no-drop !important;
+}
+
+:is(input) {
+  border: solid 1px transparent;
+}
+:is(input)::placeholder {
+  color: var(--dark);
+}
+input[type="date"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  pointer-events: none;
+}
+:is(input, button):disabled,
+:is(input[type="checkbox"]):disabled + span > .ar-checkbox:is(.filled, .outlined) {
+  cursor: no-drop !important;
+}
+:is(input[type="checkbox"]):disabled + span > .ar-checkbox:is(.borderless) {
+  background-color: var(--gray-100) !important;
+  color: var(--gray-500) !important;
+  cursor: no-drop !important;
+}
+:is(input[type="checkbox"]):disabled + span {
+  color: var(--gray-500) !important;
+  cursor: no-drop !important;
+}
+/* #endregion */
+/* Variants */

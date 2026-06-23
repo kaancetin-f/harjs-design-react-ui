@@ -1,0 +1,362 @@
+/* #region BLUE */
+.borderless:not(.disabled) {
+  &.blue {
+    color: var(--blue-500);
+
+    &.active {
+      animation: clicked-blue ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+
+input.borderless:not(.disabled),
+iframe.borderless:not(.disabled) {
+  &.blue {
+    &:focus,
+    &.focused {
+      border-color: var(--white);
+      box-shadow: 0 0 0 3.5px rgba(var(--white-rgb), 0.25);
+    }
+  }
+}
+
+button.borderless:not(.disabled) {
+  &.blue { 
+    &:hover {
+      background-color: var(--blue-500);
+      color: var(--white)
+    }
+  }
+}
+/* #endregion */
+/* BLUE */
+
+/* #region PURPLE */
+.borderless:not(.disabled) {
+  &.purple {
+    color: var(--purple-500);
+
+    &.active {
+      animation: clicked-purple ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+
+input.borderless:not(.disabled),
+iframe.borderless:not(.disabled) {
+  &.purple {
+    &:focus,
+    &.focused {
+      border-color: var(--white);
+      box-shadow: 0 0 0 3.5px rgba(var(--white-rgb), 0.25);
+    }
+  }
+}
+
+button.borderless:not(.disabled) {
+  &.purple { 
+    &:hover {
+      background-color: var(--purple-500);
+      color: var(--white)
+    }
+  }
+}
+/* #endregion */
+/* PURPLE */
+
+/* #region PINK */
+.borderless:not(.disabled) {
+  &.pink {
+    color: var(--pink-500);
+
+    &.active {
+      animation: clicked-pink ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+
+input.borderless:not(.disabled),
+iframe.borderless:not(.disabled) {
+  &.pink {
+    &:focus,
+    &.focused {
+      border-color: var(--white);
+      box-shadow: 0 0 0 3.5px rgba(var(--white-rgb), 0.25);
+    }
+  }
+}
+
+button.borderless:not(.disabled) {
+  &.pink { 
+    &:hover {
+      background-color: var(--pink-500);
+      color: var(--white)
+    }
+  }
+}
+/* #endregion */
+/* PINK */
+
+/* #region RED */
+.borderless:not(.disabled) {
+  &.red {
+    color: var(--red-500);
+
+    &.active {
+      animation: clicked-red ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+
+input.borderless:not(.disabled),
+iframe.borderless:not(.disabled) {
+  &.red {
+    &:focus,
+    &.focused {
+      border-color: var(--white);
+      box-shadow: 0 0 0 3.5px rgba(var(--white-rgb), 0.25);
+    }
+  }
+}
+
+button.borderless:not(.disabled) {
+  &.red { 
+    &:hover {
+      background-color: var(--red-500);
+      color: var(--white)
+    }
+  }
+}
+/* #endregion */
+/* RED */
+
+/* #region ORANGE */
+.borderless:not(.disabled) {
+  &.orange {
+    color: var(--orange-500);
+
+    &.active {
+      animation: clicked-orange ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+
+input.borderless:not(.disabled),
+iframe.borderless:not(.disabled) {
+  &.orange {
+    &:focus,
+    &.focused {
+      border-color: var(--white);
+      box-shadow: 0 0 0 3.5px rgba(var(--white-rgb), 0.25);
+    }
+  }
+}
+
+button.borderless:not(.disabled) {
+  &.orange { 
+    &:hover {
+      background-color: var(--orange-500);
+      color: var(--white)
+    }
+  }
+}
+/* #endregion */
+/* ORANGE */
+
+/* #region YELLOW */
+.borderless:not(.disabled) {
+  &.yellow {
+    color: var(--yellow-500);
+
+    &.active {
+      animation: clicked-yellow ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+
+input.borderless:not(.disabled),
+iframe.borderless:not(.disabled) {
+  &.yellow {
+    &:focus,
+    &.focused {
+      border-color: var(--white);
+      box-shadow: 0 0 0 3.5px rgba(var(--white-rgb), 0.25);
+    }
+  }
+}
+
+button.borderless:not(.disabled) {
+  &.yellow { 
+    &:hover {
+      background-color: var(--yellow-500);
+      color: var(--white)
+    }
+  }
+}
+/* #endregion */
+/* YELLOW */
+
+/* #region GREEN */
+.borderless:not(.disabled) {
+  &.green {
+    color: var(--green-500);
+
+    &.active {
+      animation: clicked-green ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+
+input.borderless:not(.disabled),
+iframe.borderless:not(.disabled) {
+  &.green {
+    &:focus,
+    &.focused {
+      border-color: var(--white);
+      box-shadow: 0 0 0 3.5px rgba(var(--white-rgb), 0.25);
+    }
+  }
+}
+
+button.borderless:not(.disabled) {
+  &.green { 
+    &:hover {
+      background-color: var(--green-500);
+      color: var(--white)
+    }
+  }
+}
+/* #endregion */
+/* GREEN */
+
+/* #region TEAL */
+.borderless:not(.disabled) {
+  &.teal {
+    color: var(--teal-500);
+
+    &.active {
+      animation: clicked-teal ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+
+input.borderless:not(.disabled),
+iframe.borderless:not(.disabled) {
+  &.teal {
+    &:focus,
+    &.focused {
+      border-color: var(--white);
+      box-shadow: 0 0 0 3.5px rgba(var(--white-rgb), 0.25);
+    }
+  }
+}
+
+button.borderless:not(.disabled) {
+  &.teal { 
+    &:hover {
+      background-color: var(--teal-500);
+      color: var(--white)
+    }
+  }
+}
+/* #endregion */
+/* TEAL */
+
+/* #region CYAN */
+.borderless:not(.disabled) {
+  &.cyan {
+    color: var(--cyan-500);
+
+    &.active {
+      animation: clicked-cyan ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+
+input.borderless:not(.disabled),
+iframe.borderless:not(.disabled) {
+  &.cyan {
+    &:focus,
+    &.focused {
+      border-color: var(--white);
+      box-shadow: 0 0 0 3.5px rgba(var(--white-rgb), 0.25);
+    }
+  }
+}
+
+button.borderless:not(.disabled) {
+  &.cyan { 
+    &:hover {
+      background-color: var(--cyan-500);
+      color: var(--white)
+    }
+  }
+}
+/* #endregion */
+/* CYAN */
+
+/* #region GRAY */
+.borderless:not(.disabled) {
+  &.gray {
+    color: var(--gray-500);
+
+    &.active {
+      animation: clicked-gray ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+
+input.borderless:not(.disabled),
+iframe.borderless:not(.disabled) {
+  &.gray {
+    &:focus,
+    &.focused {
+      border-color: var(--white);
+      box-shadow: 0 0 0 3.5px rgba(var(--white-rgb), 0.25);
+    }
+  }
+}
+
+button.borderless:not(.disabled) {
+  &.gray { 
+    &:hover {
+      background-color: var(--gray-500);
+      color: var(--white)
+    }
+  }
+}
+/* #endregion */
+/* GRAY */
+
+/* #region LIGHT */
+.borderless:not(.disabled) {
+  &.light {
+    color: var(--gray-700-500);
+
+    &.active {
+      animation: clicked-light ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+
+input.borderless:not(.disabled),
+iframe.borderless:not(.disabled) {
+  &.light {
+    &:focus,
+    &.focused {
+      border-color: var(--gray-700);
+      box-shadow: 0 0 0 3.5px rgba(var(--gray-700-rgb), 0.25);
+    }
+  }
+}
+
+button.borderless:not(.disabled) {
+  &.light { 
+    &:hover {
+      background-color: var(--light-500);
+      color: var(--gray-700)
+    }
+  }
+}
+/* #endregion */
+/* LIGHT */

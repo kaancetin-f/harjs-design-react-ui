@@ -1,0 +1,208 @@
+/* #region Border Color -> BLUE */
+.ar-switch-wrapper {
+  > label {
+    > input[type="checkbox"] {
+      + span.blue {
+        background-color: var(--blue-500);
+      }
+
+      &.checked {
+        + .span.blue {
+          background-color: var(--blue-500);
+        }
+      }
+    }
+  }
+}
+/* #endregion */
+/* Border Color -> BLUE */
+
+/* #region Border Color -> PURPLE */
+.ar-switch-wrapper {
+  > label {
+    > input[type="checkbox"] {
+      + span.purple {
+        background-color: var(--purple-500);
+      }
+
+      &.checked {
+        + .span.purple {
+          background-color: var(--purple-500);
+        }
+      }
+    }
+  }
+}
+/* #endregion */
+/* Border Color -> PURPLE */
+
+/* #region Border Color -> PINK */
+.ar-switch-wrapper {
+  > label {
+    > input[type="checkbox"] {
+      + span.pink {
+        background-color: var(--pink-500);
+      }
+
+      &.checked {
+        + .span.pink {
+          background-color: var(--pink-500);
+        }
+      }
+    }
+  }
+}
+/* #endregion */
+/* Border Color -> PINK */
+
+/* #region Border Color -> RED */
+.ar-switch-wrapper {
+  > label {
+    > input[type="checkbox"] {
+      + span.red {
+        background-color: var(--red-500);
+      }
+
+      &.checked {
+        + .span.red {
+          background-color: var(--red-500);
+        }
+      }
+    }
+  }
+}
+/* #endregion */
+/* Border Color -> RED */
+
+/* #region Border Color -> ORANGE */
+.ar-switch-wrapper {
+  > label {
+    > input[type="checkbox"] {
+      + span.orange {
+        background-color: var(--orange-500);
+      }
+
+      &.checked {
+        + .span.orange {
+          background-color: var(--orange-500);
+        }
+      }
+    }
+  }
+}
+/* #endregion */
+/* Border Color -> ORANGE */
+
+/* #region Border Color -> YELLOW */
+.ar-switch-wrapper {
+  > label {
+    > input[type="checkbox"] {
+      + span.yellow {
+        background-color: var(--yellow-500);
+      }
+
+      &.checked {
+        + .span.yellow {
+          background-color: var(--yellow-500);
+        }
+      }
+    }
+  }
+}
+/* #endregion */
+/* Border Color -> YELLOW */
+
+/* #region Border Color -> GREEN */
+.ar-switch-wrapper {
+  > label {
+    > input[type="checkbox"] {
+      + span.green {
+        background-color: var(--green-500);
+      }
+
+      &.checked {
+        + .span.green {
+          background-color: var(--green-500);
+        }
+      }
+    }
+  }
+}
+/* #endregion */
+/* Border Color -> GREEN */
+
+/* #region Border Color -> TEAL */
+.ar-switch-wrapper {
+  > label {
+    > input[type="checkbox"] {
+      + span.teal {
+        background-color: var(--teal-500);
+      }
+
+      &.checked {
+        + .span.teal {
+          background-color: var(--teal-500);
+        }
+      }
+    }
+  }
+}
+/* #endregion */
+/* Border Color -> TEAL */
+
+/* #region Border Color -> CYAN */
+.ar-switch-wrapper {
+  > label {
+    > input[type="checkbox"] {
+      + span.cyan {
+        background-color: var(--cyan-500);
+      }
+
+      &.checked {
+        + .span.cyan {
+          background-color: var(--cyan-500);
+        }
+      }
+    }
+  }
+}
+/* #endregion */
+/* Border Color -> CYAN */
+
+/* #region Border Color -> GRAY */
+.ar-switch-wrapper {
+  > label {
+    > input[type="checkbox"] {
+      + span.gray {
+        background-color: var(--gray-500);
+      }
+
+      &.checked {
+        + .span.gray {
+          background-color: var(--gray-500);
+        }
+      }
+    }
+  }
+}
+/* #endregion */
+/* Border Color -> GRAY */
+
+/* #region Border Color -> LIGHT */
+.ar-switch-wrapper {
+  > label {
+    > input[type="checkbox"] {
+      + span.light {
+        background-color: var(--light-500);
+      }
+
+      &.checked {
+        + .span.light {
+          background-color: var(--light-500);
+        }
+      }
+    }
+  }
+}
+/* #endregion */
+/* Border Color -> LIGHT */

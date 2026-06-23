@@ -1,0 +1,86 @@
+.ar-date-calendar > .header {
+  display: flex;
+  align-items: center;
+  min-height: 3.75rem;
+  padding: 0 1rem;
+  border-bottom: solid 1px var(--gray-200);
+}
+.ar-date-calendar > .header > .select-field {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0 0.75rem;
+  width: 100%;
+  padding: 0 0.5rem;
+}
+
+.ar-date-calendar > .header > .select-field > .selects {
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  align-items: center;
+  gap: 0 1rem;
+  height: var(--input-height);
+}
+.ar-date-calendar > .header > .select-field > .selects > div > span {
+  /* -webkit-text-stroke: 1px var(--black); */
+  user-select: none;
+}
+
+/* #region Prev and Next Buttons */
+.ar-date-calendar > .header > .select-field > .prev > span,
+.ar-date-calendar > .header > .select-field > .next > span {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: solid 2px transparent;
+  transform: rotate(45deg);
+  user-select: none;
+  cursor: pointer;
+}
+.ar-date-calendar > .header > .select-field > .prev > span::before,
+.ar-date-calendar > .header > .select-field > .next > span::before {
+  border: solid 2px transparent;
+}
+
+.ar-date-calendar > .header > .select-field > .prev > span:first-child {
+  position: relative;
+  border-left-color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.ar-date-calendar > .header > .select-field > .prev > span:first-child::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  border-left-color: rgba(var(--primary-rgb), 0.25);
+  border-bottom-color: rgba(var(--primary-rgb), 0.25);
+}
+.ar-date-calendar > .header > .select-field > .prev > span:last-child {
+  border-left-color: var(--gray-500);
+  border-bottom-color: var(--gray-500);
+  margin-left: 0.3rem;
+}
+
+.ar-date-calendar > .header > .select-field > .next > span:first-child {
+  border-top-color: var(--gray-500);
+  border-right-color: var(--gray-500);
+  margin-right: 0.3rem;
+}
+.ar-date-calendar > .header > .select-field > .next > span:last-child {
+  position: relative;
+  border-top-color: var(--primary);
+  border-right-color: var(--primary);
+}
+.ar-date-calendar > .header > .select-field > .next > span:last-child::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  border-top-color: rgba(var(--primary-rgb), 0.25);
+  border-right-color: rgba(var(--primary-rgb), 0.25);
+}
+/* #endregion Prev and Next Buttons */
+/* Prev and Next Buttons */

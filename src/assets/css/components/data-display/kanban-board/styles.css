@@ -1,0 +1,371 @@
+.ar-kanban-board {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  min-width: 100%;
+  border-radius: var(--border-radius-lg);
+  overflow-x: auto;
+  overflow-y: auto;
+
+  /* width */
+  &::-webkit-scrollbar {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: var(--gray-300);
+    border-radius: var(--border-radius-pill);
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--gray-500);
+  }
+
+  > .buttons {
+    position: absolute;
+    top: 150px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 2.5rem;
+    z-index: 5;
+
+    > .button {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(var(--black-rgb), 0.1);
+      backdrop-filter: blur(5px);
+      width: 2rem;
+      height: 5rem;
+      border-radius: var(--border-radius-sm);
+      cursor: pointer;
+
+      &.left {
+        left: -10px;
+      }
+
+      &.right {
+        right: 0;
+      }
+    }
+  }
+
+  > .titles {
+    position: sticky;
+    top: 0;
+    left: auto;
+    right: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 1.5rem;
+    width: 100%;
+    z-index: 5;
+
+    > .title {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.5rem;
+      background-color: var(--white);
+      max-width: 350px;
+      min-width: 350px;
+      margin-bottom: 1rem;
+      padding: 0.5rem 1rem;
+      border-radius: var(--border-radius-lg);
+      color: var(--gray-700);
+      font-family: var(--system);
+      font-size: 0.85rem;
+      font-weight: 700;
+      box-shadow: 0px 5px 5px -2px rgba(var(--black-rgb), 0.1);
+
+      > h4 {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--gray-500);
+
+        > span {
+          position: relative;
+          width: 5px;
+          height: 20px;
+          border-radius: var(--border-radius-pill);
+
+          &::after {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 100%;
+            content: "";
+            border: solid 5px transparent;
+            border-left-color: inherit;
+          }
+        }
+      }
+
+      > span {
+        color: var(--gray-400);
+        font-weight: 400;
+      }
+    }
+  }
+
+  > .columns {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 1.5rem;
+    width: 100%;
+    height: max-content;
+    z-index: 4;
+
+    > .column {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      gap: 0.75rem;
+      flex-shrink: 0;
+      max-width: 350px;
+      min-width: 350px;
+      user-select: none;
+
+      > .items {
+        position: relative;
+        background-color: var(--white);
+        padding: 1rem;
+        height: 100%;
+        border: dashed 0 transparent;
+        border-radius: var(--border-radius-lg);
+        transition:
+          transform 250ms,
+          border 250ms ease-in-out;
+
+        &:has(> .no-item) {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        &.dragging {
+          border: dashed 2.5px var(--blue-200);
+          border-radius: var(--border-radius-lg);
+          transform: scaleX(1) scaleY(1);
+          overflow: hidden;
+
+          /* &::before {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            content: "\F488";
+            color: var(--blue-100);
+            font-family: "bootstrap-icons" !important;
+            font-size: 4rem;
+            text-shadow: 2px 2px var(--blue-200);
+            z-index: 5;
+          } */
+        }
+
+        > .no-item {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          &::after {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 23px;
+            content: "";
+            background-color: var(--gray-200);
+            width: 70px;
+            height: 16px;
+            border-radius: 100%;
+          }
+
+          > span {
+            color: var(--gray-500);
+            font-family: var(--system);
+          }
+        }
+      }
+    }
+  }
+}
+
+.filters {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 1rem;
+  background-color: var(--white);
+  margin-bottom: 1rem;
+  border-radius: var(--border-radius-lg);
+  z-index: 6;
+
+  > :first-child {
+    flex: 1;
+  }
+
+  > ul {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+
+    > li {
+      position: relative;
+      padding: 0.5rem;
+      cursor: pointer;
+      user-select: none;
+
+      &.active {
+        background-color: var(--gray-100);
+
+        > ul {
+          animation: dropdownOpen 250ms ease-in-out;
+        }
+      }
+
+      > div {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        > span {
+          color: var(--gray-500);
+          font-weight: 500;
+        }
+      }
+
+      > ul {
+        list-style: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: var(--gray-100);
+        width: max-content;
+        padding: 1rem;
+        border-bottom-left-radius: var(--border-radius-sm);
+        border-bottom-right-radius: var(--border-radius-sm);
+        box-shadow: 0px 5px 5px -2px rgba(var(--black-rgb), 0.1);
+
+        > li {
+          cursor: auto;
+        }
+      }
+    }
+  }
+}
+
+@keyframes dropdownOpen {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- [KÜÇÜK MOBİL - IPHONE SE VB.] --- */
+/* Çok dar ekranlar için özel düzeltmeler */
+@media (max-width: 375px) {
+}
+
+/* --- [MOBİL - STANDART] --- */
+/* Ekran 576px ve altına düştüğünde çalışır */
+@media (max-width: 576px) {
+}
+
+/* --- [TABLET DİKEY & BÜYÜK TELEFONLAR] --- */
+/* Ekran 768px ve altına düştüğünde çalışır */
+@media (max-width: 768px) {
+  .ar-kanban-board {
+    /* width */
+    &::-webkit-scrollbar {
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+    }
+
+    > .buttons {
+      display: none;
+
+      > .button {
+        &.left {
+        }
+
+        &.right {
+        }
+      }
+    }
+
+    > .titles {
+      > .title {
+        > h4 {
+          > span {
+            &::after {
+            }
+          }
+        }
+
+        > span {
+        }
+      }
+    }
+
+    > .columns {
+      > .column {
+        > .items {
+          &:has(> .no-item) {
+          }
+
+          &.dragging {
+          }
+
+          > .no-item {
+            &::after {
+            }
+
+            > span {
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* --- [TABLET & KÜÇÜK LAPTOP] --- */
+/* Ekran 1024px ve altına düştüğünde çalışır */
+@media (max-width: 1024px) {
+}

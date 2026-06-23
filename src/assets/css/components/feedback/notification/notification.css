@@ -1,0 +1,157 @@
+.ar-notification-item {
+  opacity: 1;
+  position: fixed;
+  left: 2rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0 0.5rem;
+  background-color: var(--white);
+  width: 350px;
+  height: 7.5rem;
+  border-radius: var(--border-radius-xl);
+  box-shadow: 0 5px 15px -5px rgba(var(--black-rgb), 0.25);
+  transition: all 250ms ease-in-out;
+  overflow: hidden;
+  /* Sırasıyla; Ad, Süre, Hız, Gecikme Süresi, Tekrar Sayısı, Yön, Bitiş Süreci */
+  animation: openedSnackbar ease-in-out 500ms 0s 1 normal both;
+  z-index: 1051;
+}
+.ar-notification-item.previous {
+  /* Sırasıyla; Ad, Süre, Hız, Gecikme Süresi, Tekrar Sayısı, Yön, Bitiş Süreci */
+  animation: previousSnackbar ease-in-out 500ms 0s 1 normal both;
+}
+.ar-notification-item.closed {
+  /* Sırasıyla; Ad, Süre, Hız, Gecikme Süresi, Tekrar Sayısı, Yön, Bitiş Süreci */
+  animation: closedSnackbar ease-in-out 500ms 0s 1 normal both;
+}
+
+.ar-notification-item > .icon {
+  position: relative;
+  min-width: 3rem;
+  border-top-left-radius: var(--border-radius-xl);
+  border-bottom-left-radius: var(--border-radius-xl);
+  overflow: hidden;
+}
+.ar-notification-item > .icon > span {
+  position: absolute;
+  border-radius: var(--border-radius-pill);
+}
+.ar-notification-item > .icon > span:nth-child(1) {
+  top: 0.5rem;
+  left: 0.5rem;
+  width: 0.25rem;
+  height: 0.25rem;
+}
+.ar-notification-item > .icon > span:nth-child(2) {
+  top: 1.5rem;
+  left: 0.5rem;
+  width: 0.5rem;
+  height: 0.5rem;
+}
+.ar-notification-item > .icon > span:nth-child(3) {
+  top: 2rem;
+  left: 1.75rem;
+  width: 1rem;
+  height: 1rem;
+}
+.ar-notification-item > .icon > span:nth-child(4) {
+  bottom: -1.5rem;
+  left: -0.5rem;
+  width: 3rem;
+  height: 3rem;
+}
+.ar-notification-item > .icon > span:nth-child(5) {
+  bottom: 1.15rem;
+  left: 1rem;
+  width: 0.55rem;
+  height: 0.55rem;
+}
+.ar-notification-item > .icon > span.success {
+  background-color: var(--success);
+}
+.ar-notification-item > .icon > span.warning {
+  background-color: var(--warning);
+}
+.ar-notification-item > .icon > span.information {
+  background-color: var(--info);
+}
+.ar-notification-item > .icon > span.error {
+  background-color: var(--danger);
+}
+
+.ar-notification-item > .content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.75rem 0;
+  width: 100%;
+  padding: 0 1rem;
+  color: var(--gray-700);
+}
+.ar-notification-item > .content > .title {
+  font-size: 1.2rem;
+}
+.ar-notification-item > .content > .message {
+  color: var(--gray-600);
+}
+
+.ar-notification-item > .close {
+  min-width: 2.5rem;
+}
+.ar-notification-item > .close::before,
+.ar-notification-item > .close::after {
+  position: absolute;
+  top: 0.75rem;
+  right: 1.25rem;
+  content: "";
+  width: 2px;
+  height: 15px;
+  background-color: var(--gray-500);
+  transform-origin: center;
+  transform: rotate(45deg);
+}
+.ar-notification-item > .close::after {
+  transform: rotate(-45deg);
+}
+
+@media only screen and (max-width: 480px) {
+  .ar-notification.top-left {
+    inset: 1rem 1rem auto 1rem;
+  }
+  .ar-notification.top-right {
+    inset: 1rem 1rem auto 1rem;
+  }
+  .ar-notification.bottom-left {
+    inset: auto 1rem 1rem 1rem;
+  }
+  .ar-notification.bottom-right {
+    inset: auto 1rem 1rem 1rem;
+  }
+}
+
+@keyframes openedSnackbar {
+  0% {
+    transform: translateX(-500px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes previousSnackbar {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  100% {
+    transform: translateX(0) translateY(120px);
+  }
+}
+
+@keyframes closedSnackbar {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-500px);
+  }
+}

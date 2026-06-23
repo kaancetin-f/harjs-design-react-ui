@@ -1,0 +1,114 @@
+/* #region Border Radius -> SM */
+.ar-input-wrapper.addon > span.addon-before.border-radius-sm {
+  border-radius: var(--border-radius-sm) 0 0 var(--border-radius-sm) !important;
+}
+.ar-input-wrapper.addon > span.addon-after.border-radius-sm {
+  border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0 !important;
+}
+
+.ar-input-wrapper.addon:has(> .addon-before) > .ar-input > input.border-radius-sm {
+  border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0 !important;
+}
+.ar-input-wrapper.addon:has(> .addon-after) > .ar-input > input.border-radius-sm,
+.ar-input-wrapper:has(> .ar-button) > .ar-input > input.border-radius-sm {
+  border-radius: var(--border-radius-sm) 0 0 var(--border-radius-sm) !important;
+}
+.ar-input-wrapper.addon:has(> .addon-before):has(> .addon-after)
+  > .ar-input
+  > input.border-radius-sm {
+  border-radius: 0 !important;
+}
+/* #endregion */
+/* Border Radius -> SM */
+
+/* #region Border Radius -> LG */
+.ar-input-wrapper.addon > span.addon-before.border-radius-lg {
+  border-radius: var(--border-radius-lg) 0 0 var(--border-radius-lg) !important;
+}
+.ar-input-wrapper.addon > span.addon-after.border-radius-lg {
+  border-radius: 0 var(--border-radius-lg) var(--border-radius-lg) 0 !important;
+}
+
+.ar-input-wrapper.addon:has(> .addon-before) > .ar-input > input.border-radius-lg {
+  border-radius: 0 var(--border-radius-lg) var(--border-radius-lg) 0 !important;
+}
+.ar-input-wrapper.addon:has(> .addon-after) > .ar-input > input.border-radius-lg,
+.ar-input-wrapper:has(> .ar-button) > .ar-input > input.border-radius-lg {
+  border-radius: var(--border-radius-lg) 0 0 var(--border-radius-lg) !important;
+}
+.ar-input-wrapper.addon:has(> .addon-before):has(> .addon-after)
+  > .ar-input
+  > input.border-radius-lg {
+  border-radius: 0 !important;
+}
+/* #endregion */
+/* Border Radius -> LG */
+
+/* #region Border Radius -> XL */
+.ar-input-wrapper.addon > span.addon-before.border-radius-xl {
+  border-radius: var(--border-radius-xl) 0 0 var(--border-radius-xl) !important;
+}
+.ar-input-wrapper.addon > span.addon-after.border-radius-xl {
+  border-radius: 0 var(--border-radius-xl) var(--border-radius-xl) 0 !important;
+}
+
+.ar-input-wrapper.addon:has(> .addon-before) > .ar-input > input.border-radius-xl {
+  border-radius: 0 var(--border-radius-xl) var(--border-radius-xl) 0 !important;
+}
+.ar-input-wrapper.addon:has(> .addon-after) > .ar-input > input.border-radius-xl,
+.ar-input-wrapper:has(> .ar-button) > .ar-input > input.border-radius-xl {
+  border-radius: var(--border-radius-xl) 0 0 var(--border-radius-xl) !important;
+}
+.ar-input-wrapper.addon:has(> .addon-before):has(> .addon-after)
+  > .ar-input
+  > input.border-radius-xl {
+  border-radius: 0 !important;
+}
+/* #endregion */
+/* Border Radius -> XL */
+
+/* #region Border Radius -> XXL */
+.ar-input-wrapper.addon > span.addon-before.border-radius-xxl {
+  border-radius: var(--border-radius-xxl) 0 0 var(--border-radius-xxl) !important;
+}
+.ar-input-wrapper.addon > span.addon-after.border-radius-xxl {
+  border-radius: 0 var(--border-radius-xxl) var(--border-radius-xxl) 0 !important;
+}
+
+.ar-input-wrapper.addon:has(> .addon-before) > .ar-input > input.border-radius-xxl {
+  border-radius: 0 var(--border-radius-xxl) var(--border-radius-xxl) 0 !important;
+}
+.ar-input-wrapper.addon:has(> .addon-after) > .ar-input > input.border-radius-xxl,
+.ar-input-wrapper:has(> .ar-button) > .ar-input > input.border-radius-xxl {
+  border-radius: var(--border-radius-xxl) 0 0 var(--border-radius-xxl) !important;
+}
+.ar-input-wrapper.addon:has(> .addon-before):has(> .addon-after)
+  > .ar-input
+  > input.border-radius-xxl {
+  border-radius: 0 !important;
+}
+/* #endregion */
+/* Border Radius -> XXL */
+
+/* #region Border Radius -> PILL */
+.ar-input-wrapper.addon > span.addon-before.border-radius-pill {
+  border-radius: var(--border-radius-pill) 0 0 var(--border-radius-pill) !important;
+}
+.ar-input-wrapper.addon > span.addon-after.border-radius-pill {
+  border-radius: 0 var(--border-radius-pill) var(--border-radius-pill) 0 !important;
+}
+
+.ar-input-wrapper.addon:has(> .addon-before) > .ar-input > input.border-radius-pill {
+  border-radius: 0 var(--border-radius-pill) var(--border-radius-pill) 0 !important;
+}
+.ar-input-wrapper.addon:has(> .addon-after) > .ar-input > input.border-radius-pill,
+.ar-input-wrapper:has(> .ar-button) > .ar-input > input.border-radius-pill {
+  border-radius: var(--border-radius-pill) 0 0 var(--border-radius-pill) !important;
+}
+.ar-input-wrapper.addon:has(> .addon-before):has(> .addon-after)
+  > .ar-input
+  > input.border-radius-pill {
+  border-radius: 0 !important;
+}
+/* #endregion */
+/* Border Radius -> PILL */

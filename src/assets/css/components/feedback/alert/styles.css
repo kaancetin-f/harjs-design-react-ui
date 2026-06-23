@@ -1,0 +1,61 @@
+@import url("./statuses.css");
+
+.ar-alert {
+  padding: 1rem;
+  border-radius: var(--border-radius-sm);
+  border: solid 1px transparent;
+  font-family: var(--system);
+  font-weight: 400;
+}
+
+.ar-alert > p > .ar-alert-tag {
+  background-color: var(--gray-100);
+  padding: 0 0.25rem;
+  border: solid 1px var(--gray-400);
+  border-radius: var(--border-radius-sm);
+}
+
+.ar-alert ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem 0;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+.ar-alert ul li {
+  position: relative;
+  padding-left: 1rem;
+}
+.ar-alert > ul > li:not(:has(> ul))::before {
+  position: absolute;
+  top: 6px;
+  left: 0;
+  content: "";
+  background-color: rgba(var(--black-rgb), 0.1);
+  width: 0.5rem;
+  height: 0.5rem;
+  border: solid 1px transparent;
+  border-radius: var(--border-radius-lg);
+}
+.ar-alert ul li:is(.sub-message):not(:has(> ul))::before {
+  position: absolute;
+  top: -5px;
+  left: 0;
+  content: "";
+  width: 0.75rem;
+  height: 1rem;
+  border: solid 1px transparent;
+  border-left-color: rgba(var(--black-rgb), 0.25);
+  border-bottom-color: rgba(var(--black-rgb), 0.25);
+}
+.ar-alert ul li .ar-alert-tag {
+  background-color: var(--white);
+  padding: 0 0.25rem;
+  border: solid 1px var(--gray-400);
+  border-radius: var(--border-radius-sm);
+}
+.ar-alert ul li ul {
+  margin-left: 0.1rem;
+}

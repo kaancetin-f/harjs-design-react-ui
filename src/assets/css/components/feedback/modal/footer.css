@@ -1,0 +1,9 @@
+.ar-modal-wrapper > .ar-modal > .footer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  gap: 0 0.5rem;
+  padding: 1rem 2rem;
+  border-top: solid 1px var(--gray-200);
+}

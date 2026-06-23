@@ -1,0 +1,20 @@
+/* XXX-Large (Büyük Ekranlar: TV, Ultra Geniş Monitörler) */
+
+@media (min-width: 1400px) {
+  .ar-layout > aside.ar-aside.right {
+    width: 100%;
+  }
+
+  .ar-layout > main {
+    width: 100%;
+  }
+  .ar-layout > main > header {
+    height: 5rem;
+    padding: 0 2.5rem;
+  }
+
+  .ar-layout > main > section:not(.full-width) {
+    max-width: 1340px;
+    padding: 2.5rem;
+  }
+}

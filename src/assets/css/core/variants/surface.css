@@ -1,0 +1,252 @@
+/* #region BLUE */
+.surface:not(.disabled) {
+  &.blue {
+    background-color: var(--blue-100);
+    border: solid 1px var(--blue-300);
+    color: var(--blue-500);
+    
+    &.active {
+      animation: clicked-blue ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+      
+button.surface:not(.disabled) {
+  &.blue { 
+    &:hover {
+      background-color: var(--blue-300);
+    }
+  }
+}
+/* #endregion */
+/* BLUE */
+
+/* #region PURPLE */
+.surface:not(.disabled) {
+  &.purple {
+    background-color: var(--purple-100);
+    border: solid 1px var(--purple-300);
+    color: var(--purple-500);
+    
+    &.active {
+      animation: clicked-purple ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+      
+button.surface:not(.disabled) {
+  &.purple { 
+    &:hover {
+      background-color: var(--purple-300);
+    }
+  }
+}
+/* #endregion */
+/* PURPLE */
+
+/* #region PINK */
+.surface:not(.disabled) {
+  &.pink {
+    background-color: var(--pink-100);
+    border: solid 1px var(--pink-300);
+    color: var(--pink-500);
+    
+    &.active {
+      animation: clicked-pink ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+      
+button.surface:not(.disabled) {
+  &.pink { 
+    &:hover {
+      background-color: var(--pink-300);
+    }
+  }
+}
+/* #endregion */
+/* PINK */
+
+/* #region RED */
+.surface:not(.disabled) {
+  &.red {
+    background-color: var(--red-100);
+    border: solid 1px var(--red-300);
+    color: var(--red-500);
+    
+    &.active {
+      animation: clicked-red ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+      
+button.surface:not(.disabled) {
+  &.red { 
+    &:hover {
+      background-color: var(--red-300);
+    }
+  }
+}
+/* #endregion */
+/* RED */
+
+/* #region ORANGE */
+.surface:not(.disabled) {
+  &.orange {
+    background-color: var(--orange-100);
+    border: solid 1px var(--orange-300);
+    color: var(--orange-500);
+    
+    &.active {
+      animation: clicked-orange ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+      
+button.surface:not(.disabled) {
+  &.orange { 
+    &:hover {
+      background-color: var(--orange-300);
+    }
+  }
+}
+/* #endregion */
+/* ORANGE */
+
+/* #region YELLOW */
+.surface:not(.disabled) {
+  &.yellow {
+    background-color: var(--yellow-100);
+    border: solid 1px var(--yellow-300);
+    color: var(--yellow-500);
+    
+    &.active {
+      animation: clicked-yellow ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+      
+button.surface:not(.disabled) {
+  &.yellow { 
+    &:hover {
+      background-color: var(--yellow-300);
+    }
+  }
+}
+/* #endregion */
+/* YELLOW */
+
+/* #region GREEN */
+.surface:not(.disabled) {
+  &.green {
+    background-color: var(--green-100);
+    border: solid 1px var(--green-300);
+    color: var(--green-500);
+    
+    &.active {
+      animation: clicked-green ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+      
+button.surface:not(.disabled) {
+  &.green { 
+    &:hover {
+      background-color: var(--green-300);
+    }
+  }
+}
+/* #endregion */
+/* GREEN */
+
+/* #region TEAL */
+.surface:not(.disabled) {
+  &.teal {
+    background-color: var(--teal-100);
+    border: solid 1px var(--teal-300);
+    color: var(--teal-500);
+    
+    &.active {
+      animation: clicked-teal ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+      
+button.surface:not(.disabled) {
+  &.teal { 
+    &:hover {
+      background-color: var(--teal-300);
+    }
+  }
+}
+/* #endregion */
+/* TEAL */
+
+/* #region CYAN */
+.surface:not(.disabled) {
+  &.cyan {
+    background-color: var(--cyan-100);
+    border: solid 1px var(--cyan-300);
+    color: var(--cyan-500);
+    
+    &.active {
+      animation: clicked-cyan ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+      
+button.surface:not(.disabled) {
+  &.cyan { 
+    &:hover {
+      background-color: var(--cyan-300);
+    }
+  }
+}
+/* #endregion */
+/* CYAN */
+
+/* #region GRAY */
+.surface:not(.disabled) {
+  &.gray {
+    background-color: var(--gray-100);
+    border: solid 1px var(--gray-300);
+    color: var(--gray-500);
+    
+    &.active {
+      animation: clicked-gray ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+      
+button.surface:not(.disabled) {
+  &.gray { 
+    &:hover {
+      background-color: var(--gray-300);
+    }
+  }
+}
+/* #endregion */
+/* GRAY */
+
+/* #region LIGHT */
+.surface:not(.disabled) {
+  &.light {
+    background-color: var(--light-100);
+    border: solid 1px var(--light-300);
+    color: var(--light-500);
+    
+    &.active {
+      animation: clicked-light ease-in-out 750ms 0s 1 normal both;
+    }
+  }
+}
+      
+button.surface:not(.disabled) {
+  &.light { 
+    &:hover {
+      background-color: var(--light-300);
+    }
+  }
+}
+/* #endregion */
+/* LIGHT */

@@ -1,0 +1,65 @@
+.ar-jsx-language {
+  color: var(--color);
+}
+.ar-jsx-language .ar-jsx-tag {
+  color: var(--tag-color);
+}
+.ar-jsx-language > .ar-jsx-sub-item {
+  display: inherit;
+}
+.ar-jsx-language .ar-jsx-custom-tag {
+  color: var(--custom-tag-color);
+}
+
+.ar-jsx-language .ar-jsx-attributes > .ar-jsx-attribute > .ar-jsx-curly-brackets {
+  color: var(--curly-bracket-color);
+}
+.ar-jsx-language .ar-jsx-attributes.type-column,
+.ar-jsx-language .ar-jsx-attributes .ar-jsx-object-value.type-column {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
+}
+
+.ar-jsx-language .ar-jsx-attributes .ar-jsx-attribute-key {
+  color: var(--attribute-key-color);
+}
+
+/* String Value */
+.ar-jsx-language .ar-jsx-attributes .ar-jsx-string-value {
+  color: var(--string-value-color);
+}
+.ar-jsx-language .ar-jsx-attributes .ar-jsx-number-value {
+  color: var(--number-value-color);
+}
+
+/* Boolean Value */
+.ar-jsx-language .ar-jsx-attributes .ar-jsx-boolean-value {
+  color: var(--boolean-value-color);
+}
+.ar-jsx-language .ar-jsx-attributes .ar-jsx-boolean-value > span:not([class]) {
+  color: var(--curly-bracket-color);
+}
+
+/* Object Value */
+.ar-jsx-language .ar-jsx-attributes .ar-jsx-object-value {
+  color: var(--object-value-color);
+}
+.ar-jsx-language .ar-jsx-attributes .ar-jsx-object-value > .ar-jsx-comma {
+  color: var(--object-value-color);
+}
+
+.ar-jsx-language
+  .ar-jsx-attributes
+  .ar-jsx-object-value
+  > .ar-jsx-attribute
+  > :is(.ar-jsx-child-open-tag, .ar-jsx-child-close-tag) {
+  color: var(--color);
+}
+.ar-jsx-language
+  .ar-jsx-attributes
+  .ar-jsx-object-value
+  > .ar-jsx-attribute
+  > .ar-jsx-child-curly-bracket {
+  color: var(--child-curly-bracket-color);
+}

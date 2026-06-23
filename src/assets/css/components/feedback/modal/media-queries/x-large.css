@@ -1,0 +1,5 @@
+@media (width <= 1280px) {
+  .ar-modal-wrapper > .ar-modal.large {
+    width: 75%;
+  }
+}

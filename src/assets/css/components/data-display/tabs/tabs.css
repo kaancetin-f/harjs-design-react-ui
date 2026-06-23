@@ -1,0 +1,245 @@
+.ar-tabs {
+  > .tabs {
+    position: relative;
+    height: var(--input-height);
+    margin-bottom: 1.5rem;
+    padding: 0;
+    border-bottom: solid 2px var(--gray-200);
+    user-select: none;
+    overflow: hidden;
+
+    > .container {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      height: 100%;
+      overflow-x: auto;
+      scrollbar-width: none;
+      scroll-behavior: auto;
+      cursor: all-scroll !important;
+
+      > .item {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        min-width: max-content;
+        height: 100%;
+        padding: 0 0.75rem;
+        color: var(--gray-700);
+        cursor: pointer;
+        overflow: hidden;
+
+        &:not(:last-child) {
+          &::after {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 0;
+            content: "";
+            background-color: var(--gray-200);
+            width: 2px;
+            height: 12.5px;
+            border-radius: var(--border-radius-pill);
+          }
+        }
+
+        &.selection {
+          color: var(--primary);
+
+          &::before {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            content: "";
+            background-color: var(--primary);
+            height: 2px;
+            border-radius: var(--border-radius-pill);
+          }
+        }
+
+        > .close-button {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: rgba(var(--danger-rgb), 0.25);
+          width: 1rem;
+          height: 1rem;
+          border-radius: var(--border-radius-pill);
+          color: rgba(var(--danger-rgb), 0.5);
+          font-size: 0.75rem;
+        }
+      }
+    }
+
+    > .button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(var(--black-rgb), 0.1);
+      backdrop-filter: blur(5px);
+      width: 2rem;
+      height: 2rem;
+      border-radius: var(--border-radius-sm);
+      cursor: pointer;
+      transition:
+        visibility 0.25s,
+        opacity 0.25s ease-in-out;
+      z-index: 5;
+
+      &.left {
+        left: 0;
+      }
+
+      &.right {
+        right: 0;
+      }
+    }
+  }
+
+  &.skeleton {
+    > .tabs {
+      display: flex;
+      gap: 1rem;
+
+      > .item {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 0.5rem;
+        color: transparent;
+        min-width: 150px;
+        overflow: hidden;
+
+        > .title {
+          background-color: var(--gray-200);
+          width: 100%;
+          height: 15px;
+          border-radius: var(--border-radius-pill);
+          animation: shimmer 2.5s infinite;
+        }
+      }
+    }
+
+    > .content {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+      overflow: hidden;
+
+      > div {
+        background-color: var(--gray-200);
+        height: 15px;
+        border-radius: var(--border-radius-pill);
+        animation: shimmer 2.5s infinite;
+
+        &:nth-child(1) {
+          width: 45%;
+        }
+
+        &:nth-child(2) {
+          width: 65%;
+        }
+
+        &:nth-child(3) {
+          width: 15%;
+        }
+      }
+    }
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-color: var(--gray-200);
+  }
+  50% {
+    background-color: var(--gray-300);
+  }
+  100% {
+    background-color: var(--gray-200);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* --- [KÜÇÜK MOBİL - IPHONE SE VB.] --- */
+/* Çok dar ekranlar için özel düzeltmeler */
+@media (max-width: 375px) {
+}
+
+/* --- [MOBİL - STANDART] --- */
+/* Ekran 576px ve altına düştüğünde çalışır */
+@media (max-width: 576px) {
+}
+
+/* --- [TABLET DİKEY & BÜYÜK TELEFONLAR] --- */
+/* Ekran 768px ve altına düştüğünde çalışır */
+@media (max-width: 768px) {
+  .ar-tabs {
+    > .tabs {
+      padding: 0 2rem;
+
+      > .container {
+        > .item {
+          &:not(:last-child) {
+            &::after {
+            }
+          }
+
+          &.selection {
+            &::before {
+            }
+          }
+
+          > .close-button {
+          }
+        }
+      }
+
+      > .button {
+        &.left {
+        }
+
+        &.right {
+        }
+      }
+    }
+
+    &.skeleton {
+      > .tabs {
+        > .item {
+          > span {
+          }
+        }
+      }
+
+      > .content {
+        &::before {
+        }
+      }
+    }
+  }
+}
+
+/* --- [TABLET & KÜÇÜK LAPTOP] --- */
+/* Ekran 1024px ve altına düştüğünde çalışır */
+@media (max-width: 1024px) {
+}

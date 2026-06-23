@@ -1,0 +1,53 @@
+@import url("./header.css");
+@import url("./content.css");
+@import url("./footer.css");
+
+/* Media Queries */
+@import url("./media-queries/x-large.css");
+@import url("./media-queries/medium.css");
+@import url("./media-queries/small.css");
+
+.ar-modal-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+}
+.ar-modal-wrapper > .ar-modal-bg {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(var(--black-rgb), 0.5);
+}
+
+/* #region Open or Close */
+.ar-modal-wrapper.opened {
+  visibility: visible;
+  opacity: 1;
+  transition:
+    visibility 250ms,
+    opacity 250ms ease-in-out;
+}
+.ar-modal-wrapper.closed {
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    visibility 250ms,
+    opacity 250ms ease-in-out;
+}
+/* #endregion */
+/* Open or Close */
+
+.ar-modal-wrapper > .ar-modal {
+  position: absolute;
+  background-color: var(--white);
+  border-radius: var(--border-radius-sm);
+}
+
+.ar-modal-wrapper > .ar-modal.large {
+  width: 75%;
+}
+.ar-modal-wrapper > .ar-modal.normal {
+  width: 520px;
+}
+.ar-modal-wrapper > .ar-modal.small {
+  width: 25%;
+}

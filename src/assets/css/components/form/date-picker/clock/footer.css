@@ -1,0 +1,6 @@
+.ar-date-calendar > .clock > .footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: solid 1px var(--gray-200);
+}

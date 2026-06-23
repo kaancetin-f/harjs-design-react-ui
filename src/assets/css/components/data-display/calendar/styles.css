@@ -1,0 +1,15 @@
+@import url("./styles.week-view.css");
+
+.ar-calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.75rem 0.75rem 0.75rem 2rem;
+
+  > .header {
+    .week-time {
+      color: var(--gray-700);
+      font-size: 1.5rem;
+    }
+  }
+}

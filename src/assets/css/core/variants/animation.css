@@ -1,0 +1,164 @@
+/* #region Animation -> BLUE */
+@keyframes clicked-blue {
+  0% {
+    box-shadow: 0 0 0 0px var(--blue-500);
+  }
+  50% {
+    box-shadow: 0 0 0 5px var(--blue-100);
+  }
+  100% {
+    box-shadow: 0 0 0 7.5px transparent;
+  }
+}
+/* #endregion */
+/* Animation -> BLUE */
+
+/* #region Animation -> PURPLE */
+@keyframes clicked-purple {
+  0% {
+    box-shadow: 0 0 0 0px var(--purple-500);
+  }
+  50% {
+    box-shadow: 0 0 0 5px var(--purple-100);
+  }
+  100% {
+    box-shadow: 0 0 0 7.5px transparent;
+  }
+}
+/* #endregion */
+/* Animation -> PURPLE */
+
+/* #region Animation -> PINK */
+@keyframes clicked-pink {
+  0% {
+    box-shadow: 0 0 0 0px var(--pink-500);
+  }
+  50% {
+    box-shadow: 0 0 0 5px var(--pink-100);
+  }
+  100% {
+    box-shadow: 0 0 0 7.5px transparent;
+  }
+}
+/* #endregion */
+/* Animation -> PINK */
+
+/* #region Animation -> RED */
+@keyframes clicked-red {
+  0% {
+    box-shadow: 0 0 0 0px var(--red-500);
+  }
+  50% {
+    box-shadow: 0 0 0 5px var(--red-100);
+  }
+  100% {
+    box-shadow: 0 0 0 7.5px transparent;
+  }
+}
+/* #endregion */
+/* Animation -> RED */
+
+/* #region Animation -> ORANGE */
+@keyframes clicked-orange {
+  0% {
+    box-shadow: 0 0 0 0px var(--orange-500);
+  }
+  50% {
+    box-shadow: 0 0 0 5px var(--orange-100);
+  }
+  100% {
+    box-shadow: 0 0 0 7.5px transparent;
+  }
+}
+/* #endregion */
+/* Animation -> ORANGE */
+
+/* #region Animation -> YELLOW */
+@keyframes clicked-yellow {
+  0% {
+    box-shadow: 0 0 0 0px var(--yellow-500);
+  }
+  50% {
+    box-shadow: 0 0 0 5px var(--yellow-100);
+  }
+  100% {
+    box-shadow: 0 0 0 7.5px transparent;
+  }
+}
+/* #endregion */
+/* Animation -> YELLOW */
+
+/* #region Animation -> GREEN */
+@keyframes clicked-green {
+  0% {
+    box-shadow: 0 0 0 0px var(--green-500);
+  }
+  50% {
+    box-shadow: 0 0 0 5px var(--green-100);
+  }
+  100% {
+    box-shadow: 0 0 0 7.5px transparent;
+  }
+}
+/* #endregion */
+/* Animation -> GREEN */
+
+/* #region Animation -> TEAL */
+@keyframes clicked-teal {
+  0% {
+    box-shadow: 0 0 0 0px var(--teal-500);
+  }
+  50% {
+    box-shadow: 0 0 0 5px var(--teal-100);
+  }
+  100% {
+    box-shadow: 0 0 0 7.5px transparent;
+  }
+}
+/* #endregion */
+/* Animation -> TEAL */
+
+/* #region Animation -> CYAN */
+@keyframes clicked-cyan {
+  0% {
+    box-shadow: 0 0 0 0px var(--cyan-500);
+  }
+  50% {
+    box-shadow: 0 0 0 5px var(--cyan-100);
+  }
+  100% {
+    box-shadow: 0 0 0 7.5px transparent;
+  }
+}
+/* #endregion */
+/* Animation -> CYAN */
+
+/* #region Animation -> GRAY */
+@keyframes clicked-gray {
+  0% {
+    box-shadow: 0 0 0 0px var(--gray-500);
+  }
+  50% {
+    box-shadow: 0 0 0 5px var(--gray-100);
+  }
+  100% {
+    box-shadow: 0 0 0 7.5px transparent;
+  }
+}
+/* #endregion */
+/* Animation -> GRAY */
+
+/* #region Animation -> LIGHT */
+@keyframes clicked-light {
+  0% {
+    box-shadow: 0 0 0 0px var(--light-500);
+  }
+  50% {
+    box-shadow: 0 0 0 5px var(--light-100);
+  }
+  100% {
+    box-shadow: 0 0 0 7.5px transparent;
+  }
+}
+/* #endregion */
+/* Animation -> LIGHT */

@@ -1,0 +1,166 @@
+.ar-upload-button {
+  > .button.dropzone {
+    > .preview {
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      width: 100%;
+      height: 100%;
+
+      > .selected-image {
+        background-color: var(--black);
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+      }
+
+      > .informations {
+        visibility: visible;
+        opacity: 1;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+        position: absolute;
+        inset: auto 0 0 0;
+        background-color: rgba(var(--black-rgb), 0.75);
+        padding: 0.5rem;
+        transition:
+          visibility 250ms,
+          opacity 250ms ease-in-out;
+        font-family: var(--system);
+
+        > .file-name {
+          color: var(--white);
+          font-size: 0.75rem;
+          font-weight: 700;
+        }
+
+        > div {
+          display: flex;
+          gap: 0.25rem;
+
+          > .file-size {
+            background-color: var(--primary);
+            padding: 0.25rem 0 0.25rem 0.25rem;
+            border-radius: var(--border-radius-sm);
+            color: var(--white);
+            font-size: 0.75rem;
+            font-weight: 700;
+
+            > .size-type {
+              background-color: rgba(var(--black-rgb), 0.5);
+              margin-left: 0.25rem;
+              border-top-right-radius: var(--border-radius-sm);
+              border-bottom-right-radius: var(--border-radius-sm);
+              padding: 0.25rem;
+              color: var(--primary);
+              font-weight: 700;
+            }
+          }
+
+          > .file-type {
+            background-color: var(--warning);
+            padding: 0.25rem;
+            border-radius: var(--border-radius-sm);
+            color: var(--black);
+            font-size: 0.75rem;
+            font-weight: 700;
+          }
+        }
+      }
+    }
+
+    > .items {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      background-color: var(--primary);
+      backdrop-filter: blur(5px);
+      width: 10rem;
+      height: 12.5rem;
+      border-left: solid 1px rgba(var(--black-rgb), 0.75);
+      overflow-x: hidden;
+      overflow-y: auto;
+
+      > .item {
+        --size: 5rem;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        min-width: var(--size);
+        min-height: var(--size);
+        height: var(--size);
+        border-bottom: solid 1px rgba(var(--black-rgb), 0.75);
+        overflow: hidden;
+
+        > .buttons {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          &::before {
+            position: absolute;
+            inset: 0;
+            content: "";
+            background-color: transparent;
+            z-index: 1;
+            transition: background-color 250ms ease-in-out;
+          }
+
+          &:hover {
+            &::before {
+              background-color: rgba(var(--black-rgb), 0.75);
+            }
+
+            div {
+              visibility: visible;
+              opacity: 1;
+            }
+          }
+
+          > div {
+            display: flex;
+            flex-direction: row;
+            visibility: hidden;
+            opacity: 0;
+            z-index: 2;
+            transition:
+              visibility 250ms,
+              opacity 250ms ease-in-out;
+          }
+        }
+
+        > img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: top;
+        }
+
+        .error {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 0.5rem;
+          background-color: rgba(var(--danger-rgb), 0.75);
+          color: var(--white);
+          font-size: 0.75rem;
+          font-weight: 700;
+          text-align: center;
+          z-index: 5;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+@import url("./calendar/calendar.css");
+@import url("./calendar/header.css");
+@import url("./calendar/content.css");
+@import url("./calendar/footer.css");
+
+@import url("./clock/clock.css");
+@import url("./clock/header.css");
+@import url("./clock/content.css");
+@import url("./clock/footer.css");
+
+:root {
+  --header-height: 2.75rem;
+  --footer-height: 2.75rem;
+}
+
+.ar-date-picker {
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+
+  > .wrapper {
+    width: 100%;
+  }
+}
+.ar-date-picker > label {
+  position: absolute;
+  top: -0.5rem;
+  left: 0.55rem;
+  padding: 0 0.5rem;
+  color: var(--gray-600);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  transition: top 250ms ease-in-out;
+  z-index: 1;
+}

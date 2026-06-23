@@ -1,0 +1,146 @@
+@import url("./animation.css");
+
+.ar-steps > .steps {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-bottom: 2.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: solid 4px var(--gray-100);
+}
+.ar-steps > .steps > .item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: flex-start;
+  gap: 1rem 0;
+}
+.ar-steps > .steps > .item > .item-icon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.ar-steps > .steps > .item:not(:last-child) > .item-icon.pending::after,
+.ar-steps > .steps > .item:not(:last-child) > .item-icon.in-progress::after,
+.ar-steps > .steps > .item > .item-icon.completed::after {
+  position: absolute;
+  left: calc(50% + 1.25rem);
+  transform: translateX(-50%);
+  content: "";
+  width: 70%;
+  height: 4px;
+  border-radius: var(--border-radius-pill);
+}
+.ar-steps > .steps > .item:not(:last-child) > .item-icon.pending::after {
+  background-color: var(--gray-300);
+}
+.ar-steps > .steps > .item:not(:last-child) > .item-icon.in-progress::after {
+  background: var(--gray-300);
+  background: linear-gradient(90deg, var(--primary) 50%, var(--gray-300) 50%);
+  background-color: var(--primary);
+}
+.ar-steps > .steps > .item > .item-icon.completed::after {
+  background-color: var(--success);
+}
+
+.ar-steps > .steps > .item > .item-icon > span {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--border-radius-pill);
+}
+
+.ar-steps > .steps > .item > .item-icon > .pending {
+  position: relative;
+  background-color: var(--white);
+  border: solid 1px var(--gray-500);
+}
+.ar-steps > .steps > .item > .item-icon > .pending::before {
+  display: inline-block;
+  content: "";
+  background-color: transparent;
+  width: 1rem;
+  height: 1rem;
+  border: dotted 3.5px var(--gray-500);
+}
+.ar-steps > .steps > .item > .item-icon > .pending::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-block;
+  content: "";
+  background-color: var(--primary);
+  width: 3.5px;
+  height: 3.5px;
+  border-radius: var(--border-radius-pill);
+}
+
+.ar-steps > .steps > .item > .item-icon > .in-progress {
+  background-color: var(--primary);
+  box-shadow:
+    0 0 0 4px var(--white),
+    0 0 0 5px rgba(var(--primary-rgb), 0.5);
+}
+.ar-steps > .steps > .item > .item-icon > .in-progress::before {
+  display: inline-block;
+  content: "";
+  background-color: transparent;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: dashed 2.5px transparent;
+  border-top-color: rgba(var(--white-rgb), 1);
+  border-right-color: rgba(var(--white-rgb), 0.75);
+  border-bottom-color: rgba(var(--white-rgb), 0.25);
+  border-left-color: rgba(var(--white-rgb), 0.1);
+  border-radius: var(--border-radius-pill);
+  animation: in-progress 1s linear 0s infinite normal both;
+}
+
+.ar-steps > .steps > .item > .item-icon > .completed {
+  background-color: var(--success);
+  box-shadow: 0 0 0 5px rgba(var(--success-rgb), 0.1);
+}
+.ar-steps > .steps > .item > .item-icon > .completed::before {
+  display: inline-block;
+  content: "";
+  background-color: transparent;
+  width: 1rem;
+  height: 0.55rem;
+  border: solid 2.5px transparent;
+  border-left-color: var(--white);
+  border-bottom-color: var(--white);
+  border-bottom-left-radius: var(--border-radius-sm);
+  transform: rotate(-45deg) translate(1px, -1px);
+}
+
+.ar-steps > .steps > .item > .item-informations {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem 0;
+  cursor: pointer;
+}
+.ar-steps > .steps > .item > .item-informations > .step {
+  color: var(--gray-500);
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+}
+.ar-steps > .steps > .item > .item-informations > .title {
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+}
+
+.ar-steps > .content > .buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 0 1rem;
+  margin-top: 2.5rem;
+  padding-top: 2.5rem;
+  border-top: solid 4px var(--gray-100);
+}
