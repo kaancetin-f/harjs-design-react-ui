@@ -4,8 +4,11 @@ import Checkbox from "../../../form/checkbox";
 import Grid from "../../grid-system";
 import Button from "../../../form/button";
 import Divider from "../../divider";
-import { useTranslation } from "../../../../libs/core/application/hooks";
 import { Config } from "../IProps";
+import { useTranslation } from "@harjs/translation";
+import IKanbanBoardLocale from "../../../../libs/core/application/locales/kanban-board/IKanbanBoardLocale";
+import KanbanBoardTR from "../../../../libs/core/application/locales/kanban-board/tr";
+import KanbanBoardEN from "../../../../libs/core/application/locales/kanban-board/en";
 
 interface IProps<T extends object> {
   states: {
@@ -31,7 +34,10 @@ const { Box } = Grid;
 
 function SelectFilters<T extends object>({ states, methods, config }: IProps<T>) {
   // hooks
-  const { t } = useTranslation(String(config?.locale ?? "tr"));
+  const { t } = useTranslation<IKanbanBoardLocale>(String(config?.locale ?? "tr"), {
+    tr: { ...KanbanBoardTR },
+    en: { ...KanbanBoardEN },
+  });
 
   return Object.entries(states.selectFilters.get).map(([name, values], index) => {
     const isEqualsName = states.openName.get === name;

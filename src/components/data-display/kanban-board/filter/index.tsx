@@ -6,7 +6,10 @@ import SelectFilters from "./SelectFilters";
 import React from "react";
 import Input from "../../../form/input";
 import { Config } from "../IProps";
-import { useTranslation } from "../../../../libs/core/application/hooks";
+import { useTranslation } from "@harjs/translation";
+import IKanbanBoardLocale from "../../../../libs/core/application/locales/kanban-board/IKanbanBoardLocale";
+import KanbanBoardTR from "../../../../libs/core/application/locales/kanban-board/tr";
+import KanbanBoardEN from "../../../../libs/core/application/locales/kanban-board/en";
 
 interface IProps<T extends object> {
   states: {
@@ -38,7 +41,10 @@ function Filter<T extends object>({ states, config }: IProps<T>) {
   const [openName, setOpenName] = useState<string | null>(null);
 
   // hooks
-  const { t } = useTranslation(String(config?.locale ?? "tr"));
+  const { t } = useTranslation<IKanbanBoardLocale>(String(config?.locale ?? "tr"), {
+    tr: { ...KanbanBoardTR },
+    en: { ...KanbanBoardEN },
+  });
 
   // methods
   const handleOpen = (name: string | null) => setOpenName(openName === name ? null : name);

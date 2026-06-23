@@ -37,7 +37,10 @@ import { ExtractKey } from "./Helpers";
 import Header from "./header/Header";
 import TBody from "./body/TBody";
 import DatePicker from "../../form/date-picker";
-import { useTranslation } from "../../../libs/core/application/hooks";
+import { useTranslation } from "@harjs/translation";
+import TableTR from "../../../libs/core/application/locales/table/tr";
+import TableEN from "../../../libs/core/application/locales/table/en";
+import ITableLocale from "../../../libs/core/application/locales/table/ITableLocale";
 
 const { Row, Column } = Grid;
 
@@ -112,7 +115,10 @@ const Table = forwardRef(
     const [selectedPerPage, setSelectedPerPage] = useState<number>(pagination?.perPage ?? 10);
     const [isMobile, setIsMobile] = useState(false);
 
-    const { t } = useTranslation(String(config.locale ?? "tr"));
+    const { t } = useTranslation<ITableLocale>(String(config.locale ?? "tr"), {
+      tr: { ...TableTR },
+      en: { ...TableEN },
+    });
     useImperativeHandle(ref, () => _innerRef.current as HTMLTableElementWithCustomAttributes);
 
     if (config && Object.keys(config.scroll || {}).length > 0) {

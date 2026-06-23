@@ -9,7 +9,7 @@ A lightweight, premium, and fully type-safe UI component library built explicitl
 
 ---
 
-## 🚀 Key Features
+## Features
 
 - **Rich Component Ecosystem**: Out-of-the-box support for advanced architectural layout systems including dynamic Data Tables, Kanban Boards, Navigation Menus, Wizards (Steps), and Data Visualization Charts.
 - **Strict Type-Safety**: Fully engineered with TypeScript generics and atomic prop-types, giving you predictive IntelliSense and rigid compile-time validations for complex structures like nested table filters and form models.
@@ -18,7 +18,7 @@ A lightweight, premium, and fully type-safe UI component library built explicitl
 
 ---
 
-## 📦 Installation
+## Installation
 
 To inject this package into your user interface layer workspace, execute the command corresponding to your package manager:
 

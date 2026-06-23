@@ -5,8 +5,11 @@ import ReactDOM from "react-dom";
 import { ARIcon } from "../../icons";
 import { ExtractKey } from "./Helpers";
 import { Config, Sort } from "./IProps";
-import { useTranslation } from "../../../libs/core/application/hooks";
 import { TableColumnProps } from "../../../libs/infrastructure/types";
+import ITableLocale from "../../../libs/core/application/locales/table/ITableLocale";
+import TableTR from "../../../libs/core/application/locales/table/tr";
+import TableEN from "../../../libs/core/application/locales/table/en";
+import { useTranslation } from "@harjs/translation";
 
 interface IProps<T extends object> {
   refs: {
@@ -33,7 +36,7 @@ function PropertiesPopup<T extends object>({ refs, states, methods, coordinate, 
   const _arTablePropertiesPopup = useRef<HTMLDivElement>(null);
 
   // hooks
-  const { t } = useTranslation(String(config.locale ?? "tr"));
+  const { t } = useTranslation<ITableLocale>(String(config.locale ?? "tr"), { tr: { ...TableTR }, en: { ...TableEN } });
 
   // methods
   const handleClickOutSide = (event: MouseEvent) => {

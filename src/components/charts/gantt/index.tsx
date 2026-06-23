@@ -3,8 +3,11 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "../../../assets/css/components/charts/gantt/styles.css";
 import Pagination from "../../navigation/pagination";
-import { useTranslation } from "../../../libs/core/application/hooks";
 import IProps, { Task } from "./IProps";
+import { useTranslation } from "@harjs/translation";
+import ITableLocale from "../../../libs/core/application/locales/table/ITableLocale";
+import TableTR from "../../../libs/core/application/locales/table/tr";
+import TableEN from "../../../libs/core/application/locales/table/en";
 
 const colors = ["#A881FA", "#75CFA4", "#EE6D63", "#FAD87A"];
 
@@ -66,7 +69,10 @@ const Gantt: React.FC<IProps> = ({ title, description, data, pagination, config 
   let PREVMATCHDAY: number = 0;
 
   // hooks
-  const { t } = useTranslation(String(config.locale ?? "tr"));
+  const { t } = useTranslation<ITableLocale>(String(config?.locale ?? "tr"), {
+    tr: { ...TableTR },
+    en: { ...TableEN },
+  });
 
   // methods
   const handleResize = useCallback(() => {

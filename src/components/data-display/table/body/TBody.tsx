@@ -5,8 +5,11 @@ import { ARIcon } from "../../../icons";
 import Checkbox from "../../../form/checkbox";
 import Editable from "./Editable";
 import { Config } from "../IProps";
-import { useTranslation } from "../../../../libs/core/application/hooks";
 import { TableColumnProps } from "../../../../libs/infrastructure/types";
+import ITableLocale from "../../../../libs/core/application/locales/table/ITableLocale";
+import TableTR from "../../../../libs/core/application/locales/table/tr";
+import TableEN from "../../../../libs/core/application/locales/table/en";
+import { useTranslation } from "@harjs/translation";
 
 interface IProps<T extends object> {
   data: T[];
@@ -162,7 +165,7 @@ function TBody<T extends object>({ data, columns, refs, methods, states, config 
 
   const _subrowSelector: string = config.subrow?.selector ?? "subitems";
   const _subrowButton: boolean = config.subrow?.button ?? false;
-  const { t } = useTranslation(String(config.locale ?? "tr"));
+  const { t } = useTranslation<ITableLocale>(String(config.locale ?? "tr"), { tr: { ...TableTR }, en: { ...TableEN } });
 
   const renderCell = ({ item, column, index, cIndex, depth, level, height = 0, isSubrows = false }: IRenderCell<T>) => {
     let render: any;
