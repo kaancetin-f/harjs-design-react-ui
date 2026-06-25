@@ -48,7 +48,7 @@ const _Input_BorderCss = () => {
   border-radius: 0 var(--border-radius-${borderType}) var(--border-radius-${borderType}) 0 !important;
 }
 .ar-input-wrapper.addon:has(> .addon-after) > .ar-input > input.border-radius-${borderType},
-.ar-input-wrapper:has(> .ar-button) > .ar-input > input.border-radius-${borderType} {
+.ar-input-wrapper:has(> .har-button) > .ar-input > input.border-radius-${borderType} {
   border-radius: var(--border-radius-${borderType}) 0 0 var(--border-radius-${borderType}) !important;
 }
 .ar-input-wrapper.addon:has(> .addon-before):has(> .addon-after)
@@ -70,7 +70,7 @@ const _Input_ButtonCss = () => {
   const content = borderTypes
     .map(
       (borderType) => `/* #region Border Radius -> ${borderType.toUpperCase()} */
-.ar-input-wrapper > .ar-button.border-radius-${borderType} {
+.ar-input-wrapper > .har-button.border-radius-${borderType} {
   border-radius: 0 var(--border-radius-${borderType}) var(--border-radius-${borderType}) 0;
 }
 /* #endregion */

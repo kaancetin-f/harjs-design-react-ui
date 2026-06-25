@@ -3,7 +3,7 @@
   &.blue {
     background-color: var(--blue-500) !important;
     color: var(--white) !important;
-    
+
     &.active {
       animation: clicked-blue ease-in-out 750ms 0s 1 normal both;
     }
@@ -11,13 +11,14 @@
 }
 
 input.filled:not(.disabled) {
-  &.blue { 
+  &.blue {
     background-color: var(--blue-500);
 
     &:hover {
       background-color: var(--blue-300);
     }
-    &:focus,&.focused {
+    &:focus,
+    &.focused {
       background-color: transparent;
       border-color: var(--blue-300);
       box-shadow: 0 0 0 3.5px var(--blue-100);
@@ -26,7 +27,7 @@ input.filled:not(.disabled) {
 }
 
 button.filled:not(.disabled) {
-  &.blue { 
+  &.blue {
     background-color: var(--blue-500);
 
     &:hover {
@@ -42,7 +43,7 @@ button.filled:not(.disabled) {
   &.purple {
     background-color: var(--purple-500) !important;
     color: var(--white) !important;
-    
+
     &.active {
       animation: clicked-purple ease-in-out 750ms 0s 1 normal both;
     }
@@ -50,13 +51,14 @@ button.filled:not(.disabled) {
 }
 
 input.filled:not(.disabled) {
-  &.purple { 
+  &.purple {
     background-color: var(--purple-500);
 
     &:hover {
       background-color: var(--purple-300);
     }
-    &:focus,&.focused {
+    &:focus,
+    &.focused {
       background-color: transparent;
       border-color: var(--purple-300);
       box-shadow: 0 0 0 3.5px var(--purple-100);
@@ -65,7 +67,7 @@ input.filled:not(.disabled) {
 }
 
 button.filled:not(.disabled) {
-  &.purple { 
+  &.purple {
     background-color: var(--purple-500);
 
     &:hover {
@@ -81,7 +83,7 @@ button.filled:not(.disabled) {
   &.pink {
     background-color: var(--pink-500) !important;
     color: var(--white) !important;
-    
+
     &.active {
       animation: clicked-pink ease-in-out 750ms 0s 1 normal both;
     }
@@ -89,13 +91,14 @@ button.filled:not(.disabled) {
 }
 
 input.filled:not(.disabled) {
-  &.pink { 
+  &.pink {
     background-color: var(--pink-500);
 
     &:hover {
       background-color: var(--pink-300);
     }
-    &:focus,&.focused {
+    &:focus,
+    &.focused {
       background-color: transparent;
       border-color: var(--pink-300);
       box-shadow: 0 0 0 3.5px var(--pink-100);
@@ -104,7 +107,7 @@ input.filled:not(.disabled) {
 }
 
 button.filled:not(.disabled) {
-  &.pink { 
+  &.pink {
     background-color: var(--pink-500);
 
     &:hover {
@@ -120,7 +123,7 @@ button.filled:not(.disabled) {
   &.red {
     background-color: var(--red-500) !important;
     color: var(--white) !important;
-    
+
     &.active {
       animation: clicked-red ease-in-out 750ms 0s 1 normal both;
     }
@@ -128,13 +131,14 @@ button.filled:not(.disabled) {
 }
 
 input.filled:not(.disabled) {
-  &.red { 
+  &.red {
     background-color: var(--red-500);
 
     &:hover {
       background-color: var(--red-300);
     }
-    &:focus,&.focused {
+    &:focus,
+    &.focused {
       background-color: transparent;
       border-color: var(--red-300);
       box-shadow: 0 0 0 3.5px var(--red-100);
@@ -143,7 +147,7 @@ input.filled:not(.disabled) {
 }
 
 button.filled:not(.disabled) {
-  &.red { 
+  &.red {
     background-color: var(--red-500);
 
     &:hover {
@@ -159,7 +163,7 @@ button.filled:not(.disabled) {
   &.orange {
     background-color: var(--orange-500) !important;
     color: var(--white) !important;
-    
+
     &.active {
       animation: clicked-orange ease-in-out 750ms 0s 1 normal both;
     }
@@ -167,13 +171,14 @@ button.filled:not(.disabled) {
 }
 
 input.filled:not(.disabled) {
-  &.orange { 
+  &.orange {
     background-color: var(--orange-500);
 
     &:hover {
       background-color: var(--orange-300);
     }
-    &:focus,&.focused {
+    &:focus,
+    &.focused {
       background-color: transparent;
       border-color: var(--orange-300);
       box-shadow: 0 0 0 3.5px var(--orange-100);
@@ -182,7 +187,7 @@ input.filled:not(.disabled) {
 }
 
 button.filled:not(.disabled) {
-  &.orange { 
+  &.orange {
     background-color: var(--orange-500);
 
     &:hover {
@@ -198,7 +203,7 @@ button.filled:not(.disabled) {
   &.yellow {
     background-color: var(--yellow-500) !important;
     color: var(--black) !important;
-    
+
     &.active {
       animation: clicked-yellow ease-in-out 750ms 0s 1 normal both;
     }
@@ -206,13 +211,14 @@ button.filled:not(.disabled) {
 }
 
 input.filled:not(.disabled) {
-  &.yellow { 
+  &.yellow {
     background-color: var(--yellow-500);
 
     &:hover {
       background-color: var(--yellow-300);
     }
-    &:focus,&.focused {
+    &:focus,
+    &.focused {
       background-color: transparent;
       border-color: var(--yellow-300);
       box-shadow: 0 0 0 3.5px var(--yellow-100);
@@ -221,7 +227,7 @@ input.filled:not(.disabled) {
 }
 
 button.filled:not(.disabled) {
-  &.yellow { 
+  &.yellow {
     background-color: var(--yellow-500);
 
     &:hover {
@@ -237,7 +243,7 @@ button.filled:not(.disabled) {
   &.green {
     background-color: var(--green-500) !important;
     color: var(--white) !important;
-    
+
     &.active {
       animation: clicked-green ease-in-out 750ms 0s 1 normal both;
     }
@@ -245,13 +251,14 @@ button.filled:not(.disabled) {
 }
 
 input.filled:not(.disabled) {
-  &.green { 
+  &.green {
     background-color: var(--green-500);
 
     &:hover {
       background-color: var(--green-300);
     }
-    &:focus,&.focused {
+    &:focus,
+    &.focused {
       background-color: transparent;
       border-color: var(--green-300);
       box-shadow: 0 0 0 3.5px var(--green-100);
@@ -260,7 +267,7 @@ input.filled:not(.disabled) {
 }
 
 button.filled:not(.disabled) {
-  &.green { 
+  &.green {
     background-color: var(--green-500);
 
     &:hover {
@@ -276,7 +283,7 @@ button.filled:not(.disabled) {
   &.teal {
     background-color: var(--teal-500) !important;
     color: var(--white) !important;
-    
+
     &.active {
       animation: clicked-teal ease-in-out 750ms 0s 1 normal both;
     }
@@ -284,13 +291,14 @@ button.filled:not(.disabled) {
 }
 
 input.filled:not(.disabled) {
-  &.teal { 
+  &.teal {
     background-color: var(--teal-500);
 
     &:hover {
       background-color: var(--teal-300);
     }
-    &:focus,&.focused {
+    &:focus,
+    &.focused {
       background-color: transparent;
       border-color: var(--teal-300);
       box-shadow: 0 0 0 3.5px var(--teal-100);
@@ -299,7 +307,7 @@ input.filled:not(.disabled) {
 }
 
 button.filled:not(.disabled) {
-  &.teal { 
+  &.teal {
     background-color: var(--teal-500);
 
     &:hover {
@@ -315,7 +323,7 @@ button.filled:not(.disabled) {
   &.cyan {
     background-color: var(--cyan-500) !important;
     color: var(--white) !important;
-    
+
     &.active {
       animation: clicked-cyan ease-in-out 750ms 0s 1 normal both;
     }
@@ -323,13 +331,14 @@ button.filled:not(.disabled) {
 }
 
 input.filled:not(.disabled) {
-  &.cyan { 
+  &.cyan {
     background-color: var(--cyan-500);
 
     &:hover {
       background-color: var(--cyan-300);
     }
-    &:focus,&.focused {
+    &:focus,
+    &.focused {
       background-color: transparent;
       border-color: var(--cyan-300);
       box-shadow: 0 0 0 3.5px var(--cyan-100);
@@ -338,7 +347,7 @@ input.filled:not(.disabled) {
 }
 
 button.filled:not(.disabled) {
-  &.cyan { 
+  &.cyan {
     background-color: var(--cyan-500);
 
     &:hover {
@@ -354,7 +363,7 @@ button.filled:not(.disabled) {
   &.gray {
     background-color: var(--gray-500) !important;
     color: var(--black) !important;
-    
+
     &.active {
       animation: clicked-gray ease-in-out 750ms 0s 1 normal both;
     }
@@ -362,13 +371,14 @@ button.filled:not(.disabled) {
 }
 
 input.filled:not(.disabled) {
-  &.gray { 
+  &.gray {
     background-color: var(--gray-500);
 
     &:hover {
       background-color: var(--gray-300);
     }
-    &:focus,&.focused {
+    &:focus,
+    &.focused {
       background-color: transparent;
       border-color: var(--gray-300);
       box-shadow: 0 0 0 3.5px var(--gray-100);
@@ -377,7 +387,7 @@ input.filled:not(.disabled) {
 }
 
 button.filled:not(.disabled) {
-  &.gray { 
+  &.gray {
     background-color: var(--gray-500);
 
     &:hover {
@@ -393,7 +403,7 @@ button.filled:not(.disabled) {
   &.light {
     background-color: var(--light-500) !important;
     color: var(--gray-500) !important;
-    
+
     &.active {
       animation: clicked-light ease-in-out 750ms 0s 1 normal both;
     }
@@ -401,13 +411,14 @@ button.filled:not(.disabled) {
 }
 
 input.filled:not(.disabled) {
-  &.light { 
+  &.light {
     background-color: var(--light-500);
 
     &:hover {
       background-color: var(--light-300);
     }
-    &:focus,&.focused {
+    &:focus,
+    &.focused {
       background-color: transparent;
       border-color: var(--light-300);
       box-shadow: 0 0 0 3.5px var(--light-100);
@@ -416,7 +427,7 @@ input.filled:not(.disabled) {
 }
 
 button.filled:not(.disabled) {
-  &.light { 
+  &.light {
     background-color: var(--light-500);
 
     &:hover {

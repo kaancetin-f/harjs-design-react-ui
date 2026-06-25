@@ -1,10 +1,12 @@
 /* Core Css */
-@import url("./core/shape.css");
-@import url("./core/icon.css");
-@import url("./core/position.css");
-@import url("./core/size.css");
+@import url("./border.css");
+@import url("./color.css");
+@import url("./icon.css");
+@import url("./position.css");
+@import url("./shape.css");
+@import url("./size.css");
 
-.ar-button {
+.har-button {
   position: relative;
   min-width: fit-content;
   padding: 0 1rem;
@@ -16,17 +18,29 @@
     border 150ms,
     color 150ms ease-in-out;
   outline: none;
-}
-.ar-button.disabled {
-  cursor: no-drop;
-}
-.ar-button.full-width {
-  min-width: 100%;
-}
 
-.ar-button > .text {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-wrap: nowrap;
+  &.full-width {
+    min-width: 100%;
+  }
+
+  &.disabled {
+    color: var(--gray-500) !important;
+    cursor: no-drop;
+
+    &:hover {
+      background-color: var(--gray-100) !important;
+    }
+
+    &:active {
+      background-color: var(--gray-100) !important;
+      border: solid var(--border-width-xs) var(--gray-100) !important;
+    }
+  }
+
+  > .text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-wrap: nowrap;
+  }
 }

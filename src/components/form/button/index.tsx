@@ -20,17 +20,28 @@ const Button: React.FC<IProps> = ({
 }) => {
   // refs
   const _button = useRef<HTMLButtonElement>(null);
-  const _arButtonClassName: string[] = ["ar-button"];
+  const _arButtonClassName: string[] = ["har-button"];
 
-  _arButtonClassName.push(...Utils.GetClassName(variant, undefined, color, border, size, icon, attributes.className));
+  _arButtonClassName.push(
+    ...Utils.GetClassName(
+      attributes.disabled ? "surface-borderless" : variant,
+      undefined,
+      attributes.disabled ? "gray" : color,
+      border,
+      size,
+      icon,
+      attributes.className,
+    ),
+  );
 
   if (!children) _arButtonClassName.push("no-content");
   if (fullWidth) _arButtonClassName.push("full-width");
-  if (shape) _arButtonClassName.push(`ar-button-shape ${shape}`);
+  if (shape) _arButtonClassName.push(`shape ${shape}`);
   if (position) {
     _arButtonClassName.push(position.type);
     _arButtonClassName.push(position.inset.map((_inset) => _inset).join(" "));
   }
+  if (attributes.disabled) _arButtonClassName.push("disabled");
 
   return (
     <button
@@ -60,10 +71,7 @@ const Button: React.FC<IProps> = ({
     >
       <span className="text">
         {icon?.element}
-
-        <span>
-          {!shape ? (typeof children === "string" && upperCase ? children.toLocaleUpperCase() : children) : ""}
-        </span>
+        {!shape && <span>{typeof children === "string" && upperCase ? children.toLocaleUpperCase() : children}</span>}
       </span>
     </button>
   );

@@ -1,0 +1,29 @@
+.har-button {
+  &.border-radius-sm {
+    border-radius: var(--border-radius-sm);
+  }
+
+  &.border-radius-sm {
+    border-radius: var(--border-radius-sm);
+  }
+
+  &.border-radius-lg {
+    border-radius: var(--border-radius-lg);
+  }
+
+  &.border-radius-xl {
+    border-radius: var(--border-radius-xl);
+  }
+
+  &.border-radius-xxl {
+    border-radius: var(--border-radius-xxl);
+  }
+
+  &.border-radius-pill {
+    border-radius: var(--border-radius-pill);
+  }
+
+  &.border-radius-none {
+    border-radius: 0;
+  }
+}

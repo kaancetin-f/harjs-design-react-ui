@@ -1,4 +1,4 @@
-.ar-button:is(.no-content) {
+.har-button:is(.no-content) {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8,21 +8,21 @@
   min-height: 2rem;
   max-height: 2rem;
 }
-.ar-button:is(.no-content) > .text {
+.har-button:is(.no-content) > .text {
   gap: 0 !important;
 }
-.ar-button:is(.icon):not(.no-content) > .text {
+.har-button:is(.icon):not(.no-content) > .text {
   gap: 0 0.5rem;
 }
-.ar-button:is(.icon-start):not(.no-content) > .text {
+.har-button:is(.icon-start):not(.no-content) > .text {
   flex-direction: row;
 }
-.ar-button:is(.icon-end):not(.no-content) > .text {
+.har-button:is(.icon-end):not(.no-content) > .text {
   flex-direction: row-reverse;
 }
 
 /* Custom Symbol */
-.ar-button:is(.icon) .dotted::after {
+.har-button:is(.icon) .dotted::after {
   position: absolute;
   top: 50%;
   left: 50%;

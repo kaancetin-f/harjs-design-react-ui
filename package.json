@@ -40,6 +40,7 @@
   },
   "scripts": {
     "build": "npm run clean && tsc && npm run css-loader && cp -r ./src/assets dist/",
+    "no-css-build": "npm run clean && tsc && cp -r ./src/assets dist/",
     "css-loader": "node src/scripts/index.cjs",
     "clean": "rm -rf dist/"
   },

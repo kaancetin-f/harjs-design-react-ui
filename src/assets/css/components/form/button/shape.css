@@ -1,0 +1,8 @@
+.har-button {
+  &.circle {
+    border-radius: var(--border-radius-pill);
+  }
+
+  .square {
+  }
+}

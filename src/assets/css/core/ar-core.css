@@ -1,11 +1,11 @@
 @import url("./color-palette.css");
-@import url("./animation.css");
-@import url("./variants/filled.css");
-@import url("./variants/surface.css");
-@import url("./variants/outlined.css");
-@import url("./variants/dashed.css");
-@import url("./variants/borderless.css");
-@import url("./variants/border.css");
+/* @import url("./animation.css"); */
+/* @import url("./variants/filled.css"); */
+/* @import url("./variants/surface.css"); */
+/* @import url("./variants/outlined.css"); */
+/* @import url("./variants/dashed.css"); */
+/* @import url("./variants/borderless.css"); */
+/* @import url("./variants/border.css"); */
 @import url("./utils.css");
 
 *,
@@ -73,7 +73,7 @@
 /* Fonts */
 
 /* #region Code Editor */
-:root {
+/* :root {
   --bg-color: #282c34;
   --color: #abb2bf;
   --tag-color: #679ad1;
@@ -85,13 +85,17 @@
   --object-value-color: #57b0fe;
   --curly-bracket-color: #e4e49c;
   --child-curly-bracket-color: #df6ed2;
-}
+} */
 /* #endregion */
 /* Color Palette */
 
 /* #region Border */
 :root {
-  /* Border */
+  /* Store */
+  --border-width-xs: 1px;
+  --border-width-sm: 1.5px;
+  --border-width-md: 2px;
+  --border-width-lg: 4px;
 
   /* Border Radius */
   --border-radius: 0.465rem;
@@ -113,7 +117,7 @@
 
 /* #region Variants */
 
-.filled {
+/* .filled {
   border-color: transparent;
   transition:
     border 250ms,
@@ -187,6 +191,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 :is(input[type="checkbox"]):disabled + span {
   color: var(--gray-500) !important;
   cursor: no-drop !important;
-}
+} */
 /* #endregion */
 /* Variants */

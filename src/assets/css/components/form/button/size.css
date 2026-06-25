@@ -1,0 +1,42 @@
+.har-button {
+  &.large {
+    height: 3rem;
+    padding: 0 1.25rem;
+    font-size: 1.25rem;
+
+    &.shape {
+      min-width: 3rem;
+      min-height: 3rem;
+      max-width: 3rem;
+      max-height: 3rem;
+      padding: 0;
+    }
+  }
+
+  &.normal {
+    height: var(--input-height);
+    padding: 0 1rem;
+
+    &.shape {
+      min-width: var(--input-height);
+      min-height: var(--input-height);
+      max-width: var(--input-height);
+      max-height: var(--input-height);
+      padding: 0;
+    }
+  }
+
+  &.small {
+    height: 1.5rem;
+    padding: 0 0.75rem;
+    font-size: 0.75rem;
+
+    &.shape {
+      min-width: 1.5rem;
+      min-height: 1.5rem;
+      max-width: 1.5rem;
+      max-height: 1.5rem;
+      padding: 0;
+    }
+  }
+}

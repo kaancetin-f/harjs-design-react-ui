@@ -4,7 +4,7 @@ import React from "react";
 // 1. GLOBAL DESIGN SYSTEM TOKENS (Shared Types)
 // ============================================================================
 
-export type Variants = "filled" | "surface" | "outlined" | "dashed" | "borderless";
+export type Variants = "filled" | "surface" | "surface-borderless" | "outlined" | "dashed" | "borderless";
 
 export type Status =
   | "primary"

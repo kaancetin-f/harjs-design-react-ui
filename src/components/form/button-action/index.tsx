@@ -79,7 +79,7 @@ const ButtonAction: React.FC<IProps> = ({ buttons }) => {
   }, [open]);
 
   return (
-    <div ref={_wrapper} className="ar-button-action">
+    <div ref={_wrapper} className=".har-button-action">
       <span ref={_button}>
         <Button
           variant="borderless"
@@ -106,7 +106,7 @@ const ButtonAction: React.FC<IProps> = ({ buttons }) => {
               </Button>
             ))}
           </span>,
-          document.body
+          document.body,
         )}
     </div>
   );
