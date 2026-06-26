@@ -16,6 +16,11 @@ export interface IChildrenProps {
   children?: React.ReactNode;
 }
 
+type ExcludedVariantsMap = {
+  alert: "outlined" | "borderless";
+  card: "dashed" | "borderless";
+  checkbox: "borderless";
+};
 export interface IVariantProps<T extends { component?: string } = {}> {
   /**
    * Specifies the visual style variant of the component.
@@ -30,11 +35,14 @@ export interface IVariantProps<T extends { component?: string } = {}> {
    * <Component variant="filled">Hello, World!</Component>
    * ```
    */
-  variant?: T["component"] extends "alert"
-    ? Exclude<Variants, "outlined" | "borderless">
-    : T["component"] extends "card"
-      ? Exclude<Variants, "dashed" | "borderless">
-      : Variants;
+  // variant?: T["component"] extends "alert"
+  //   ? Exclude<Variants, "outlined" | "borderless">
+  //   : T["component"] extends "card"
+  //     ? Exclude<Variants, "dashed" | "borderless">
+  //     : Variants;
+  variant?: T["component"] extends keyof ExcludedVariantsMap
+    ? Exclude<Variants, ExcludedVariantsMap[T["component"]]>
+    : Variants;
 }
 
 export interface IStatusProps<T extends { component?: string } = {}> {

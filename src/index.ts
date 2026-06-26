@@ -5,6 +5,7 @@ import Button from "./components/form/button";
 import ButtonAction from "./components/form/button-action";
 import ButtonGroup from "./components/form/button-group";
 import Checkbox from "./components/form/checkbox";
+import CheckboxGroup from "./components/form/checkbox-group";
 import DatePicker from "./components/form/date-picker";
 import Input from "./components/form/input";
 import Radio from "./components/form/radio";
@@ -54,6 +55,7 @@ export {
   ButtonAction,
   ButtonGroup,
   Checkbox,
+  CheckboxGroup,
   DatePicker,
   Input,
   Radio,

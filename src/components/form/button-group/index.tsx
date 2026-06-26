@@ -1,29 +1,24 @@
 "use client";
 
-import React, { ComponentProps, ReactElement, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../../assets/css/components/form/button-group/styles.css";
 import Button from "../button";
 import Alert from "../../feedback/alert";
+import Props from "./Props";
 
-const ButtonGroup: React.FC<
-  {
-    children: ReactElement<typeof Button> | ReactElement<typeof Button>[];
-  } & Omit<ComponentProps<typeof Button>, "children">
-> = ({ children, ...groupProps }) => {
+const ButtonGroup: React.FC<Props> = ({ children, ...groupProps }) => {
   // states
   const [error, setError] = useState<string | null>(null);
 
   // methods
   const renderChildren = () => {
-    if (error) {
-      return <Alert status="danger" message={error} />;
-    }
+    if (error) return <Alert status="danger" message={error} />;
 
     return React.Children.map(children, (child) => {
       if (React.isValidElement(child)) {
         return React.cloneElement(child, {
-          ...groupProps, // Üstten gelen tüm proplar butonlara dağılır.
-          ...child.props, // Eğer butonun kendi üstünde ezmek istediği bir prop varsa o korunur.
+          ...groupProps,
+          ...child.props,
         });
       }
 
@@ -36,7 +31,7 @@ const ButtonGroup: React.FC<
     try {
       React.Children.forEach(children, (child) => {
         if (!React.isValidElement(child) || child.type !== Button) {
-          throw new Error("ButtonGroup can only have Button elements as children.");
+          throw new Error("It can only have Button elements as children.");
         }
       });
 

@@ -1,19 +1,21 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import "../../../assets/css/components/form/button-action/styles.css";
 import IProps from "./IProps";
 import Button from "../button";
 import ReactDOM from "react-dom";
+import Alert from "../../feedback/alert";
 
-const ButtonAction: React.FC<IProps> = ({ buttons }) => {
+const ButtonAction: React.FC<IProps> = ({ children, title, variant, _color, _icon, ...actionProps }) => {
   // refs
   const _wrapper = useRef<HTMLDivElement>(null);
-  const _button = useRef<HTMLSpanElement>(null);
+  const _button = useRef<HTMLDivElement>(null);
   const _list = useRef<HTMLDivElement>(null);
 
   // states
   const [open, setOpen] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   // methods
   const handleClickOutSide = (event: MouseEvent) => {
@@ -36,34 +38,53 @@ const ButtonAction: React.FC<IProps> = ({ buttons }) => {
       if (elementRect) {
         const screenCenterX = window.innerWidth / 2;
         const screenCenterY = window.innerHeight / 2;
-        const sx = window.scrollX || document.documentElement.scrollLeft;
-        const sy = window.scrollY || document.documentElement.scrollTop;
+        const gap = 6;
+
+        // 1. YÜKSEKLİK (TOP) HESAPLAMA
+        if (elementRect.top > screenCenterY) {
+          _list.current.style.top = `${elementRect.top - popoverRect.height - gap}px`;
+        } else {
+          _list.current.style.top = `${elementRect.bottom + gap}px`;
+        }
+
+        // 2. YATAY HİZALAMA (LEFT) HESAPLAMA (Görsellerdeki sorunu çözen kısım)
+        if (elementRect.left > screenCenterX) {
+          _list.current.style.left = `${elementRect.right - popoverRect.width}px`;
+        } else {
+          _list.current.style.left = `${elementRect.left}px`;
+        }
 
         _list.current.style.visibility = "visible";
         _list.current.style.opacity = "1";
-        _list.current.style.top = `${
-          (elementRect.top > screenCenterY
-            ? elementRect.top - popoverRect.height + elementRect.height
-            : elementRect.top) + sy
-        }px`;
-        _list.current.style.left = `${
-          (elementRect.left > screenCenterX
-            ? elementRect.right - (elementRect.width + 7.5) - popoverRect.width
-            : elementRect.left + elementRect.width + 7.5) + sx
-        }px`;
       }
     }
   };
 
   const handleResizeEvent = () => setOpen(false);
 
+  const renderChildren = () => {
+    if (error) return <Alert status="danger" message={error} />;
+
+    return React.Children.map(children, (child) => {
+      if (React.isValidElement(child)) {
+        return React.cloneElement<any>(child, {
+          ...actionProps,
+          ...child.props,
+          variant: "borderless",
+        });
+      }
+
+      return child;
+    });
+  };
+
   // useEffects
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!open) return;
 
-    setTimeout(() => handlePosition(), 0);
+    handlePosition();
 
-    window.addEventListener("blur", () => setOpen(false));
+    // window.addEventListener("blur", () => setOpen(false));
     window.addEventListener("resize", handleResizeEvent);
 
     document.addEventListener("click", handleClickOutSide);
@@ -78,34 +99,44 @@ const ButtonAction: React.FC<IProps> = ({ buttons }) => {
     };
   }, [open]);
 
+  useEffect(() => {
+    try {
+      React.Children.forEach(children, (child) => {
+        if (!React.isValidElement(child) || child.type !== Button) {
+          throw new Error("It can only have Button elements as children.");
+        }
+      });
+
+      // Hata yoksa, error'u temizle.
+      setError(null);
+    } catch (err) {
+      if (err instanceof Error) {
+        // Hata varsa error state'e yaz.
+        setError(err.message);
+        console.error(err.message);
+      }
+    }
+  }, [children]);
+
   return (
-    <div ref={_wrapper} className=".har-button-action">
-      <span ref={_button}>
+    <div ref={_wrapper} className="har-button-action">
+      <div ref={_button}>
         <Button
-          variant="borderless"
-          color="light"
-          icon={{ element: <span className="dotted"></span> }}
+          variant={variant}
+          color={_color}
+          icon={_icon ? { ..._icon } : { element: <span className="dotted"></span> }}
+          {...(!title && { shape: "square" })}
           onClick={() => setOpen((prev) => !prev)}
-        />
-      </span>
+        >
+          {title && title}
+        </Button>
+      </div>
 
       {open &&
         ReactDOM.createPortal(
-          <span ref={_list} className="ar-action-buttons">
-            {buttons.map((button, index) => (
-              <Button
-                key={index}
-                style={{ display: "flex", justifyContent: "flex-start" }}
-                variant="borderless"
-                color={button.color ?? "blue"}
-                size="small"
-                icon={button.icon}
-                onClick={button.onClick}
-              >
-                {button.text}
-              </Button>
-            ))}
-          </span>,
+          <div ref={_list} className="har-action-buttons">
+            {renderChildren()}
+          </div>,
           document.body,
         )}
     </div>

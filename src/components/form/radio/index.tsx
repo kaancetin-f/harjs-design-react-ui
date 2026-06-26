@@ -9,7 +9,7 @@ const Radio = forwardRef<HTMLInputElement, IProps>(
   (
     {
       label,
-      size = "normal",
+      size = "sm",
       color = "blue",
       border = { radius: "pill" },
       trace,
@@ -18,7 +18,7 @@ const Radio = forwardRef<HTMLInputElement, IProps>(
       validation,
       ...attributes
     },
-    ref
+    ref,
   ) => {
     // refs
     const _innerRef = useRef<HTMLInputElement>(null);
@@ -39,8 +39,8 @@ const Radio = forwardRef<HTMLInputElement, IProps>(
         border,
         size,
         undefined,
-        attributes.className
-      )
+        attributes.className,
+      ),
     );
 
     if (trace && Object.keys(trace).length > 0) _traceClassName.push(trace.color);
@@ -79,7 +79,7 @@ const Radio = forwardRef<HTMLInputElement, IProps>(
         </label>
       </div>
     );
-  }
+  },
 );
 
 Radio.displayName = "Radio";

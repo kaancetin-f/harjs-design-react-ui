@@ -11,7 +11,7 @@ const Button: React.FC<IProps> = ({
   shape,
   color = "light",
   border = { radius: "sm" },
-  size = "normal",
+  size = "md",
   position,
   fullWidth,
   icon,
@@ -20,9 +20,9 @@ const Button: React.FC<IProps> = ({
 }) => {
   // refs
   const _button = useRef<HTMLButtonElement>(null);
-  const _arButtonClassName: string[] = ["har-button"];
+  const _buttonClassName: string[] = ["har-button"];
 
-  _arButtonClassName.push(
+  _buttonClassName.push(
     ...Utils.GetClassName(
       attributes.disabled ? "surface-borderless" : variant,
       undefined,
@@ -34,21 +34,21 @@ const Button: React.FC<IProps> = ({
     ),
   );
 
-  if (!children) _arButtonClassName.push("no-content");
-  if (fullWidth) _arButtonClassName.push("full-width");
-  if (shape) _arButtonClassName.push(`shape ${shape}`);
+  if (!children) _buttonClassName.push("no-content");
+  if (fullWidth) _buttonClassName.push("full-width");
+  if (shape) _buttonClassName.push(`shape ${shape}`);
   if (position) {
-    _arButtonClassName.push(position.type);
-    _arButtonClassName.push(position.inset.map((_inset) => _inset).join(" "));
+    _buttonClassName.push(position.type);
+    _buttonClassName.push(position.inset.map((_inset) => _inset).join(" "));
   }
-  if (attributes.disabled) _arButtonClassName.push("disabled");
+  if (attributes.disabled) _buttonClassName.push("disabled");
 
   return (
     <button
       ref={_button}
       {...attributes}
       type={attributes.type ?? "button"}
-      className={_arButtonClassName.map((c) => c).join(" ")}
+      className={_buttonClassName.map((c) => c).join(" ")}
       onClick={(event) => {
         // Disabled gelmesi durumunda işlem yapmasına izin verme...
         if (attributes.disabled) return;

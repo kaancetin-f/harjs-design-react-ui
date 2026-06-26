@@ -1,0 +1,32 @@
+.har-checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  > .title {
+    color: var(--gray-800);
+    font-family: var(--system);
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  > .items {
+    display: flex;
+    gap: 0.5rem;
+
+    &.horizontal {
+      flex-direction: row;
+    }
+
+    &.vertical {
+      flex-direction: column;
+    }
+  }
+
+  > .validation {
+    color: var(--danger);
+    font-family: var(--system);
+    font-size: 0.8rem;
+    font-weight: 400;
+  }
+}

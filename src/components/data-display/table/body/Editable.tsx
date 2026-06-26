@@ -63,7 +63,7 @@ const Editable = function <T extends object>({ c, item, trackByValue, onEditable
     case "boolean":
       return (
         <Checkbox
-          variant="borderless"
+          variant="outlined"
           color="blue"
           checked={Boolean(_value)}
           onChange={(event) => {

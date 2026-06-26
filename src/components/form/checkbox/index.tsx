@@ -2,29 +2,34 @@
 
 import Utils from "../../../libs/infrastructure/shared/Utils";
 import React, { forwardRef, useRef } from "react";
-import IProps from "./IProps";
 import "../../../assets/css/components/form/checkbox/checkbox.css";
+import Props from "./Props";
 
-const Checkbox = forwardRef<HTMLInputElement, IProps>(
-  ({ label, color = "blue", border = { radius: "sm" }, upperCase, ...attributes }, ref) => {
+const Checkbox = forwardRef<HTMLInputElement, Props>(
+  (
+    { label, variant, color = "blue", border = { radius: "sm" }, size = "sm", upperCase, validation, ...attributes },
+    ref,
+  ) => {
     // refs
     const _checkbox = useRef<HTMLInputElement>(null);
-    const _checkboxClassName: string[] = ["ar-checkbox"];
+    const _checkboxClassName: string[] = ["har-checkbox"];
 
     _checkboxClassName.push(
       ...Utils.GetClassName(
-        "filled",
+        variant ?? "outlined",
         undefined,
-        attributes.checked ? color : "light",
-        border,
+        validation?.text ? "red" : (color ?? "blue"),
+        border ?? { radius: "sm" },
         undefined,
         undefined,
-        attributes.className
-      )
+        attributes.className,
+      ),
     );
+    if (size) _checkboxClassName.push(size);
+    if (attributes.disabled) _checkboxClassName.push("disabled");
 
     return (
-      <div className="ar-checkbox-wrapper">
+      <div className="har-checkbox-wrapper">
         <label>
           <input
             ref={ref}
@@ -47,11 +52,12 @@ const Checkbox = forwardRef<HTMLInputElement, IProps>(
             {label && <span className="label">{upperCase ? label.toUpperCase() : label}</span>}
           </span>
         </label>
+
+        {validation?.text && <div className="validation">{validation.text}</div>}
       </div>
     );
-  }
+  },
 );
 
 Checkbox.displayName = "Checkbox";
-
 export default Checkbox;

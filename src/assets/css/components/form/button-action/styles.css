@@ -2,8 +2,12 @@
   position: relative;
 }
 
-.ar-action-buttons {
-  position: absolute;
+.har-action-buttons {
+  position: fixed;
+  opacity: 0;
+  visibility: hidden;
+  top: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
   background-color: var(--white);
@@ -15,12 +19,9 @@
   transition:
     visibility 250ms,
     opacity 250ms;
+
+  > .har-button {
+    display: flex;
+    justify-content: flex-start;
+  }
 }
-/* .ar-action-buttons::after {
-  position: absolute;
-  top: 0.5rem;
-  left: 100%;
-  content: "";
-  border: solid 10px transparent;
-  border-left-color: var(--gray-200);
-} */

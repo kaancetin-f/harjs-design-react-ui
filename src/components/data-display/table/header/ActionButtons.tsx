@@ -51,7 +51,7 @@ const ActionButtons = ({ states, actions }: IProps) => {
                       setFiles(files);
                       setBase64(base64);
                     }}
-                    size="small"
+                    size="sm"
                     fullWidth
                   />
                 </Column>

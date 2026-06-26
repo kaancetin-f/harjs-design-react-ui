@@ -1,5 +1,3 @@
-/* "filled" | "surface" | "outlined" | "dashed" | "borderless" */
-
 .har-button {
   &.blue {
     background-color: var(--blue-500);

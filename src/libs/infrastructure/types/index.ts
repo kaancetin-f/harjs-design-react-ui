@@ -44,7 +44,7 @@ export type ParagraphColors =
 export type Border = { radius: BorderRadiuses };
 export type BorderRadiuses = "sm" | "lg" | "xl" | "xxl" | "pill" | "none";
 
-export type Sizes = "large" | "normal" | "small";
+export type Sizes = "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
 
 export type Icon = { element: React.JSX.Element; position?: "start" | "end" };
 export type Option = { value: string | number | null; text: string };

@@ -1,35 +1,49 @@
-.har-button:is(.no-content) {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 !important;
-  min-width: 2rem;
-  max-width: 2rem;
-  min-height: 2rem;
-  max-height: 2rem;
-}
-.har-button:is(.no-content) > .text {
-  gap: 0 !important;
-}
-.har-button:is(.icon):not(.no-content) > .text {
-  gap: 0 0.5rem;
-}
-.har-button:is(.icon-start):not(.no-content) > .text {
-  flex-direction: row;
-}
-.har-button:is(.icon-end):not(.no-content) > .text {
-  flex-direction: row-reverse;
+.har-button {
+  &:is(.no-content) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 !important;
+    min-width: 2rem;
+    max-width: 2rem;
+    min-height: 2rem;
+    max-height: 2rem;
+
+    > .text {
+      gap: 0 !important;
+    }
+  }
+
+  &:is(.icon) {
+    &:not(.no-content) {
+      > .text {
+        gap: 0 0.5rem;
+      }
+    }
+  }
+
+  &:is(.icon-start) {
+    &:not(.no-content) {
+      > .text {
+        flex-direction: row;
+      }
+    }
+  }
+
+  &:is(.icon-end) {
+    &:not(.no-content) {
+      > .text {
+        flex-direction: row-reverse !important;
+      }
+    }
+  }
 }
 
 /* Custom Symbol */
 .har-button:is(.icon) .dotted::after {
-  position: absolute;
-  top: 50%;
-  left: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: translate(-50%, -50%);
   content: "⋮";
   width: 100%;
   height: 100%;

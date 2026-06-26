@@ -79,7 +79,7 @@ function SelectFilters<T extends object>({ states, methods, config }: IProps<T>)
             <Box direction="flex-end">
               <Button
                 color="red"
-                size="small"
+                size="sm"
                 onClick={() => {
                   states.selectedFilters.set((prev) => {
                     const next = { ...prev };

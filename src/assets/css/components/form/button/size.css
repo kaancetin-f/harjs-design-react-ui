@@ -1,41 +1,74 @@
 .har-button {
-  &.large {
-    height: 3rem;
-    padding: 0 1.25rem;
-    font-size: 1.25rem;
+  /* Ortak tanımlamalar ve varsayılan boyut */
+  --btn-size: 1.5rem;
+  height: var(--btn-size);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 
-    &.shape {
-      min-width: 3rem;
-      min-height: 3rem;
-      max-width: 3rem;
-      max-height: 3rem;
-      padding: 0;
-    }
-  }
-
-  &.normal {
-    height: var(--input-height);
-    padding: 0 1rem;
-
-    &.shape {
-      min-width: var(--input-height);
-      min-height: var(--input-height);
-      max-width: var(--input-height);
-      max-height: var(--input-height);
-      padding: 0;
-    }
-  }
-
-  &.small {
-    height: 1.5rem;
-    padding: 0 0.75rem;
+  &.xs {
+    --btn-size: 2rem;
     font-size: 0.75rem;
 
     &.shape {
-      min-width: 1.5rem;
-      min-height: 1.5rem;
-      max-width: 1.5rem;
-      max-height: 1.5rem;
+      width: var(--btn-size);
+      aspect-ratio: 1;
+      padding: 0;
+    }
+  }
+
+  &.sm {
+    --btn-size: 2.25rem;
+    font-size: 0.875rem;
+
+    &.shape {
+      width: var(--btn-size);
+      aspect-ratio: 1;
+      padding: 0;
+    }
+  }
+
+  &.md {
+    --btn-size: 2.5rem;
+    font-size: 0.875rem;
+
+    &.shape {
+      width: var(--btn-size);
+      aspect-ratio: 1;
+      padding: 0;
+    }
+  }
+
+  &.lg {
+    --btn-size: 2.75rem;
+    font-size: 1rem;
+
+    &.shape {
+      width: var(--btn-size);
+      aspect-ratio: 1;
+      padding: 0;
+    }
+  }
+
+  &.xl {
+    --btn-size: 3rem;
+    font-size: 1rem;
+
+    &.shape {
+      width: var(--btn-size);
+      aspect-ratio: 1;
+      padding: 0;
+    }
+  }
+
+  &.xxl {
+    --btn-size: 3.25rem;
+    font-size: 1rem;
+
+    &.shape {
+      width: var(--btn-size);
+      aspect-ratio: 1;
       padding: 0;
     }
   }

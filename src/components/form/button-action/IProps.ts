@@ -1,11 +1,15 @@
-import { IColorProps, IIconProps } from "../../../libs/infrastructure/types/IGlobalProps";
+import { ComponentProps, ReactElement } from "react";
+import Button from "../button";
+import { Color, Icon, Variants } from "../../../libs/infrastructure/types";
 
-interface IProps {
-  buttons: ({
-    text: string;
-    onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  } & IColorProps &
-    IIconProps)[];
+type ButtonProps = Pick<ComponentProps<typeof Button>, "color" | "size" | "upperCase" | "icon">;
+
+interface IProps extends ButtonProps {
+  children: ReactElement<typeof Button> | ReactElement<typeof Button>[];
+  title?: string;
+  variant?: Variants;
+  _color?: Color;
+  _icon?: Icon;
 }
 
 export default IProps;

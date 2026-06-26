@@ -107,7 +107,7 @@ const Popover: React.FC<IProps> = ({ children, title, message, content, onConfir
               <div className="footer">
                 <Button
                   color="green"
-                  size="small"
+                  size="sm"
                   onClick={() => {
                     onConfirm(true);
                     setOpen(false);
@@ -117,7 +117,7 @@ const Popover: React.FC<IProps> = ({ children, title, message, content, onConfir
                 </Button>
 
                 <Button
-                  size="small"
+                  size="sm"
                   onClick={() => {
                     onConfirm(false);
                     setOpen(false);

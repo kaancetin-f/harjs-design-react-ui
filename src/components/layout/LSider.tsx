@@ -72,7 +72,7 @@ const LSider: React.FC<ILSiderProps> = ({ logo, footer, ...attributes }) => {
 
       {footer && (
         <footer>
-          <Paragraph size="small">{footer}</Paragraph>
+          <Paragraph size="sm">{footer}</Paragraph>
         </footer>
       )}
     </aside>
