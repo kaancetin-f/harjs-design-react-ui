@@ -9,22 +9,10 @@ import Alert from "../../feedback/alert";
 import Props from "./Props";
 import ReactDOM from "react-dom";
 import DATE from "./DATE";
-
-const weekdays = ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"];
-const months = [
-  { value: 0, text: "Ocak" },
-  { value: 1, text: "Şubat" },
-  { value: 2, text: "Mart" },
-  { value: 3, text: "Nisan" },
-  { value: 4, text: "Mayıs" },
-  { value: 5, text: "Haziran" },
-  { value: 6, text: "Temmuz" },
-  { value: 7, text: "Ağustos" },
-  { value: 8, text: "Eylül" },
-  { value: 9, text: "Ekim" },
-  { value: 10, text: "Kasım" },
-  { value: 11, text: "Aralık" },
-];
+import DatePickerTR from "../../../libs/core/application/locales/date-picker/tr";
+import DatePickerEN from "../../../libs/core/application/locales/date-picker/en";
+import IDatePickerLocale from "../../../libs/core/application/locales/date-picker/IDatePickerLocale";
+import { useTranslation } from "@harjs/translation";
 
 const DatePicker: React.FC<Props> = ({ variant, color, onChange, config, validation, ...attributes }) => {
   // refs
@@ -63,6 +51,34 @@ const DatePicker: React.FC<Props> = ({ variant, color, onChange, config, validat
   const [selectedDay, setSelectedDay] = useState<number>(_currentDate.getDate());
   const [selectedHours, setSelectedHours] = useState<number>(_currentDate.getHours());
   const [selectedMinutes, setSelectedMinutes] = useState<number>(_currentDate.getMinutes());
+
+  const { t } = useTranslation<IDatePickerLocale>(String(config?.locale ?? "tr"), {
+    tr: { ...DatePickerTR },
+    en: { ...DatePickerEN },
+  });
+  const weekdays = [
+    t("DatePicker.Mon"),
+    t("DatePicker.Tue"),
+    t("DatePicker.Wed"),
+    t("DatePicker.Thu"),
+    t("DatePicker.Fri"),
+    t("DatePicker.Sat"),
+    t("DatePicker.Sun"),
+  ];
+  const months = [
+    { value: 0, text: t("DatePicker.January") },
+    { value: 1, text: t("DatePicker.February") },
+    { value: 2, text: t("DatePicker.March") },
+    { value: 3, text: t("DatePicker.April") },
+    { value: 4, text: t("DatePicker.May") },
+    { value: 5, text: t("DatePicker.June") },
+    { value: 6, text: t("DatePicker.July") },
+    { value: 7, text: t("DatePicker.August") },
+    { value: 8, text: t("DatePicker.September") },
+    { value: 9, text: t("DatePicker.October") },
+    { value: 10, text: t("DatePicker.November") },
+    { value: 11, text: t("DatePicker.December") },
+  ];
 
   // methods
   const handleClickOutSide = (event: MouseEvent) => {
@@ -183,7 +199,7 @@ const DatePicker: React.FC<Props> = ({ variant, color, onChange, config, validat
   const okayButton = () => {
     return (
       <Button variant="borderless" color="green" onClick={() => handleOk()}>
-        Tamam
+        {t("DatePicker.Button.Okay")}
       </Button>
     );
   };
@@ -496,7 +512,7 @@ const DatePicker: React.FC<Props> = ({ variant, color, onChange, config, validat
                   {/* :End: Days */}
                 </div>
               ) : (
-                <Alert status="warning">Ay veya yıl seçimi yapmanız gerekmektedir.</Alert>
+                <Alert status="warning">{t("DatePicker.Alert.1.Text")}</Alert>
               )}
             </div>
 
@@ -504,7 +520,7 @@ const DatePicker: React.FC<Props> = ({ variant, color, onChange, config, validat
               <div ref={_calendarFooter} className="footer">
                 <div>
                   <Button variant="borderless" onClick={() => setNowButton()}>
-                    Şimdi
+                    {t("DatePicker.Button.Now")}
                   </Button>
                 </div>
 
