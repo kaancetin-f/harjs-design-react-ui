@@ -22,11 +22,4 @@
       flex-direction: column;
     }
   }
-
-  > .validation {
-    color: var(--danger);
-    font-family: var(--system);
-    font-size: 0.8rem;
-    font-weight: 400;
-  }
 }

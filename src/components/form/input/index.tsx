@@ -215,7 +215,7 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
             )}
           </div>
 
-          {validation?.text && <span className="validation">{validation.text}</span>}
+          {validation?.text && <span className="har-validation-text">{validation.text}</span>}
         </div>
 
         {/* Addon Afrer */}

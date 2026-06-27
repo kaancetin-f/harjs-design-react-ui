@@ -30,38 +30,6 @@ const Radio = forwardRef<HTMLInputElement, IProps>(({ ...props }, ref) => {
         )}
       </div>
     </div>
-
-    // <div className="ar-radio-wrapper">
-    //   <label>
-    //     <input
-    //       ref={_innerRef}
-    //       type={"radio"}
-    //       {...attributes}
-    //       size={0}
-    //       onChange={(event) => {
-    //         (() => {
-    //           const _current = _checkbox.current;
-    //           if (!_current) return;
-    //         })();
-
-    //         (() => attributes.onChange && attributes.onChange(event))();
-    //       }}
-    //     />
-
-    //     <span>
-    //       <span ref={_checkbox} className={_checkboxClassName.map((c) => c).join(" ")}></span>
-    //       {trace && Object.keys(trace).length > 0 && (
-    //         <span className={_traceClassName.map((c) => c).join(" ")}></span>
-    //       )}
-    //       {pastTrace && Object.keys(pastTrace).length > 0 && (
-    //         <span className={_pastTraceClassName.map((c) => c).join(" ")}></span>
-    //       )}
-    //       {label && <span className="label">{upperCase ? label.toUpperCase() : label}</span>}
-    //     </span>
-
-    //     {validation?.text && <span className="validation">{validation.text}</span>}
-    //   </label>
-    // </div>
   );
 });
 

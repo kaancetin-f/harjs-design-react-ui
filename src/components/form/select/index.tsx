@@ -399,7 +399,7 @@ const Select: React.FC<Props> = ({
         </div>
 
         {multiple && validation && config.validation?.text === "visible" && (
-          <span className="validation">{validation.text}</span>
+          <span className="har-validation-text">{validation.text}</span>
         )}
       </div>
       {/* :End: Select and Multiple Select Field */}

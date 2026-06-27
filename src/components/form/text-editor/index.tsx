@@ -331,7 +331,7 @@ const TextEditor = <T extends object>({
 
       <div className="resize" onMouseDown={handleMouseDown}></div>
 
-      {validation?.text && <span className="validation">{validation.text}</span>}
+      {validation?.text && <span className="har-validation-text">{validation.text}</span>}
 
       {/* Dynamic List */}
       {dynamicList &&

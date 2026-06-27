@@ -55,7 +55,7 @@ const CheckboxGroup: React.FC<Props> = ({ children, title, orientation, validati
 
       <div className={`items ${orientation ?? "horizontal"}`}>{renderChildren()}</div>
 
-      {validation?.text && <div className="validation">{validation.text}</div>}
+      {validation?.text && <div className="har-validation-text">{validation.text}</div>}
     </div>
   );
 };

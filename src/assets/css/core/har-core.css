@@ -115,82 +115,9 @@
 /* #endregion */
 /* Box Shadow */
 
-/* #region Variants */
-
-/* .filled {
-  border-color: transparent;
-  transition:
-    border 250ms,
-    box-shadow 250ms ease-in-out;
+.har-validation-text {
+  color: var(--danger);
+  font-family: var(--system);
+  font-size: 0.8rem;
+  font-weight: 400;
 }
-
-.surface {
-  transition:
-    border 250ms,
-    box-shadow 250ms ease-in-out;
-}
-
-.outlined {
-  background-color: transparent;
-  border-style: solid;
-  border-width: 1px !important;
-  border-color: transparent;
-  transition:
-    border 250ms,
-    box-shadow 250ms ease-in-out;
-}
-
-.dashed {
-  background-color: transparent;
-  border-style: dashed;
-  border-width: 1px !important;
-  border-color: transparent;
-  transition:
-    border 250ms,
-    box-shadow 250ms ease-in-out;
-}
-
-.borderless {
-  background-color: transparent;
-  border-width: 1px;
-  border-color: transparent;
-  transition:
-    border 250ms,
-    box-shadow 250ms ease-in-out;
-}
-.borderless:disabled {
-  background-color: var(--gray-100) !important;
-  border: none !important;
-  color: var(--gray-500) !important;
-  cursor: no-drop !important;
-}
-
-:is(input) {
-  border: solid 1px transparent;
-}
-:is(input)::placeholder {
-  color: var(--dark);
-}
-input[type="date"] {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-input[type="date"]::-webkit-calendar-picker-indicator {
-  pointer-events: none;
-}
-:is(input, button):disabled,
-:is(input[type="checkbox"]):disabled + span > .ar-checkbox:is(.filled, .outlined) {
-  cursor: no-drop !important;
-}
-:is(input[type="checkbox"]):disabled + span > .ar-checkbox:is(.borderless) {
-  background-color: var(--gray-100) !important;
-  color: var(--gray-500) !important;
-  cursor: no-drop !important;
-}
-:is(input[type="checkbox"]):disabled + span {
-  color: var(--gray-500) !important;
-  cursor: no-drop !important;
-} */
-/* #endregion */
-/* Variants */

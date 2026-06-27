@@ -58,7 +58,7 @@ const Checkbox = forwardRef<HTMLInputElement, Props>(
           </span>
         </label>
 
-        {validation?.text && <div className="validation">{validation.text}</div>}
+        {validation?.text && <div className="har-validation-text">{validation.text}</div>}
       </div>
     );
   },
