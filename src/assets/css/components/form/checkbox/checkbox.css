@@ -1,5 +1,7 @@
 @import url("./border.css");
-@import url("./color.css");
+@import url("./checked.css");
+@import url("./checkbox-color.css");
+@import url("./radio-color.css");
 @import url("./size.css");
 
 .har-checkbox-wrapper {
@@ -15,23 +17,12 @@
     font-size: 1rem;
     cursor: pointer;
 
-    > :is(input[type="checkbox"]) {
+    > :is(input[type="checkbox"]),
+    > :is(input[type="radio"]) {
       display: none;
 
       + span {
         > .har-checkbox {
-          &::before {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(45deg);
-            display: inline-block;
-            content: "";
-            width: 0.25rem;
-            height: 0.5rem;
-            border: solid 1px transparent;
-          }
-
           &.disabled {
             border: solid var(--border-width-xs) var(--gray-300) !important;
             cursor: no-drop;
@@ -52,32 +43,6 @@
         + span {
           > .har-checkbox {
             z-index: 2;
-
-            &::before {
-              position: absolute;
-              top: 50%;
-              left: 50%;
-              transform: translate(-50%, -50%) rotate(45deg);
-              display: inline-block;
-              content: "";
-              width: 0.25rem;
-              height: 0.5rem;
-              border: solid 1px transparent;
-            }
-
-            &.disabled {
-              background-color: var(--gray-300) !important;
-              cursor: no-drop;
-
-              &::before {
-                border-right-color: var(--gray-500) !important;
-                border-bottom-color: var(--gray-500) !important;
-              }
-
-              &:hover {
-                background-color: var(--gray-300) !important;
-              }
-            }
           }
         }
       }

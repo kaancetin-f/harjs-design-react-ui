@@ -1,7 +1,7 @@
 "use client";
 
 import Utils from "../../../libs/infrastructure/shared/Utils";
-import React, { forwardRef, useRef } from "react";
+import React, { forwardRef, useImperativeHandle, useRef } from "react";
 import "../../../assets/css/components/form/checkbox/checkbox.css";
 import Props from "./Props";
 
@@ -13,6 +13,7 @@ const Checkbox = forwardRef<HTMLInputElement, Props>(
     // refs
     const _checkbox = useRef<HTMLInputElement>(null);
     const _checkboxClassName: string[] = ["har-checkbox"];
+    const _innerRef = useRef<HTMLInputElement>(null);
 
     _checkboxClassName.push(
       ...Utils.GetClassName(
@@ -27,6 +28,10 @@ const Checkbox = forwardRef<HTMLInputElement, Props>(
     );
     if (size) _checkboxClassName.push(size);
     if (attributes.disabled) _checkboxClassName.push("disabled");
+
+    // hooks
+    // Dışarıdan gelen ref'i _innerRef'e bağla.
+    useImperativeHandle(ref, () => _innerRef.current as HTMLInputElement);
 
     return (
       <div className="har-checkbox-wrapper">

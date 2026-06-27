@@ -1,0 +1,78 @@
+.har-checkbox-wrapper {
+  > label {
+    > :is(input[type="checkbox"]) {
+      + span {
+        > .har-checkbox {
+          &::before {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -60%) rotate(45deg);
+            display: inline-block;
+            content: "";
+            width: 0.25rem;
+            height: 0.5rem;
+            border: solid 1px transparent;
+          }
+        }
+      }
+
+      &:checked {
+        + span {
+          > .har-checkbox {
+            &::before {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -60%) rotate(35deg);
+              display: inline-block;
+              content: "";
+              width: 0.35rem;
+              height: 0.5rem;
+              border: solid 1.5px transparent;
+              border-bottom-right-radius: 1px;
+            }
+          }
+        }
+      }
+    }
+
+    > :is(input[type="radio"]) {
+      + span {
+        > .har-checkbox {
+          &::before {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            display: inline-block;
+            content: "";
+            background-color: transparent;
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: var(--border-radius-pill);
+          }
+        }
+      }
+
+      &:checked {
+        + span {
+          > .har-checkbox {
+            &::before {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%) rotate(45deg);
+              display: inline-block;
+              content: "";
+              background-color: transparent;
+              width: 0.5rem;
+              height: 0.5rem;
+              border-radius: var(--border-radius-pill);
+            }
+          }
+        }
+      }
+    }
+  }
+}

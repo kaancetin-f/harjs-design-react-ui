@@ -9,6 +9,7 @@ import CheckboxGroup from "./components/form/checkbox-group";
 import DatePicker from "./components/form/date-picker";
 import Input from "./components/form/input";
 import Radio from "./components/form/radio";
+import RadioGroup from "./components/form/radio-group";
 import Select from "./components/form/select";
 import Switch from "./components/form/switch";
 import TextEditor from "./components/form/text-editor";
@@ -59,6 +60,7 @@ export {
   DatePicker,
   Input,
   Radio,
+  RadioGroup,
   Select,
   Switch,
   TextEditor,

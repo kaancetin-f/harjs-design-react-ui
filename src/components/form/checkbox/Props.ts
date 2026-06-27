@@ -14,6 +14,6 @@ type Props = {
   IBorderProps &
   IUpperCaseProps &
   IValidationProps &
-  Omit<React.InputHTMLAttributes<HTMLInputElement>, "children" | "type" | "size" | "color">;
+  Omit<React.InputHTMLAttributes<HTMLInputElement>, "children" | "size" | "color">;
 
 export default Props;

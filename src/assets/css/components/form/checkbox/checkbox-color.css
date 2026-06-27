@@ -1953,6 +1953,20 @@
                 }
               }
             }
+
+            &.disabled {
+              background-color: var(--gray-300) !important;
+              cursor: no-drop;
+
+              &::before {
+                border-right-color: var(--gray-500) !important;
+                border-bottom-color: var(--gray-500) !important;
+              }
+
+              &:hover {
+                background-color: var(--gray-300) !important;
+              }
+            }
           }
         }
       }

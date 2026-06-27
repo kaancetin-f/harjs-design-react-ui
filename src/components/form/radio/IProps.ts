@@ -1,25 +1,8 @@
-import {
-  IBorderProps,
-  IColorProps,
-  IIconProps,
-  ISizeProps,
-  IUpperCaseProps,
-  IValidationProps,
-  IVariantProps,
-} from "../../../libs/infrastructure/types/IGlobalProps";
+import { ComponentProps } from "react";
+import Checkbox from "../checkbox";
 import { Color } from "../../../libs/infrastructure/types";
 
-interface IProps
-  extends
-    IVariantProps,
-    IColorProps,
-    IBorderProps,
-    IIconProps,
-    ISizeProps,
-    IUpperCaseProps,
-    IValidationProps,
-    Omit<React.InputHTMLAttributes<HTMLInputElement>, "children" | "size" | "color"> {
-  label?: string;
+interface IProps extends Omit<ComponentProps<typeof Checkbox>, "border"> {
   trace?: { color: Color };
   pastTrace?: { color: Color };
 }
