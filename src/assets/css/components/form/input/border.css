@@ -1,0 +1,59 @@
+.har-input-wrapper {
+  > .har-input {
+    &.border-radius-sm {
+      > .input {
+        > input {
+          border-radius: var(--border-radius-sm);
+        }
+      }
+    }
+
+    &.border-radius-sm {
+      > .input {
+        > input {
+          border-radius: var(--border-radius-sm);
+        }
+      }
+    }
+
+    &.border-radius-lg {
+      > .input {
+        > input {
+          border-radius: var(--border-radius-lg);
+        }
+      }
+    }
+
+    &.border-radius-xl {
+      > .input {
+        > input {
+          border-radius: var(--border-radius-xl);
+        }
+      }
+    }
+
+    &.border-radius-xxl {
+      > .input {
+        > input {
+          border-radius: var(--border-radius-xxl);
+        }
+      }
+    }
+
+    &.border-radius-pill {
+      > .input {
+        > input {
+          border-radius: var(--border-radius-pill);
+        }
+      }
+    }
+
+    &.border-radius-none {
+      > .input {
+        > input {
+          border-radius: 0;
+        }
+      }
+    }
+  }
+}

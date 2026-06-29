@@ -4,18 +4,15 @@ import React, { ChangeEvent, useEffect, useMemo, useRef, useState } from "react"
 import Input from "..";
 import IProps from "./IProps";
 import NUMBER from "../../../../libs/infrastructure/shared/NUMBER";
+import Utils from "../../../../libs/infrastructure/shared/Utils";
 
 const FormattedDecimal: React.FC<IProps> = ({
   variant,
   color,
-  name,
-  value,
-  onChange,
   locale = "tr-TR",
   digits,
-  placeholder,
   validation,
-  disabled,
+  ...attributes
 }: IProps) => {
   const _input = useRef<HTMLInputElement | null>(null);
   const [_value, setValue] = useState<string>("");
@@ -74,44 +71,43 @@ const FormattedDecimal: React.FC<IProps> = ({
 
     setValue(formatted);
 
-    onChange?.({
-      ...event,
-      target: {
-        ...event.target,
-        name,
-        value: normalized,
-      },
-    });
+    // attributes.onChange?.({
+    //   ...event,
+    //   target: {
+    //     ...event.target,
+    //     // ...attributes.onChange,
+    //     value: normalized,
+    //   },
+    // });
   };
 
   // useEffects
   useEffect(() => {
-    if (value === undefined || value === null || value === "") {
+    if (Utils.IsNullOrEmpty(attributes.value)) {
       setValue("");
       return;
     }
 
-    setValue(getFormatter.format(Number(value)));
-  }, [value, getFormatter]);
+    setValue(getFormatter.format(Number(attributes.value)));
+  }, [attributes.value, getFormatter]);
 
   return (
     <Input
       ref={_input}
-      name={name}
       variant={variant}
       color={color}
+      {...attributes}
       value={_value}
       type="text"
       inputMode="decimal"
       onChange={(event) => {
-        if (disabled) return;
+        if (attributes.disabled) return;
+
         handleChange(event);
       }}
       onClick={handleClick}
       onKeyUp={handleKeyUp}
-      placeholder={placeholder}
       validation={validation}
-      disabled={disabled}
     />
   );
 };

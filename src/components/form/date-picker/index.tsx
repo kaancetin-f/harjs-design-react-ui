@@ -6,15 +6,15 @@ import Input from "../input";
 import { Option } from "../../../libs/infrastructure/types";
 import Button from "../button";
 import Alert from "../../feedback/alert";
-import Props from "./Props";
 import ReactDOM from "react-dom";
 import DATE from "./DATE";
 import DatePickerTR from "../../../libs/core/application/locales/date-picker/tr";
 import DatePickerEN from "../../../libs/core/application/locales/date-picker/en";
 import IDatePickerLocale from "../../../libs/core/application/locales/date-picker/IDatePickerLocale";
 import { useTranslation } from "@harjs/translation";
+import IProps from "./Props";
 
-const DatePicker: React.FC<Props> = ({ variant, color, onChange, config, validation, ...attributes }) => {
+const DatePicker: React.FC<IProps> = ({ variant, color, onChange, config, validation, ...attributes }) => {
   // refs
   const _arCalendar = useRef<HTMLDivElement>(null);
   const _arClock = useRef<HTMLDivElement>(null);

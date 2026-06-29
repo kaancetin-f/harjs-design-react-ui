@@ -1,0 +1,1204 @@
+.har-input-wrapper {
+  > .har-input {
+    position: relative;
+
+    &.blue {
+      &.filled {
+        > label {
+          color: var(--blue-500);
+        }
+
+        > .input {
+          > input {
+            background-color: var(--blue-100);
+            border: 1px solid var(--blue-300);
+            color: var(--blue-700);
+
+            &::placeholder {
+              color: var(--blue-400);
+            }
+
+            &:focus {
+              border: 1px solid var(--blue-500);
+            }
+          }
+        }
+      }
+
+      &.surface-borderless {
+        > label {
+          color: var(--blue-500);
+        }
+
+        > .input {
+          > input {
+            background-color: var(--blue-100);
+            color: var(--blue-700);
+
+            &::placeholder {
+              color: var(--blue-400);
+            }
+
+            &:focus {
+              background-color: transparent;
+              box-shadow: 0 0 0 2.5px var(--blue-200);
+            }
+          }
+        }
+      }
+
+      &.outlined {
+        > label {
+          color: var(--blue-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px solid var(--blue-500);
+            color: var(--blue-700);
+
+            &::placeholder {
+              color: var(--blue-400);
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2.5px var(--blue-200);
+            }
+          }
+        }
+      }
+
+      &.dashed {
+        > label {
+          color: var(--blue-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px dashed var(--blue-500);
+            color: var(--blue-700);
+
+            &::placeholder {
+              color: var(--blue-400);
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2.5px var(--blue-200);
+            }
+          }
+        }
+      }
+
+      &.borderless {
+        > label {
+          left: 0.1rem;
+          color: var(--blue-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px solid transparent;
+            color: var(--blue-700);
+
+            &::placeholder {
+              color: var(--blue-400);
+            }
+          }
+        }
+      }
+    }
+
+    &.purple {
+      &.filled {
+        > label {
+          color: var(--purple-500);
+        }
+
+        > .input {
+          > input {
+            background-color: var(--purple-100);
+            border: 1px solid var(--purple-300);
+            color: var(--purple-700);
+
+            &::placeholder {
+              color: var(--purple-400);
+            }
+
+            &:focus {
+              border: 1px solid var(--purple-500);
+            }
+          }
+        }
+      }
+
+      &.surface-borderless {
+        > label {
+          color: var(--purple-500);
+        }
+
+        > .input {
+          > input {
+            background-color: var(--purple-100);
+            color: var(--purple-700);
+
+            &::placeholder {
+              color: var(--purple-400);
+            }
+
+            &:focus {
+              background-color: transparent;
+              box-shadow: 0 0 0 2.5px var(--purple-200);
+            }
+          }
+        }
+      }
+
+      &.outlined {
+        > label {
+          color: var(--purple-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px solid var(--purple-500);
+            color: var(--purple-700);
+
+            &::placeholder {
+              color: var(--purple-400);
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2.5px var(--purple-200);
+            }
+          }
+        }
+      }
+
+      &.dashed {
+        > label {
+          color: var(--purple-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px dashed var(--purple-500);
+            color: var(--purple-700);
+
+            &::placeholder {
+              color: var(--purple-400);
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2.5px var(--purple-200);
+            }
+          }
+        }
+      }
+
+      &.borderless {
+        > label {
+          left: 0.1rem;
+          color: var(--purple-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px solid transparent;
+            color: var(--purple-700);
+
+            &::placeholder {
+              color: var(--purple-400);
+            }
+          }
+        }
+      }
+    }
+
+    &.pink {
+      &.filled {
+        > label {
+          color: var(--pink-500);
+        }
+
+        > .input {
+          > input {
+            background-color: var(--pink-100);
+            border: 1px solid var(--pink-300);
+            color: var(--pink-700);
+
+            &::placeholder {
+              color: var(--pink-400);
+            }
+
+            &:focus {
+              border: 1px solid var(--pink-500);
+            }
+          }
+        }
+      }
+
+      &.surface-borderless {
+        > label {
+          color: var(--pink-500);
+        }
+
+        > .input {
+          > input {
+            background-color: var(--pink-100);
+            color: var(--pink-700);
+
+            &::placeholder {
+              color: var(--pink-400);
+            }
+
+            &:focus {
+              background-color: transparent;
+              box-shadow: 0 0 0 2.5px var(--pink-200);
+            }
+          }
+        }
+      }
+
+      &.outlined {
+        > label {
+          color: var(--pink-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px solid var(--pink-500);
+            color: var(--pink-700);
+
+            &::placeholder {
+              color: var(--pink-400);
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2.5px var(--pink-200);
+            }
+          }
+        }
+      }
+
+      &.dashed {
+        > label {
+          color: var(--pink-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px dashed var(--pink-500);
+            color: var(--pink-700);
+
+            &::placeholder {
+              color: var(--pink-400);
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2.5px var(--pink-200);
+            }
+          }
+        }
+      }
+
+      &.borderless {
+        > label {
+          left: 0.1rem;
+          color: var(--pink-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px solid transparent;
+            color: var(--pink-700);
+
+            &::placeholder {
+              color: var(--pink-400);
+            }
+          }
+        }
+      }
+    }
+
+    &.red {
+      &.filled {
+        > label {
+          color: var(--red-500);
+        }
+
+        > .input {
+          > input {
+            background-color: var(--red-100);
+            border: 1px solid var(--red-300);
+            color: var(--red-700);
+
+            &::placeholder {
+              color: var(--red-400);
+            }
+
+            &:focus {
+              border: 1px solid var(--red-500);
+            }
+          }
+        }
+      }
+
+      &.surface-borderless {
+        > label {
+          color: var(--red-500);
+        }
+
+        > .input {
+          > input {
+            background-color: var(--red-100);
+            color: var(--red-700);
+
+            &::placeholder {
+              color: var(--red-400);
+            }
+
+            &:focus {
+              background-color: transparent;
+              box-shadow: 0 0 0 2.5px var(--red-200);
+            }
+          }
+        }
+      }
+
+      &.outlined {
+        > label {
+          color: var(--red-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px solid var(--red-500);
+            color: var(--red-700);
+
+            &::placeholder {
+              color: var(--red-400);
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2.5px var(--red-200);
+            }
+          }
+        }
+      }
+
+      &.dashed {
+        > label {
+          color: var(--red-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px dashed var(--red-500);
+            color: var(--red-700);
+
+            &::placeholder {
+              color: var(--red-400);
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2.5px var(--red-200);
+            }
+          }
+        }
+      }
+
+      &.borderless {
+        > label {
+          left: 0.1rem;
+          color: var(--red-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px solid transparent;
+            color: var(--red-700);
+
+            &::placeholder {
+              color: var(--red-400);
+            }
+          }
+        }
+      }
+    }
+
+    &.orange {
+      &.filled {
+        > label {
+          color: var(--orange-500);
+        }
+
+        > .input {
+          > input {
+            background-color: var(--orange-100);
+            border: 1px solid var(--orange-300);
+            color: var(--orange-700);
+
+            &::placeholder {
+              color: var(--orange-400);
+            }
+
+            &:focus {
+              border: 1px solid var(--orange-500);
+            }
+          }
+        }
+      }
+
+      &.surface-borderless {
+        > label {
+          color: var(--orange-500);
+        }
+
+        > .input {
+          > input {
+            background-color: var(--orange-100);
+            color: var(--orange-700);
+
+            &::placeholder {
+              color: var(--orange-400);
+            }
+
+            &:focus {
+              background-color: transparent;
+              box-shadow: 0 0 0 2.5px var(--orange-200);
+            }
+          }
+        }
+      }
+
+      &.outlined {
+        > label {
+          color: var(--orange-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px solid var(--orange-500);
+            color: var(--orange-700);
+
+            &::placeholder {
+              color: var(--orange-400);
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2.5px var(--orange-200);
+            }
+          }
+        }
+      }
+
+      &.dashed {
+        > label {
+          color: var(--orange-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px dashed var(--orange-500);
+            color: var(--orange-700);
+
+            &::placeholder {
+              color: var(--orange-400);
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2.5px var(--orange-200);
+            }
+          }
+        }
+      }
+
+      &.borderless {
+        > label {
+          left: 0.1rem;
+          color: var(--orange-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px solid transparent;
+            color: var(--orange-700);
+
+            &::placeholder {
+              color: var(--orange-400);
+            }
+          }
+        }
+      }
+    }
+
+    &.yellow {
+      &.filled {
+        > label {
+          color: var(--yellow-500);
+        }
+
+        > .input {
+          > input {
+            background-color: var(--yellow-100);
+            border: 1px solid var(--yellow-300);
+            color: var(--yellow-700);
+
+            &::placeholder {
+              color: var(--yellow-400);
+            }
+
+            &:focus {
+              border: 1px solid var(--yellow-500);
+            }
+          }
+        }
+      }
+
+      &.surface-borderless {
+        > label {
+          color: var(--yellow-500);
+        }
+
+        > .input {
+          > input {
+            background-color: var(--yellow-100);
+            color: var(--yellow-700);
+
+            &::placeholder {
+              color: var(--yellow-400);
+            }
+
+            &:focus {
+              background-color: transparent;
+              box-shadow: 0 0 0 2.5px var(--yellow-200);
+            }
+          }
+        }
+      }
+
+      &.outlined {
+        > label {
+          color: var(--yellow-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px solid var(--yellow-500);
+            color: var(--yellow-700);
+
+            &::placeholder {
+              color: var(--yellow-400);
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2.5px var(--yellow-200);
+            }
+          }
+        }
+      }
+
+      &.dashed {
+        > label {
+          color: var(--yellow-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px dashed var(--yellow-500);
+            color: var(--yellow-700);
+
+            &::placeholder {
+              color: var(--yellow-400);
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2.5px var(--yellow-200);
+            }
+          }
+        }
+      }
+
+      &.borderless {
+        > label {
+          left: 0.1rem;
+          color: var(--yellow-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px solid transparent;
+            color: var(--yellow-700);
+
+            &::placeholder {
+              color: var(--yellow-400);
+            }
+          }
+        }
+      }
+    }
+
+    &.green {
+      &.filled {
+        > label {
+          color: var(--green-500);
+        }
+
+        > .input {
+          > input {
+            background-color: var(--green-100);
+            border: 1px solid var(--green-300);
+            color: var(--green-700);
+
+            &::placeholder {
+              color: var(--green-400);
+            }
+
+            &:focus {
+              border: 1px solid var(--green-500);
+            }
+          }
+        }
+      }
+
+      &.surface-borderless {
+        > label {
+          color: var(--green-500);
+        }
+
+        > .input {
+          > input {
+            background-color: var(--green-100);
+            color: var(--green-700);
+
+            &::placeholder {
+              color: var(--green-400);
+            }
+
+            &:focus {
+              background-color: transparent;
+              box-shadow: 0 0 0 2.5px var(--green-200);
+            }
+          }
+        }
+      }
+
+      &.outlined {
+        > label {
+          color: var(--green-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px solid var(--green-500);
+            color: var(--green-700);
+
+            &::placeholder {
+              color: var(--green-400);
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2.5px var(--green-200);
+            }
+          }
+        }
+      }
+
+      &.dashed {
+        > label {
+          color: var(--green-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px dashed var(--green-500);
+            color: var(--green-700);
+
+            &::placeholder {
+              color: var(--green-400);
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2.5px var(--green-200);
+            }
+          }
+        }
+      }
+
+      &.borderless {
+        > label {
+          left: 0.1rem;
+          color: var(--green-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px solid transparent;
+            color: var(--green-700);
+
+            &::placeholder {
+              color: var(--green-400);
+            }
+          }
+        }
+      }
+    }
+
+    &.teal {
+      &.filled {
+        > label {
+          color: var(--teal-500);
+        }
+
+        > .input {
+          > input {
+            background-color: var(--teal-100);
+            border: 1px solid var(--teal-300);
+            color: var(--teal-700);
+
+            &::placeholder {
+              color: var(--teal-400);
+            }
+
+            &:focus {
+              border: 1px solid var(--teal-500);
+            }
+          }
+        }
+      }
+
+      &.surface-borderless {
+        > label {
+          color: var(--teal-500);
+        }
+
+        > .input {
+          > input {
+            background-color: var(--teal-100);
+            color: var(--teal-700);
+
+            &::placeholder {
+              color: var(--teal-400);
+            }
+
+            &:focus {
+              background-color: transparent;
+              box-shadow: 0 0 0 2.5px var(--teal-200);
+            }
+          }
+        }
+      }
+
+      &.outlined {
+        > label {
+          color: var(--teal-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px solid var(--teal-500);
+            color: var(--teal-700);
+
+            &::placeholder {
+              color: var(--teal-400);
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2.5px var(--teal-200);
+            }
+          }
+        }
+      }
+
+      &.dashed {
+        > label {
+          color: var(--teal-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px dashed var(--teal-500);
+            color: var(--teal-700);
+
+            &::placeholder {
+              color: var(--teal-400);
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2.5px var(--teal-200);
+            }
+          }
+        }
+      }
+
+      &.borderless {
+        > label {
+          left: 0.1rem;
+          color: var(--teal-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px solid transparent;
+            color: var(--teal-700);
+
+            &::placeholder {
+              color: var(--teal-400);
+            }
+          }
+        }
+      }
+    }
+
+    &.cyan {
+      &.filled {
+        > label {
+          color: var(--cyan-500);
+        }
+
+        > .input {
+          > input {
+            background-color: var(--cyan-100);
+            border: 1px solid var(--cyan-300);
+            color: var(--cyan-700);
+
+            &::placeholder {
+              color: var(--cyan-400);
+            }
+
+            &:focus {
+              border: 1px solid var(--cyan-500);
+            }
+          }
+        }
+      }
+
+      &.surface-borderless {
+        > label {
+          color: var(--cyan-500);
+        }
+
+        > .input {
+          > input {
+            background-color: var(--cyan-100);
+            color: var(--cyan-700);
+
+            &::placeholder {
+              color: var(--cyan-400);
+            }
+
+            &:focus {
+              background-color: transparent;
+              box-shadow: 0 0 0 2.5px var(--cyan-200);
+            }
+          }
+        }
+      }
+
+      &.outlined {
+        > label {
+          color: var(--cyan-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px solid var(--cyan-500);
+            color: var(--cyan-700);
+
+            &::placeholder {
+              color: var(--cyan-400);
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2.5px var(--cyan-200);
+            }
+          }
+        }
+      }
+
+      &.dashed {
+        > label {
+          color: var(--cyan-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px dashed var(--cyan-500);
+            color: var(--cyan-700);
+
+            &::placeholder {
+              color: var(--cyan-400);
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2.5px var(--cyan-200);
+            }
+          }
+        }
+      }
+
+      &.borderless {
+        > label {
+          left: 0.1rem;
+          color: var(--cyan-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px solid transparent;
+            color: var(--cyan-700);
+
+            &::placeholder {
+              color: var(--cyan-400);
+            }
+          }
+        }
+      }
+    }
+
+    &.gray {
+      &.filled {
+        > label {
+          color: var(--gray-500);
+        }
+
+        > .input {
+          > input {
+            background-color: var(--gray-100);
+            border: 1px solid var(--gray-300);
+            color: var(--gray-700);
+
+            &::placeholder {
+              color: var(--gray-400);
+            }
+
+            &:focus {
+              border: 1px solid var(--gray-500);
+            }
+          }
+        }
+      }
+
+      &.surface-borderless {
+        > label {
+          color: var(--gray-500);
+        }
+
+        > .input {
+          > input {
+            background-color: var(--gray-100);
+            color: var(--gray-700);
+
+            &::placeholder {
+              color: var(--gray-400);
+            }
+
+            &:focus {
+              background-color: transparent;
+              box-shadow: 0 0 0 2.5px var(--gray-200);
+            }
+          }
+        }
+      }
+
+      &.outlined {
+        > label {
+          color: var(--gray-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px solid var(--gray-500);
+            color: var(--gray-700);
+
+            &::placeholder {
+              color: var(--gray-400);
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2.5px var(--gray-200);
+            }
+          }
+        }
+      }
+
+      &.dashed {
+        > label {
+          color: var(--gray-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px dashed var(--gray-500);
+            color: var(--gray-700);
+
+            &::placeholder {
+              color: var(--gray-400);
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2.5px var(--gray-200);
+            }
+          }
+        }
+      }
+
+      &.borderless {
+        > label {
+          left: 0.1rem;
+          color: var(--gray-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px solid transparent;
+            color: var(--gray-700);
+
+            &::placeholder {
+              color: var(--gray-400);
+            }
+          }
+        }
+      }
+    }
+
+    &.light {
+      &.filled {
+        > label {
+          color: var(--light-500);
+        }
+
+        > .input {
+          > input {
+            background-color: var(--light-100);
+            border: 1px solid var(--light-300);
+            color: var(--light-700);
+
+            &::placeholder {
+              color: var(--light-400);
+            }
+
+            &:focus {
+              border: 1px solid var(--light-500);
+            }
+          }
+        }
+      }
+
+      &.surface-borderless {
+        > label {
+          color: var(--light-500);
+        }
+
+        > .input {
+          > input {
+            background-color: var(--light-100);
+            color: var(--light-700);
+
+            &::placeholder {
+              color: var(--light-400);
+            }
+
+            &:focus {
+              background-color: transparent;
+              box-shadow: 0 0 0 2.5px var(--light-200);
+            }
+          }
+        }
+      }
+
+      &.outlined {
+        > label {
+          color: var(--light-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px solid var(--light-500);
+            color: var(--light-700);
+
+            &::placeholder {
+              color: var(--light-400);
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2.5px var(--light-200);
+            }
+          }
+        }
+      }
+
+      &.dashed {
+        > label {
+          color: var(--light-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px dashed var(--light-500);
+            color: var(--light-700);
+
+            &::placeholder {
+              color: var(--light-400);
+            }
+
+            &:focus {
+              box-shadow: 0 0 0 2.5px var(--light-200);
+            }
+          }
+        }
+      }
+
+      &.borderless {
+        > label {
+          left: 0.1rem;
+          color: var(--light-500);
+        }
+
+        > .input {
+          > input {
+            background-color: transparent;
+            border: 1px solid transparent;
+            color: var(--light-700);
+
+            &::placeholder {
+              color: var(--light-400);
+            }
+          }
+        }
+      }
+    }
+  }
+}

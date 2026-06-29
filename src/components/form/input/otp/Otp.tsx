@@ -153,7 +153,7 @@ const Otp = ({ character, onChange, ...attributes }: IProps) => {
             onPaste={handlePaste(index)}
             onFocus={(event) => event.target.select()}
             onClick={handleClick}
-            size={1}
+            // size={1}
             maxLength={1}
             placeholder={undefined}
             autoFocus={index === 0}

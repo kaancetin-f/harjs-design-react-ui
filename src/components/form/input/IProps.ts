@@ -1,9 +1,9 @@
-import IButtonProps from "../button/IProps";
 import { Variants } from "../../../libs/infrastructure/types";
 import {
   IBorderProps,
+  IChildrenProps,
   IColorProps,
-  IIconProps,
+  ISizeProps,
   IUpperCaseProps,
   IValidationProps,
   IVariantProps,
@@ -11,14 +11,15 @@ import {
 
 interface IProps
   extends
-    IVariantProps,
+    IChildrenProps,
+    IVariantProps<{ component: "input" }>,
     IColorProps,
     IBorderProps,
-    IIconProps,
+    ISizeProps,
     IUpperCaseProps,
     IValidationProps,
-    Omit<React.InputHTMLAttributes<HTMLInputElement>, "children" | "color"> {
-  button?: Omit<IButtonProps, "size" | "shape" | "position" | "fullWidth">;
+    Omit<React.InputHTMLAttributes<HTMLInputElement>, "children" | "color" | "size"> {
+  // button?: Omit<ComponentProps<typeof Button>, "size" | "shape" | "position" | "fullWidth">;
   addon?: { variant?: Variants; before?: string | number; after?: string | number };
 }
 

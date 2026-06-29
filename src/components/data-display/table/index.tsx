@@ -751,7 +751,7 @@ const Table = forwardRef(
                                   ref={(element) => {
                                     if (element) _searchTextInputs.current[cIndex] = element;
                                   }}
-                                  variant={c.key && !c.filters ? "outlined" : "filled"}
+                                  // variant={c.key && !c.filters ? "outlined" : "filled"}
                                   style={{ height: "2rem" }}
                                   value={(config.isServerSide ? ssrValue : csrValue) ?? ""}
                                   name={key}

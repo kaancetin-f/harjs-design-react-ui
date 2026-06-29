@@ -20,6 +20,7 @@ type ExcludedVariantsMap = {
   alert: "outlined" | "borderless";
   card: "dashed" | "borderless";
   checkbox: "borderless";
+  input: "surface";
 };
 export interface IVariantProps<T extends { component?: string } = {}> {
   /**

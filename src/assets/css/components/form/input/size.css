@@ -1,0 +1,57 @@
+.har-input-wrapper {
+  > .har-input {
+    &.xs {
+      > .input {
+        > input {
+          height: 2rem !important;
+          font-size: 0.75rem;
+        }
+      }
+    }
+
+    &.sm {
+      > .input {
+        > input {
+          height: 2.25rem;
+          font-size: 0.875rem;
+        }
+      }
+    }
+
+    &.md {
+      > .input {
+        > input {
+          height: 2.5rem;
+          font-size: 0.875rem;
+        }
+      }
+    }
+
+    &.lg {
+      > .input {
+        > input {
+          height: 2.75rem;
+          font-size: 1rem;
+        }
+      }
+    }
+
+    &.xl {
+      > .input {
+        > input {
+          height: 3rem;
+          font-size: 1rem;
+        }
+      }
+    }
+
+    &.xxl {
+      > .input {
+        > input {
+          height: 3.25rem;
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+}

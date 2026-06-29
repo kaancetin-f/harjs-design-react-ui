@@ -1,7 +1,7 @@
-import { IColorProps, IVariantProps } from "../../../../libs/infrastructure/types/IGlobalProps";
+import { ComponentProps } from "react";
+import Input from "..";
 
-interface IProps
-  extends IVariantProps, IColorProps, Omit<React.InputHTMLAttributes<HTMLInputElement>, "children" | "color"> {
+interface IProps extends ComponentProps<typeof Input> {
   character: number;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }

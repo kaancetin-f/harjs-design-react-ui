@@ -3,18 +3,9 @@
 import React, { ChangeEvent, useRef, useState, useEffect, useMemo } from "react";
 import Input from "..";
 import IProps from "./IProps";
+import Utils from "../../../../libs/infrastructure/shared/Utils";
 
-const Decimal: React.FC<IProps> = ({
-  variant,
-  color,
-  name,
-  value,
-  onChange,
-  placeholder,
-  validation,
-  disabled,
-  locale = "tr-TR",
-}) => {
+const Decimal: React.FC<IProps> = ({ variant, color, validation, locale = "tr-TR", ...attributes }) => {
   const _input = useRef<HTMLInputElement | null>(null);
   const [_value, setValue] = useState<string>("");
 
@@ -45,47 +36,45 @@ const Decimal: React.FC<IProps> = ({
     setValue(inputValue);
 
     // Parent’a normalize edilmiş "." decimal gönder.
-    const normalized = inputValue.replace(decimalSeparator, ".");
+    // const normalized = inputValue.replace(decimalSeparator, ".");
 
-    onChange?.({
-      ...event,
-      target: {
-        ...event.target,
-        name,
-        value: normalized,
-      },
-    });
+    // onChange?.({
+    //   ...event,
+    //   target: {
+    //     ...event.target,
+    //     name,
+    //     value: normalized,
+    //   },
+    // });
   };
 
   // useEffects
   useEffect(() => {
-    if (value === undefined || value === null || value === "") {
+    if (Utils.IsNullOrEmpty(attributes.value)) {
       setValue("");
       return;
     }
 
-    const stringValue = String(value);
+    const stringValue = String(attributes.value);
     const localized = stringValue.replace(".", decimalSeparator);
 
     setValue(localized);
-  }, [value, decimalSeparator]);
+  }, [attributes.value, decimalSeparator]);
 
   return (
     <Input
       ref={_input}
-      name={name}
       variant={variant}
       color={color}
       type="text"
       inputMode="decimal"
+      {...attributes}
       value={_value}
       onChange={(e) => {
-        if (disabled) return;
+        if (attributes.disabled) return;
         handleChange(e);
       }}
-      placeholder={placeholder}
       validation={validation}
-      disabled={disabled}
     />
   );
 };

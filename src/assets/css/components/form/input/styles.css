@@ -4,19 +4,21 @@
 @import url("./otp/styles.css");
 
 /* Core Css */
-@import url("./core/icon.css");
-@import url("./core/border.css");
-@import url("./core/button.css");
-@import url("./core/addon.css");
+@import url("./addon.css");
+@import url("./border.css");
+@import url("./button.css");
+@import url("./color.css");
+@import url("./icon.css");
+@import url("./size.css");
 
-.ar-input-wrapper {
+.har-input-wrapper {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   width: 100%;
 
-  > .ar-input {
+  > .har-input {
     position: relative;
     width: 100%;
 
@@ -63,6 +65,7 @@
         width: 100%;
         height: var(--input-height);
         padding: 0 0.5rem;
+        border: solid 1px transparent;
         font-family: var(--system);
         font-size: 1rem;
         outline: none;
@@ -71,6 +74,10 @@
           background 250ms,
           border 250ms,
           box-shadow 250ms ease-in-out;
+
+        &::placeholder {
+          font-weight: 300;
+        }
       }
 
       .handle-number-button {
@@ -109,6 +116,11 @@
           cursor: pointer;
         }
       }
+    }
+
+    &.disabled {
+      background-color: var(--gray-100);
+      cursor: no-drop;
     }
   }
 }

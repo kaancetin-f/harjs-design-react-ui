@@ -1,8 +1,16 @@
 "use client";
 
-import React, { ChangeEvent, forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import "../../../assets/css/components/form/input/styles.css";
-import Button from "../button";
+// import Button from "../button";
 import IProps from "./IProps";
 import Utils from "../../../libs/infrastructure/shared/Utils";
 import { ARIcon } from "../../icons";
@@ -10,15 +18,17 @@ import Otp from "./otp/Otp";
 import FormattedDecimal from "./formatted-decimal/FormattedDecimal";
 import Phone from "./phone/Phone";
 import Decimal from "./decimal/Decimal";
+import { IChildrenProps } from "../../../libs/infrastructure/types/IGlobalProps";
 
 const BaseInput = forwardRef<HTMLInputElement, IProps>(
   (
     {
+      children,
       variant = "outlined",
       color = "light",
-      icon,
       border = { radius: "sm" },
-      button,
+      // button,
+      size,
       addon,
       upperCase,
       validation,
@@ -32,13 +42,13 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
 
     // states
     const [value, setValue] = useState<string | number | readonly string[] | undefined>("");
-
+    const [labelWidth, setLabelWidth] = useState<number>(0);
     // hooks
     // Dışarıdan gelen ref'i _innerRef'e bağla.
     useImperativeHandle(ref, () => _innerRef.current as HTMLInputElement);
 
     // variables
-    const _wrapperClassName: string[] = ["ar-input-wrapper"];
+    const _wrapperClassName: string[] = ["har-input-wrapper"];
     const _inputClassName: string[] = [];
     const _addonBeforeClassName: string[] = ["addon-before"];
     const _addonAfterClassName: string[] = ["addon-after"];
@@ -49,11 +59,13 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
         undefined,
         !Utils.IsNullOrEmpty(validation?.text) ? "red" : color,
         border,
+        size,
         undefined,
-        icon,
         attributes.className,
       ),
     );
+
+    if (attributes.disabled) _inputClassName.push("disabled");
 
     // addon className
     if (addon) {
@@ -88,6 +100,20 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
       } as unknown as ChangeEvent<HTMLInputElement>);
     };
 
+    const renderChildrenIcon = () => {
+      const iconElements = React.Children.toArray(children).filter((child) => {
+        return React.isValidElement(child) && child.type === Input.Icon;
+      });
+
+      if (iconElements.length === 0) return null;
+
+      return iconElements.map((child) => {
+        if (React.isValidElement(child)) return React.cloneElement<any>(child);
+
+        return child;
+      });
+    };
+
     // Özel büyük harfe dönüştürme işlevi.
     const convertToUpperCase = (str: string) => {
       return str
@@ -111,36 +137,42 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
       if (attributes.value !== undefined) setValue(attributes.value ?? "");
     }, [attributes.value]);
 
+    useLayoutEffect(() => {
+      if (_label.current) {
+        const width = _label.current.getBoundingClientRect().width;
+        setLabelWidth(width);
+      }
+    }, [value, attributes.placeholder]);
+
     return (
       <div className={_wrapperClassName.map((c) => c).join(" ")}>
         {/* Addon Before */}
         {addon?.before && <span className={_addonBeforeClassName.map((c) => c).join(" ")}>{addon?.before}</span>}
 
-        <div className="ar-input">
+        <div className={`har-input ${_inputClassName.map((c) => c).join(" ")}`}>
           {/* Icon */}
-          {icon?.element && <span className="icon-element">{icon.element}</span>}
+          {renderChildrenIcon() && <div className="icon-element">{renderChildrenIcon()}</div>}
 
           {attributes.placeholder && (
             <label
               ref={_label}
               className={value ? "visible" : "hidden"}
-              {...(value ? { style: { maxWidth: _innerRef.current?.getBoundingClientRect().width } } : {})}
+              {...(value ? { style: { maxWidth: labelWidth } } : {})}
             >
               {validation && "* "}
               {attributes.placeholder}
             </label>
           )}
-
           {/* Input */}
-          <div className="input">
+          <div className="input" style={{ width: attributes.width }}>
             <input
               ref={_innerRef}
               {...attributes}
               type={attributes.type === "number" ? "text" : attributes.type}
               placeholder={`${validation ? "* " : ""}${attributes.placeholder ?? ""}`}
               value={value ?? attributes.value} // `value` varsa onu kullan, yoksa `internalValue`'yu kullan
-              size={attributes.size || 20}
-              className={_inputClassName.map((c) => c).join(" ")}
+              // size={attributes.size || 20}
+              // className={_inputClassName.map((c) => c).join(" ")}
               {...(attributes.type === "number"
                 ? {
                     onKeyDown: (event) => {
@@ -151,25 +183,24 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
                     },
                   }
                 : {})}
-              {...(value
+              {...(value && labelWidth > 0
                 ? {
                     style: {
                       ...attributes.style,
                       clipPath: `polygon(
-                            -15px 0,
-                            10px -5px,
-                            10px 5px,
-                            calc(${_label.current?.getBoundingClientRect().width}px + 7px) 5px,
-                            calc(${_label.current?.getBoundingClientRect().width}px + 7px) -5px,
-                            100% -70px,
-                            calc(100% + 5px) calc(100% + 5px),
-                            -5px calc(100% + 5px)
-                          )`,
+                                        -15px 0,
+                                        10px -5px,
+                                        10px 5px,
+                                        calc(${labelWidth}px + 7px) 5px,
+                                        calc(${labelWidth}px + 7px) -5px,
+                                        100% -70px,
+                                        calc(100% + 5px) calc(100% + 5px),
+                                        -5px calc(100% + 5px)
+                                      )`,
                     },
                   }
                 : { style: { ...attributes.style } })}
               onChange={(event) => {
-                // Disabled gelmesi durumunda işlem yapmasına izin verme...
                 if (attributes.disabled) return;
 
                 (() => {
@@ -214,7 +245,6 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
               </div>
             )}
           </div>
-
           {validation?.text && <span className="har-validation-text">{validation.text}</span>}
         </div>
 
@@ -222,20 +252,26 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
         {addon?.after && <span className={_addonAfterClassName.map((c) => c).join(" ")}>{addon?.after}</span>}
 
         {/* Button */}
-        {button && <Button {...button} border={{ radius: border.radius }} disabled={attributes.disabled} />}
+        {/* {button && <Button {...button} border={{ radius: border.radius }} disabled={attributes.disabled} />} */}
       </div>
     );
   },
 );
 
 interface InputCompound extends React.ForwardRefExoticComponent<IProps & React.RefAttributes<HTMLInputElement>> {
+  Icon: ({ children, position }: IChildrenProps & { position: "start" | "end" }) => React.JSX.Element;
+
   Decimal: typeof Decimal;
   FormattedDecimal: typeof FormattedDecimal;
-  Phone: typeof Phone;
   Otp: typeof Otp;
+  Phone: typeof Phone;
 }
 
 const Input = BaseInput as InputCompound;
+Input.Icon = ({ children, position }) => {
+  return <span className={position}>{children}</span>;
+};
+
 Input.Decimal = Decimal;
 Input.FormattedDecimal = FormattedDecimal;
 Input.Phone = Phone;

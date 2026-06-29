@@ -1,23 +1,14 @@
-import {
-  IBorderProps,
-  IColorProps,
-  IStatusProps,
-  IValidationProps,
-  IVariantProps,
-} from "../../../libs/infrastructure/types/IGlobalProps";
+import { ComponentProps } from "react";
 
-type Props = {
+import Input from "../input";
+
+interface IProps extends Omit<ComponentProps<typeof Input>, "onChange"> {
   onChange: (value: string) => void;
   config?: {
     locale?: Intl.LocalesArgument;
     isClock?: boolean;
     isFooterButton?: boolean;
   };
-} & IVariantProps &
-  IColorProps &
-  IStatusProps &
-  IBorderProps &
-  IValidationProps &
-  Omit<React.InputHTMLAttributes<HTMLInputElement>, "children" | "onChange" | "color">;
+}
 
-export default Props;
+export default IProps;
