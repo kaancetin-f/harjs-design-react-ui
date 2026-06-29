@@ -119,8 +119,12 @@
     }
 
     &.disabled {
-      background-color: var(--gray-100);
-      cursor: no-drop;
+      > .input {
+        > input {
+          background-color: var(--gray-100) !important;
+          cursor: no-drop;
+        }
+      }
     }
   }
 }

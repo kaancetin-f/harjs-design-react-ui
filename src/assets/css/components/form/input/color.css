@@ -1,9 +1,7 @@
 .har-input-wrapper {
-  > .har-input {
-    position: relative;
-
-    &.blue {
-      &.filled {
+  &.blue {
+    &.filled {
+      > .har-input {
         > label {
           color: var(--blue-500);
         }
@@ -24,8 +22,10 @@
           }
         }
       }
+    }
 
-      &.surface-borderless {
+    &.surface-borderless {
+      > .har-input {
         > label {
           color: var(--blue-500);
         }
@@ -46,8 +46,10 @@
           }
         }
       }
+    }
 
-      &.outlined {
+    &.outlined {
+      > .har-input {
         > label {
           color: var(--blue-500);
         }
@@ -68,8 +70,10 @@
           }
         }
       }
+    }
 
-      &.dashed {
+    &.dashed {
+      > .har-input {
         > label {
           color: var(--blue-500);
         }
@@ -90,8 +94,10 @@
           }
         }
       }
+    }
 
-      &.borderless {
+    &.borderless {
+      > .har-input {
         > label {
           left: 0.1rem;
           color: var(--blue-500);
@@ -110,9 +116,11 @@
         }
       }
     }
+  }
 
-    &.purple {
-      &.filled {
+  &.purple {
+    &.filled {
+      > .har-input {
         > label {
           color: var(--purple-500);
         }
@@ -133,8 +141,10 @@
           }
         }
       }
+    }
 
-      &.surface-borderless {
+    &.surface-borderless {
+      > .har-input {
         > label {
           color: var(--purple-500);
         }
@@ -155,8 +165,10 @@
           }
         }
       }
+    }
 
-      &.outlined {
+    &.outlined {
+      > .har-input {
         > label {
           color: var(--purple-500);
         }
@@ -177,8 +189,10 @@
           }
         }
       }
+    }
 
-      &.dashed {
+    &.dashed {
+      > .har-input {
         > label {
           color: var(--purple-500);
         }
@@ -199,8 +213,10 @@
           }
         }
       }
+    }
 
-      &.borderless {
+    &.borderless {
+      > label {
         > label {
           left: 0.1rem;
           color: var(--purple-500);
@@ -219,9 +235,11 @@
         }
       }
     }
+  }
 
-    &.pink {
-      &.filled {
+  &.pink {
+    &.filled {
+      > .har-input {
         > label {
           color: var(--pink-500);
         }
@@ -242,8 +260,10 @@
           }
         }
       }
+    }
 
-      &.surface-borderless {
+    &.surface-borderless {
+      > .har-input {
         > label {
           color: var(--pink-500);
         }
@@ -264,8 +284,10 @@
           }
         }
       }
+    }
 
-      &.outlined {
+    &.outlined {
+      > .har-input {
         > label {
           color: var(--pink-500);
         }
@@ -286,8 +308,10 @@
           }
         }
       }
+    }
 
-      &.dashed {
+    &.dashed {
+      > .har-input {
         > label {
           color: var(--pink-500);
         }
@@ -308,8 +332,10 @@
           }
         }
       }
+    }
 
-      &.borderless {
+    &.borderless {
+      > .har-input {
         > label {
           left: 0.1rem;
           color: var(--pink-500);
@@ -328,9 +354,11 @@
         }
       }
     }
+  }
 
-    &.red {
-      &.filled {
+  &.red {
+    &.filled {
+      > .har-input {
         > label {
           color: var(--red-500);
         }
@@ -351,8 +379,10 @@
           }
         }
       }
+    }
 
-      &.surface-borderless {
+    &.surface-borderless {
+      > .har-input {
         > label {
           color: var(--red-500);
         }
@@ -373,8 +403,10 @@
           }
         }
       }
+    }
 
-      &.outlined {
+    &.outlined {
+      > .har-input {
         > label {
           color: var(--red-500);
         }
@@ -395,8 +427,10 @@
           }
         }
       }
+    }
 
-      &.dashed {
+    &.dashed {
+      > .har-input {
         > label {
           color: var(--red-500);
         }
@@ -417,8 +451,10 @@
           }
         }
       }
+    }
 
-      &.borderless {
+    &.borderless {
+      > .har-input {
         > label {
           left: 0.1rem;
           color: var(--red-500);
@@ -437,9 +473,11 @@
         }
       }
     }
+  }
 
-    &.orange {
-      &.filled {
+  &.orange {
+    &.filled {
+      > .har-input {
         > label {
           color: var(--orange-500);
         }
@@ -460,8 +498,10 @@
           }
         }
       }
+    }
 
-      &.surface-borderless {
+    &.surface-borderless {
+      > .har-input {
         > label {
           color: var(--orange-500);
         }
@@ -482,8 +522,10 @@
           }
         }
       }
+    }
 
-      &.outlined {
+    &.outlined {
+      > .har-input {
         > label {
           color: var(--orange-500);
         }
@@ -504,8 +546,10 @@
           }
         }
       }
+    }
 
-      &.dashed {
+    &.dashed {
+      > .har-input {
         > label {
           color: var(--orange-500);
         }
@@ -526,8 +570,10 @@
           }
         }
       }
+    }
 
-      &.borderless {
+    &.borderless {
+      > .har-input {
         > label {
           left: 0.1rem;
           color: var(--orange-500);
@@ -546,9 +592,11 @@
         }
       }
     }
+  }
 
-    &.yellow {
-      &.filled {
+  &.yellow {
+    &.filled {
+      > .har-input {
         > label {
           color: var(--yellow-500);
         }
@@ -569,8 +617,10 @@
           }
         }
       }
+    }
 
-      &.surface-borderless {
+    &.surface-borderless {
+      > .har-input {
         > label {
           color: var(--yellow-500);
         }
@@ -591,8 +641,10 @@
           }
         }
       }
+    }
 
-      &.outlined {
+    &.outlined {
+      > .har-input {
         > label {
           color: var(--yellow-500);
         }
@@ -613,8 +665,10 @@
           }
         }
       }
+    }
 
-      &.dashed {
+    &.dashed {
+      > .har-input {
         > label {
           color: var(--yellow-500);
         }
@@ -635,8 +689,10 @@
           }
         }
       }
+    }
 
-      &.borderless {
+    &.borderless {
+      > .har-input {
         > label {
           left: 0.1rem;
           color: var(--yellow-500);
@@ -655,9 +711,11 @@
         }
       }
     }
+  }
 
-    &.green {
-      &.filled {
+  &.green {
+    &.filled {
+      > .har-input {
         > label {
           color: var(--green-500);
         }
@@ -678,8 +736,10 @@
           }
         }
       }
+    }
 
-      &.surface-borderless {
+    &.surface-borderless {
+      > .har-input {
         > label {
           color: var(--green-500);
         }
@@ -700,8 +760,10 @@
           }
         }
       }
+    }
 
-      &.outlined {
+    &.outlined {
+      > .har-input {
         > label {
           color: var(--green-500);
         }
@@ -722,8 +784,10 @@
           }
         }
       }
+    }
 
-      &.dashed {
+    &.dashed {
+      > .har-input {
         > label {
           color: var(--green-500);
         }
@@ -744,8 +808,10 @@
           }
         }
       }
+    }
 
-      &.borderless {
+    &.borderless {
+      > .har-input {
         > label {
           left: 0.1rem;
           color: var(--green-500);
@@ -764,9 +830,11 @@
         }
       }
     }
+  }
 
-    &.teal {
-      &.filled {
+  &.teal {
+    &.filled {
+      > .har-input {
         > label {
           color: var(--teal-500);
         }
@@ -787,8 +855,10 @@
           }
         }
       }
+    }
 
-      &.surface-borderless {
+    &.surface-borderless {
+      > .har-input {
         > label {
           color: var(--teal-500);
         }
@@ -809,8 +879,10 @@
           }
         }
       }
+    }
 
-      &.outlined {
+    &.outlined {
+      > .har-input {
         > label {
           color: var(--teal-500);
         }
@@ -831,8 +903,10 @@
           }
         }
       }
+    }
 
-      &.dashed {
+    &.dashed {
+      > .har-input {
         > label {
           color: var(--teal-500);
         }
@@ -853,8 +927,10 @@
           }
         }
       }
+    }
 
-      &.borderless {
+    &.borderless {
+      > .har-input {
         > label {
           left: 0.1rem;
           color: var(--teal-500);
@@ -873,9 +949,11 @@
         }
       }
     }
+  }
 
-    &.cyan {
-      &.filled {
+  &.cyan {
+    &.filled {
+      > .har-input {
         > label {
           color: var(--cyan-500);
         }
@@ -896,8 +974,10 @@
           }
         }
       }
+    }
 
-      &.surface-borderless {
+    &.surface-borderless {
+      > .har-input {
         > label {
           color: var(--cyan-500);
         }
@@ -918,8 +998,10 @@
           }
         }
       }
+    }
 
-      &.outlined {
+    &.outlined {
+      > .har-input {
         > label {
           color: var(--cyan-500);
         }
@@ -940,8 +1022,10 @@
           }
         }
       }
+    }
 
-      &.dashed {
+    &.dashed {
+      > .har-input {
         > label {
           color: var(--cyan-500);
         }
@@ -962,8 +1046,10 @@
           }
         }
       }
+    }
 
-      &.borderless {
+    &.borderless {
+      > .har-input {
         > label {
           left: 0.1rem;
           color: var(--cyan-500);
@@ -982,9 +1068,11 @@
         }
       }
     }
+  }
 
-    &.gray {
-      &.filled {
+  &.gray {
+    &.filled {
+      > .har-input {
         > label {
           color: var(--gray-500);
         }
@@ -1005,8 +1093,10 @@
           }
         }
       }
+    }
 
-      &.surface-borderless {
+    &.surface-borderless {
+      > .har-input {
         > label {
           color: var(--gray-500);
         }
@@ -1027,8 +1117,10 @@
           }
         }
       }
+    }
 
-      &.outlined {
+    &.outlined {
+      > .har-input {
         > label {
           color: var(--gray-500);
         }
@@ -1049,8 +1141,10 @@
           }
         }
       }
+    }
 
-      &.dashed {
+    &.dashed {
+      > .har-input {
         > label {
           color: var(--gray-500);
         }
@@ -1071,8 +1165,10 @@
           }
         }
       }
+    }
 
-      &.borderless {
+    &.borderless {
+      > .har-input {
         > label {
           left: 0.1rem;
           color: var(--gray-500);
@@ -1091,9 +1187,11 @@
         }
       }
     }
+  }
 
-    &.light {
-      &.filled {
+  &.light {
+    &.filled {
+      > .har-input {
         > label {
           color: var(--light-500);
         }
@@ -1114,8 +1212,10 @@
           }
         }
       }
+    }
 
-      &.surface-borderless {
+    &.surface-borderless {
+      > .har-input {
         > label {
           color: var(--light-500);
         }
@@ -1136,8 +1236,10 @@
           }
         }
       }
+    }
 
-      &.outlined {
+    &.outlined {
+      > .har-input {
         > label {
           color: var(--light-500);
         }
@@ -1158,8 +1260,10 @@
           }
         }
       }
+    }
 
-      &.dashed {
+    &.dashed {
+      > .har-input {
         > label {
           color: var(--light-500);
         }
@@ -1180,8 +1284,10 @@
           }
         }
       }
+    }
 
-      &.borderless {
+    &.borderless {
+      > .har-input {
         > label {
           left: 0.1rem;
           color: var(--light-500);

@@ -1,6 +1,6 @@
 .har-input-wrapper {
-  > .har-input {
-    &.xs {
+  &.xs {
+    > .har-input {
       > .input {
         > input {
           height: 2rem !important;
@@ -8,8 +8,10 @@
         }
       }
     }
+  }
 
-    &.sm {
+  &.sm {
+    > .har-input {
       > .input {
         > input {
           height: 2.25rem;
@@ -17,8 +19,10 @@
         }
       }
     }
+  }
 
-    &.md {
+  &.md {
+    > .har-input {
       > .input {
         > input {
           height: 2.5rem;
@@ -26,8 +30,10 @@
         }
       }
     }
+  }
 
-    &.lg {
+  &.lg {
+    > .har-input {
       > .input {
         > input {
           height: 2.75rem;
@@ -35,8 +41,10 @@
         }
       }
     }
+  }
 
-    &.xl {
+  &.xl {
+    > .har-input {
       > .input {
         > input {
           height: 3rem;
@@ -44,8 +52,10 @@
         }
       }
     }
+  }
 
-    &.xxl {
+  &.xxl {
+    > .har-input {
       > .input {
         > input {
           height: 3.25rem;

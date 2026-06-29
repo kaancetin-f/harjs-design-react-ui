@@ -1,54 +1,56 @@
 .har-input-wrapper {
-  > .har-input {
-    &.border-radius-sm {
+  &.border-radius-sm {
+    > .har-input {
       > .input {
         > input {
           border-radius: var(--border-radius-sm);
         }
       }
     }
+  }
 
-    &.border-radius-sm {
-      > .input {
-        > input {
-          border-radius: var(--border-radius-sm);
-        }
-      }
-    }
-
-    &.border-radius-lg {
+  &.border-radius-lg {
+    > .har-input {
       > .input {
         > input {
           border-radius: var(--border-radius-lg);
         }
       }
     }
+  }
 
-    &.border-radius-xl {
+  &.border-radius-xl {
+    > .har-input {
       > .input {
         > input {
           border-radius: var(--border-radius-xl);
         }
       }
     }
+  }
 
-    &.border-radius-xxl {
+  &.border-radius-xxl {
+    > .har-input {
       > .input {
         > input {
           border-radius: var(--border-radius-xxl);
         }
       }
     }
+  }
 
-    &.border-radius-pill {
+  &.border-radius-pill {
+    > .har-input {
       > .input {
         > input {
           border-radius: var(--border-radius-pill);
         }
       }
     }
+  }
 
-    &.border-radius-none {
+  &.border-radius-none {
+    > .har-input {
       > .input {
         > input {
           border-radius: 0;
