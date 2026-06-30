@@ -56,9 +56,9 @@ export interface IStatusProps<T extends { component?: string } = {}> {
    * ```
    */
   status?: T["component"] extends "alert"
-    ? Exclude<Status, "primary-light" | "secondary" | "information" | "dark" | "light">
+    ? Exclude<Status, "primary-light" | "secondary" | "information" | "dark">
     : T["component"] extends "card"
-      ? Exclude<Status, "primary-light" | "secondary" | "information" | "dark" | "light">
+      ? Exclude<Status, "primary-light" | "secondary" | "information" | "dark">
       : Status;
 }
 
@@ -88,7 +88,7 @@ export interface IBorderProps {
    *
    * @example
    * ```jsx
-   * <Component border={{ radius: "sm" }}>
+   * <Component border={{ radius: "4" }}>
    * Content
    * </Component>
    * ```

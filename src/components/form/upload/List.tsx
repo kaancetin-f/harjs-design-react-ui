@@ -31,7 +31,7 @@ const List = ({
           <li key={selectedFile.name}>
             {message && (
               <div className="error">
-                <ARIcon icon={"ExclamationDiamond-Fill"} fill="var(--white)" />
+                <ARIcon icon={"ExclamationDiamond-Fill"} fill="var(--white-pure)" />
                 <span>{message}</span>
               </div>
             )}

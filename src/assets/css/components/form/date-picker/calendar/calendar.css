@@ -4,11 +4,13 @@
   position: absolute;
   top: 0;
   left: 0;
-  background-color: var(--white);
+  background-color: var(--white-pure);
   width: 20rem;
   border: solid 1px var(--gray-200);
-  border-radius: var(--border-radius-sm);
+  border-radius: var(--radius-4);
   box-shadow: 0 0 10px -5px rgba(var(--black-rgb), 0.25);
   z-index: 1051;
-  transition: visibility 250ms, opacity 250ms ease-in-out;
+  transition:
+    visibility 250ms,
+    opacity 250ms ease-in-out;
 }

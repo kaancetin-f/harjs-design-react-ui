@@ -17,8 +17,6 @@ interface IProps
     ISizeProps,
     IUpperCaseProps,
     IValidationProps,
-    Omit<React.InputHTMLAttributes<HTMLInputElement>, "children" | "color" | "size"> {
-  // button?: Omit<ComponentProps<typeof Button>, "size" | "shape" | "position" | "fullWidth">;
-}
+    Omit<React.InputHTMLAttributes<HTMLInputElement>, "children" | "color" | "size"> {}
 
 export default IProps;

@@ -1,11 +1,7 @@
 @import url("./color-palette.css");
-/* @import url("./animation.css"); */
-/* @import url("./variants/filled.css"); */
-/* @import url("./variants/surface.css"); */
-/* @import url("./variants/outlined.css"); */
-/* @import url("./variants/dashed.css"); */
-/* @import url("./variants/borderless.css"); */
-/* @import url("./variants/border.css"); */
+@import url("./radius.css");
+@import url("./space.css");
+@import url("./stroke.css");
 @import url("./utils.css");
 
 *,
@@ -35,13 +31,12 @@
 
 /* #region Color Palette */
 
-:root {
+/* :root {
   --white: #fff;
   --white-rgb: 255, 255, 255;
   --black: #000000;
   --black-rgb: 0, 0, 0;
 
-  /* ... */
   --primary: var(--blue-500);
   --primary-light: #92c7ff;
   --primary-rgb: 13, 110, 253;
@@ -59,7 +54,7 @@
   --light-rgb: 222, 226, 230;
   --dark: var(--gray-500);
   --dark-rgb: 52, 58, 64;
-}
+} */
 /* #endregion */
 /* Color Palette */
 
@@ -88,25 +83,6 @@
 } */
 /* #endregion */
 /* Color Palette */
-
-/* #region Border */
-:root {
-  /* Store */
-  --border-width-xs: 1px;
-  --border-width-sm: 1.5px;
-  --border-width-md: 2px;
-  --border-width-lg: 4px;
-
-  /* Border Radius */
-  --border-radius: 0.465rem;
-  --border-radius-sm: 0.25rem;
-  --border-radius-lg: 0.5rem;
-  --border-radius-xl: 1rem;
-  --border-radius-xxl: 2rem;
-  --border-radius-pill: 50rem;
-}
-/* #endregion */
-/* Border */
 
 /* #region Box Shadow */
 :root {

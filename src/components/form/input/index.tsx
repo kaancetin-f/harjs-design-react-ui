@@ -11,7 +11,6 @@ import React, {
   useState,
 } from "react";
 import "../../../assets/css/components/form/input/styles.css";
-// import Button from "../button";
 import IProps from "./IProps";
 import Utils from "../../../libs/infrastructure/shared/Utils";
 import { ARIcon } from "../../icons";
@@ -26,9 +25,8 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
     {
       children,
       variant = "outlined",
-      color = "light",
-      border = { radius: "sm" },
-      // button,
+      color = "gray",
+      border = { radius: "4" },
       size,
       upperCase,
       validation,
@@ -49,8 +47,6 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
 
     // variables
     const _wrapperClassName: string[] = ["har-input-wrapper"];
-    // const _addonBeforeClassName: string[] = ["addon-before"];
-    // const _addonAfterClassName: string[] = ["addon-after"];
 
     _wrapperClassName.push(
       ...Utils.GetClassName(
@@ -65,18 +61,6 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
     );
 
     if (attributes.disabled) _wrapperClassName.push("disabled");
-    // if (addon) {
-    //   _wrapperClassName.push("addon");
-
-    //   _addonBeforeClassName.push(`${addon.variant || "filled"}`);
-    //   _addonBeforeClassName.push(`${status}`);
-
-    //   _addonAfterClassName.push(`${addon.variant || "filled"}`);
-    //   _addonAfterClassName.push(`${status}`);
-
-    //   _addonBeforeClassName.push(`border-radius-${border.radius}`);
-    //   _addonAfterClassName.push(`border-radius-${border.radius}`);
-    // }
 
     // methods
     const handleNumberChange = (delta: number) => {
@@ -97,7 +81,7 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
       } as unknown as ChangeEvent<HTMLInputElement>);
     };
 
-    const renderChildrenIcon = () => {
+    const renderIcon = () => {
       const iconElements = React.Children.toArray(children).filter((child) => {
         return React.isValidElement(child) && child.type === Input.Icon;
       });
@@ -111,17 +95,30 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
       });
     };
 
-    const renderChildrenAddon = (position: "before" | "after") => {
-      const iconElements = React.Children.toArray(children).filter((child) => {
+    const renderAddon = (position: "before" | "after") => {
+      const addons = React.Children.toArray(children).filter((child) => {
         return (
           React.isValidElement(child) && child.type === (position === "before" ? Input.AddonBefore : Input.AddonAfter)
         );
       });
 
-      if (iconElements.length === 0) return null;
+      if (addons.length === 0) return null;
 
-      return iconElements.map((child) => {
-        if (React.isValidElement(child)) return React.cloneElement(child);
+      return addons.map((child, index) => {
+        const isFirst = index === 0;
+        const isLast = index === addons.length - 1;
+        const isMiddle = !isFirst && !isLast;
+
+        if (React.isValidElement(child))
+          return (
+            <div
+              className={[`addon-${position}`, isFirst && "first", isMiddle && "middle", isLast && "last"]
+                .filter(Boolean)
+                .join(" ")}
+            >
+              {React.cloneElement(child)}
+            </div>
+          );
 
         return child;
       });
@@ -159,10 +156,10 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
 
     return (
       <div className={_wrapperClassName.map((c) => c).join(" ")}>
-        {renderChildrenAddon("before")}
+        {renderAddon("before")}
 
         <div className="har-input">
-          {renderChildrenIcon() && <div className="icon-element">{renderChildrenIcon()}</div>}
+          {renderIcon() && <div className="icon-element">{renderIcon()}</div>}
 
           {attributes.placeholder && (
             <label
@@ -260,9 +257,7 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
           {validation?.text && <span className="har-validation-text">{validation.text}</span>}
         </div>
 
-        {renderChildrenAddon("after")}
-
-        {/* {button && <Button {...button} border={{ radius: border.radius }} disabled={attributes.disabled} />} */}
+        {renderAddon("after")}
       </div>
     );
   },
@@ -280,8 +275,8 @@ interface InputCompound extends React.ForwardRefExoticComponent<IProps & React.R
 }
 
 const Input = BaseInput as InputCompound;
-Input.AddonBefore = ({ children }) => <div className={"addon-before"}>{children}</div>;
-Input.AddonAfter = ({ children }) => <div className={"addon-after"}>{children}</div>;
+Input.AddonBefore = ({ children }) => <>{children}</>;
+Input.AddonAfter = ({ children }) => <>{children}</>;
 Input.Icon = ({ children, position, ...attributes }) => {
   return (
     <span

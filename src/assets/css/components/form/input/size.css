@@ -1,16 +1,27 @@
 .har-input-wrapper {
   &.xs {
+    > .addon-before,
+    > .addon-after {
+      height: 2rem;
+      font-size: 0.75rem;
+    }
+
     > .har-input {
       > .input {
         > input {
-          height: 2rem !important;
+          height: 2rem;
           font-size: 0.75rem;
         }
       }
     }
   }
-
   &.sm {
+    > .addon-before,
+    > .addon-after {
+      height: 2.25rem;
+      font-size: 0.875rem;
+    }
+
     > .har-input {
       > .input {
         > input {
@@ -20,8 +31,13 @@
       }
     }
   }
-
   &.md {
+    > .addon-before,
+    > .addon-after {
+      height: 2.5rem;
+      font-size: 0.875rem;
+    }
+
     > .har-input {
       > .input {
         > input {
@@ -31,8 +47,13 @@
       }
     }
   }
-
   &.lg {
+    > .addon-before,
+    > .addon-after {
+      height: 2.75rem;
+      font-size: 1rem;
+    }
+
     > .har-input {
       > .input {
         > input {
@@ -42,8 +63,13 @@
       }
     }
   }
-
   &.xl {
+    > .addon-before,
+    > .addon-after {
+      height: 3rem;
+      font-size: 1rem;
+    }
+
     > .har-input {
       > .input {
         > input {
@@ -53,13 +79,18 @@
       }
     }
   }
-
   &.xxl {
+    > .addon-before,
+    > .addon-after {
+      height: 3.25rem;
+      font-size: 1.25rem;
+    }
+
     > .har-input {
       > .input {
         > input {
           height: 3.25rem;
-          font-size: 1rem;
+          font-size: 1.25rem;
         }
       }
     }

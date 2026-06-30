@@ -43,7 +43,7 @@ const Dropzone = ({ selectedFiles, validationErrors = [], handleFileToBase64, ha
       >
         {message && (
           <div className="error">
-            <ARIcon icon={"ExclamationDiamond-Fill"} fill="var(--white)" />
+            <ARIcon icon={"ExclamationDiamond-Fill"} fill="var(--white-pure)" />
             <span>{message}</span>
           </div>
         )}
@@ -53,7 +53,7 @@ const Dropzone = ({ selectedFiles, validationErrors = [], handleFileToBase64, ha
         {file.type.includes("image") ? (
           <img src={base64} />
         ) : (
-          <ARIcon icon={fileInfo.icon ?? "Document"} fill="var(--white)" size={32} />
+          <ARIcon icon={fileInfo.icon ?? "Document"} fill="var(--white-pure)" size={32} />
         )}
       </div>
     );

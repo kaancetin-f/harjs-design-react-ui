@@ -18,14 +18,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--white);
+  background-color: var(--white-pure);
   min-width: 2rem;
   min-height: 2rem;
   border: solid 1px var(--gray-300);
-  border-radius: var(--border-radius-sm);
+  border-radius: var(--radius-4);
   cursor: pointer;
   user-select: none;
-  transition: background 250ms, border 250ms ease-in-out;
+  transition:
+    background 250ms,
+    border 250ms ease-in-out;
 }
 .ar-modal-wrapper > .ar-modal > .header .close::before,
 .ar-modal-wrapper > .ar-modal > .header .close::after {

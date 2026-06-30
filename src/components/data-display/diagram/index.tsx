@@ -438,7 +438,7 @@ const Diagram: React.FC<IProps> = ({ nodes, edges }) => {
           <Tooltip text={"Zoom Out"}>
             <Button
               variant="borderless"
-              color="light"
+              color="gray"
               icon={{ element: <ARIcon icon={"Dash"} fill="currentColor" /> }}
               onClick={() => handleZoom("decrement")}
             />
@@ -449,7 +449,7 @@ const Diagram: React.FC<IProps> = ({ nodes, edges }) => {
           <Tooltip text={"Zoom In"}>
             <Button
               variant="borderless"
-              color="light"
+              color="gray"
               icon={{ element: <ARIcon icon={"Add"} fill="currentColor" /> }}
               onClick={() => handleZoom("increment")}
             />

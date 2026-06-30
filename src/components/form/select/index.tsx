@@ -13,8 +13,8 @@ import ReactDOM from "react-dom";
 const Select: React.FC<Props> = ({
   variant = "outlined",
   status,
-  color,
-  border = { radius: "sm" },
+  color = "gray",
+  border = { radius: "4" },
   style,
   options,
   value,
@@ -59,7 +59,7 @@ const Select: React.FC<Props> = ({
     ...Utils.GetClassName(
       variant,
       undefined,
-      validation?.text ? "red" : "light",
+      validation?.text ? "red" : "gray",
       border,
       undefined,
       undefined,
@@ -442,7 +442,7 @@ const Select: React.FC<Props> = ({
                         handleItemSelected(option);
                       }}
                     >
-                      {multiple && <Checkbox checked={isItem} color={isItem ? "blue" : "light"} disabled />}
+                      {multiple && <Checkbox checked={isItem} color={isItem ? "blue" : "gray"} disabled />}
                       <span>{option.text}</span>
                     </li>
                   );

@@ -33,7 +33,7 @@
 
     &:active {
       background-color: var(--gray-100) !important;
-      border: solid var(--border-width-xs) var(--gray-100) !important;
+      border: solid var(--stroke-1) var(--gray-100) !important;
     }
   }
 

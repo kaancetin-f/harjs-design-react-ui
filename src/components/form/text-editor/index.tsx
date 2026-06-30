@@ -11,7 +11,7 @@ import ReactDOM from "react-dom";
 import Tooltip from "../../feedback/tooltip";
 
 const TextEditor = <T extends object>({
-  color = "light",
+  color = "gray",
   name,
   value,
   onChange,
@@ -58,7 +58,7 @@ const TextEditor = <T extends object>({
       "outlined",
       undefined,
       !Utils.IsNullOrEmpty(validation?.text) ? "red" : color,
-      { radius: "sm" },
+      { radius: "4" },
       undefined,
       undefined,
       undefined,
@@ -320,8 +320,8 @@ const TextEditor = <T extends object>({
               key={command}
               type="button"
               variant="borderless"
-              color="light"
-              border={{ radius: "none" }}
+              color="gray"
+              border={{ radius: "0" }}
               icon={{ element: <ARIcon icon={icon} /> }}
               onClick={() => execCommand(command)}
             />

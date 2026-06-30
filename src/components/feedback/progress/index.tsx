@@ -15,7 +15,7 @@ const Progress: React.FC<IProps> = ({ value, reverse, isVisibleValue = false }) 
   else if (value >= 76 && value <= 100) _status = !reverse ? "success" : "danger";
 
   _arProgressClassName.push(
-    ...Utils.GetClassName("filled", _status, undefined, { radius: "pill" }, undefined, undefined, undefined),
+    ...Utils.GetClassName("filled", _status, undefined, { radius: "full" }, undefined, undefined, undefined),
   );
 
   return (

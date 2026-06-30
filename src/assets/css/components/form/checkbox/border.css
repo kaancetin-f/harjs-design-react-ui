@@ -1,25 +1,32 @@
 .har-checkbox {
-  &.border-radius-sm {
-    border-radius: var(--border-radius-sm);
+  &.radius-0 {
+    border-radius: var(--radius-0);
   }
-
-  &.border-radius-lg {
-    border-radius: var(--border-radius-lg);
+  &.radius-2 {
+    border-radius: var(--radius-2);
   }
-
-  &.border-radius-xl {
-    border-radius: var(--border-radius-xl);
+  &.radius-4 {
+    border-radius: var(--radius-4);
   }
-
-  &.border-radius-xxl {
-    border-radius: var(--border-radius-xxl);
+  &.radius-6 {
+    border-radius: var(--radius-6);
   }
-
-  &.border-radius-pill {
-    border-radius: var(--border-radius-pill);
+  &.radius-8 {
+    border-radius: var(--radius-8);
   }
-
-  &.border-radius-none {
-    border-radius: 0;
+  &.radius-12 {
+    border-radius: var(--radius-12);
+  }
+  &.radius-16 {
+    border-radius: var(--radius-16);
+  }
+  &.radius-20 {
+    border-radius: var(--radius-20);
+  }
+  &.radius-40 {
+    border-radius: var(--radius-40);
+  }
+  &.radius-full {
+    border-radius: var(--radius-full);
   }
 }

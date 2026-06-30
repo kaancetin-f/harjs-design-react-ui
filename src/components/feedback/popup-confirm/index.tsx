@@ -38,7 +38,7 @@ const PopupConfirm = ({ title, message, status, isOpen, buttons, onConfirm }: IP
         return "red";
 
       default:
-        return "light";
+        return "gray";
     }
   };
 
@@ -58,7 +58,7 @@ const PopupConfirm = ({ title, message, status, isOpen, buttons, onConfirm }: IP
         return <ARIcon icon="Trash-Fill" fill="var(--danger)" size={24} />;
 
       default:
-        return "light";
+        return "gray";
     }
   };
 

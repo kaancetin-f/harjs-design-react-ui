@@ -20,7 +20,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: var(--border-radius-pill);
+  border-radius: var(--radius-full);
   /* Sırasıyla; Ad, Süre, Hız, Gecikme Süresi, Tekrar Sayısı, Yön, Bitiş Süreci */
   animation: progress cubic-bezier(0.23, 1, 0.32, 1) 2.5s 0s infinite normal both;
 }
@@ -32,11 +32,11 @@
   width: auto;
   height: 1rem;
   padding: 0 0.25rem;
-  border-radius: var(--border-radius-pill);
-  color: var(--white);
+  border-radius: var(--radius-full);
+  color: var(--white-pure);
   font-size: 0.75rem;
   line-height: 1rem;
-  /* -webkit-text-stroke: 0.75px var(--white); */
+  /* -webkit-text-stroke: 0.75px var(--white-pure); */
   z-index: 1;
 }
 .ar-progress > .ar-progress-value > span::before {

@@ -38,8 +38,8 @@
 
 .ar-modal-wrapper > .ar-modal {
   position: absolute;
-  background-color: var(--white);
-  border-radius: var(--border-radius-sm);
+  background-color: var(--white-pure);
+  border-radius: var(--radius-4);
 }
 
 .ar-modal-wrapper > .ar-modal.large {

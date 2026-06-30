@@ -7,42 +7,15 @@ import React from "react";
 export type Variants = "filled" | "surface" | "surface-borderless" | "outlined" | "dashed" | "borderless";
 
 export type Status =
-  | "primary"
-  | "primary-light"
-  | "secondary"
-  | "success"
-  | "danger"
-  | "warning"
-  | "information"
-  | "dark"
-  | "light";
+  "primary" | "primary-light" | "secondary" | "success" | "danger" | "warning" | "information" | "dark" | "light";
 
-export type Color =
-  | "blue"
-  | "purple"
-  | "pink"
-  | "red"
-  | "orange"
-  | "yellow"
-  | "green"
-  | "teal"
-  | "cyan"
-  | "gray"
-  | "light";
+export type Color = "blue" | "purple" | "pink" | "red" | "orange" | "yellow" | "green" | "teal" | "cyan" | "gray";
 
 export type ParagraphColors =
-  | "gray-100"
-  | "gray-200"
-  | "gray-300"
-  | "gray-400"
-  | "gray-500"
-  | "gray-600"
-  | "gray-700"
-  | "gray-800"
-  | "gray-900";
+  "gray-100" | "gray-200" | "gray-300" | "gray-400" | "gray-500" | "gray-600" | "gray-700" | "gray-800" | "gray-900";
 
 export type Border = { radius: BorderRadiuses };
-export type BorderRadiuses = "sm" | "lg" | "xl" | "xxl" | "pill" | "none";
+export type BorderRadiuses = "0" | "2" | "4" | "6" | "8" | "12" | "16" | "20" | "40" | "full";
 
 export type Sizes = "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
 
@@ -90,15 +63,7 @@ export interface TabProps {
 // ============================================================================
 
 export type FilterDataType =
-  | "string"
-  | "number"
-  | "date"
-  | "bigint"
-  | "boolean"
-  | "symbol"
-  | "undefined"
-  | "object"
-  | "function";
+  "string" | "number" | "date" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function";
 
 /**
  * Blueprint layout schema defining rendering pipelines, in-line editing configurations,

@@ -2,12 +2,12 @@
 
 import Utils from "../../../libs/infrastructure/shared/Utils";
 import React, { forwardRef, useImperativeHandle, useRef } from "react";
-import "../../../assets/css/components/form/checkbox/checkbox.css";
+import "../../../assets/css/components/form/checkbox/styles.css";
 import Props from "./Props";
 
 const Checkbox = forwardRef<HTMLInputElement, Props>(
   (
-    { label, variant, color = "blue", border = { radius: "sm" }, size = "sm", upperCase, validation, ...attributes },
+    { label, variant, color = "blue", border = { radius: "4" }, size = "sm", upperCase, validation, ...attributes },
     ref,
   ) => {
     // refs
@@ -20,7 +20,7 @@ const Checkbox = forwardRef<HTMLInputElement, Props>(
         variant ?? "outlined",
         undefined,
         validation?.text ? "red" : (color ?? "blue"),
-        border ?? { radius: "sm" },
+        border ?? { radius: "4" },
         undefined,
         undefined,
         attributes.className,

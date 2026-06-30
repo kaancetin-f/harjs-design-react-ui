@@ -3,14 +3,14 @@
 .ar-syntax {
   display: flex;
   flex-direction: column;
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-4);
 }
 
 .ar-syntax > .preview {
   position: relative;
   gap: 1rem;
   border: solid 1px var(--gray-200);
-  border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+  border-radius: var(--radius-4) var(--radius-4) 0 0;
   padding: 1rem;
 }
 .ar-syntax > .preview.left {
@@ -38,7 +38,7 @@
   margin: 0;
 
   border-top: solid 2.5px var(--custom-tag-color);
-  border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+  border-radius: 0 0 var(--radius-4) var(--radius-4);
   overflow: hidden;
 }
 .ar-syntax > .pre.hidden {

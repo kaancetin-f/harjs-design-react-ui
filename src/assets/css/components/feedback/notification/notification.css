@@ -5,10 +5,10 @@
   display: flex;
   flex-direction: row;
   gap: 0 0.5rem;
-  background-color: var(--white);
+  background-color: var(--white-pure);
   width: 350px;
   height: 7.5rem;
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-8);
   box-shadow: 0 5px 15px -5px rgba(var(--black-rgb), 0.25);
   transition: all 250ms ease-in-out;
   overflow: hidden;
@@ -28,13 +28,13 @@
 .ar-notification-item > .icon {
   position: relative;
   min-width: 3rem;
-  border-top-left-radius: var(--border-radius-xl);
-  border-bottom-left-radius: var(--border-radius-xl);
+  border-top-left-radius: var(--radius-8);
+  border-bottom-left-radius: var(--radius-8);
   overflow: hidden;
 }
 .ar-notification-item > .icon > span {
   position: absolute;
-  border-radius: var(--border-radius-pill);
+  border-radius: var(--radius-full);
 }
 .ar-notification-item > .icon > span:nth-child(1) {
   top: 0.5rem;

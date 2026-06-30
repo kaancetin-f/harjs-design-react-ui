@@ -6,7 +6,7 @@ import IProps from "./IProps";
 import Utils from "../../../libs/infrastructure/shared/Utils";
 
 const Switch = forwardRef(
-  ({ label, color, border = { radius: "pill" }, ...attributes }: IProps, ref: React.ForwardedRef<HTMLInputElement>) => {
+  ({ label, color, border = { radius: "full" }, ...attributes }: IProps, ref: React.ForwardedRef<HTMLInputElement>) => {
     // refs
     let _switchInput = useRef<HTMLInputElement>(null);
     let _switch = useRef<HTMLInputElement>(null);
@@ -21,12 +21,12 @@ const Switch = forwardRef(
       ...Utils.GetClassName(
         undefined,
         undefined,
-        attributes.checked ? color : "light",
+        attributes.checked ? color : "gray",
         border,
         undefined,
         undefined,
-        attributes.className
-      )
+        attributes.className,
+      ),
     );
 
     // hooks
@@ -67,7 +67,7 @@ const Switch = forwardRef(
         </label>
       </div>
     );
-  }
+  },
 );
 
 Switch.displayName = "Switch";

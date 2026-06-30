@@ -59,10 +59,10 @@
       position: absolute;
       top: calc(2.5rem - (1.75rem / 2));
       right: -0.875rem;
-      background-color: var(--white);
+      background-color: var(--white-pure);
       width: 1.75rem;
       height: 1.75rem;
-      border-radius: var(--border-radius-lg);
+      border-radius: var(--radius-4);
       color: var(--gray-400);
       cursor: pointer;
       box-shadow: 0 0 10px -5px rgba(var(--black-rgb), 0.25);

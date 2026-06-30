@@ -1,7 +1,7 @@
 .ar-paper {
-  background-color: var(--white);
+  background-color: var(--white-pure);
   padding: 1rem;
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-4);
   box-shadow: 0px 10px 15px -5px rgba(var(--black-rgb), 0.1);
 
   > .header {

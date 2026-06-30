@@ -4,7 +4,7 @@
     &.primary {
       background-color: var(--blue-400);
       border: solid 1px var(--blue-500) !important;
-      color: var(--white);
+      color: var(--white-pure);
 
       > .title {
         border-bottom: solid 1px var(--blue-500) !important;
@@ -13,7 +13,7 @@
   }
   &.surface {
     &.primary {
-      background-color: var(--white);
+      background-color: var(--white-pure);
       border: solid 1px var(--blue-500) !important;
       color: var(--gray-700);
 
@@ -55,7 +55,7 @@
   }
   &.surface {
     &.primary-light {
-      background-color: var(--white);
+      background-color: var(--white-pure);
       border: solid 1px var(--light-500) !important;
       color: var(--gray-700);
 
@@ -97,7 +97,7 @@
   }
   &.surface {
     &.secondary {
-      background-color: var(--white);
+      background-color: var(--white-pure);
       border: solid 1px var(--light-500) !important;
       color: var(--gray-700);
 
@@ -130,7 +130,7 @@
     &.success {
       background-color: var(--green-400);
       border: solid 1px var(--green-500) !important;
-      color: var(--white);
+      color: var(--white-pure);
 
       > .title {
         border-bottom: solid 1px var(--green-500) !important;
@@ -139,7 +139,7 @@
   }
   &.surface {
     &.success {
-      background-color: var(--white);
+      background-color: var(--white-pure);
       border: solid 1px var(--green-500) !important;
       color: var(--gray-700);
 
@@ -181,7 +181,7 @@
   }
   &.surface {
     &.warning {
-      background-color: var(--white);
+      background-color: var(--white-pure);
       border: solid 1px var(--orange-500) !important;
       color: var(--gray-700);
 
@@ -214,7 +214,7 @@
     &.danger {
       background-color: var(--red-400);
       border: solid 1px var(--red-500) !important;
-      color: var(--white);
+      color: var(--white-pure);
 
       > .title {
         border-bottom: solid 1px var(--red-500) !important;
@@ -223,7 +223,7 @@
   }
   &.surface {
     &.danger {
-      background-color: var(--white);
+      background-color: var(--white-pure);
       border: solid 1px var(--red-500) !important;
       color: var(--gray-700);
 
@@ -265,7 +265,7 @@
   }
   &.surface {
     &.information {
-      background-color: var(--white);
+      background-color: var(--white-pure);
       border: solid 1px var(--light-500) !important;
       color: var(--gray-700);
 
@@ -307,7 +307,7 @@
   }
   &.surface {
     &.dark {
-      background-color: var(--white);
+      background-color: var(--white-pure);
       border: solid 1px var(--light-500) !important;
       color: var(--gray-700);
 
@@ -349,7 +349,7 @@
   }
   &.surface {
     &.light {
-      background-color: var(--white);
+      background-color: var(--white-pure);
       border: solid 1px var(--light-500) !important;
       color: var(--gray-700);
 

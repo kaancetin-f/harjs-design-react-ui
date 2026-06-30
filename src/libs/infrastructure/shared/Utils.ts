@@ -15,7 +15,7 @@ class Utils {
     if (variant) classNames.push(variant);
     if (status) classNames.push(status);
     if (color) classNames.push(color);
-    if (border) classNames.push(`border-radius-${border.radius}`);
+    if (border) classNames.push(`radius-${border.radius}`);
     if (size) classNames.push(size);
     if (icon && icon.element) {
       classNames.push("icon");

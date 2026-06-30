@@ -2,18 +2,8 @@ const fs = require("fs");
 const path = require("path");
 
 const borderTypes = ["sm", "lg", "xl", "xxl", "pill"];
-const statuses = [
-  "primary",
-  "primary-light",
-  "secondary",
-  "success",
-  "warning",
-  "danger",
-  "information",
-  "dark",
-  "light",
-];
-const colors = ["blue", "purple", "pink", "red", "orange", "yellow", "green", "teal", "cyan", "gray", "light"];
+const statuses = ["primary", "primary-light", "secondary", "success", "warning", "danger", "information", "dark"];
+const colors = ["blue", "purple", "pink", "red", "orange", "yellow", "green", "teal", "cyan", "gray"];
 const columnsSizes = ["large", "medium", "small", "x-large", "x-small"];
 let background = "";
 let borderColor = "";
@@ -93,8 +83,8 @@ const _Input_CheckboxCss = () => {
       &:checked {
         + span {
           > .ar-checkbox.filled.${color}::before {
-            border-right-color: var(--white);
-            border-bottom-color: var(--white);
+            border-right-color: var(--white-pure);
+            border-bottom-color: var(--white-pure);
           }
 
           > .ar-checkbox.filled.${color} {
@@ -126,8 +116,8 @@ const _Input_RadioCss = () => {
       &:checked {
         + span {
           > .ar-radio.filled.${color}::before {
-            border-right-color: var(--white);
-            border-bottom-color: var(--white);
+            border-right-color: var(--white-pure);
+            border-bottom-color: var(--white-pure);
           }
 
           > .ar-radio.filled.${color} {
@@ -185,9 +175,6 @@ const _Variant_FilledCss = () => {
         case "yellow":
         case "gray":
           fontColor = "black";
-          break;
-        case "light":
-          fontColor = "gray-500";
           break;
         default:
           fontColor = "white";
@@ -277,11 +264,6 @@ const _Variant_OutlinedCss = () => {
   const content = colors
     .map((color) => {
       switch (color) {
-        case "light":
-          fontColor = "black";
-          borderColor = "gray-400";
-          boxShadow = "gray-100";
-          break;
         default:
           fontColor = `${color}-500`;
           borderColor = `${color}-300`;
@@ -383,10 +365,6 @@ const _Variant_BorderlessCss = () => {
   const content = colors
     .map((color) => {
       switch (color) {
-        case "light":
-          fontColor = "gray-700";
-          focusColor = "gray-700";
-          break;
         default:
           fontColor = color;
           focusColor = "white";
@@ -514,7 +492,7 @@ const CardStatuses = () => {
           fontColor = "white";
           break;
         default:
-          background = "light";
+          background = "gray";
           fontColor = "gray-700";
           break;
       }
@@ -534,7 +512,7 @@ const CardStatuses = () => {
   }
   &.surface {
     &.${status} {
-      background-color: var(--white);
+      background-color: var(--white-pure);
       border: solid 1px var(--${background}-500) !important;
       color: var(--gray-700);
 

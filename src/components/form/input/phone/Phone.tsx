@@ -50,7 +50,7 @@ const Phone: React.FC<IProps> = ({
         <Select
           style={{ width: 130 }}
           variant="outlined"
-          color="light"
+          color="gray"
           options={options}
           value={selected}
           onChange={(option) => {
@@ -65,7 +65,7 @@ const Phone: React.FC<IProps> = ({
       <Input
         ref={_input}
         {...attributes}
-        {...(!options ? { style: { borderRadius: "var(--border-radius-sm)" } } : {})}
+        {...(!options ? { style: { borderRadius: "var(--radius-4)" } } : {})}
         variant={variant}
         color={color}
         value={PHONE.FormatByMask(selected?.value as string, _value as string)}

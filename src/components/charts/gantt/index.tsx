@@ -428,7 +428,7 @@ const Gantt: React.FC<IProps> = ({ title, description, data, pagination, config 
           {/* :Begin:Left Label Axis */}
           <g className="left-axis">
             {/* Background */}
-            <rect x={0} y={-ROW_HEIGHT * 2 + 0.5} width={LABEL_WIDTH} height={SVG_HEIGHT} fill="var(--white)" />
+            <rect x={0} y={-ROW_HEIGHT * 2 + 0.5} width={LABEL_WIDTH} height={SVG_HEIGHT} fill="var(--white-pure)" />
 
             <line
               x1={LABEL_WIDTH}

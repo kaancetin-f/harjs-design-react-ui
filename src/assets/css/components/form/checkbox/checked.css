@@ -50,7 +50,7 @@
             background-color: transparent;
             width: 0.5rem;
             height: 0.5rem;
-            border-radius: var(--border-radius-pill);
+            border-radius: var(--radius-full);
           }
         }
       }
@@ -68,7 +68,7 @@
               background-color: transparent;
               width: 0.5rem;
               height: 0.5rem;
-              border-radius: var(--border-radius-pill);
+              border-radius: var(--radius-full);
             }
           }
         }

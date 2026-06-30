@@ -41,7 +41,7 @@
             background-color: var(--gray-200);
             width: 2px;
             height: 12.5px;
-            border-radius: var(--border-radius-pill);
+            border-radius: var(--radius-full);
           }
         }
 
@@ -56,7 +56,7 @@
             content: "";
             background-color: var(--primary);
             height: 2px;
-            border-radius: var(--border-radius-pill);
+            border-radius: var(--radius-full);
           }
         }
 
@@ -67,7 +67,7 @@
           background-color: rgba(var(--danger-rgb), 0.25);
           width: 1rem;
           height: 1rem;
-          border-radius: var(--border-radius-pill);
+          border-radius: var(--radius-full);
           color: rgba(var(--danger-rgb), 0.5);
           font-size: 0.75rem;
         }
@@ -85,7 +85,7 @@
       backdrop-filter: blur(5px);
       width: 2rem;
       height: 2rem;
-      border-radius: var(--border-radius-sm);
+      border-radius: var(--radius-4);
       cursor: pointer;
       transition:
         visibility 0.25s,
@@ -122,7 +122,7 @@
           background-color: var(--gray-200);
           width: 100%;
           height: 15px;
-          border-radius: var(--border-radius-pill);
+          border-radius: var(--radius-full);
           animation: shimmer 2.5s infinite;
         }
       }
@@ -139,7 +139,7 @@
       > div {
         background-color: var(--gray-200);
         height: 15px;
-        border-radius: var(--border-radius-pill);
+        border-radius: var(--radius-full);
         animation: shimmer 2.5s infinite;
 
         &:nth-child(1) {

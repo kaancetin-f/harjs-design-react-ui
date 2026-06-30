@@ -72,7 +72,7 @@
           align-items: center;
           min-width: 2rem;
           min-height: 2rem;
-          border-radius: var(--border-radius-pill);
+          border-radius: var(--radius-full);
 
           svg {
             color: var(--light);
@@ -143,10 +143,10 @@
         .icon {
           background-color: var(--selected-icon-bg-color);
           box-shadow: 0 0 0 5px var(--selected-icon-bg-color-rgb);
-          color: var(--white);
+          color: var(--white-pure);
 
           svg {
-            color: var(--white);
+            color: var(--white-pure);
           }
         }
 

@@ -1,9 +1,9 @@
 @import url("./statuses.css");
 
 .ar-card {
-  background-color: var(--white);
+  background-color: var(--white-pure);
   border: solid 1px var(--light-400);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-4);
   color: var(--gray-700);
   overflow: hidden;
 

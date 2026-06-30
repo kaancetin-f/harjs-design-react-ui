@@ -10,7 +10,7 @@ const Alert: React.FC<IProps> = ({
   message,
   variant = "filled",
   status = "primary",
-  border = { radius: "sm" },
+  border = { radius: "4" },
   emphasize,
 }) => {
   const _className: string[] = ["ar-alert"];
@@ -40,7 +40,7 @@ const Alert: React.FC<IProps> = ({
         _lowerCaseMessage = currentMessage.toLocaleLowerCase();
         startIndex = _lowerCaseMessage.indexOf(
           _lowerCaseEmphasize,
-          startIndex + `<span class="ar-alert-tag">${originalTag}</span>`.length
+          startIndex + `<span class="ar-alert-tag">${originalTag}</span>`.length,
         );
       }
 

@@ -1,14 +1,14 @@
 .ar-gantt-chart {
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-4);
   box-shadow: 0px 10px 15px -5px rgba(var(--black-rgb), 0.1);
   overflow: hidden;
 
   .ar-gantt-chart-svg {
-    background-color: var(--white);
+    background-color: var(--white-pure);
     font-family: var(--system);
 
     > .header {
-      fill: var(--white);
+      fill: var(--white-pure);
       height: 75px;
 
       > .title-group {
@@ -35,7 +35,7 @@
       }
 
       > .left-axis {
-        fill: var(--white);
+        fill: var(--white-pure);
 
         > .label-list {
           > .label-row {
@@ -56,7 +56,7 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    background-color: var(--white);
+    background-color: var(--white-pure);
     padding: 1rem 1.5rem;
   }
 }

@@ -21,7 +21,7 @@ const Radio = forwardRef<HTMLInputElement, IProps>(({ ...props }, ref) => {
 
   return (
     <div className="har-radio-wrapper">
-      <Checkbox ref={_innerRef} {...props} type="radio" border={{ radius: "pill" }} />
+      <Checkbox ref={_innerRef} {...props} type="radio" border={{ radius: "full" }} />
 
       <div>
         {trace && Object.keys(trace).length > 0 && <span className={_traceClassName.map((c) => c).join(" ")}></span>}

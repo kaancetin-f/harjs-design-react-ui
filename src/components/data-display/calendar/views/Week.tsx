@@ -132,7 +132,7 @@ const Week = function <T>({ trackedBy, data, renderItem, states, config }: IProp
                       left: `calc(${(100 / 7) * dayIndex}% + ${(layout.column * (100 / 7)) / layout.totalColumns}%)`,
                       width: `${100 / 7 / layout.totalColumns}%`,
                       border: `1px solid ${eventColor.border}`,
-                      borderRadius: "var(--border-radius-sm)",
+                      borderRadius: "var(--radius-4)",
                       zIndex: 10,
                     }}
                   >

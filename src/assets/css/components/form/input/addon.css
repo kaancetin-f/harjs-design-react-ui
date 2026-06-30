@@ -3,169 +3,121 @@
   &:has(> .addon-after) {
     > .addon-before,
     > .addon-after {
+      position: relative;
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: var(--gray-200);
+      background-color: var(--gray-100);
       height: var(--input-height);
       padding: 0 0.5rem;
       color: var(--gray-500);
       font-family: var(--system);
+      z-index: 0;
+
+      &:has(input, select, button, textarea) {
+        position: relative;
+        background-color: transparent;
+        padding: 0 !important;
+        margin-inline: -1px;
+        border-inline-start: solid 1px var(--gray-300);
+      }
 
       + .addon-before {
-        border-left: solid 1px var(--gray-300) !important;
-        border-radius: 0 !important;
+        border-radius: var(--radius-0) !important;
+
+        &::before {
+          position: absolute;
+          left: 0;
+          content: "";
+          background-color: rgba(0, 0, 0, 0.1);
+          width: 1px;
+          height: 65%;
+        }
       }
 
       &:has(+ .addon-after) {
-        border-radius: 0 !important;
+        border-radius: var(--radius-0) !important;
       }
 
       + .addon-after {
-        border-left: solid 1px var(--gray-300) !important;
-      }
-    }
-
-    /* Radius */
-    &.border-radius-sm {
-      > .addon-before {
-        border-top-left-radius: var(--border-radius-sm);
-        border-bottom-left-radius: var(--border-radius-sm);
-      }
-
-      > .addon-after {
-        border-top-right-radius: var(--border-radius-sm);
-        border-bottom-right-radius: var(--border-radius-sm);
-      }
-    }
-
-    &.border-radius-lg {
-      > .addon-before {
-        border-top-left-radius: var(--border-radius-lg);
-        border-bottom-left-radius: var(--border-radius-lg);
-      }
-
-      > .addon-after {
-        border-top-right-radius: var(--border-radius-lg);
-        border-bottom-right-radius: var(--border-radius-lg);
-      }
-    }
-
-    &.border-radius-xl {
-      > .addon-before {
-        border-top-left-radius: var(--border-radius-xl);
-        border-bottom-left-radius: var(--border-radius-xl);
-      }
-
-      > .addon-after {
-        border-top-right-radius: var(--border-radius-xl);
-        border-bottom-right-radius: var(--border-radius-xl);
-      }
-    }
-
-    &.border-radius-xxl {
-      > .addon-before {
-        border-top-left-radius: var(--border-radius-xxl);
-        border-bottom-left-radius: var(--border-radius-xxl);
-      }
-
-      > .addon-after {
-        border-top-right-radius: var(--border-radius-xxl);
-        border-bottom-right-radius: var(--border-radius-xxl);
-      }
-    }
-
-    &.border-radius-pill {
-      > .addon-before {
-        border-top-left-radius: var(--border-radius-pill);
-        border-bottom-left-radius: var(--border-radius-pill);
-      }
-
-      > .addon-after {
-        border-top-right-radius: var(--border-radius-pill);
-        border-bottom-right-radius: var(--border-radius-pill);
-      }
-    }
-
-    &.border-radius-none {
-      > .addon-before {
-        border-top-left-radius: var(--border-radius-none);
-        border-bottom-left-radius: var(--border-radius-none);
-      }
-
-      > .addon-after {
-        border-top-right-radius: var(--border-radius-none);
-        border-bottom-right-radius: var(--border-radius-none);
-      }
-    }
-
-    /* Sizes */
-    &.xs {
-      > .addon-before,
-      > .addon-after {
-        height: 2rem;
-        font-size: 0.75rem;
-      }
-    }
-
-    &.sm {
-      > .addon-before,
-      > .addon-after {
-        height: 2.25rem;
-        font-size: 0.875rem;
-      }
-    }
-
-    &.md {
-      > .addon-before,
-      > .addon-after {
-        height: 2.5rem;
-        font-size: 0.875rem;
-      }
-    }
-
-    &.lg {
-      > .addon-before,
-      > .addon-after {
-        height: 2.75rem;
-        font-size: 1rem;
-      }
-    }
-
-    &.xl {
-      > .addon-before,
-      > .addon-after {
-        height: 3rem;
-        font-size: 1rem;
-      }
-    }
-
-    &.xxl {
-      > .addon-before,
-      > .addon-after {
-        height: 3.25rem;
-        font-size: 1rem;
+        &::before {
+          position: absolute;
+          left: 0;
+          content: "";
+          background-color: rgba(0, 0, 0, 0.1);
+          width: 1px;
+          height: 65%;
+        }
       }
     }
   }
 
   &:has(> .addon-before) {
+    > .addon-before {
+      &.first {
+        input,
+        button {
+          border-top-right-radius: var(--radius-0) !important;
+          border-bottom-right-radius: var(--radius-0) !important;
+        }
+      }
+
+      &.middle {
+        input,
+        button {
+          border-radius: var(--radius-0) !important;
+        }
+      }
+
+      &.last {
+        input,
+        button {
+          border-radius: var(--radius-0) !important;
+        }
+      }
+    }
+
     > .har-input {
       > .input {
         > input {
-          border-top-left-radius: var(--border-radius-none) !important;
-          border-bottom-left-radius: var(--border-radius-none) !important;
+          border-top-left-radius: var(--radius-0) !important;
+          border-bottom-left-radius: var(--radius-0) !important;
         }
       }
     }
   }
 
   &:has(> .addon-after) {
+    > .addon-after {
+      &.first {
+        input,
+        button {
+          border-top-left-radius: var(--radius-0) !important;
+          border-bottom-left-radius: var(--radius-0) !important;
+        }
+      }
+
+      &.middle {
+        input,
+        button {
+          border-radius: var(--radius-0) !important;
+        }
+      }
+
+      &.last {
+        input,
+        button {
+          border-top-left-radius: var(--radius-0) !important;
+          border-bottom-left-radius: var(--radius-0) !important;
+        }
+      }
+    }
+
     > .har-input {
       > .input {
         > input {
-          border-top-right-radius: var(--border-radius-none) !important;
-          border-bottom-right-radius: var(--border-radius-none) !important;
+          border-top-right-radius: var(--radius-0) !important;
+          border-bottom-right-radius: var(--radius-0) !important;
         }
       }
     }

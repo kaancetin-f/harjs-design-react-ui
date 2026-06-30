@@ -29,11 +29,11 @@
 .ar-drawer-wrapper > .ar-drawer {
   position: absolute;
   right: -85%;
-  background-color: var(--white);
+  background-color: var(--white-pure);
   width: 85%;
   height: 100%;
-  border-top-left-radius: var(--border-radius-sm);
-  border-bottom-left-radius: var(--border-radius-sm);
+  border-top-left-radius: var(--radius-4);
+  border-bottom-left-radius: var(--radius-4);
 }
 .ar-drawer-wrapper.opened > .ar-drawer {
   animation: open 1s ease 0s 1 normal forwards;
@@ -54,12 +54,12 @@
   background-color: var(--gray-300);
   width: fit-content;
   padding: 0.5rem 1rem;
-  border-top-left-radius: var(--border-radius-sm);
-  border-bottom-left-radius: var(--border-radius-sm);
+  border-top-left-radius: var(--radius-4);
+  border-bottom-left-radius: var(--radius-4);
   cursor: pointer;
 }
 .ar-drawer-wrapper > .ar-drawer > .tabs > .item.selection {
-  background-color: var(--white);
+  background-color: var(--white-pure);
   border-right: solid 2.5px var(--primary);
 }
 .ar-drawer-wrapper > .ar-drawer > .tabs > .item.selection::before {

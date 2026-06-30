@@ -5,11 +5,11 @@
 .ar-table {
   display: flex;
   flex-direction: column;
-  background-color: var(--white);
+  background-color: var(--white-pure);
   max-width: 100%;
   min-width: 100%;
   width: 1px;
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-4);
   box-shadow: 0px 10px 15px -5px rgba(var(--black-rgb), 0.1);
   font-family: var(--system);
   overflow: hidden;
@@ -258,7 +258,7 @@
                       background-color: var(--gray-600);
                       width: 5px;
                       height: 5px;
-                      border-radius: var(--border-radius-pill);
+                      border-radius: var(--radius-full);
                     }
                   }
                 }
@@ -379,7 +379,7 @@
                   background-color: var(--primary);
                   width: 5px;
                   height: 5px;
-                  border-radius: var(--border-radius-pill);
+                  border-radius: var(--radius-full);
                 }
               }
 
@@ -673,7 +673,7 @@
                         background-color: var(--gray-600);
                         width: 5px;
                         height: 5px;
-                        border-radius: var(--border-radius-pill);
+                        border-radius: var(--radius-full);
                       }
                     }
                   }
@@ -794,7 +794,7 @@
                     background-color: var(--primary);
                     width: 5px;
                     height: 5px;
-                    border-radius: var(--border-radius-pill);
+                    border-radius: var(--radius-full);
                   }
                 }
               }

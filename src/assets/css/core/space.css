@@ -1,0 +1,27 @@
+:root {
+  --space-0: 0;
+  --space-2: 2;
+  --space-4: 4;
+  --space-6: 6;
+  --space-8: 8;
+  --space-10: 10;
+  --space-12: 12;
+  --space-16: 16;
+  --space-20: 20;
+  --space-24: 24;
+  --space-28: 28;
+  --space-32: 32;
+  --space-36: 36;
+  --space-40: 40;
+  --space-44: 44;
+  --space-48: 48;
+  --space-52: 52;
+  --space-56: 56;
+  --space-60: 60;
+  --space-64: 64;
+  --space-68: 68;
+  --space-72: 72;
+  --space-80: 80;
+  --space-120: 120;
+  --space-320: 320;
+}

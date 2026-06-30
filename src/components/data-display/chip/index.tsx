@@ -7,9 +7,9 @@ import Utils from "../../../libs/infrastructure/shared/Utils";
 
 const Chip: React.FC<IProps> = ({
   variant = "outlined",
-  color = "light",
+  color = "gray",
   customColor,
-  border = { radius: "sm" },
+  border = { radius: "4" },
   text,
   icon,
 }) => {

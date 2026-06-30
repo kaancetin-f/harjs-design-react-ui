@@ -1,10 +1,10 @@
 .har-button {
-  /* Ortak tanımlamalar ve varsayılan boyut */
-  --btn-size: 1.5rem;
-  height: var(--btn-size);
+  --btn-size: var(--input-height);
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  height: var(--btn-size);
   box-sizing: border-box;
 
   &.xs {
@@ -64,7 +64,7 @@
 
   &.xxl {
     --btn-size: 3.25rem;
-    font-size: 1rem;
+    font-size: 1.25rem;
 
     &.shape {
       width: var(--btn-size);

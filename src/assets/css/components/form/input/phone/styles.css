@@ -12,8 +12,8 @@
             > input {
               border-right: none;
               border-radius: 0;
-              border-top-left-radius: var(--border-radius-sm);
-              border-bottom-left-radius: var(--border-radius-sm);
+              border-top-left-radius: var(--radius-4);
+              border-bottom-left-radius: var(--radius-4);
             }
           }
         }
@@ -28,8 +28,8 @@
       > .input {
         > input {
           border-radius: 0;
-          border-top-right-radius: var(--border-radius-sm);
-          border-bottom-right-radius: var(--border-radius-sm);
+          border-top-right-radius: var(--radius-4);
+          border-bottom-right-radius: var(--radius-4);
         }
       }
     }
@@ -43,7 +43,7 @@
       flex: 1 1 100%;
 
       .ar-input .input input {
-        border-radius: var(--border-radius-sm);
+        border-radius: var(--radius-4);
       }
     }
   } */

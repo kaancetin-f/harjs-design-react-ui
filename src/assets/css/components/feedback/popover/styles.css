@@ -12,13 +12,15 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  background-color: var(--white);
+  background-color: var(--white-pure);
   width: 250px;
   border: solid 1px var(--gray-200);
-  border-radius: var(--border-radius-sm);
+  border-radius: var(--radius-4);
   box-shadow: 0 0 15px -2.5px rgba(var(--black-rgb), 0.1);
   z-index: 1051;
-  transition: visibility 250ms, opacity 250ms;
+  transition:
+    visibility 250ms,
+    opacity 250ms;
 }
 
 .ar-popover > .title {

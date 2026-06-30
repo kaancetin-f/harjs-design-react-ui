@@ -3,7 +3,7 @@
   flex-direction: column;
   max-width: 100%;
   min-width: 100%;
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-4);
   overflow-x: auto;
   overflow-y: auto;
 
@@ -21,7 +21,7 @@
   /* Handle */
   &::-webkit-scrollbar-thumb {
     background: var(--gray-300);
-    border-radius: var(--border-radius-pill);
+    border-radius: var(--radius-full);
   }
 
   /* Handle on hover */
@@ -47,7 +47,7 @@
       backdrop-filter: blur(5px);
       width: 2rem;
       height: 5rem;
-      border-radius: var(--border-radius-sm);
+      border-radius: var(--radius-4);
       cursor: pointer;
 
       &.left {
@@ -77,12 +77,12 @@
       flex-direction: column;
       justify-content: center;
       gap: 0.5rem;
-      background-color: var(--white);
+      background-color: var(--white-pure);
       max-width: 350px;
       min-width: 350px;
       margin-bottom: 1rem;
       padding: 0.5rem 1rem;
-      border-radius: var(--border-radius-lg);
+      border-radius: var(--radius-4);
       color: var(--gray-700);
       font-family: var(--system);
       font-size: 0.85rem;
@@ -100,7 +100,7 @@
           position: relative;
           width: 5px;
           height: 20px;
-          border-radius: var(--border-radius-pill);
+          border-radius: var(--radius-full);
 
           &::after {
             position: absolute;
@@ -143,11 +143,11 @@
 
       > .items {
         position: relative;
-        background-color: var(--white);
+        background-color: var(--white-pure);
         padding: 1rem;
         height: 100%;
         border: dashed 0 transparent;
-        border-radius: var(--border-radius-lg);
+        border-radius: var(--radius-4);
         transition:
           transform 250ms,
           border 250ms ease-in-out;
@@ -160,7 +160,7 @@
 
         &.dragging {
           border: dashed 2.5px var(--blue-200);
-          border-radius: var(--border-radius-lg);
+          border-radius: var(--radius-4);
           transform: scaleX(1) scaleY(1);
           overflow: hidden;
 
@@ -216,9 +216,9 @@
   flex-direction: row;
   justify-content: space-between;
   gap: 1rem;
-  background-color: var(--white);
+  background-color: var(--white-pure);
   margin-bottom: 1rem;
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-4);
   z-index: 6;
 
   > :first-child {
@@ -264,8 +264,8 @@
         background-color: var(--gray-100);
         width: max-content;
         padding: 1rem;
-        border-bottom-left-radius: var(--border-radius-sm);
-        border-bottom-right-radius: var(--border-radius-sm);
+        border-bottom-left-radius: var(--radius-4);
+        border-bottom-right-radius: var(--radius-4);
         box-shadow: 0px 5px 5px -2px rgba(var(--black-rgb), 0.1);
 
         > li {
