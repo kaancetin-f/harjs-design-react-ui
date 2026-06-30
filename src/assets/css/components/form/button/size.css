@@ -1,73 +1,65 @@
 .har-button {
-  --btn-size: var(--input-height);
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: var(--btn-size);
-  box-sizing: border-box;
-
   &.xs {
-    --btn-size: 2rem;
+    height: 2rem;
     font-size: 0.75rem;
 
     &.shape {
-      width: var(--btn-size);
+      width: 2rem;
       aspect-ratio: 1;
       padding: 0;
     }
   }
 
   &.sm {
-    --btn-size: 2.25rem;
+    height: 2.25rem;
     font-size: 0.875rem;
 
     &.shape {
-      width: var(--btn-size);
+      width: 2.25rem;
       aspect-ratio: 1;
       padding: 0;
     }
   }
 
   &.md {
-    --btn-size: 2.5rem;
+    height: 2.5rem;
     font-size: 0.875rem;
 
     &.shape {
-      width: var(--btn-size);
+      width: 2.5rem;
       aspect-ratio: 1;
       padding: 0;
     }
   }
 
   &.lg {
-    --btn-size: 2.75rem;
+    height: 2.75rem;
     font-size: 1rem;
 
     &.shape {
-      width: var(--btn-size);
+      width: 2.75rem;
       aspect-ratio: 1;
       padding: 0;
     }
   }
 
   &.xl {
-    --btn-size: 3rem;
+    height: 3rem;
     font-size: 1rem;
 
     &.shape {
-      width: var(--btn-size);
+      width: 3rem;
       aspect-ratio: 1;
       padding: 0;
     }
   }
 
   &.xxl {
-    --btn-size: 3.25rem;
+    height: 3.25rem;
     font-size: 1.25rem;
 
     &.shape {
-      width: var(--btn-size);
+      width: 3.25rem;
       aspect-ratio: 1;
       padding: 0;
     }

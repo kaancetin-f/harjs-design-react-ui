@@ -15,6 +15,7 @@
       }
     }
   }
+
   &.sm {
     > .addon-before,
     > .addon-after {
@@ -31,6 +32,7 @@
       }
     }
   }
+
   &.md {
     > .addon-before,
     > .addon-after {
@@ -47,6 +49,7 @@
       }
     }
   }
+
   &.lg {
     > .addon-before,
     > .addon-after {
@@ -63,6 +66,7 @@
       }
     }
   }
+
   &.xl {
     > .addon-before,
     > .addon-after {
@@ -79,6 +83,7 @@
       }
     }
   }
+
   &.xxl {
     > .addon-before,
     > .addon-after {

@@ -106,13 +106,18 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
 
       return addons.map((child, index) => {
         const isFirst = index === 0;
-        const isLast = index === addons.length - 1;
+        const isLast = index === addons.length - 1 && addons.length > 1;
         const isMiddle = !isFirst && !isLast;
 
         if (React.isValidElement(child))
           return (
             <div
-              className={[`addon-${position}`, isFirst && "first", isMiddle && "middle", isLast && "last"]
+              className={[
+                `addon-${position}`,
+                position === "after" && isFirst && addons.length > 1 ? "n-first" : "first",
+                isMiddle && "middle",
+                isLast && "last",
+              ]
                 .filter(Boolean)
                 .join(" ")}
             >

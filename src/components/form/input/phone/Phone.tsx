@@ -45,13 +45,30 @@ const Phone: React.FC<IProps> = ({
   }, [values.value, values.option, optionsKey]);
 
   return (
-    <div className="ar-input-phone-wrapper">
-      {options && (
+    <Input
+      ref={_input}
+      {...attributes}
+      {...(!options ? { style: { borderRadius: "var(--radius-4)" } } : {})}
+      variant={variant}
+      color={color}
+      value={PHONE.FormatByMask(selected?.value as string, _value as string)}
+      type="tel"
+      inputMode="decimal"
+      onChange={(event) => {
+        if (attributes.disabled) return;
+
+        setValue(event.target.value);
+        attributes.onChange?.(event);
+      }}
+      onClick={handleClick}
+      validation={validation}
+    >
+      <Input.AddonBefore>
         <Select
-          style={{ width: 130 }}
+          // style={{ width: 130 }}
           variant="outlined"
           color="gray"
-          options={options}
+          options={options ?? []}
           value={selected}
           onChange={(option) => {
             onSelected?.(option);
@@ -60,27 +77,8 @@ const Phone: React.FC<IProps> = ({
           validation={validation}
           config={{ validation: { text: "hidden" } }}
         />
-      )}
-
-      <Input
-        ref={_input}
-        {...attributes}
-        {...(!options ? { style: { borderRadius: "var(--radius-4)" } } : {})}
-        variant={variant}
-        color={color}
-        value={PHONE.FormatByMask(selected?.value as string, _value as string)}
-        type="tel"
-        inputMode="decimal"
-        onChange={(event) => {
-          if (attributes.disabled) return;
-
-          setValue(event.target.value);
-          attributes.onChange?.(event);
-        }}
-        onClick={handleClick}
-        validation={validation}
-      />
-    </div>
+      </Input.AddonBefore>
+    </Input>
   );
 };
 

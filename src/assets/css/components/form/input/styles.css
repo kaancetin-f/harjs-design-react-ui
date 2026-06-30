@@ -5,9 +5,9 @@
 
 /* Core Css */
 @import url("./addon.css");
-@import url("./border.css");
 @import url("./color.css");
 @import url("./icon.css");
+@import url("./radius.css");
 @import url("./size.css");
 
 .har-input-wrapper {
@@ -55,7 +55,7 @@
         > .handle-number-button {
           visibility: visible;
           opacity: 1;
-          width: 1rem;
+          width: 2rem;
         }
       }
 
@@ -73,7 +73,6 @@
           background 250ms,
           border 250ms,
           box-shadow 250ms ease-in-out;
-        z-index: 1;
 
         &::placeholder {
           font-weight: 300;
@@ -88,7 +87,7 @@
         position: absolute;
         top: 1px;
         right: 1px;
-        background-color: var(--gray-200);
+        /* background-color: var(--gray-200); */
         width: 0rem;
         height: calc(100% - 2px);
         border-left: solid 1px var(--gray-300);
@@ -103,7 +102,7 @@
           top: 50%;
           transform: translateY(-50%);
           background-color: var(--gray-300);
-          width: 100%;
+          width: 50px;
           height: 1px;
         }
 
@@ -111,9 +110,12 @@
           display: flex;
           justify-content: center;
           align-items: center;
-
           height: 50%;
           cursor: pointer;
+
+          &:active {
+            background-color: var(--gray-100);
+          }
         }
       }
     }

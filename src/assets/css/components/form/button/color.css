@@ -10,11 +10,13 @@
         background-color: var(--blue-400);
         border: solid var(--stroke-1) var(--blue-400);
       }
+
       &:active {
         background-color: var(--blue-600);
         border: solid var(--stroke-1) var(--blue-600);
       }
     }
+
     &.surface {
       background-color: var(--blue-500);
       color: var(--white-pure);
@@ -26,11 +28,13 @@
       &:hover {
         background-color: var(--blue-200);
       }
+
       &:active {
         background-color: var(--blue-300);
         border: solid var(--stroke-1) var(--blue-300);
       }
     }
+
     &.surface-borderless {
       background-color: var(--blue-500);
       color: var(--white-pure);
@@ -42,11 +46,13 @@
       &:hover {
         background-color: var(--blue-200);
       }
+
       &:active {
         background-color: var(--blue-300);
         border: solid var(--stroke-1) var(--blue-300);
       }
     }
+
     &.outlined {
       background-color: var(--blue-500);
       color: var(--white-pure);
@@ -58,10 +64,12 @@
       &:hover {
         background-color: var(--blue-100);
       }
+
       &:active {
         background-color: var(--blue-200);
       }
     }
+
     &.dashed {
       background-color: var(--blue-500);
       color: var(--white-pure);
@@ -74,11 +82,13 @@
         border: dashed var(--stroke-1) var(--blue-300);
         color: var(--blue-300);
       }
+
       &:active {
         border: dashed var(--stroke-1) var(--blue-500);
         color: var(--blue-700);
       }
     }
+
     &.borderless {
       background-color: var(--blue-500);
       color: var(--white-pure);
@@ -90,11 +100,13 @@
       &:hover {
         color: var(--blue-300);
       }
+
       &:active {
         color: var(--blue-700);
       }
     }
   }
+
   &.purple {
     &.filled {
       background-color: var(--purple-500);
@@ -106,11 +118,13 @@
         background-color: var(--purple-400);
         border: solid var(--stroke-1) var(--purple-400);
       }
+
       &:active {
         background-color: var(--purple-600);
         border: solid var(--stroke-1) var(--purple-600);
       }
     }
+
     &.surface {
       background-color: var(--purple-500);
       color: var(--white-pure);
@@ -122,11 +136,13 @@
       &:hover {
         background-color: var(--purple-200);
       }
+
       &:active {
         background-color: var(--purple-300);
         border: solid var(--stroke-1) var(--purple-300);
       }
     }
+
     &.surface-borderless {
       background-color: var(--purple-500);
       color: var(--white-pure);
@@ -138,11 +154,13 @@
       &:hover {
         background-color: var(--purple-200);
       }
+
       &:active {
         background-color: var(--purple-300);
         border: solid var(--stroke-1) var(--purple-300);
       }
     }
+
     &.outlined {
       background-color: var(--purple-500);
       color: var(--white-pure);
@@ -154,10 +172,12 @@
       &:hover {
         background-color: var(--purple-100);
       }
+
       &:active {
         background-color: var(--purple-200);
       }
     }
+
     &.dashed {
       background-color: var(--purple-500);
       color: var(--white-pure);
@@ -170,11 +190,13 @@
         border: dashed var(--stroke-1) var(--purple-300);
         color: var(--purple-300);
       }
+
       &:active {
         border: dashed var(--stroke-1) var(--purple-500);
         color: var(--purple-700);
       }
     }
+
     &.borderless {
       background-color: var(--purple-500);
       color: var(--white-pure);
@@ -186,11 +208,13 @@
       &:hover {
         color: var(--purple-300);
       }
+
       &:active {
         color: var(--purple-700);
       }
     }
   }
+
   &.pink {
     &.filled {
       background-color: var(--pink-500);
@@ -202,11 +226,13 @@
         background-color: var(--pink-400);
         border: solid var(--stroke-1) var(--pink-400);
       }
+
       &:active {
         background-color: var(--pink-600);
         border: solid var(--stroke-1) var(--pink-600);
       }
     }
+
     &.surface {
       background-color: var(--pink-500);
       color: var(--white-pure);
@@ -218,11 +244,13 @@
       &:hover {
         background-color: var(--pink-200);
       }
+
       &:active {
         background-color: var(--pink-300);
         border: solid var(--stroke-1) var(--pink-300);
       }
     }
+
     &.surface-borderless {
       background-color: var(--pink-500);
       color: var(--white-pure);
@@ -234,11 +262,13 @@
       &:hover {
         background-color: var(--pink-200);
       }
+
       &:active {
         background-color: var(--pink-300);
         border: solid var(--stroke-1) var(--pink-300);
       }
     }
+
     &.outlined {
       background-color: var(--pink-500);
       color: var(--white-pure);
@@ -250,10 +280,12 @@
       &:hover {
         background-color: var(--pink-100);
       }
+
       &:active {
         background-color: var(--pink-200);
       }
     }
+
     &.dashed {
       background-color: var(--pink-500);
       color: var(--white-pure);
@@ -266,11 +298,13 @@
         border: dashed var(--stroke-1) var(--pink-300);
         color: var(--pink-300);
       }
+
       &:active {
         border: dashed var(--stroke-1) var(--pink-500);
         color: var(--pink-700);
       }
     }
+
     &.borderless {
       background-color: var(--pink-500);
       color: var(--white-pure);
@@ -282,11 +316,13 @@
       &:hover {
         color: var(--pink-300);
       }
+
       &:active {
         color: var(--pink-700);
       }
     }
   }
+
   &.red {
     &.filled {
       background-color: var(--red-500);
@@ -298,11 +334,13 @@
         background-color: var(--red-400);
         border: solid var(--stroke-1) var(--red-400);
       }
+
       &:active {
         background-color: var(--red-600);
         border: solid var(--stroke-1) var(--red-600);
       }
     }
+
     &.surface {
       background-color: var(--red-500);
       color: var(--white-pure);
@@ -314,11 +352,13 @@
       &:hover {
         background-color: var(--red-200);
       }
+
       &:active {
         background-color: var(--red-300);
         border: solid var(--stroke-1) var(--red-300);
       }
     }
+
     &.surface-borderless {
       background-color: var(--red-500);
       color: var(--white-pure);
@@ -330,11 +370,13 @@
       &:hover {
         background-color: var(--red-200);
       }
+
       &:active {
         background-color: var(--red-300);
         border: solid var(--stroke-1) var(--red-300);
       }
     }
+
     &.outlined {
       background-color: var(--red-500);
       color: var(--white-pure);
@@ -346,10 +388,12 @@
       &:hover {
         background-color: var(--red-100);
       }
+
       &:active {
         background-color: var(--red-200);
       }
     }
+
     &.dashed {
       background-color: var(--red-500);
       color: var(--white-pure);
@@ -362,11 +406,13 @@
         border: dashed var(--stroke-1) var(--red-300);
         color: var(--red-300);
       }
+
       &:active {
         border: dashed var(--stroke-1) var(--red-500);
         color: var(--red-700);
       }
     }
+
     &.borderless {
       background-color: var(--red-500);
       color: var(--white-pure);
@@ -378,11 +424,13 @@
       &:hover {
         color: var(--red-300);
       }
+
       &:active {
         color: var(--red-700);
       }
     }
   }
+
   &.orange {
     &.filled {
       background-color: var(--orange-500);
@@ -394,11 +442,13 @@
         background-color: var(--orange-400);
         border: solid var(--stroke-1) var(--orange-400);
       }
+
       &:active {
         background-color: var(--orange-600);
         border: solid var(--stroke-1) var(--orange-600);
       }
     }
+
     &.surface {
       background-color: var(--orange-500);
       color: var(--white-pure);
@@ -410,11 +460,13 @@
       &:hover {
         background-color: var(--orange-200);
       }
+
       &:active {
         background-color: var(--orange-300);
         border: solid var(--stroke-1) var(--orange-300);
       }
     }
+
     &.surface-borderless {
       background-color: var(--orange-500);
       color: var(--white-pure);
@@ -426,11 +478,13 @@
       &:hover {
         background-color: var(--orange-200);
       }
+
       &:active {
         background-color: var(--orange-300);
         border: solid var(--stroke-1) var(--orange-300);
       }
     }
+
     &.outlined {
       background-color: var(--orange-500);
       color: var(--white-pure);
@@ -442,10 +496,12 @@
       &:hover {
         background-color: var(--orange-100);
       }
+
       &:active {
         background-color: var(--orange-200);
       }
     }
+
     &.dashed {
       background-color: var(--orange-500);
       color: var(--white-pure);
@@ -458,11 +514,13 @@
         border: dashed var(--stroke-1) var(--orange-300);
         color: var(--orange-300);
       }
+
       &:active {
         border: dashed var(--stroke-1) var(--orange-500);
         color: var(--orange-700);
       }
     }
+
     &.borderless {
       background-color: var(--orange-500);
       color: var(--white-pure);
@@ -474,11 +532,13 @@
       &:hover {
         color: var(--orange-300);
       }
+
       &:active {
         color: var(--orange-700);
       }
     }
   }
+
   &.yellow {
     &.filled {
       background-color: var(--yellow-500);
@@ -490,11 +550,13 @@
         background-color: var(--yellow-400);
         border: solid var(--stroke-1) var(--yellow-400);
       }
+
       &:active {
         background-color: var(--yellow-600);
         border: solid var(--stroke-1) var(--yellow-600);
       }
     }
+
     &.surface {
       background-color: var(--yellow-500);
       color: var(--white-pure);
@@ -506,11 +568,13 @@
       &:hover {
         background-color: var(--yellow-200);
       }
+
       &:active {
         background-color: var(--yellow-300);
         border: solid var(--stroke-1) var(--yellow-300);
       }
     }
+
     &.surface-borderless {
       background-color: var(--yellow-500);
       color: var(--white-pure);
@@ -522,11 +586,13 @@
       &:hover {
         background-color: var(--yellow-200);
       }
+
       &:active {
         background-color: var(--yellow-300);
         border: solid var(--stroke-1) var(--yellow-300);
       }
     }
+
     &.outlined {
       background-color: var(--yellow-500);
       color: var(--white-pure);
@@ -538,10 +604,12 @@
       &:hover {
         background-color: var(--yellow-100);
       }
+
       &:active {
         background-color: var(--yellow-200);
       }
     }
+
     &.dashed {
       background-color: var(--yellow-500);
       color: var(--white-pure);
@@ -554,11 +622,13 @@
         border: dashed var(--stroke-1) var(--yellow-300);
         color: var(--yellow-300);
       }
+
       &:active {
         border: dashed var(--stroke-1) var(--yellow-500);
         color: var(--yellow-700);
       }
     }
+
     &.borderless {
       background-color: var(--yellow-500);
       color: var(--white-pure);
@@ -570,11 +640,13 @@
       &:hover {
         color: var(--yellow-300);
       }
+
       &:active {
         color: var(--yellow-700);
       }
     }
   }
+
   &.green {
     &.filled {
       background-color: var(--green-500);
@@ -586,11 +658,13 @@
         background-color: var(--green-400);
         border: solid var(--stroke-1) var(--green-400);
       }
+
       &:active {
         background-color: var(--green-600);
         border: solid var(--stroke-1) var(--green-600);
       }
     }
+
     &.surface {
       background-color: var(--green-500);
       color: var(--white-pure);
@@ -602,11 +676,13 @@
       &:hover {
         background-color: var(--green-200);
       }
+
       &:active {
         background-color: var(--green-300);
         border: solid var(--stroke-1) var(--green-300);
       }
     }
+
     &.surface-borderless {
       background-color: var(--green-500);
       color: var(--white-pure);
@@ -618,11 +694,13 @@
       &:hover {
         background-color: var(--green-200);
       }
+
       &:active {
         background-color: var(--green-300);
         border: solid var(--stroke-1) var(--green-300);
       }
     }
+
     &.outlined {
       background-color: var(--green-500);
       color: var(--white-pure);
@@ -634,10 +712,12 @@
       &:hover {
         background-color: var(--green-100);
       }
+
       &:active {
         background-color: var(--green-200);
       }
     }
+
     &.dashed {
       background-color: var(--green-500);
       color: var(--white-pure);
@@ -650,11 +730,13 @@
         border: dashed var(--stroke-1) var(--green-300);
         color: var(--green-300);
       }
+
       &:active {
         border: dashed var(--stroke-1) var(--green-500);
         color: var(--green-700);
       }
     }
+
     &.borderless {
       background-color: var(--green-500);
       color: var(--white-pure);
@@ -666,11 +748,13 @@
       &:hover {
         color: var(--green-300);
       }
+
       &:active {
         color: var(--green-700);
       }
     }
   }
+
   &.teal {
     &.filled {
       background-color: var(--teal-500);
@@ -682,11 +766,13 @@
         background-color: var(--teal-400);
         border: solid var(--stroke-1) var(--teal-400);
       }
+
       &:active {
         background-color: var(--teal-600);
         border: solid var(--stroke-1) var(--teal-600);
       }
     }
+
     &.surface {
       background-color: var(--teal-500);
       color: var(--white-pure);
@@ -698,11 +784,13 @@
       &:hover {
         background-color: var(--teal-200);
       }
+
       &:active {
         background-color: var(--teal-300);
         border: solid var(--stroke-1) var(--teal-300);
       }
     }
+
     &.surface-borderless {
       background-color: var(--teal-500);
       color: var(--white-pure);
@@ -714,11 +802,13 @@
       &:hover {
         background-color: var(--teal-200);
       }
+
       &:active {
         background-color: var(--teal-300);
         border: solid var(--stroke-1) var(--teal-300);
       }
     }
+
     &.outlined {
       background-color: var(--teal-500);
       color: var(--white-pure);
@@ -730,10 +820,12 @@
       &:hover {
         background-color: var(--teal-100);
       }
+
       &:active {
         background-color: var(--teal-200);
       }
     }
+
     &.dashed {
       background-color: var(--teal-500);
       color: var(--white-pure);
@@ -746,11 +838,13 @@
         border: dashed var(--stroke-1) var(--teal-300);
         color: var(--teal-300);
       }
+
       &:active {
         border: dashed var(--stroke-1) var(--teal-500);
         color: var(--teal-700);
       }
     }
+
     &.borderless {
       background-color: var(--teal-500);
       color: var(--white-pure);
@@ -762,11 +856,13 @@
       &:hover {
         color: var(--teal-300);
       }
+
       &:active {
         color: var(--teal-700);
       }
     }
   }
+
   &.cyan {
     &.filled {
       background-color: var(--cyan-500);
@@ -778,11 +874,13 @@
         background-color: var(--cyan-400);
         border: solid var(--stroke-1) var(--cyan-400);
       }
+
       &:active {
         background-color: var(--cyan-600);
         border: solid var(--stroke-1) var(--cyan-600);
       }
     }
+
     &.surface {
       background-color: var(--cyan-500);
       color: var(--white-pure);
@@ -794,11 +892,13 @@
       &:hover {
         background-color: var(--cyan-200);
       }
+
       &:active {
         background-color: var(--cyan-300);
         border: solid var(--stroke-1) var(--cyan-300);
       }
     }
+
     &.surface-borderless {
       background-color: var(--cyan-500);
       color: var(--white-pure);
@@ -810,11 +910,13 @@
       &:hover {
         background-color: var(--cyan-200);
       }
+
       &:active {
         background-color: var(--cyan-300);
         border: solid var(--stroke-1) var(--cyan-300);
       }
     }
+
     &.outlined {
       background-color: var(--cyan-500);
       color: var(--white-pure);
@@ -826,10 +928,12 @@
       &:hover {
         background-color: var(--cyan-100);
       }
+
       &:active {
         background-color: var(--cyan-200);
       }
     }
+
     &.dashed {
       background-color: var(--cyan-500);
       color: var(--white-pure);
@@ -842,11 +946,13 @@
         border: dashed var(--stroke-1) var(--cyan-300);
         color: var(--cyan-300);
       }
+
       &:active {
         border: dashed var(--stroke-1) var(--cyan-500);
         color: var(--cyan-700);
       }
     }
+
     &.borderless {
       background-color: var(--cyan-500);
       color: var(--white-pure);
@@ -858,11 +964,13 @@
       &:hover {
         color: var(--cyan-300);
       }
+
       &:active {
         color: var(--cyan-700);
       }
     }
   }
+
   &.gray {
     &.filled {
       background-color: var(--gray-500);
@@ -874,11 +982,13 @@
         background-color: var(--gray-400);
         border: solid var(--stroke-1) var(--gray-400);
       }
+
       &:active {
         background-color: var(--gray-600);
         border: solid var(--stroke-1) var(--gray-600);
       }
     }
+
     &.surface {
       background-color: var(--gray-500);
       color: var(--white-pure);
@@ -890,11 +1000,13 @@
       &:hover {
         background-color: var(--gray-200);
       }
+
       &:active {
         background-color: var(--gray-300);
         border: solid var(--stroke-1) var(--gray-300);
       }
     }
+
     &.surface-borderless {
       background-color: var(--gray-500);
       color: var(--white-pure);
@@ -906,11 +1018,13 @@
       &:hover {
         background-color: var(--gray-200);
       }
+
       &:active {
         background-color: var(--gray-300);
         border: solid var(--stroke-1) var(--gray-300);
       }
     }
+
     &.outlined {
       background-color: var(--gray-500);
       color: var(--white-pure);
@@ -922,10 +1036,12 @@
       &:hover {
         background-color: var(--gray-100);
       }
+
       &:active {
         background-color: var(--gray-200);
       }
     }
+
     &.dashed {
       background-color: var(--gray-500);
       color: var(--white-pure);
@@ -938,11 +1054,13 @@
         border: dashed var(--stroke-1) var(--gray-300);
         color: var(--gray-300);
       }
+
       &:active {
         border: dashed var(--stroke-1) var(--gray-500);
         color: var(--gray-700);
       }
     }
+
     &.borderless {
       background-color: var(--gray-500);
       color: var(--white-pure);
@@ -954,6 +1072,7 @@
       &:hover {
         color: var(--gray-300);
       }
+
       &:active {
         color: var(--gray-700);
       }

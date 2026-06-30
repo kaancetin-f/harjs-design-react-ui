@@ -1,0 +1,16 @@
+&.__SIZE__ {
+  > .addon-before,
+  > .addon-after {
+    height: __SIZE_NUMBER__;
+    font-size: __FONT_SIZE__;
+  }
+
+  > .har-input {
+    > .input {
+      > input {
+        height: __SIZE_NUMBER__;
+        font-size: __FONT_SIZE__;
+      }
+    }
+  }
+}

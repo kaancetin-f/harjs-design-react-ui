@@ -1,8 +1,9 @@
-@import url("./border.css");
 @import url("./checked.css");
-@import url("./checkbox-color.css");
-@import url("./checkbox-checked-color.css");
-@import url("./radio-color.css");
+@import url("./color.checked.css");
+@import url("./color.radio-checked.css");
+@import url("./color.radio-unchecked.css");
+@import url("./color.unchecked.css");
+@import url("./radius.css");
 @import url("./size.css");
 
 .har-checkbox-wrapper {

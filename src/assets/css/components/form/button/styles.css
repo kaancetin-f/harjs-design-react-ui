@@ -1,8 +1,8 @@
 /* Core Css */
-@import url("./border.css");
 @import url("./color.css");
 @import url("./icon.css");
 @import url("./position.css");
+@import url("./radius.css");
 @import url("./shape.css");
 @import url("./size.css");
 

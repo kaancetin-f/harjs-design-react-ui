@@ -1,0 +1,3 @@
+&.radius-__RADIUS__ {
+  border-radius: var(--radius-__RADIUS__);
+}

@@ -12,14 +12,13 @@
       padding: 0 0.5rem;
       color: var(--gray-500);
       font-family: var(--system);
-      z-index: 0;
 
       &:has(input, select, button, textarea) {
         position: relative;
         background-color: transparent;
         padding: 0 !important;
         margin-inline: -1px;
-        border-inline-start: solid 1px var(--gray-300);
+        z-index: 10;
       }
 
       + .addon-before {
@@ -94,6 +93,13 @@
         button {
           border-top-left-radius: var(--radius-0) !important;
           border-bottom-left-radius: var(--radius-0) !important;
+        }
+      }
+
+      &.n-first {
+        input,
+        button {
+          border-radius: var(--radius-0) !important;
         }
       }
 

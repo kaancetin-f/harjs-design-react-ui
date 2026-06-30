@@ -1,0 +1,114 @@
+&.__COLOR__ {
+  &.filled {
+    background-color: var(--__COLOR__-500);
+    border: solid var(--stroke-1) var(--__COLOR__-500);
+
+    &::before {
+      background-color: var(--white-pure);
+    }
+
+    &:hover {
+      background-color: var(--__COLOR__-400);
+      border: solid var(--stroke-1) var(--__COLOR__-400);
+    }
+
+    &:active {
+      background-color: var(--__COLOR__-600);
+      border: solid var(--stroke-1) var(--__COLOR__-600);
+    }
+  }
+
+  &.surface {
+    background-color: var(--__COLOR__-100);
+    border: solid var(--stroke-1) var(--__COLOR__-200);
+    color: var(--__COLOR__-700);
+
+    &::before {
+      background-color: var(--__COLOR__-700);
+    }
+
+    &:hover {
+      background-color: var(--__COLOR__-200);
+    }
+
+    &:active {
+      background-color: var(--__COLOR__-300);
+      border: solid var(--stroke-1) var(--__COLOR__-300);
+    }
+  }
+
+  &.surface-borderless {
+    background-color: var(--__COLOR__-100);
+    border: solid var(--stroke-1) transparent;
+    color: var(--__COLOR__-700);
+
+    &::before {
+      background-color: var(--__COLOR__-700);
+    }
+
+    &:hover {
+      background-color: var(--__COLOR__-200);
+    }
+
+    &:active {
+      background-color: var(--__COLOR__-300);
+      border: solid var(--stroke-1) var(--__COLOR__-300);
+    }
+  }
+
+  &.outlined {
+    background-color: transparent;
+    border: solid var(--stroke-1) var(--__COLOR__-500);
+    color: var(--__COLOR__-700);
+
+    &::before {
+      background-color: var(--__COLOR__-700);
+    }
+
+    &:hover {
+      background-color: var(--__COLOR__-100);
+    }
+
+    &:active {
+      background-color: var(--__COLOR__-200);
+    }
+  }
+
+  &.dashed {
+    background-color: transparent;
+    border: dashed var(--stroke-1) var(--__COLOR__-500);
+    color: var(--__COLOR__-700);
+
+    &::before {
+      background-color: var(--__COLOR__-700);
+    }
+
+    &:hover {
+      border: dashed var(--stroke-1) var(--__COLOR__-300);
+      color: var(--__COLOR__-300);
+    }
+
+    &:active {
+      border: dashed var(--stroke-1) var(--__COLOR__-500);
+      color: var(--__COLOR__-700);
+    }
+  }
+
+  &.borderless {
+    background-color: transparent;
+    border: solid var(--stroke-1) transparent;
+    color: var(--__COLOR__-700);
+
+    &::before {
+      background-color: var(--__COLOR__-700);
+    }
+
+    &:hover {
+      color: var(--__COLOR__-300);
+    }
+
+    &:active {
+      color: var(--__COLOR__-700);
+    }
+  }
+}

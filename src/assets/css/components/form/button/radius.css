@@ -2,30 +2,39 @@
   &.radius-0 {
     border-radius: var(--radius-0);
   }
+
   &.radius-2 {
     border-radius: var(--radius-2);
   }
+
   &.radius-4 {
     border-radius: var(--radius-4);
   }
+
   &.radius-6 {
     border-radius: var(--radius-6);
   }
+
   &.radius-8 {
     border-radius: var(--radius-8);
   }
+
   &.radius-12 {
     border-radius: var(--radius-12);
   }
+
   &.radius-16 {
     border-radius: var(--radius-16);
   }
+
   &.radius-20 {
     border-radius: var(--radius-20);
   }
+
   &.radius-40 {
     border-radius: var(--radius-40);
   }
+
   &.radius-full {
     border-radius: var(--radius-full);
   }

@@ -5,13 +5,16 @@
         > label {
           color: var(--blue-500);
         }
+
         > .input {
           > input {
             background-color: var(--blue-100);
             border: var(--stroke-1) solid var(--blue-300);
+
             &:focus {
               border: var(--stroke-1) solid var(--blue-500);
             }
+
             &::placeholder {
               color: var(--blue-400);
             }
@@ -19,18 +22,22 @@
         }
       }
     }
+
     &.surface-borderless {
       > .har-input {
         > label {
           color: var(--blue-500);
         }
+
         > .input {
           > input {
             background-color: var(--blue-100);
+
             &:focus {
               background-color: transparent;
               box-shadow: 0 0 0 2.5px var(--blue-200);
             }
+
             &::placeholder {
               color: var(--blue-400);
             }
@@ -38,18 +45,22 @@
         }
       }
     }
+
     &.outlined {
       > .har-input {
         > label {
           color: var(--blue-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) solid var(--blue-300);
+
             &:focus {
               box-shadow: 0 0 0 2.5px var(--blue-200);
             }
+
             &::placeholder {
               color: var(--blue-400);
             }
@@ -57,18 +68,22 @@
         }
       }
     }
+
     &.dashed {
       > .har-input {
         > label {
           color: var(--blue-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) dashed var(--blue-300);
+
             &:focus {
               box-shadow: 0 0 0 2.5px var(--blue-200);
             }
+
             &::placeholder {
               color: var(--blue-400);
             }
@@ -76,15 +91,18 @@
         }
       }
     }
+
     &.borderless {
       > .har-input {
         > label {
           color: var(--blue-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) solid transparent;
+
             &::placeholder {
               color: var(--blue-400);
             }
@@ -93,19 +111,23 @@
       }
     }
   }
+
   &.purple {
     &.filled {
       > .har-input {
         > label {
           color: var(--purple-500);
         }
+
         > .input {
           > input {
             background-color: var(--purple-100);
             border: var(--stroke-1) solid var(--purple-300);
+
             &:focus {
               border: var(--stroke-1) solid var(--purple-500);
             }
+
             &::placeholder {
               color: var(--purple-400);
             }
@@ -113,18 +135,22 @@
         }
       }
     }
+
     &.surface-borderless {
       > .har-input {
         > label {
           color: var(--purple-500);
         }
+
         > .input {
           > input {
             background-color: var(--purple-100);
+
             &:focus {
               background-color: transparent;
               box-shadow: 0 0 0 2.5px var(--purple-200);
             }
+
             &::placeholder {
               color: var(--purple-400);
             }
@@ -132,18 +158,22 @@
         }
       }
     }
+
     &.outlined {
       > .har-input {
         > label {
           color: var(--purple-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) solid var(--purple-300);
+
             &:focus {
               box-shadow: 0 0 0 2.5px var(--purple-200);
             }
+
             &::placeholder {
               color: var(--purple-400);
             }
@@ -151,18 +181,22 @@
         }
       }
     }
+
     &.dashed {
       > .har-input {
         > label {
           color: var(--purple-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) dashed var(--purple-300);
+
             &:focus {
               box-shadow: 0 0 0 2.5px var(--purple-200);
             }
+
             &::placeholder {
               color: var(--purple-400);
             }
@@ -170,15 +204,18 @@
         }
       }
     }
+
     &.borderless {
       > .har-input {
         > label {
           color: var(--purple-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) solid transparent;
+
             &::placeholder {
               color: var(--purple-400);
             }
@@ -187,19 +224,23 @@
       }
     }
   }
+
   &.pink {
     &.filled {
       > .har-input {
         > label {
           color: var(--pink-500);
         }
+
         > .input {
           > input {
             background-color: var(--pink-100);
             border: var(--stroke-1) solid var(--pink-300);
+
             &:focus {
               border: var(--stroke-1) solid var(--pink-500);
             }
+
             &::placeholder {
               color: var(--pink-400);
             }
@@ -207,18 +248,22 @@
         }
       }
     }
+
     &.surface-borderless {
       > .har-input {
         > label {
           color: var(--pink-500);
         }
+
         > .input {
           > input {
             background-color: var(--pink-100);
+
             &:focus {
               background-color: transparent;
               box-shadow: 0 0 0 2.5px var(--pink-200);
             }
+
             &::placeholder {
               color: var(--pink-400);
             }
@@ -226,18 +271,22 @@
         }
       }
     }
+
     &.outlined {
       > .har-input {
         > label {
           color: var(--pink-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) solid var(--pink-300);
+
             &:focus {
               box-shadow: 0 0 0 2.5px var(--pink-200);
             }
+
             &::placeholder {
               color: var(--pink-400);
             }
@@ -245,18 +294,22 @@
         }
       }
     }
+
     &.dashed {
       > .har-input {
         > label {
           color: var(--pink-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) dashed var(--pink-300);
+
             &:focus {
               box-shadow: 0 0 0 2.5px var(--pink-200);
             }
+
             &::placeholder {
               color: var(--pink-400);
             }
@@ -264,15 +317,18 @@
         }
       }
     }
+
     &.borderless {
       > .har-input {
         > label {
           color: var(--pink-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) solid transparent;
+
             &::placeholder {
               color: var(--pink-400);
             }
@@ -281,19 +337,23 @@
       }
     }
   }
+
   &.red {
     &.filled {
       > .har-input {
         > label {
           color: var(--red-500);
         }
+
         > .input {
           > input {
             background-color: var(--red-100);
             border: var(--stroke-1) solid var(--red-300);
+
             &:focus {
               border: var(--stroke-1) solid var(--red-500);
             }
+
             &::placeholder {
               color: var(--red-400);
             }
@@ -301,18 +361,22 @@
         }
       }
     }
+
     &.surface-borderless {
       > .har-input {
         > label {
           color: var(--red-500);
         }
+
         > .input {
           > input {
             background-color: var(--red-100);
+
             &:focus {
               background-color: transparent;
               box-shadow: 0 0 0 2.5px var(--red-200);
             }
+
             &::placeholder {
               color: var(--red-400);
             }
@@ -320,18 +384,22 @@
         }
       }
     }
+
     &.outlined {
       > .har-input {
         > label {
           color: var(--red-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) solid var(--red-300);
+
             &:focus {
               box-shadow: 0 0 0 2.5px var(--red-200);
             }
+
             &::placeholder {
               color: var(--red-400);
             }
@@ -339,18 +407,22 @@
         }
       }
     }
+
     &.dashed {
       > .har-input {
         > label {
           color: var(--red-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) dashed var(--red-300);
+
             &:focus {
               box-shadow: 0 0 0 2.5px var(--red-200);
             }
+
             &::placeholder {
               color: var(--red-400);
             }
@@ -358,15 +430,18 @@
         }
       }
     }
+
     &.borderless {
       > .har-input {
         > label {
           color: var(--red-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) solid transparent;
+
             &::placeholder {
               color: var(--red-400);
             }
@@ -375,19 +450,23 @@
       }
     }
   }
+
   &.orange {
     &.filled {
       > .har-input {
         > label {
           color: var(--orange-500);
         }
+
         > .input {
           > input {
             background-color: var(--orange-100);
             border: var(--stroke-1) solid var(--orange-300);
+
             &:focus {
               border: var(--stroke-1) solid var(--orange-500);
             }
+
             &::placeholder {
               color: var(--orange-400);
             }
@@ -395,18 +474,22 @@
         }
       }
     }
+
     &.surface-borderless {
       > .har-input {
         > label {
           color: var(--orange-500);
         }
+
         > .input {
           > input {
             background-color: var(--orange-100);
+
             &:focus {
               background-color: transparent;
               box-shadow: 0 0 0 2.5px var(--orange-200);
             }
+
             &::placeholder {
               color: var(--orange-400);
             }
@@ -414,18 +497,22 @@
         }
       }
     }
+
     &.outlined {
       > .har-input {
         > label {
           color: var(--orange-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) solid var(--orange-300);
+
             &:focus {
               box-shadow: 0 0 0 2.5px var(--orange-200);
             }
+
             &::placeholder {
               color: var(--orange-400);
             }
@@ -433,18 +520,22 @@
         }
       }
     }
+
     &.dashed {
       > .har-input {
         > label {
           color: var(--orange-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) dashed var(--orange-300);
+
             &:focus {
               box-shadow: 0 0 0 2.5px var(--orange-200);
             }
+
             &::placeholder {
               color: var(--orange-400);
             }
@@ -452,15 +543,18 @@
         }
       }
     }
+
     &.borderless {
       > .har-input {
         > label {
           color: var(--orange-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) solid transparent;
+
             &::placeholder {
               color: var(--orange-400);
             }
@@ -469,19 +563,23 @@
       }
     }
   }
+
   &.yellow {
     &.filled {
       > .har-input {
         > label {
           color: var(--yellow-500);
         }
+
         > .input {
           > input {
             background-color: var(--yellow-100);
             border: var(--stroke-1) solid var(--yellow-300);
+
             &:focus {
               border: var(--stroke-1) solid var(--yellow-500);
             }
+
             &::placeholder {
               color: var(--yellow-400);
             }
@@ -489,18 +587,22 @@
         }
       }
     }
+
     &.surface-borderless {
       > .har-input {
         > label {
           color: var(--yellow-500);
         }
+
         > .input {
           > input {
             background-color: var(--yellow-100);
+
             &:focus {
               background-color: transparent;
               box-shadow: 0 0 0 2.5px var(--yellow-200);
             }
+
             &::placeholder {
               color: var(--yellow-400);
             }
@@ -508,18 +610,22 @@
         }
       }
     }
+
     &.outlined {
       > .har-input {
         > label {
           color: var(--yellow-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) solid var(--yellow-300);
+
             &:focus {
               box-shadow: 0 0 0 2.5px var(--yellow-200);
             }
+
             &::placeholder {
               color: var(--yellow-400);
             }
@@ -527,18 +633,22 @@
         }
       }
     }
+
     &.dashed {
       > .har-input {
         > label {
           color: var(--yellow-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) dashed var(--yellow-300);
+
             &:focus {
               box-shadow: 0 0 0 2.5px var(--yellow-200);
             }
+
             &::placeholder {
               color: var(--yellow-400);
             }
@@ -546,15 +656,18 @@
         }
       }
     }
+
     &.borderless {
       > .har-input {
         > label {
           color: var(--yellow-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) solid transparent;
+
             &::placeholder {
               color: var(--yellow-400);
             }
@@ -563,19 +676,23 @@
       }
     }
   }
+
   &.green {
     &.filled {
       > .har-input {
         > label {
           color: var(--green-500);
         }
+
         > .input {
           > input {
             background-color: var(--green-100);
             border: var(--stroke-1) solid var(--green-300);
+
             &:focus {
               border: var(--stroke-1) solid var(--green-500);
             }
+
             &::placeholder {
               color: var(--green-400);
             }
@@ -583,18 +700,22 @@
         }
       }
     }
+
     &.surface-borderless {
       > .har-input {
         > label {
           color: var(--green-500);
         }
+
         > .input {
           > input {
             background-color: var(--green-100);
+
             &:focus {
               background-color: transparent;
               box-shadow: 0 0 0 2.5px var(--green-200);
             }
+
             &::placeholder {
               color: var(--green-400);
             }
@@ -602,18 +723,22 @@
         }
       }
     }
+
     &.outlined {
       > .har-input {
         > label {
           color: var(--green-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) solid var(--green-300);
+
             &:focus {
               box-shadow: 0 0 0 2.5px var(--green-200);
             }
+
             &::placeholder {
               color: var(--green-400);
             }
@@ -621,18 +746,22 @@
         }
       }
     }
+
     &.dashed {
       > .har-input {
         > label {
           color: var(--green-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) dashed var(--green-300);
+
             &:focus {
               box-shadow: 0 0 0 2.5px var(--green-200);
             }
+
             &::placeholder {
               color: var(--green-400);
             }
@@ -640,15 +769,18 @@
         }
       }
     }
+
     &.borderless {
       > .har-input {
         > label {
           color: var(--green-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) solid transparent;
+
             &::placeholder {
               color: var(--green-400);
             }
@@ -657,19 +789,23 @@
       }
     }
   }
+
   &.teal {
     &.filled {
       > .har-input {
         > label {
           color: var(--teal-500);
         }
+
         > .input {
           > input {
             background-color: var(--teal-100);
             border: var(--stroke-1) solid var(--teal-300);
+
             &:focus {
               border: var(--stroke-1) solid var(--teal-500);
             }
+
             &::placeholder {
               color: var(--teal-400);
             }
@@ -677,18 +813,22 @@
         }
       }
     }
+
     &.surface-borderless {
       > .har-input {
         > label {
           color: var(--teal-500);
         }
+
         > .input {
           > input {
             background-color: var(--teal-100);
+
             &:focus {
               background-color: transparent;
               box-shadow: 0 0 0 2.5px var(--teal-200);
             }
+
             &::placeholder {
               color: var(--teal-400);
             }
@@ -696,18 +836,22 @@
         }
       }
     }
+
     &.outlined {
       > .har-input {
         > label {
           color: var(--teal-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) solid var(--teal-300);
+
             &:focus {
               box-shadow: 0 0 0 2.5px var(--teal-200);
             }
+
             &::placeholder {
               color: var(--teal-400);
             }
@@ -715,18 +859,22 @@
         }
       }
     }
+
     &.dashed {
       > .har-input {
         > label {
           color: var(--teal-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) dashed var(--teal-300);
+
             &:focus {
               box-shadow: 0 0 0 2.5px var(--teal-200);
             }
+
             &::placeholder {
               color: var(--teal-400);
             }
@@ -734,15 +882,18 @@
         }
       }
     }
+
     &.borderless {
       > .har-input {
         > label {
           color: var(--teal-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) solid transparent;
+
             &::placeholder {
               color: var(--teal-400);
             }
@@ -751,19 +902,23 @@
       }
     }
   }
+
   &.cyan {
     &.filled {
       > .har-input {
         > label {
           color: var(--cyan-500);
         }
+
         > .input {
           > input {
             background-color: var(--cyan-100);
             border: var(--stroke-1) solid var(--cyan-300);
+
             &:focus {
               border: var(--stroke-1) solid var(--cyan-500);
             }
+
             &::placeholder {
               color: var(--cyan-400);
             }
@@ -771,18 +926,22 @@
         }
       }
     }
+
     &.surface-borderless {
       > .har-input {
         > label {
           color: var(--cyan-500);
         }
+
         > .input {
           > input {
             background-color: var(--cyan-100);
+
             &:focus {
               background-color: transparent;
               box-shadow: 0 0 0 2.5px var(--cyan-200);
             }
+
             &::placeholder {
               color: var(--cyan-400);
             }
@@ -790,18 +949,22 @@
         }
       }
     }
+
     &.outlined {
       > .har-input {
         > label {
           color: var(--cyan-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) solid var(--cyan-300);
+
             &:focus {
               box-shadow: 0 0 0 2.5px var(--cyan-200);
             }
+
             &::placeholder {
               color: var(--cyan-400);
             }
@@ -809,18 +972,22 @@
         }
       }
     }
+
     &.dashed {
       > .har-input {
         > label {
           color: var(--cyan-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) dashed var(--cyan-300);
+
             &:focus {
               box-shadow: 0 0 0 2.5px var(--cyan-200);
             }
+
             &::placeholder {
               color: var(--cyan-400);
             }
@@ -828,15 +995,18 @@
         }
       }
     }
+
     &.borderless {
       > .har-input {
         > label {
           color: var(--cyan-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) solid transparent;
+
             &::placeholder {
               color: var(--cyan-400);
             }
@@ -845,19 +1015,23 @@
       }
     }
   }
+
   &.gray {
     &.filled {
       > .har-input {
         > label {
           color: var(--gray-500);
         }
+
         > .input {
           > input {
             background-color: var(--gray-100);
             border: var(--stroke-1) solid var(--gray-300);
+
             &:focus {
               border: var(--stroke-1) solid var(--gray-500);
             }
+
             &::placeholder {
               color: var(--gray-400);
             }
@@ -865,18 +1039,22 @@
         }
       }
     }
+
     &.surface-borderless {
       > .har-input {
         > label {
           color: var(--gray-500);
         }
+
         > .input {
           > input {
             background-color: var(--gray-100);
+
             &:focus {
               background-color: transparent;
               box-shadow: 0 0 0 2.5px var(--gray-200);
             }
+
             &::placeholder {
               color: var(--gray-400);
             }
@@ -884,18 +1062,22 @@
         }
       }
     }
+
     &.outlined {
       > .har-input {
         > label {
           color: var(--gray-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) solid var(--gray-300);
+
             &:focus {
               box-shadow: 0 0 0 2.5px var(--gray-200);
             }
+
             &::placeholder {
               color: var(--gray-400);
             }
@@ -903,18 +1085,22 @@
         }
       }
     }
+
     &.dashed {
       > .har-input {
         > label {
           color: var(--gray-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) dashed var(--gray-300);
+
             &:focus {
               box-shadow: 0 0 0 2.5px var(--gray-200);
             }
+
             &::placeholder {
               color: var(--gray-400);
             }
@@ -922,15 +1108,18 @@
         }
       }
     }
+
     &.borderless {
       > .har-input {
         > label {
           color: var(--gray-500);
         }
+
         > .input {
           > input {
             background-color: transparent;
             border: var(--stroke-1) solid transparent;
+
             &::placeholder {
               color: var(--gray-400);
             }

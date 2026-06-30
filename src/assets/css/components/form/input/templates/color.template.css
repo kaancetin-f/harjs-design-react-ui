@@ -1,0 +1,112 @@
+&.__COLOR__ {
+  &.filled {
+    > .har-input {
+      > label {
+        color: var(--__COLOR__-500);
+      }
+
+      > .input {
+        > input {
+          background-color: var(--__COLOR__-100);
+          border: var(--stroke-1) solid var(--__COLOR__-300);
+
+          &:focus {
+            border: var(--stroke-1) solid var(--__COLOR__-500);
+          }
+
+          &::placeholder {
+            color: var(--__COLOR__-400);
+          }
+        }
+      }
+    }
+  }
+
+  &.surface-borderless {
+    > .har-input {
+      > label {
+        color: var(--__COLOR__-500);
+      }
+
+      > .input {
+        > input {
+          background-color: var(--__COLOR__-100);
+
+          &:focus {
+            background-color: transparent;
+            box-shadow: 0 0 0 2.5px var(--__COLOR__-200);
+          }
+
+          &::placeholder {
+            color: var(--__COLOR__-400);
+          }
+        }
+      }
+    }
+  }
+
+  &.outlined {
+    > .har-input {
+      > label {
+        color: var(--__COLOR__-500);
+      }
+
+      > .input {
+        > input {
+          background-color: transparent;
+          border: var(--stroke-1) solid var(--__COLOR__-300);
+
+          &:focus {
+            box-shadow: 0 0 0 2.5px var(--__COLOR__-200);
+          }
+
+          &::placeholder {
+            color: var(--__COLOR__-400);
+          }
+        }
+      }
+    }
+  }
+
+  &.dashed {
+    > .har-input {
+      > label {
+        color: var(--__COLOR__-500);
+      }
+
+      > .input {
+        > input {
+          background-color: transparent;
+          border: var(--stroke-1) dashed var(--__COLOR__-300);
+
+          &:focus {
+            box-shadow: 0 0 0 2.5px var(--__COLOR__-200);
+          }
+
+          &::placeholder {
+            color: var(--__COLOR__-400);
+          }
+        }
+      }
+    }
+  }
+
+  &.borderless {
+    > .har-input {
+      > label {
+        color: var(--__COLOR__-500);
+      }
+
+      > .input {
+        > input {
+          background-color: transparent;
+          border: var(--stroke-1) solid transparent;
+
+          &::placeholder {
+            color: var(--__COLOR__-400);
+          }
+        }
+      }
+    }
+  }
+}

@@ -2,13 +2,27 @@
   &.xs {
     width: 1rem;
     height: 1rem;
+
+    + .label {
+      font-size: 0.75rem;
+    }
   }
+
   &.sm {
     width: 1.25rem;
     height: 1.25rem;
+
+    + .label {
+      font-size: 1rem;
+    }
   }
+
   &.md {
     width: 1.5rem;
     height: 1.5rem;
+
+    + .label {
+      font-size: 1.25rem;
+    }
   }
 }
