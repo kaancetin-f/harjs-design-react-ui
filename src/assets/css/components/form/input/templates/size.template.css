@@ -13,4 +13,9 @@
       }
     }
   }
+
+  &.pin-input {
+    width: __SIZE_NUMBER__;
+    height: __SIZE_NUMBER__;
+  }
 }

@@ -14,6 +14,11 @@
         }
       }
     }
+
+    &.pin-input {
+      width: 2rem;
+      height: 2rem;
+    }
   }
 
   &.sm {
@@ -30,6 +35,11 @@
           font-size: 0.875rem;
         }
       }
+    }
+
+    &.pin-input {
+      width: 2.25rem;
+      height: 2.25rem;
     }
   }
 
@@ -48,6 +58,11 @@
         }
       }
     }
+
+    &.pin-input {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
   }
 
   &.lg {
@@ -64,6 +79,11 @@
           font-size: 1rem;
         }
       }
+    }
+
+    &.pin-input {
+      width: 2.75rem;
+      height: 2.75rem;
     }
   }
 
@@ -82,6 +102,11 @@
         }
       }
     }
+
+    &.pin-input {
+      width: 3rem;
+      height: 3rem;
+    }
   }
 
   &.xxl {
@@ -98,6 +123,11 @@
           font-size: 1.25rem;
         }
       }
+    }
+
+    &.pin-input {
+      width: 3.25rem;
+      height: 3.25rem;
     }
   }
 }

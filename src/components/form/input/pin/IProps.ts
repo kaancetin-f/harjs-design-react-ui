@@ -3,7 +3,6 @@ import Input from "..";
 
 interface IProps extends ComponentProps<typeof Input> {
   character: number;
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 export default IProps;

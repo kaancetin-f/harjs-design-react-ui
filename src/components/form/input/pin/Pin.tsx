@@ -3,8 +3,9 @@
 import React, { useRef, useCallback, useState, useEffect } from "react";
 import Input from "..";
 import IProps from "./IProps";
+import Flex from "../../../data-display/grid-system/flex/Flex";
 
-const Otp = ({ character, onChange, ...attributes }: IProps) => {
+const Pin = ({ character, ...attributes }: IProps) => {
   // refs
   const _inputs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -16,7 +17,7 @@ const Otp = ({ character, onChange, ...attributes }: IProps) => {
     setOtpValues(newValues);
     const combinedValue = newValues.join("");
 
-    onChange?.({
+    attributes.onChange?.({
       ...event,
       target: {
         ...event.currentTarget,
@@ -98,7 +99,7 @@ const Otp = ({ character, onChange, ...attributes }: IProps) => {
         }
       }
     },
-    [character, otpValues, attributes.disabled, onChange, attributes.name],
+    [character, otpValues, attributes.disabled, attributes.onChange, attributes.name],
   );
 
   const handlePaste = useCallback(
@@ -139,31 +140,31 @@ const Otp = ({ character, onChange, ...attributes }: IProps) => {
   }, [character]);
 
   return (
-    <div className="ar-input-otp-wrapper">
+    <Flex gap={"var(--space-10)"} alignItems="center" justifyContent="center">
       {Array.from({ length: character }, (_, index) => (
-        <span key={index}>
-          <Input
-            ref={(el) => {
-              _inputs.current[index] = el;
-            }}
-            {...attributes}
-            value={otpValues[index]}
-            onChange={() => {}} // React warning vermemesi için boş handler
-            onKeyDown={handleKeyDown(index)}
-            onPaste={handlePaste(index)}
-            onFocus={(event) => event.target.select()}
-            onClick={handleClick}
-            // size={1}
-            maxLength={1}
-            placeholder={undefined}
-            autoFocus={index === 0}
-            autoComplete="off"
-          />
-        </span>
+        <Input
+          ref={(el) => {
+            _inputs.current[index] = el;
+          }}
+          key={index}
+          {...attributes}
+          className={`pin-input ${attributes.className ?? ""}`}
+          value={otpValues[index]}
+          onChange={() => {}}
+          onKeyDown={handleKeyDown(index)}
+          onPaste={handlePaste(index)}
+          onFocus={(event) => event.target.select()}
+          onClick={handleClick}
+          maxLength={1}
+          {...(otpValues[index] === "" ? { placeholder: attributes.placeholder ?? "○" } : {})}
+          autoFocus={index === 0}
+          autoComplete="off"
+          inputMode="numeric"
+        />
       ))}
-    </div>
+    </Flex>
   );
 };
 
-Otp.displayName = "Input.Otp";
-export default Otp;
+Pin.displayName = "Input.Otp";
+export default Pin;

@@ -14,11 +14,11 @@ import "../../../assets/css/components/form/input/styles.css";
 import IProps from "./IProps";
 import Utils from "../../../libs/infrastructure/shared/Utils";
 import { ARIcon } from "../../icons";
-import Otp from "./otp/Otp";
 import FormattedDecimal from "./formatted-decimal/FormattedDecimal";
 import Phone from "./phone/Phone";
 import Decimal from "./decimal/Decimal";
 import { IChildrenProps } from "../../../libs/infrastructure/types/IGlobalProps";
+import Pin from "./pin/Pin";
 
 const BaseInput = forwardRef<HTMLInputElement, IProps>(
   (
@@ -27,7 +27,7 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
       variant = "outlined",
       color = "gray",
       border = { radius: "4" },
-      size,
+      size = "md",
       upperCase,
       validation,
       ...attributes
@@ -196,7 +196,7 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
                     },
                   }
                 : {})}
-              {...(value && labelWidth > 0
+              {...(value && labelWidth > 0 && attributes.placeholder
                 ? {
                     style: {
                       ...attributes.style,
@@ -275,7 +275,7 @@ interface InputCompound extends React.ForwardRefExoticComponent<IProps & React.R
 
   Decimal: typeof Decimal;
   FormattedDecimal: typeof FormattedDecimal;
-  Otp: typeof Otp;
+  Pin: typeof Pin;
   Phone: typeof Phone;
 }
 
@@ -296,7 +296,7 @@ Input.Icon = ({ children, position, ...attributes }) => {
 Input.Decimal = Decimal;
 Input.FormattedDecimal = FormattedDecimal;
 Input.Phone = Phone;
-Input.Otp = Otp;
+Input.Pin = Pin;
 
 BaseInput.displayName = "Input";
 export default Input;
