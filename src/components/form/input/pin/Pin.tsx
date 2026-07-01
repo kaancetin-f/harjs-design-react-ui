@@ -157,7 +157,7 @@ const Pin = ({ character, ...attributes }: IProps) => {
           onClick={handleClick}
           maxLength={1}
           {...(otpValues[index] === "" ? { placeholder: attributes.placeholder ?? "○" } : {})}
-          autoFocus={index === 0}
+          {...(attributes.autoFocus === true ? { autoFocus: index === 0 } : {})}
           autoComplete="off"
           inputMode="numeric"
         />
