@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import "../../../assets/css/components/form/checkbox-group/styles.css";
 import Alert from "../../feedback/alert";
 import Props from "./Props";
 import Radio from "../radio";
+import Title from "../../data-display/typography/title/Title";
+import Flex from "../../data-display/grid-system/flex/Flex";
 
 const RadioGroup: React.FC<Props> = ({ children, title, orientation, validation, ...groupProps }) => {
   // states
@@ -51,13 +52,15 @@ const RadioGroup: React.FC<Props> = ({ children, title, orientation, validation,
   }, [children]);
 
   return (
-    <div className="har-checkbox-group ">
-      {title && <div className="title">{title}</div>}
+    <Flex flexDirection={"column"} gap={"var(--space-16)"}>
+      {title && <Title Level="h4">{title}</Title>}
 
-      <div className={`items ${orientation ?? "horizontal"}`}>{renderChildren()}</div>
+      <Flex flexDirection={orientation == "horizontal" ? "row" : "column"} gap={"var(--space-6)"}>
+        {renderChildren()}
+      </Flex>
 
       {validation?.text && <div className="har-validation-text">{validation.text}</div>}
-    </div>
+    </Flex>
   );
 };
 
