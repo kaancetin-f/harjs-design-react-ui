@@ -11,7 +11,7 @@ const Button: React.FC<IProps> = ({
   shape,
   color = "gray",
   border = { radius: "4" },
-  size = "sm",
+  size = "md",
   position,
   fullWidth,
   icon,
