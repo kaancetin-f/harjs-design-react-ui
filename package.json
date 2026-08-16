@@ -45,7 +45,7 @@
     "docs:dev": "npm run dev --prefix docs",
     "docs:build": "npm run build --prefix docs",
     "docs:start": "npm run start --prefix docs",
-    "docs:docker": "docker build -f docs/Dockerfile -t harjs-design . && docker run --rm -p 3000:3000 --name harjs-design harjs-design"
+    "docs:docker": "docker build -t harjs-design ./docs && docker run --rm -p 3000:3000 --name harjs-design harjs-design"
   },
   "repository": {
     "type": "git",
