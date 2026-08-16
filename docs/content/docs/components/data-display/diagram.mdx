@@ -1,0 +1,89 @@
+---
+title: Diagram
+description: A node-and-edge canvas with pan, zoom, and optional editing.
+---
+
+Pass `nodes` with positions and `edges` that connect ports. Put the node UI in `data`. Click a node (without dragging) to fire `onNodeClick`. `onNodesChange` / `onEdgesChange` receive the next lists when the canvas edits itself.
+
+Interaction lives on `config`. Defaults are all on. Set `readOnly` for a display canvas, or turn individual flags off. Pan and zoom always stay available.
+
+## Import
+
+```tsx
+import { Diagram } from "@harjs/react-ui";
+```
+
+```tsx
+<Diagram nodes={nodes} edges={edges} config={{ color: "var(--accent)" }} />
+<Diagram nodes={nodes} edges={edges} config={{ readOnly: true }} />
+<Diagram
+  nodes={nodes}
+  edges={edges}
+  onNodesChange={setNodes}
+  onEdgesChange={setEdges}
+  onNodeClick={(node) => console.log(node.id)}
+  config={{ connectable: true, creatable: false }}
+/>
+```
+
+## Usage
+
+The default canvas can move nodes, draw edges from ports, drop a port on empty canvas to spawn a node, and grab a wire to reconnect or disconnect.
+
+<Example>
+  <DiagramBasic />
+</Example>
+
+## Examples
+
+### Read only
+
+`config.readOnly` hides ports and locks nodes and wires. Pan and zoom still work.
+
+<Example>
+  <DiagramReadOnly />
+</Example>
+
+### Connect
+
+Drag a **port** onto another port to add an edge. Grab a wire near either end to reconnect it, or drop it on empty canvas to remove it. Dropping a port on empty canvas does not spawn a node (`creatable` is off).
+
+<Example>
+  <DiagramConnect />
+</Example>
+
+### Disconnect
+
+Ports are hidden. Grab a **wire** near either end and drop it on another port to reconnect, or drop it on empty canvas to remove it.
+
+<Example>
+  <DiagramDisconnect />
+</Example>
+
+### With DnD
+
+Keep a reorderable queue beside the canvas. Drag items in the right rail — `DnD` writes the new order through `onChange`.
+
+<Example>
+  <DiagramWithDnD />
+</Example>
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `nodes` | `{ id: string \| number; position: { x: number; y: number }; data: ReactNode }[]` | — |
+| `edges` | `{ id: string \| number; from: { id; port }; to: { id; port } }[]` | — |
+| `onNodeClick` | `(node, event) => void` | — |
+| `onNodesChange` | `(nodes) => void` | — |
+| `onEdgesChange` | `(edges) => void` | — |
+| `config.color` | `string` | — |
+| `config.locale` | `Intl.LocalesArgument` | `"tr"` |
+| `config.readOnly` | `boolean` | — |
+| `config.draggable` | `boolean` | `true` |
+| `config.connectable` | `boolean` | `true` |
+| `config.creatable` | `boolean` | `true` |
+| `config.reconnectable` | `boolean` | `true` |
+| `config.disconnectable` | `boolean` | `true` |
+
+`nodes` and `edges` are required. Edge `port` is `"top" \| "right" \| "bottom" \| "left"`. `readOnly` turns the other interaction flags off. `disconnectable` only applies when `reconnectable` is on.

@@ -1,0 +1,26 @@
+---
+description: Docs examples use demo files as the single source for Preview and Code. Docs TSX follows CodingConventions.
+globs: docs/**/*.{mdx,tsx}
+alwaysApply: false
+---
+
+# Docs examples
+
+Preview and Code share one source: `docs/components/demos/<category>/<component>/*.tsx`, mirroring `src/components`.
+
+- Put the live example in `docs/components/demos/<category>/<component>/` (same tree as `src/components`). Export a named function (`export function ButtonBasic`).
+- Register it in `docs/components/mdx.tsx`.
+- In MDX use only:
+
+```mdx
+<Example>
+  <ButtonBasic />
+</Example>
+```
+
+- Do not pass `code={` ... `}` on `<Example>`. The Code panel reads the demo file (`use client` stripped, `@/lib/ui` rewritten to `@harjs/react-ui`). Editing the panel live-updates the preview.
+- Import snippets in MDX (```tsx) are fine. Duplicating the demo JSX in MDX is not.
+- New component docs follow the same pattern from the first example.
+- Lay out demo children with `Grid` compounds: `const { Flex } = Grid` then `<Flex ...>`. Use `flexWrap="wrap"` for a row and `flexDirection="column"` for a stack. Do not use docs-only `preview-row` / `preview-stack` wrappers, and do not write `<Grid.Flex>`.
+
+Docs chrome (`docs/components/*.tsx`, `docs/lib`, `docs/app`) uses the same body order as `src/` (`CodingConventions.ts`): `refs`, `states`, `hooks`, `variables`, `methods`, `useEffects`. Frontmatter / heading ids are local helpers. Syntax highlight is `Typography.Code` — do not pull shiki, gray-matter, or the old `SyntaxHighlighter` back in.

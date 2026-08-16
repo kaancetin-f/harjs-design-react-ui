@@ -9,20 +9,23 @@ import ITableLocale from "../../../libs/core/application/locales/table/ITableLoc
 import TableTR from "../../../libs/core/application/locales/table/tr";
 import TableEN from "../../../libs/core/application/locales/table/en";
 
-const colors = ["#A881FA", "#75CFA4", "#EE6D63", "#FAD87A"];
+const colors = ["var(--purple-500)", "var(--green-500)", "var(--red-500)", "var(--orange-500)"];
 
 const Gantt: React.FC<IProps> = ({ title, description, data, pagination, config = { isSearchable: false } }) => {
   // refs
   const _svg = useRef<SVGSVGElement>(null);
   const _mapIsMoveField = useRef<SVGRectElement>(null);
+  const _timeGroupRef = useRef<SVGGElement>(null); // Sürükleme sırasında transform'u doğrudan DOM üzerinden güncellemek için
   const _scrollX = useRef<number>(0);
   const _isPressedCtrl = useRef<boolean>(false);
+  const _rafId = useRef<number | null>(null); // Sürükleme sırasındaki state güncellemelerini kareye göre sınırlamak için
 
   // states
   const [startX, setStartX] = useState<number>(0);
   const [scrollX, setScrollX] = useState<number>(0);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [zoom, setZoom] = useState<number>(1); // 1 = %100, 1.5 = %150 zoom
+  const [containerWidth, setContainerWidth] = useState<number>(0); // Görünür gün aralığını (virtualization) hesaplamak için
   // states -> Pagination
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedPerPage, setSelectedPerPage] = useState<number>(pagination?.perPage ?? 10);
@@ -65,8 +68,98 @@ const Gantt: React.FC<IProps> = ({ title, description, data, pagination, config 
   const SVG_WIDTH = "100%";
   const SVG_HEIGHT = HEADER_HEIGHT + getData.length * ROW_HEIGHT + ROW_HEIGHT * 2;
 
-  let PREVMATCHMONT: number = 0;
-  let PREVMATCHDAY: number = 0;
+  // Üst satırdaki ay etiketlerini (Pazar/ay sonu bazlı segmentler) sadece TIMELINE.days veya
+  // DAY_WIDTH değiştiğinde bir kez hesaplıyoruz. Önceden bu hesap her render'da (örn. her
+  // sürükleme pikselinde) tekrar yapılıyordu; mantık aynı, sadece artık memoize edilmiş durumda.
+  const weekMonthLabels = useMemo(() => {
+    const labels: Array<{ key: string; xPos: number; labelX: number; label: string }> = [];
+    let prevMatchMonth = 0;
+    let prevMatchDay = 0;
+
+    TIMELINE.days.forEach((day, index) => {
+      const xPos = (index + 1) * DAY_WIDTH;
+      const nextDay = new Date(day.date);
+      nextDay.setDate(nextDay.getDate() + 1);
+      const isLastDayOfMonth = day.date.getMonth() !== nextDay.getMonth();
+      const isSunday = day.date.getDay() === 0;
+
+      if (!isSunday && !isLastDayOfMonth) return;
+
+      const currentMonthNum = day.date.getMonth();
+      const currentDayNum = day.date.getDate();
+
+      if (index === 0) {
+        prevMatchMonth = 0;
+        prevMatchDay = 0;
+      }
+
+      const dayDiff = currentDayNum - (currentMonthNum !== prevMatchMonth ? 0 : prevMatchDay);
+      prevMatchMonth = currentMonthNum;
+      prevMatchDay = currentDayNum;
+
+      labels.push({
+        key: String(index),
+        xPos,
+        labelX: xPos - (dayDiff * DAY_WIDTH) / 2,
+        label: day.date.toLocaleDateString("tr-TR", { month: "long" }),
+      });
+    });
+
+    return labels;
+  }, [TIMELINE.days, DAY_WIDTH]);
+
+  // Görev çubuklarının (x, y, width, height) hesaplamalarını memoize ediyoruz. Bu hesap
+  // scrollX'e bağlı DEĞİL; ama önceden JSX içinde inline yapıldığı için scrollX her
+  // değiştiğinde (yani her sürükleme karesinde) gereksiz yere tekrar hesaplanıyordu.
+  const taskBars = useMemo(() => {
+    const timelineStartMs = TIMELINE.timelineStart?.getTime() ?? 0;
+    const barHeight = ROW_HEIGHT / 1.5;
+
+    return getData.map((task, index) => {
+      const taskStart = new Date(task.start);
+      const taskEnd = new Date(task.end);
+
+      const diffMsFromStart = taskStart.getTime() - timelineStartMs;
+      const hoursFromStart = diffMsFromStart / (1000 * 60 * 60);
+      const x = hoursFromStart * (DAY_WIDTH / 24);
+
+      const durationHours = (taskEnd.getTime() - taskStart.getTime()) / (1000 * 60 * 60);
+      const width = durationHours * (DAY_WIDTH / 24);
+
+      const y = index * ROW_HEIGHT + barHeight / 4;
+
+      return {
+        id: task.id,
+        name: task.name,
+        x,
+        y,
+        width,
+        height: barHeight,
+        color: colors[index % colors.length],
+      };
+    });
+  }, [getData, DAY_WIDTH, TIMELINE.timelineStart, ROW_HEIGHT]);
+
+  // Sadece görünür alan (+ tampon) içindeki günleri render etmek için aralık hesaplıyoruz.
+  // Bu, uzun tarih aralıklarında (örn. 1-2 yıllık proje) binlerce yerine onlarca SVG node'u
+  // oluşturulmasını sağlayan asıl performans iyileştirmesi (virtualization).
+  const visibleDayRange = useMemo(() => {
+    const totalDays = TIMELINE.days.length;
+    if (!containerWidth || totalDays === 0) {
+      return { start: 0, end: Math.max(totalDays - 1, 0) };
+    }
+
+    const BUFFER_DAYS = 5;
+    const availableWidth = containerWidth - LABEL_WIDTH;
+
+    const firstVisibleIndex = Math.floor(scrollX / DAY_WIDTH) - BUFFER_DAYS;
+    const lastVisibleIndex = Math.ceil((scrollX + availableWidth) / DAY_WIDTH) + BUFFER_DAYS;
+
+    return {
+      start: Math.max(0, firstVisibleIndex),
+      end: Math.min(totalDays - 1, lastVisibleIndex),
+    };
+  }, [scrollX, DAY_WIDTH, containerWidth, LABEL_WIDTH, TIMELINE.days.length]);
 
   // hooks
   const { t } = useTranslation<ITableLocale>(String(config?.locale ?? "tr"), {
@@ -119,37 +212,90 @@ const Gantt: React.FC<IProps> = ({ title, description, data, pagination, config 
       // Eğer içerik zaten ekrana sığıyorsa scrollX 0 olmalı
       if (maxScrollWidth <= 0) newScrollX = 0;
 
-      setScrollX(newScrollX);
       _scrollX.current = newScrollX;
+
+      // PERFORMANS: React state güncellemesini (ve dolayısıyla tüm re-render'ı) beklemeden
+      // transform'u doğrudan DOM'a yazıyoruz. Böylece mousemove olayı React'in render
+      // hızından çok daha sık tetiklense bile sürükleme her zaman akıcı kalır.
+      if (_timeGroupRef.current) {
+        _timeGroupRef.current.setAttribute("transform", `translate(${LABEL_WIDTH - newScrollX}, 0)`);
+      }
+
+      // React state'ini (görünür gün aralığını yeniden hesaplamak için gerekli) en fazla
+      // animasyon karesi başına bir kez güncelliyoruz; her piksel için değil.
+      if (_rafId.current === null) {
+        _rafId.current = requestAnimationFrame(() => {
+          setScrollX(_scrollX.current);
+          _rafId.current = null;
+        });
+      }
     },
-    [startX, isDragging, TIMELINE.days.length, DAY_WIDTH, LABEL_WIDTH], // DAY_WIDTH bağımlılığını eklemeyi unutma!
+    [startX, isDragging, TIMELINE.days.length, DAY_WIDTH, LABEL_WIDTH],
   );
 
   const handleMouseUpOrLeave = useCallback(() => {
-    const svgRect = _svg.current?.getBoundingClientRect();
-    const mapIsMoveFieldRect = _mapIsMoveField.current?.getBoundingClientRect();
+    // Bekleyen bir animasyon karesi varsa iptal edip son konumu senkron şekilde uyguluyoruz.
+    if (_rafId.current !== null) {
+      cancelAnimationFrame(_rafId.current);
+      _rafId.current = null;
+    }
 
-    if (svgRect && mapIsMoveFieldRect) {
-      const svgElement = _svg.current;
-      if (!svgElement) return;
+    const svgElement = _svg.current;
 
+    if (svgElement) {
       const chartContentWidth = TIMELINE.days.length * DAY_WIDTH;
       const viewportWidth = svgElement.clientWidth;
-
       const availableChartWidth = viewportWidth - LABEL_WIDTH;
+
+      let finalScrollX = _scrollX.current;
 
       if (chartContentWidth > availableChartWidth) {
         const maxScrollX = chartContentWidth - availableChartWidth;
-        if (scrollX > maxScrollX) {
-          setScrollX(maxScrollX);
-          _scrollX.current = maxScrollX;
-        }
+        if (finalScrollX > maxScrollX) finalScrollX = maxScrollX;
       } else {
-        setScrollX(0);
+        finalScrollX = 0;
       }
+
+      _scrollX.current = finalScrollX;
+      setScrollX(finalScrollX);
     }
+
     setIsDragging(false);
-  }, [TIMELINE.days.length, LABEL_WIDTH]);
+    // Not: Orijinal kodda DAY_WIDTH bağımlılık dizisinden eksikti (stale closure riski
+    // oluşturuyordu, zoom değiştikten hemen sonra ilk mouse-up yanlış genişlikle hesaplanabilirdi).
+  }, [TIMELINE.days.length, DAY_WIDTH, LABEL_WIDTH]);
+
+  const handleWheel = useCallback(
+    (event: React.WheelEvent<SVGGElement>) => {
+      if (!_isPressedCtrl.current) return;
+
+      // 1. Mevcut toplam genişliği hesapla. (eski zoom ile)
+      const currentTotalWidth = TIMELINE.days.length * DAY_WIDTH;
+      const availableWidth = (_svg.current?.clientWidth ?? 0) - LABEL_WIDTH;
+
+      // 2. Şu anki kaydırma oranını bul. (0 ile 1 arasında bir değer)
+      const currentScrollRatio =
+        currentTotalWidth > availableWidth ? scrollX / (currentTotalWidth - availableWidth) : 0;
+
+      // 3. Yeni zoom değerini hesapla.
+      const nextZoom = event.deltaY < 0 ? Math.min(zoom + 0.5, 5) : Math.max(zoom - 0.5, 1);
+
+      if (nextZoom === zoom) return;
+
+      // 4. Yeni zoom'a göre yeni DAY_WIDTH ve yeni toplam genişliği hesapla.
+      const nextDayWidth = 60 * nextZoom;
+      const nextTotalWidth = TIMELINE.days.length * nextDayWidth;
+
+      // 5. Yeni maksimum kaydırma genişliğini bul ve eski orana göre scrollX'i güncelle.
+      const nextMaxScrollWidth = nextTotalWidth - availableWidth;
+      const nextScrollX = Math.max(0, nextMaxScrollWidth * currentScrollRatio);
+
+      setZoom(nextZoom);
+      setScrollX(nextScrollX);
+      _scrollX.current = nextScrollX;
+    },
+    [zoom, scrollX, TIMELINE.days.length, DAY_WIDTH, LABEL_WIDTH],
+  );
 
   // useEffects
   useEffect(() => {
@@ -167,6 +313,29 @@ const Gantt: React.FC<IProps> = ({ title, description, data, pagination, config 
       window.removeEventListener("keyup", handleKeyboardUp);
     };
   }, [handleResize]);
+
+  // Görünür gün aralığını (virtualization) doğru hesaplayabilmek için gerçek konteyner
+  // genişliğini izliyoruz. window.innerWidth yerine ResizeObserver kullanmak, sidebar
+  // açılıp kapandığında vb. durumlarda da doğru sonuç verir.
+  useEffect(() => {
+    const svgElement = _svg.current;
+    if (!svgElement || typeof ResizeObserver === "undefined") return;
+
+    const updateWidth = () => setContainerWidth(svgElement.clientWidth);
+    updateWidth();
+
+    const observer = new ResizeObserver(updateWidth);
+    observer.observe(svgElement);
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Bileşen unmount olduğunda bekleyen bir animasyon karesi varsa iptal et.
+  useEffect(() => {
+    return () => {
+      if (_rafId.current !== null) cancelAnimationFrame(_rafId.current);
+    };
+  }, []);
 
   return (
     <div className="ar-gantt-chart">
@@ -204,7 +373,7 @@ const Gantt: React.FC<IProps> = ({ title, description, data, pagination, config 
             x2={"100%"}
             y2={HEADER_HEIGHT}
             opacity={0.25}
-            stroke="var(--black)"
+            stroke="var(--black-alpha-100)"
             strokeWidth={1}
           />
         </g>
@@ -214,104 +383,68 @@ const Gantt: React.FC<IProps> = ({ title, description, data, pagination, config 
         <g className="body" transform={`translate(0, ${HEADER_HEIGHT + ROW_HEIGHT * 2})`}>
           {/* :Begin: Time Axis & Bars */}
           <g
+            ref={_timeGroupRef}
             className={`${isDragging ? "dragging" : "no-dragging"} time-and-bars`}
             transform={`translate(${LABEL_WIDTH - scrollX}, 0)`}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUpOrLeave}
             onMouseLeave={handleMouseUpOrLeave}
-            onWheel={(event) => {
-              if (!_isPressedCtrl.current) return;
-
-              // 1. Mevcut toplam genişliği hesapla. (eski zoom ile)
-              const currentTotalWidth = TIMELINE.days.length * DAY_WIDTH;
-              const availableWidth = (_svg.current?.clientWidth ?? 0) - LABEL_WIDTH;
-
-              // 2. Şu anki kaydırma oranını bul. (0 ile 1 arasında bir değer)
-              // Eğer içerik ekrana sığıyorsa oran 0'dır.
-              const currentScrollRatio =
-                currentTotalWidth > availableWidth ? scrollX / (currentTotalWidth - availableWidth) : 0;
-
-              // 3. Yeni zoom değerini hesapla.
-              const nextZoom = event.deltaY < 0 ? Math.min(zoom + 0.5, 5) : Math.max(zoom - 0.5, 1);
-
-              // Eğer zoom değişmeyecekse (sınırlara takıldıysa) işlem yapma.
-              if (nextZoom === zoom) return;
-
-              // 4. Yeni zoom'a göre yeni DAY_WIDTH ve yeni toplam genişliği hesapla.
-              const nextDayWidth = 60 * nextZoom;
-              const nextTotalWidth = TIMELINE.days.length * nextDayWidth;
-
-              // 5. Yeni maksimum kaydırma genişliğini bul ve eski orana göre scrollX'i güncelle.
-              const nextMaxScrollWidth = nextTotalWidth - availableWidth;
-              const nextScrollX = Math.max(0, nextMaxScrollWidth * currentScrollRatio);
-
-              // State'leri güncelle.
-              setZoom(nextZoom);
-              setScrollX(nextScrollX);
-              _scrollX.current = nextScrollX;
+            onWheel={handleWheel}
+            style={{
+              cursor: isDragging ? "grabbing" : "grab",
+              userSelect: "none",
             }}
-            style={{ cursor: isDragging ? "grabbing" : "grab", userSelect: "none" }}
           >
             {/* :Begin: Months & Days */}
             <g id="month-and-days">
-              {TIMELINE.days.map((day, index) => {
-                const xPos = (index + 1) * DAY_WIDTH;
-                const nextDay = new Date(day.date);
-                nextDay.setDate(nextDay.getDate() + 1);
-                const isLastDayOfMonth = day.date.getMonth() !== nextDay.getMonth();
-
-                const isSunday = day.date.getDay() === 0;
-                if (!isSunday && !isLastDayOfMonth) return null;
-
-                const currentMonthNum = day.date.getMonth();
-                const currentDayNum = day.date.getDate();
-
-                if (index === 0) {
-                  PREVMATCHMONT = 0;
-                  PREVMATCHDAY = 0;
-                }
-
-                const dayDiff = currentDayNum - (currentMonthNum !== PREVMATCHMONT ? 0 : PREVMATCHDAY);
-                // Bir sonraki turda kullanabilmek için hafızayı güncelliyoruz.
-                PREVMATCHMONT = currentMonthNum;
-                PREVMATCHDAY = currentDayNum;
-
-                return (
-                  <g key={index}>
+              {/* PERFORMANS: Ay etiketleri önceden hesaplanmış (weekMonthLabels), burada sadece
+                  görünür aralık (+ tampon) içinde kalanlar filtrelenip render ediliyor. */}
+              {weekMonthLabels
+                .filter(
+                  (label) =>
+                    label.xPos >= visibleDayRange.start * DAY_WIDTH &&
+                    label.xPos <= (visibleDayRange.end + 2) * DAY_WIDTH,
+                )
+                .map((label) => (
+                  <g key={label.key}>
                     <line
-                      x1={xPos}
+                      x1={label.xPos}
                       y1={-ROW_HEIGHT * 2}
-                      x2={xPos}
+                      x2={label.xPos}
                       y2={0}
                       opacity={0.15}
-                      stroke="var(--black)"
+                      stroke="var(--black-alpha-100)"
                       strokeWidth={STROKE_WIDTH}
                     />
 
                     <text
-                      x={xPos - (dayDiff * DAY_WIDTH) / 2}
+                      x={label.labelX}
                       y={-ROW_HEIGHT * 2 + ROW_HEIGHT / 2}
-                      fill="var(--black)"
+                      fill="var(--black-alpha-100)"
                       fontSize="12"
                       textAnchor="middle"
                       dominantBaseline="central"
                     >
-                      {day.date.toLocaleDateString("tr-TR", { month: "long" })}
+                      {label.label}
                     </text>
                   </g>
-                );
-              })}
+                ))}
 
-              {TIMELINE.days.map((day, index) => {
+              {/* PERFORMANS: Gün numaraları, hafta sonu şeritleri ve dikey grid çizgileri
+                  sadece görünür aralık (+ tampon) için render ediliyor (virtualization). Bu
+                  döngünün önceki bir günün durumuna bağımlılığı olmadığından dilimlemek
+                  (slice) davranışı değiştirmeden güvenle yapılabiliyor. */}
+              {TIMELINE.days.slice(visibleDayRange.start, visibleDayRange.end + 1).map((day, i) => {
+                const index = visibleDayRange.start + i;
                 const xPos = (index + 1) * DAY_WIDTH; // 01:00 -> 60px, 02:00 -> 120px...
 
                 return (
                   <g key={index}>
                     <text
-                      x={(index + 1) * DAY_WIDTH - 30}
+                      x={xPos - 30}
                       y={-ROW_HEIGHT + ROW_HEIGHT / 2}
-                      fill={day.isWeekend ? "var(--red-500)" : "var(--black)"}
+                      fill={day.isWeekend ? "var(--red-500)" : "var(--black-alpha-100)"}
                       fontSize="12"
                       textAnchor="middle"
                       dominantBaseline="central"
@@ -335,7 +468,7 @@ const Gantt: React.FC<IProps> = ({ title, description, data, pagination, config 
                       x2={xPos}
                       y2={SVG_HEIGHT}
                       opacity={0.25}
-                      stroke="var(--black)"
+                      stroke="var(--black-alpha-100)"
                       strokeWidth={STROKE_WIDTH}
                       strokeDasharray={"5,5"}
                     />
@@ -349,7 +482,7 @@ const Gantt: React.FC<IProps> = ({ title, description, data, pagination, config 
                 x2={TIMELINE.days.length * DAY_WIDTH}
                 y2={-ROW_HEIGHT}
                 opacity={0.15}
-                stroke="var(--black)"
+                stroke="var(--black-alpha-100)"
                 strokeWidth={STROKE_WIDTH}
               />
 
@@ -359,7 +492,7 @@ const Gantt: React.FC<IProps> = ({ title, description, data, pagination, config 
                 x2={TIMELINE.days.length * DAY_WIDTH}
                 y2={0}
                 opacity={0.15}
-                stroke="var(--black)"
+                stroke="var(--black-alpha-100)"
                 strokeWidth={STROKE_WIDTH}
               />
             </g>
@@ -367,49 +500,27 @@ const Gantt: React.FC<IProps> = ({ title, description, data, pagination, config 
 
             {/* :Begin: Map */}
             <g transform={`translate(0, 0)`}>
-              {getData.map((task, index) => {
-                const taskStart = new Date(task.start);
-                const taskEnd = new Date(task.end);
+              {/* PERFORMANS: Pozisyonlar artık taskBars memo'sunda önceden hesaplanmış durumda;
+                  scrollX değiştiğinde (sürükleme sırasında) yeniden hesaplanmıyor. */}
+              {taskBars.map((bar) => (
+                <g key={bar.id}>
+                  <rect x={bar.x} y={bar.y} width={bar.width} height={bar.height} fill={bar.color} rx={3} />
 
-                // 1. Proje başlangıcından bu görevin başlangıcına kadar geçen toplam milisaniye
-                const diffMsFromStart = taskStart.getTime() - Number(TIMELINE.timelineStart?.getTime());
-
-                // Milisaniyeyi DOĞRU şekilde saate çeviriyoruz (Sabit: 1000 * 60 * 60)
-                const hoursFromStart = diffMsFromStart / (1000 * 60 * 60);
-
-                // X Konumu: Geçen toplam saati, dinamik saat başına düşen pikselle çarpıyoruz
-                const x = hoursFromStart * (DAY_WIDTH / 24);
-
-                // 2. Görevin toplam süresini DOĞRU şekilde saat cinsinden buluyoruz
-                const durationHours = (taskEnd.getTime() - taskStart.getTime()) / (1000 * 60 * 60);
-
-                // Genişlik (Width): Süreyi dinamik saat başına düşen pikselle çarpıyoruz
-                const width = durationHours * (DAY_WIDTH / 24);
-
-                // 3. Dikey Konumlandırma
-                const height = ROW_HEIGHT / 1.5;
-                const y = index * ROW_HEIGHT + height / 4;
-
-                return (
-                  <g key={task.id}>
-                    <rect x={x} y={y} width={width} height={height} fill={colors[index % colors.length]} rx={3} />
-
-                    {/* Yazının taşmaması kontrolünü de DAY_WIDTH yerine dinamik yazı boyutuna veya width'e göre yapıyoruz */}
-                    {width > 60 && (
-                      <text
-                        x={x + width / 2}
-                        y={y + height / 2 + 4}
-                        fontSize={12}
-                        fontWeight="600"
-                        fill="var(--black)"
-                        textAnchor="middle"
-                      >
-                        {task.name}
-                      </text>
-                    )}
-                  </g>
-                );
-              })}
+                  {/* Yazının taşmaması kontrolünü de DAY_WIDTH yerine dinamik yazı boyutuna veya width'e göre yapıyoruz */}
+                  {bar.width > 60 && (
+                    <text
+                      x={bar.x + bar.width / 2}
+                      y={bar.y + bar.height / 2 + 4}
+                      fontSize={12}
+                      fontWeight="600"
+                      fill="var(--black-alpha-100)"
+                      textAnchor="middle"
+                    >
+                      {bar.name}
+                    </text>
+                  )}
+                </g>
+              ))}
             </g>
             {/* :End: Map */}
 
@@ -428,7 +539,13 @@ const Gantt: React.FC<IProps> = ({ title, description, data, pagination, config 
           {/* :Begin:Left Label Axis */}
           <g className="left-axis">
             {/* Background */}
-            <rect x={0} y={-ROW_HEIGHT * 2 + 0.5} width={LABEL_WIDTH} height={SVG_HEIGHT} fill="var(--white)" />
+            <rect
+              x={0}
+              y={-ROW_HEIGHT * 2 + 0.5}
+              width={LABEL_WIDTH}
+              height={SVG_HEIGHT}
+              fill="var(--white-alpha-100)"
+            />
 
             <line
               x1={LABEL_WIDTH}
@@ -436,7 +553,7 @@ const Gantt: React.FC<IProps> = ({ title, description, data, pagination, config 
               x2={LABEL_WIDTH}
               y2={SVG_HEIGHT}
               opacity={0.25}
-              stroke="var(--black)"
+              stroke="var(--black-alpha-100)"
               strokeWidth={1}
             />
 
@@ -460,7 +577,7 @@ const Gantt: React.FC<IProps> = ({ title, description, data, pagination, config 
                       x2={LABEL_WIDTH}
                       y2={y + ROW_HEIGHT}
                       opacity={0.15}
-                      stroke="var(--black)"
+                      stroke="var(--black-alpha-100)"
                       strokeWidth="0.5"
                     ></line>
 
@@ -470,7 +587,7 @@ const Gantt: React.FC<IProps> = ({ title, description, data, pagination, config 
                       x2={LABEL_WIDTH + TIMELINE.days.length * DAY_WIDTH}
                       y2={y + ROW_HEIGHT}
                       opacity={0.25}
-                      stroke="var(--black)"
+                      stroke="var(--black-alpha-100)"
                       strokeWidth={STROKE_WIDTH}
                       strokeDasharray={"5,5"}
                     />
@@ -509,6 +626,8 @@ const Gantt: React.FC<IProps> = ({ title, description, data, pagination, config 
             totalRecords={config.isServerSide ? pagination.totalRecords : (data.length ?? 0)}
             currentPage={currentPage}
             perPage={selectedPerPage}
+            locale={config.locale}
+            showTotal={false}
             onChange={(currentPage, perPage) => {
               setCurrentPage(currentPage);
               setSelectedPerPage(perPage);
@@ -542,8 +661,18 @@ const generateGanttTimeline = (data: Task[]) => {
   const startTimeline = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
   const endTimeline = new Date(maxDate.getFullYear(), maxDate.getMonth() + 1, 0); // Ayın son günü
 
-  const months: Array<{ year: number; number: number; name: string; totalDays: number }> = [];
-  const days: Array<{ date: Date; number: number; name: string; isWeekend: boolean }> = [];
+  const months: Array<{
+    year: number;
+    number: number;
+    name: string;
+    totalDays: number;
+  }> = [];
+  const days: Array<{
+    date: Date;
+    number: number;
+    name: string;
+    isWeekend: boolean;
+  }> = [];
 
   // 2. Günleri ve Ayları döngüyle oluşturuyoruz.
   const current = new Date(startTimeline);
@@ -582,4 +711,6 @@ const generateGanttTimeline = (data: Task[]) => {
   };
 };
 
-export default Gantt;
+// Üst bileşen gereksiz yere re-render olduğunda (örn. parent state değişiminde) props aynı
+// kalıyorsa Gantt'ın da yeniden render olmasını engelliyoruz.
+export default React.memo(Gantt);

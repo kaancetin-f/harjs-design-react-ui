@@ -1,0 +1,160 @@
+---
+title: Steps
+description: Guide users through a linear process. Use it for onboarding and multi-step forms, not for app navigation or paging a table.
+---
+
+Steps is a linear process control. Pass `name`, `steps`, and `onChange`. `currentStep` is optional: when it is a number the parent owns the index; when it is omitted, Steps keeps the index and restores it from `sessionStorage` keyed by `pathname::name`.
+
+Wizard is a richer sibling with a sidebar and a complete action. Pagination pages a dataset. Menu and Breadcrumb are navigation, not a process.
+
+## Import
+
+```tsx
+import { Steps } from "@harjs/react-ui";
+```
+
+```tsx
+<Steps
+  name="onboarding"
+  currentStep={step}
+  onChange={setStep}
+  steps={[
+    { key: "account", title: "Account", content: <AccountForm /> },
+    { key: "company", title: "Company", content: <CompanyForm /> },
+  ]}
+/>
+```
+
+## Basic
+
+`onChange` is required. Drive `currentStep` from parent state when the flow should stay in sync with the URL or a form store. Completed steps stay clickable. Future steps are clickable when there is no `validation`.
+
+<Example>
+  <StepsBasic />
+</Example>
+
+## Validation
+
+`validation.rules` use 1-based `step` indexes (`1` is the first step). Next — and a click on the immediate next step — run `useValidation` for the current step. Skipping ahead is blocked. Going back does not re-validate. Next is `loading` while submit runs, so a double click cannot jump two steps.
+
+The current step’s `content` root receives `errors` through `cloneElement`. Read `errors.field` and pass it to the field’s `validation.text`.
+
+<Example>
+  <StepsValidation />
+</Example>
+
+## Automatic
+
+`config.isAutomatic` hides Back/Next and disables the track. The parent is the only way to change the step. Use it when an external control, a timer, or a server event owns the index.
+
+<Example>
+  <StepsAutomatic />
+</Example>
+
+## Vertical
+
+`variant="vertical"` puts the track on the left and the panel on the right. `direction` is the same prop (kept as an alias). Below 640px the track stacks above the panel.
+
+<Example>
+  <StepsVertical />
+</Example>
+
+## Icons
+
+Pass `icon` on a step. Horizontal and vertical tracks use the same Phosphor name (`Folder`, `Document`, `CreditCard`). Pending and current badges show the icon. Completed badges keep the check.
+
+### Horizontal
+
+<Example>
+  <StepsIconsHorizontal />
+</Example>
+
+### Vertical
+
+<Example>
+  <StepsIconsVertical />
+</Example>
+
+## Colors
+
+`config.theme.current`, `config.theme.completed`, and `config.theme.pending` color the badges, rings, connectors, and the mobile progress fill. Pass a palette name (`purple`, `teal`, `cyan`) or any CSS color (`var(--cyan-500)`, `#7c3aed`). Defaults are blue / green / gray.
+
+### Horizontal
+
+<Example>
+  <StepsThemeHorizontal />
+</Example>
+
+### Vertical
+
+<Example>
+  <StepsThemeVertical />
+</Example>
+
+## Locale and labels
+
+Default copy is Turkish (`config.locale` `"tr"`). Pass `"en"` for English. `labels.back`, `labels.next`, and `labels.step` override the visible strings. Status text for screen readers still comes from the locale.
+
+<Example>
+  <StepsLocale />
+</Example>
+
+## Responsive
+
+`config.header` swaps the numbered track for the card header: circular step icon, `STEP n`, title, and a progress bar. Body copy sits in the left third; fields sit in the right two thirds and wrap under the copy when the pane is narrow. Pass `icon` on each step.
+
+<Example>
+  <StepsResponsive />
+</Example>
+
+## Accessibility
+
+The track is a `<nav>` with an ordered list of native buttons. The current item is `aria-current="step"`. Each button’s `aria-label` includes the index, title, and status (`pending` / `in progress` / `completed`). Completed steps use a green badge and a white check. The current step is a numbered blue badge — there is no spinner. Tab, Enter, and Space move between reachable steps. `prefers-reduced-motion: reduce` turns off the panel fade.
+
+<Example>
+  <StepsKeyboard />
+</Example>
+
+## When to use Steps
+
+Use it for:
+
+- Onboarding
+- Multi-step forms
+- Linear checkout or setup
+
+Do not use it for:
+
+- App or site navigation (Menu)
+- A page trail (Breadcrumb)
+- Paging a table (Pagination)
+- A full-screen wizard chrome with a complete action (Wizard)
+
+## Best practices
+
+- Keep `name` stable; it is the `sessionStorage` key with the pathname.
+- Prefer controlled `currentStep` when the parent already has the index.
+- Put `step: 1` on rules for the first step. The hook is 1-based.
+- Do not skip validation by jumping the track. That is blocked when `validation` is set.
+- Pass `config.locale` in English docs and apps.
+- Override step colors with `config.theme` instead of custom CSS.
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `name` | `string` | — | Storage key segment. Required. |
+| `steps` | `StepProps[]` | — | `key`, `title`, `content`, optional `icon`. Empty array renders nothing. |
+| `onChange` | `(currentStep: number) => void` | — | Fires after a successful step change. 0-based. |
+| `currentStep` | `number` | — | Controlled index. Omit for uncontrolled + `sessionStorage`. |
+| `validation` | `{ data, rules }` | — | Current-step rules. Future steps on the track are not skippable. |
+| `variant` | `"horizontal" \| "vertical"` | `"horizontal"` | Vertical puts the track on the left. |
+| `direction` | `"horizontal" \| "vertical"` | — | Alias of `variant`. `variant` wins if both are set. |
+| `config.theme` | `{ current?, completed?, pending? }` | blue / green / gray | Badge, ring, and connector colors. Token name or CSS color. |
+| `config.header` | `boolean` | `false` | Card header: icon, step label, title, progress bar. Hides the numbered track. |
+| `config.isAutomatic` | `boolean` | `false` | Parent-only navigation. Hides footer buttons. |
+| `config.locale` | `Intl.LocalesArgument` | `"tr"` | `tr` / `en` copy. |
+| `labels` | `{ back?, next?, step? }` | — | Overrides visible Back / Next / Step text. |
+| `children` | `ReactNode` | — | Extra footer content between Back and Next. |
+
+Native attributes are not forwarded. The root class is `ar-steps`.

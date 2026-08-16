@@ -1,0 +1,69 @@
+---
+title: Kanban Board
+description: Drag cards between named columns. Track each item with a stable id.
+---
+
+Each column has a `key`, `title`, `items`, `columnProperties`, and `renderItem`. `trackBy` must return a unique id. Dragging a card within a column or to another column updates internal state and calls `onChange`. `renderItem` receives the item and its index in that column.
+
+## Import
+
+```tsx
+import { KanbanBoard } from "@harjs/react-ui";
+```
+
+```tsx
+<KanbanBoard
+  trackBy={(item) => item.id}
+  columns={columns}
+/>
+```
+
+## Usage
+
+Headers sit on the column. Cards use the board surface; drop a card on a column to move it, or reorder inside the same list. Empty columns show a placeholder.
+
+<Example>
+  <KanbanBoardBasic />
+</Example>
+
+## Examples
+
+### Filters
+
+`config.filter.keys` builds the filter bar from each item. Search, tag, assignee, and due date changes call `onLazyLoad` with the query so you can filter the columns.
+
+<Example>
+  <KanbanBoardFilters />
+</Example>
+
+### Lazy loading
+
+`onLazyLoad` runs when the board mounts and again when a column is scrolled to the bottom. Append the next page from `currentPage` and `config.perPage`. Set `loading` while the request is in flight so empty columns show skeletons and filled columns show a spinner.
+
+<Example>
+  <KanbanBoardLazyLoad />
+</Example>
+
+### Loading
+
+`loading` replaces empty columns with skeletons. Columns that already have cards show a spinner at the bottom.
+
+<Example>
+  <KanbanBoardLoading />
+</Example>
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `trackBy` | `(item: T) => string` | — |
+| `columns` | `{ key; title; items; renderItem; columnProperties; description?; titleColor? }[]` | — |
+| `onChange` | `(item, columnKey, columnProperties, hoverIndex) => void` | — |
+| `onLazyLoad` | `(query, perPage, currentPage) => void` | — |
+| `loading` | `boolean` | `false` |
+| `config.locale` | `Intl.LocalesArgument` | `"tr"` |
+| `config.perPage` | `number` | `10` |
+| `config.safeAreaOffset` | `{ top?; right?; bottom?; left? }` | — |
+| `config.filter.keys` | `(item: T) => { key; name; value; type }[]` | — |
+
+`trackBy` and `columns` are required. Keep `columns` referentially stable so drag state is not reset on every render. Pass `config.safeAreaOffset` when the board should fill the remaining viewport.

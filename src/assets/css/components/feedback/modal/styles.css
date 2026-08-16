@@ -1,53 +1,78 @@
-@import url("./header.css");
 @import url("./content.css");
 @import url("./footer.css");
-
-/* Media Queries */
-@import url("./media-queries/x-large.css");
-@import url("./media-queries/medium.css");
+@import url("./header.css");
+@import url("./radius.css");
+@import url("./size.css");
 @import url("./media-queries/small.css");
 
-.ar-modal-wrapper {
+.har-modal-wrapper {
   position: fixed;
   inset: 0;
   z-index: 1050;
-}
-.ar-modal-wrapper > .ar-modal-bg {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(var(--black-rgb), 0.5);
+  display: grid;
+  place-items: center;
+  padding: var(--space-16);
+  pointer-events: none;
+
+  > .har-modal-bg {
+    position: fixed;
+    inset: 0;
+    background-color: var(--black-alpha-50);
+    opacity: 0;
+    transition: opacity 200ms ease;
+  }
+
+  &.opened {
+    visibility: visible;
+  }
+
+  > .har-modal {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    max-height: 100%;
+    background-color: var(--white-500);
+    border-radius: var(--radius-4);
+    box-shadow: 0 5px 15px -5px var(--black-alpha-30);
+    transform: translate3d(0, 8px, 0) scale(0.98);
+    opacity: 0;
+    transition:
+      transform 200ms ease,
+      opacity 200ms ease;
+
+    &.size-full {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &.opened.is-entered {
+    pointer-events: auto;
+
+    > .har-modal-bg {
+      opacity: 1;
+    }
+
+    > .har-modal {
+      transform: translate3d(0, 0, 0) scale(1);
+      opacity: 1;
+      transition:
+        transform 320ms cubic-bezier(0.32, 0.72, 0, 1),
+        opacity 200ms ease;
+    }
+  }
+
+  &.closed {
+    visibility: hidden;
+  }
 }
 
-/* #region Open or Close */
-.ar-modal-wrapper.opened {
-  visibility: visible;
-  opacity: 1;
-  transition:
-    visibility 250ms,
-    opacity 250ms ease-in-out;
-}
-.ar-modal-wrapper.closed {
-  visibility: hidden;
-  opacity: 0;
-  transition:
-    visibility 250ms,
-    opacity 250ms ease-in-out;
-}
-/* #endregion */
-/* Open or Close */
-
-.ar-modal-wrapper > .ar-modal {
-  position: absolute;
-  background-color: var(--white);
-  border-radius: var(--border-radius-sm);
-}
-
-.ar-modal-wrapper > .ar-modal.large {
-  width: 75%;
-}
-.ar-modal-wrapper > .ar-modal.normal {
-  width: 520px;
-}
-.ar-modal-wrapper > .ar-modal.small {
-  width: 25%;
+@media (prefers-reduced-motion: reduce) {
+  .har-modal-wrapper > .har-modal-bg,
+  .har-modal-wrapper > .har-modal,
+  .har-modal-wrapper.opened.is-entered > .har-modal {
+    transition: none;
+  }
 }

@@ -1,0 +1,86 @@
+.har-upload {
+  &.blue {
+    --upload-accent-300: var(--blue-300);
+    --upload-accent-400: var(--blue-400);
+    --upload-accent-500: var(--blue-500);
+    --upload-accent-600: var(--blue-600);
+  }
+
+  &.purple {
+    --upload-accent-300: var(--purple-300);
+    --upload-accent-400: var(--purple-400);
+    --upload-accent-500: var(--purple-500);
+    --upload-accent-600: var(--purple-600);
+  }
+
+  &.pink {
+    --upload-accent-300: var(--pink-300);
+    --upload-accent-400: var(--pink-400);
+    --upload-accent-500: var(--pink-500);
+    --upload-accent-600: var(--pink-600);
+  }
+
+  &.red {
+    --upload-accent-300: var(--red-300);
+    --upload-accent-400: var(--red-400);
+    --upload-accent-500: var(--red-500);
+    --upload-accent-600: var(--red-600);
+  }
+
+  &.orange {
+    --upload-accent-300: var(--orange-300);
+    --upload-accent-400: var(--orange-400);
+    --upload-accent-500: var(--orange-500);
+    --upload-accent-600: var(--orange-600);
+  }
+
+  &.yellow {
+    --upload-accent-300: var(--yellow-300);
+    --upload-accent-400: var(--yellow-400);
+    --upload-accent-500: var(--yellow-500);
+    --upload-accent-600: var(--yellow-600);
+  }
+
+  &.green {
+    --upload-accent-300: var(--green-300);
+    --upload-accent-400: var(--green-400);
+    --upload-accent-500: var(--green-500);
+    --upload-accent-600: var(--green-600);
+  }
+
+  &.teal {
+    --upload-accent-300: var(--teal-300);
+    --upload-accent-400: var(--teal-400);
+    --upload-accent-500: var(--teal-500);
+    --upload-accent-600: var(--teal-600);
+  }
+
+  &.cyan {
+    --upload-accent-300: var(--cyan-300);
+    --upload-accent-400: var(--cyan-400);
+    --upload-accent-500: var(--cyan-500);
+    --upload-accent-600: var(--cyan-600);
+  }
+
+  &.gray {
+    --upload-accent-300: var(--gray-300);
+    --upload-accent-400: var(--gray-400);
+    --upload-accent-500: var(--gray-500);
+    --upload-accent-600: var(--gray-600);
+  }
+
+  &.white {
+    --upload-accent-300: var(--gray-300);
+    --upload-accent-400: var(--gray-400);
+    --upload-accent-500: var(--white-500);
+    --upload-accent-600: var(--gray-600);
+
+    .file-size {
+      color: var(--gray-700);
+
+      > .size-type {
+        color: var(--gray-700);
+      }
+    }
+  }
+}

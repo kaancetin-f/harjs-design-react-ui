@@ -1,11 +1,12 @@
 "use client";
 
-import React, { Dispatch, Fragment, memo, SetStateAction, useEffect, useRef, useState } from "react";
-import { ARIcon } from "../../../icons";
+import React, { Dispatch, Fragment, memo, SetStateAction, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Icon } from "../../../icons";
 import Checkbox from "../../../form/checkbox";
 import Editable from "./Editable";
 import { Config } from "../IProps";
 import { TableColumnProps } from "../../../../libs/infrastructure/types";
+import { GetColumnValue } from "../Helpers";
 import ITableLocale from "../../../../libs/core/application/locales/table/ITableLocale";
 import TableTR from "../../../../libs/core/application/locales/table/tr";
 import TableEN from "../../../../libs/core/application/locales/table/en";
@@ -19,6 +20,7 @@ interface IProps<T extends object> {
     _selectionItems: React.MutableRefObject<T[]>;
   };
   states: {
+    columnNumber: { get: number };
     setSelectAll: { get: boolean; set: Dispatch<SetStateAction<boolean>> };
     showSubitems: { get: { [key: string]: boolean }; set: Dispatch<React.SetStateAction<{ [key: string]: boolean }>> };
   };
@@ -33,6 +35,9 @@ interface IProps<T extends object> {
   config: Config<T>;
 }
 
+type TBodyMethods<T extends object> = IProps<T>["methods"];
+type TBodyStates<T extends object> = IProps<T>["states"];
+
 interface IRenderCell<T> {
   item: T;
   column: TableColumnProps<T>;
@@ -44,19 +49,21 @@ interface IRenderCell<T> {
   isSubrows?: boolean;
 }
 
-interface ISubitemListProps<T> {
+interface ISubitemListProps<T extends object> {
+  parentItem: T;
   items: T[];
   columns: TableColumnProps<T>[];
   depth: number;
   level?: number;
   parentKey?: string;
-  config: any;
-  methods: any;
-  states: any;
+  config: Config<T>;
+  methods: TBodyMethods<T>;
+  states: TBodyStates<T>;
   renderCell: (args: IRenderCell<T>) => React.ReactNode;
 }
 
 const SubitemList = <T extends object>({
+  parentItem,
   items,
   columns,
   depth,
@@ -67,6 +74,7 @@ const SubitemList = <T extends object>({
   states,
   renderCell,
 }: ISubitemListProps<T>) => {
+  // variables
   const _subrowSelector = config.subrow?.selector ?? "subitems";
   const _subrowButton = config.subrow?.button ?? true;
 
@@ -75,8 +83,15 @@ const SubitemList = <T extends object>({
       <tr className={`subrow-item ${_subrowButton ? "type-b" : "type-a"}`} data-level={level}>
         {methods.selections && <td className="sticky sticky-left" data-sticky-position="left"></td>}
         {_subrowButton && <td className="sticky sticky-left" data-sticky-position="left"></td>}
-        <td colSpan={columns.length || 1} style={{ ...config.subrow.render.styles, padding: "7.5px 7.5px 7.5px 0" }}>
-          {config.subrow?.render.element(items) ?? <></>}
+        <td
+          colSpan={states.columnNumber.get || columns.length || 1}
+          style={{
+            ...config.subrow.render.styles,
+            padding: "var(--space-8)",
+          }}
+          {...(states.columnNumber.get > 0 ? { className: "sticky sticky-left", "data-sticky-position": "left" } : {})}
+        >
+          {config.subrow?.render.element(parentItem, items) ?? <></>}
         </td>
       </tr>
     );
@@ -138,6 +153,7 @@ const SubitemList = <T extends object>({
 
             {states.showSubitems.get[key] && _subitem && (
               <SubitemList
+                parentItem={subitem}
                 items={_subitem as T[]}
                 columns={columns}
                 depth={depth + 0.75}
@@ -157,33 +173,49 @@ const SubitemList = <T extends object>({
 };
 
 function TBody<T extends object>({ data, columns, refs, methods, states, config }: IProps<T>) {
+  // refs
   const _tBodyTR = useRef<(HTMLTableRowElement | null)[]>([]);
   const _tHeadTH = useRef<(HTMLTableCellElement | null)[]>([]);
 
+  // states
   const [triggerForRender, setTriggerForRender] = useState<boolean>(false);
   const [rowHeights, setRowHeights] = useState<number[]>([]);
 
-  const _subrowSelector: string = config.subrow?.selector ?? "subitems";
-  const _subrowButton: boolean = config.subrow?.button ?? false;
+  // hooks
   const { t } = useTranslation<ITableLocale>(String(config.locale ?? "tr"), { tr: { ...TableTR }, en: { ...TableEN } });
 
-  const renderCell = ({ item, column, index, cIndex, depth, level, height = 0, isSubrows = false }: IRenderCell<T>) => {
-    let render: any;
+  // variables
+  const _subrowSelector: string = config.subrow?.selector ?? "subitems";
+  const _subrowButton: boolean = config.subrow?.button ?? false;
+
+  // methods
+  const renderCell = ({
+    item,
+    column = { isShow: true },
+    index,
+    cIndex,
+    depth,
+    level,
+    height = 0,
+    isSubrows = false,
+  }: IRenderCell<T>) => {
+    if (column.isShow === false) return;
+
+    let render: React.ReactNode;
     const itemTrackId = methods.trackBy?.(item) ?? index.toString();
 
-    if (typeof column.key !== "object") render = column.render ? column.render(item) : item[column.key as keyof T];
+    if (typeof column.key !== "object") render = column.render ? column.render(item) : (item[column.key as keyof T] as React.ReactNode);
     else if (typeof column.key === "object") {
-      const _item = item[column.key.field as keyof T];
-      if (_item && typeof _item === "object") {
-        render = column.render ? column.render(item) : _item[column.key.nestedKey as keyof typeof _item];
-      }
+      render = column.render ? column.render(item) : (GetColumnValue(item, column.key) as React.ReactNode);
     } else render = null;
 
+    // refs
     const _className: string[] = [];
     if (column.config?.alignContent) _className.push(`align-content-${column.config.alignContent}`);
-    if (column.config?.sticky) _className.push(`sticky-${column.config.sticky}`);
+    if (column.config?.sticky) _className.push(`sticky sticky-${column.config.sticky}`);
     if (column.config?.textWrap) _className.push(`text-${column.config.textWrap}`);
 
+    // Tree girintisini solda yapışık olmayan ilk kolona uygula.
     const firstCleanDataColumn = columns.find(
       (col) => col.config?.sticky === undefined || col.config?.sticky !== "left",
     );
@@ -194,7 +226,7 @@ function TBody<T extends object>({ data, columns, refs, methods, states, config 
         key={`cell-${itemTrackId}-${cIndex}`}
         className={_className.join(" ")}
         style={{
-          ...(column.config?.sticky ? { height } : {}),
+          ...(column.config?.sticky && height > 0 ? { height } : {}),
           ...(column.config?.width
             ? {
                 width: column.config.width,
@@ -299,6 +331,7 @@ function TBody<T extends object>({ data, columns, refs, methods, states, config 
                       );
                     }
                     methods.selections?.(refs._selectionItems.current);
+                    // Checkbox değişince select-all durumunu yeniden hesapla.
                     setTriggerForRender((prev) => !prev);
                   }}
                   disabled={methods.selectionDisabled?.(item)}
@@ -346,6 +379,7 @@ function TBody<T extends object>({ data, columns, refs, methods, states, config 
 
         {states.showSubitems.get[key] && _subitem && (
           <SubitemList
+            parentItem={item}
             items={_subitem as T[]}
             columns={columns}
             depth={1.5}
@@ -361,10 +395,40 @@ function TBody<T extends object>({ data, columns, refs, methods, states, config 
   };
 
   // useEffects
-  useEffect(() => {
-    if (!data || data.length === 0) return;
-    const heights = _tBodyTR.current.map((el) => (el ? el.getBoundingClientRect().height : 0));
-    setRowHeights(heights);
+  useLayoutEffect(() => {
+    if (!data || data.length === 0) {
+      setRowHeights([]);
+      return;
+    }
+
+    const rows = _tBodyTR.current;
+
+    // Clear previously applied sticky heights so measurement isn't cumulative (+1px loop)
+    rows.forEach((tr) => {
+      if (!tr) return;
+      tr.querySelectorAll<HTMLElement>("td[data-sticky-position]").forEach((td) => {
+        td.style.height = "";
+      });
+    });
+
+    const heights = rows.map((el) => (el ? Math.round(el.getBoundingClientRect().height) : 0));
+
+    setRowHeights((prev) => {
+      const unchanged = prev.length === heights.length && prev.every((h, i) => h === heights[i]);
+
+      if (unchanged) {
+        // Re-apply cleared inline heights without triggering a re-render
+        rows.forEach((tr, i) => {
+          if (!tr || heights[i] <= 0) return;
+          tr.querySelectorAll<HTMLElement>("td[data-sticky-position]").forEach((td) => {
+            td.style.height = `${heights[i]}px`;
+          });
+        });
+        return prev;
+      }
+
+      return heights;
+    });
   }, [data.length, data]);
 
   useEffect(() => {
@@ -381,6 +445,7 @@ function TBody<T extends object>({ data, columns, refs, methods, states, config 
 
     if (tableContainer && tableContainer.scrollLeft > 0) {
       const currentScroll = tableContainer.scrollLeft;
+      // Sticky kolonları yeniden hizalamak için 1px scroll titretmesi.
       requestAnimationFrame(() => {
         tableContainer.scrollLeft = currentScroll + 1;
         tableContainer.scrollLeft = currentScroll;
@@ -395,10 +460,11 @@ function TBody<T extends object>({ data, columns, refs, methods, states, config 
     })
   ) : (
     <tr>
-      <td colSpan={columns.length || 1}>
+      <td colSpan={columns.filter((x) => x.isShow !== false).length || 1}>
         <div className="no-item">
-          <ARIcon icon={"Inbox-Fill"} fill="var(--gray-300)" size={64} style={{ position: "relative", zIndex: 1 }} />
+          <Icon icon={"Inbox-Fill"} fill="currentColor" size={64} style={{ position: "relative", zIndex: 1 }} />
           <span>{t("Table.Body.NoData.Text")}</span>
+          <p>{t("Table.Body.NoData.Hint")}</p>
         </div>
       </td>
     </tr>

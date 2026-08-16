@@ -1,16 +1,33 @@
 "use client";
 
-import React, { ReactNode, createContext, useState } from "react";
+import React, {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import Notification from "../../../../components/feedback/notification";
 import PopupConfirm from "../../../../components/feedback/popup-confirm";
 import IButtonProps from "../../../../components/form/button/IProps";
 
 export type Status = "success" | "warning" | "information" | "error";
-export type Direction = "top-left" | "top-right" | "bottom-left" | "bottom-right";
+export type Direction =
+  "top-left" | "top-right" | "bottom-left" | "bottom-right";
 
-type Props = {
-  children: ReactNode;
-  direction: Direction;
+export type NotificationCommand = {
+  rev: number;
+  op: "push" | "update" | "dismiss";
+  id: string;
+  title?: string;
+  message?: string;
+  status?: Status | number;
+  duration?: number;
+  pending?: boolean;
 };
 
 export type PopupButtonConfig = {
@@ -18,54 +35,111 @@ export type PopupButtonConfig = {
   cancel?: IButtonProps;
 };
 
-type NotificationContextProps = {
-  setTitle: React.Dispatch<React.SetStateAction<string>>;
-  setMessage: React.Dispatch<React.SetStateAction<string>>;
-  setStatus: React.Dispatch<React.SetStateAction<Status | number>>;
-  setPopupStatus: React.Dispatch<React.SetStateAction<(Status | "save" | "delete") | number>>;
-  setTrigger: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setPopupButtons: React.Dispatch<React.SetStateAction<PopupButtonConfig | null>>;
-  setOnConfirm: React.Dispatch<React.SetStateAction<((confirm: boolean) => void) | null>>;
+export type ConfirmAskPayload = {
+  title: string;
+  message?: string;
+  status: (Status | "save" | "delete") | number;
+  buttons?: PopupButtonConfig | null;
 };
 
-const NotificationContext = createContext<Partial<NotificationContextProps>>({});
+type NotificationContextValue = {
+  dispatchToast: (command: Omit<NotificationCommand, "rev">) => void;
+  defaultDuration: number;
+  askConfirm: (payload: ConfirmAskPayload) => Promise<boolean>;
+  closeConfirm: () => void;
+  setIsPopupOpen: Dispatch<SetStateAction<boolean>>;
+};
 
-const NotificationProvider = ({ children, direction }: Props) => {
-  const [title, setTitle] = useState<string>("Example");
-  const [message, setMessage] = useState<string>(
-    "Lorem Ipsum, dizgi ve baskı endüstrisinde kullanılan mıgır metinlerdir.",
+const NotificationContext = createContext<NotificationContextValue | null>(null);
+
+export const useNotificationContext = () => {
+  const context = useContext(NotificationContext);
+  if (!context) {
+    throw new Error("useNotification and useConfirm must be used within a NotificationProvider");
+  }
+  return context;
+};
+
+type Props = {
+  children: ReactNode;
+  direction?: Direction;
+  duration?: number;
+};
+
+const NotificationProvider = ({
+  children,
+  direction = "bottom-left",
+  duration = 3000,
+}: Props) => {
+  // refs
+  const commandRev = useRef(0);
+  const confirmResolver = useRef<((value: boolean) => void) | null>(null);
+
+  // states
+  const [command, setCommand] = useState<NotificationCommand | null>(null);
+  const [confirm, setConfirm] = useState<ConfirmAskPayload & { open: boolean }>({
+    open: false,
+    title: "",
+    status: "information",
+  });
+
+  // methods
+  const dispatchToast = useCallback((next: Omit<NotificationCommand, "rev">) => {
+    // Aynı id'li güncellemede rerender için rev artır.
+    commandRev.current += 1;
+    setCommand({ ...next, rev: commandRev.current });
+  }, []);
+
+  const settleConfirm = useCallback((value: boolean) => {
+    confirmResolver.current?.(value);
+    confirmResolver.current = null;
+    setConfirm((current) => ({ ...current, open: false }));
+  }, []);
+
+  const askConfirm = useCallback((payload: ConfirmAskPayload) => {
+    // Üst üste ask gelirse önceki promise'i false ile kapat.
+    confirmResolver.current?.(false);
+    setConfirm({ ...payload, open: true });
+    return new Promise<boolean>((resolve) => {
+      confirmResolver.current = resolve;
+    });
+  }, []);
+
+  const closeConfirm = useCallback(() => {
+    settleConfirm(false);
+  }, [settleConfirm]);
+
+  const setIsPopupOpen = useCallback<Dispatch<SetStateAction<boolean>>>((next) => {
+    setConfirm((current) => ({
+      ...current,
+      open: typeof next === "function" ? next(current.open) : next,
+    }));
+  }, []);
+
+  // variables
+  const value = useMemo(
+    () => ({
+      dispatchToast,
+      defaultDuration: duration,
+      askConfirm,
+      closeConfirm,
+      setIsPopupOpen,
+    }),
+    [askConfirm, closeConfirm, dispatchToast, duration, setIsPopupOpen],
   );
-  const [status, setStatus] = useState<Status | number>("success");
-  const [popupStatus, setPopupStatus] = useState<(Status | "save" | "delete") | number>("success");
-  const [trigger, setTrigger] = useState<boolean>(false);
-  const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
-  const [popupButtons, setPopupButtons] = useState<PopupButtonConfig | null>(null);
-  const [onConfirm, setOnConfirm] = useState<((confirm: boolean) => void) | null>(null);
 
   return (
-    <NotificationContext.Provider
-      value={{
-        setTitle,
-        setMessage,
-        setStatus,
-        setPopupStatus,
-        setTrigger,
-        setIsPopupOpen,
-        setPopupButtons,
-        setOnConfirm,
-      }}
-    >
+    <NotificationContext.Provider value={value}>
       {children}
 
-      <Notification title={title} message={message} status={status} direction={direction} trigger={trigger} />
+      <Notification direction={direction} duration={duration} command={command} />
       <PopupConfirm
-        title={title}
-        message={message}
-        status={popupStatus}
-        isOpen={isPopupOpen}
-        buttons={popupButtons}
-        onConfirm={onConfirm}
+        title={confirm.title}
+        message={confirm.message}
+        status={confirm.status}
+        isOpen={confirm.open}
+        buttons={confirm.buttons}
+        onConfirm={settleConfirm}
       />
     </NotificationContext.Provider>
   );

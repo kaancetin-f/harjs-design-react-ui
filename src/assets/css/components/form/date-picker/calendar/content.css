@@ -1,62 +1,115 @@
-.ar-date-calendar > .content {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  gap: 1rem;
-  margin: 0.5rem;
-}
-.ar-date-calendar > .content > .calendar {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  gap: 1rem 0;
-}
+.har-date-calendar {
+  > .content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 1rem;
+    margin: 0.5rem;
 
-/* #region Weekdays */
-.ar-date-calendar > .content > .calendar > .weekdays {
-  display: flex;
-  flex-wrap: nowrap;
-}
-.ar-date-calendar > .content > .calendar > .weekdays > span {
-  width: calc(100% / 7);
-  color: var(--gray-600);
-  font-size: 0.8rem;
-  text-align: center;
-  user-select: none;
-}
-/* #endregion Weekdays */
-/* Weekdays */
+    > .calendar {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      gap: 1rem 0;
 
-/* #region Days */
-.ar-date-calendar > .content > .calendar > .days {
-  display: flex;
-  flex-wrap: wrap;
-  user-select: none;
+      > .weekdays {
+        display: flex;
+        flex-wrap: nowrap;
+
+        > span {
+          width: calc(100% / 7);
+          color: var(--gray-600);
+          font-size: 0.8rem;
+          font-weight: 700;
+          letter-spacing: 0.04em;
+          text-align: center;
+          user-select: none;
+        }
+      }
+
+      > .days {
+        display: flex;
+        flex-wrap: wrap;
+        user-select: none;
+
+        > span {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: calc(100% / 7);
+          height: var(--input-height);
+          cursor: pointer;
+          transition: background-color 180ms ease-in-out;
+
+          &:not(.empty-day):not(.selection-day) {
+            &:hover {
+              > span {
+                background-color: var(--gray-200);
+                color: var(--gray-800);
+                transform: scale(1.06);
+              }
+            }
+
+            &:active {
+              > span {
+                background-color: var(--gray-300);
+                transform: scale(0.92);
+              }
+            }
+          }
+
+          &.selection-day {
+            > span {
+              background-color: var(--blue-500);
+              color: var(--white-alpha-100);
+              font-weight: 700;
+              letter-spacing: 0.06em;
+              font-variant-numeric: tabular-nums;
+              transform: scale(1.08);
+              box-shadow:
+                0 0 0 2px var(--white-500),
+                0 0 0 4px var(--blue-500);
+              animation: har-clock-select 220ms ease-out;
+            }
+
+            &:active {
+              > span {
+                transform: scale(0.96);
+              }
+            }
+          }
+
+          &.in-range-day {
+            background-color: var(--blue-50);
+            border-radius: var(--radius-0);
+
+            > span {
+              color: var(--blue-700);
+              font-weight: 700;
+            }
+          }
+
+          > span {
+            display: grid;
+            justify-content: center;
+            align-content: center;
+            width: 75%;
+            height: 75%;
+            border-radius: var(--radius-4);
+            color: var(--gray-700);
+            font-size: 0.875rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+            transition:
+              background-color 180ms ease-in-out,
+              color 180ms ease-in-out,
+              box-shadow 180ms ease-in-out,
+              transform 180ms cubic-bezier(0.34, 1.4, 0.64, 1);
+          }
+        }
+      }
+    }
+  }
 }
-.ar-date-calendar > .content > .calendar > .days > span {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: calc(100% / 7);
-  height: var(--input-height);
-  cursor: pointer;
-}
-.ar-date-calendar > .content > .calendar > .days > span > span {
-  display: grid;
-  justify-content: center;
-  align-content: center;
-  width: 75%;
-  height: 75%;
-  border-radius: var(--border-radius-sm);
-}
-.ar-date-picker > .calendar-wrapper > .content > .calendar > .days > span:not(.empty-day) > span:hover {
-  background-color: var(--gray-200);
-  color: var(--gray-700);
-}
-.ar-date-calendar > .content > .calendar > .days > span.selection-day > span {
-  background-color: var(--primary);
-  color: var(--white);
-  box-shadow: 0 0 0 2px var(--white), 0 0 0 4px var(--primary);
-}
-/* #endregion Days */
-/* Days */

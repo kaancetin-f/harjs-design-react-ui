@@ -1,4 +1,4 @@
-import { Border, Color, Icon, Sizes, Status, Variants } from ".";
+import { Border, Color, FontWeight, Icon, Sizes, Status, Variants } from ".";
 
 export interface IChildrenProps {
   /**
@@ -16,6 +16,13 @@ export interface IChildrenProps {
   children?: React.ReactNode;
 }
 
+type ExcludedVariantsMap = {
+  card: "dashed" | "borderless";
+  checkbox: "borderless";
+  input: "surface";
+  switch: "outlined" | "dashed" | "borderless";
+  "text-editor": "surface";
+};
 export interface IVariantProps<T extends { component?: string } = {}> {
   /**
    * Specifies the visual style variant of the component.
@@ -30,11 +37,9 @@ export interface IVariantProps<T extends { component?: string } = {}> {
    * <Component variant="filled">Hello, World!</Component>
    * ```
    */
-  variant?: T["component"] extends "alert"
-    ? Exclude<Variants, "outlined" | "borderless">
-    : T["component"] extends "card"
-      ? Exclude<Variants, "dashed" | "borderless">
-      : Variants;
+  variant?: T["component"] extends keyof ExcludedVariantsMap
+    ? Exclude<Variants, ExcludedVariantsMap[T["component"]]>
+    : Variants;
 }
 
 export interface IStatusProps<T extends { component?: string } = {}> {
@@ -47,9 +52,9 @@ export interface IStatusProps<T extends { component?: string } = {}> {
    * ```
    */
   status?: T["component"] extends "alert"
-    ? Exclude<Status, "primary-light" | "secondary" | "information" | "dark" | "light">
+    ? Exclude<Status, "primary" | "secondary">
     : T["component"] extends "card"
-      ? Exclude<Status, "primary-light" | "secondary" | "information" | "dark" | "light">
+      ? Exclude<Status, "secondary" | "information">
       : Status;
 }
 
@@ -73,13 +78,13 @@ export interface IBorderProps {
    * - `sm`: Small radius.
    * - `lg`: Large radius.
    * - `xl`: Extra-large radius.
-   * - `xxl`: Double extra-large radius.
+   * - `2xl`: Double extra-large radius.
    * - `pill`: Fully rounded capsule shape.
    * - `none`: Sharp corners (no radius).
    *
    * @example
    * ```jsx
-   * <Component border={{ radius: "sm" }}>
+   * <Component border={{ radius: "4" }}>
    * Content
    * </Component>
    * ```
@@ -113,20 +118,6 @@ export interface IIconProps {
 }
 
 export interface ISizeProps {
-  /**
-   * Defines the overall scale and sizing of the component.
-   *
-   * - `large`: Scaled-up layout for prominence.
-   * - `normal`: Standard layout size (Default).
-   * - `small`: Compact layout for tight spaces.
-   *
-   * @example
-   * ```jsx
-   * <Component size="large">
-   * Large Layout
-   * </Component>
-   * ```
-   */
   size?: Sizes;
 }
 
@@ -143,6 +134,20 @@ export interface IUpperCaseProps {
    * ```
    */
   upperCase?: boolean;
+}
+
+export interface IFontWeightProps {
+  /**
+   * Sets the font weight of the component text.
+   *
+   * Accepts CSS numeric font-weight tokens from `100` to `900`.
+   *
+   * @example
+   * ```jsx
+   * <Component fontWeight="600">Semi-bold text</Component>
+   * ```
+   */
+  fontWeight?: FontWeight;
 }
 
 export interface IValidationProps {

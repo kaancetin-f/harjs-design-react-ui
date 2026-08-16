@@ -1,14 +1,69 @@
-.ar-date-calendar > .clock {
-  position: absolute;
-  top: -1px;
-  right: -8rem;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--white);
-  width: 7.5rem;
-  border: solid 1px var(--gray-200);
-  border-radius: var(--border-radius-sm);
-  box-shadow: 0 0 10px -5px rgba(var(--black-rgb), 0.25);
-  z-index: 1051;
-  user-select: none;
+.har-date-calendar {
+  > .clock {
+    position: absolute;
+    top: -1px;
+    right: -8rem;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--white-500);
+    width: 7.5rem;
+    border: solid 1px var(--gray-200);
+    border-radius: var(--radius-4);
+    box-shadow: 0 0 10px -5px var(--black-alpha-30);
+    z-index: 1051;
+    user-select: none;
+    overflow: hidden;
+  }
+
+  &.only-clock {
+    width: 10rem;
+    border-radius: var(--radius-8);
+    box-shadow:
+      0 4px 6px -1px var(--black-alpha-10),
+      0 10px 24px -8px var(--black-alpha-20);
+
+    > .clock {
+      position: relative;
+      top: auto;
+      right: auto;
+      width: 100%;
+      border: none;
+      border-radius: inherit;
+      box-shadow: none;
+
+      > .header {
+        min-height: 3.75rem;
+        padding: 0 0.5rem;
+        background-color: var(--gray-50);
+        color: var(--gray-700);
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        font-variant-numeric: tabular-nums;
+      }
+
+      > .content {
+        height: 16rem;
+      }
+
+      > .footer {
+        min-height: var(--footer-height);
+        padding: 0.25rem 0.35rem;
+        background-color: var(--gray-50);
+
+        > .har-flex {
+          width: 100%;
+
+          .ar-tooltip-wrapper {
+            flex: 0 0 auto;
+          }
+
+          > button,
+          .ar-tooltip-wrapper > div > button {
+            width: auto;
+          }
+        }
+      }
+    }
+  }
 }

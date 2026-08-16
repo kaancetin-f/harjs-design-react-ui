@@ -2,16 +2,34 @@
 
 import React from "react";
 import IProps from "./IProps";
+import { isTokenColor } from "../tokenColor";
 
-const Paragraph: React.FC<IProps> = ({ children, color, align = "left", size, upperCase = false }) => {
-  let _className: string[] = ["ar-typography-paragraph"];
+const Paragraph: React.FC<IProps> = ({
+  children,
+  color,
+  align = "left",
+  size = "md",
+  upperCase = false,
+  fontWeight,
+  className,
+  style,
+  ...attributes
+}) => {
+  // variables
+  const token = color != null && isTokenColor(color);
 
-  if (align) _className.push(align);
-  if (color) _className.push(color);
-  if (size) _className.push(size);
+  // refs
+  const _paragraphClassName: string[] = [
+    "har-typography-paragraph",
+    align,
+    token ? color : undefined,
+    `size-${size}`,
+    fontWeight ? `font-weight-${fontWeight}` : undefined,
+    className,
+  ].filter(Boolean) as string[];
 
   return (
-    <p className={_className.map((c) => c).join(" ")}>
+    <p {...attributes} className={_paragraphClassName.map((c) => c).join(" ")} style={color && !token ? { color, ...style } : style}>
       {typeof children === "string" && upperCase ? children.toLocaleUpperCase() : children}
     </p>
   );

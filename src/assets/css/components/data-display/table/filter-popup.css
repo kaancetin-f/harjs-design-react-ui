@@ -1,11 +1,50 @@
-.ar-table-filter-popup {
-  position: absolute;
-  background-color: var(--white);
-  width: 225px;
-  max-height: 300px;
-  padding: 1rem;
-  border-radius: var(--border-radius-sm);
-  box-shadow: 0px 10px 15px -5px rgba(var(--black-rgb), 0.1);
-  transition: top 350ms, left 1s cubic-bezier(0.68, -0.6, 0.32, 1.6);
-  z-index: 1052;
+.har-table-filter-popup {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--gray-50);
+  color: var(--gray-800);
+  width: fit-content;
+  min-width: 16.5rem;
+  max-width: 22rem;
+  max-height: 18rem;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-8);
+  box-shadow: 0 4px 8px color-mix(in srgb, var(--black-alpha-100) 10%, transparent),
+    0 12px 24px -3px color-mix(in srgb, var(--black-alpha-100) 20%, transparent);
+  overflow: hidden;
+  z-index: 1050;
+  animation: har-table-popup 160ms ease;
+
+  > .content {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: 18rem;
+    padding: var(--space-12);
+    overflow: hidden;
+
+    > .flex {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden;
+
+      > .har-input-wrapper,
+      > .har-button {
+        flex-shrink: 0;
+      }
+    }
+
+    .checkboxes-field {
+      position: relative;
+      flex: 1 1 auto;
+      min-height: 0;
+      margin-left: calc(var(--space-12) * -1);
+      margin-right: calc(var(--space-12) * -1);
+      padding: var(--space-8) var(--space-4) var(--space-12) var(--space-12);
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+  }
 }

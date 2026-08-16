@@ -1,40 +1,19 @@
 "use client";
 
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DateFilters from "./DateFilters";
 import SelectFilters from "./SelectFilters";
 import React from "react";
 import Input from "../../../form/input";
-import { Config } from "../IProps";
+import { IFilterProps } from "./types";
 import { useTranslation } from "@harjs/translation";
 import IKanbanBoardLocale from "../../../../libs/core/application/locales/kanban-board/IKanbanBoardLocale";
 import KanbanBoardTR from "../../../../libs/core/application/locales/kanban-board/tr";
 import KanbanBoardEN from "../../../../libs/core/application/locales/kanban-board/en";
 
-interface IProps<T extends object> {
-  states: {
-    search: {
-      get: string | null;
-      set: Dispatch<React.SetStateAction<string | null>>;
-    };
-    dateFilters: {
-      get: Record<string, { from: Date | null; to: Date | null }>;
-      set: Dispatch<SetStateAction<Record<string, { from: Date | null; to: Date | null }>>>;
-    };
-    selectFilters: {
-      get: { [key: string]: (string | null)[] };
-      set: Dispatch<SetStateAction<{ [key: string]: (string | null)[] }>>;
-    };
-    selectedFilters: {
-      get: Record<string, Set<string | null>>;
-      set: Dispatch<SetStateAction<Record<string, Set<string | null>>>>;
-    };
-  };
-  config?: Config<T>;
-}
-
-function Filter<T extends object>({ states, config }: IProps<T>) {
+function Filter<T extends object>({ states, config }: IFilterProps<T>) {
   // refs
+  const _root = useRef<HTMLDivElement>(null);
   const _searchTimeOut = useRef<NodeJS.Timeout | null>(null);
 
   // states
@@ -47,23 +26,53 @@ function Filter<T extends object>({ states, config }: IProps<T>) {
   });
 
   // methods
-  const handleOpen = (name: string | null) => setOpenName(openName === name ? null : name);
+  const handleOpen = (name: string | null) => setOpenName((current) => (current === name ? null : name));
+
+  // useEffects
+  useEffect(() => {
+    if (!openName) return;
+
+    const close = (event: PointerEvent) => {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+      if (_root.current?.contains(target)) return;
+      if (target instanceof Element && target.closest(".har-date-calendar, .har-date-picker")) return;
+
+      setOpenName(null);
+    };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpenName(null);
+    };
+
+    document.addEventListener("pointerdown", close);
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", close);
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [openName]);
 
   return (
-    <div className="filters">
-      <Input
-        variant="borderless"
-        placeholder={t("KanbanBoard.Search.Input.Placeholder")}
-        onChange={(event) => {
-          if (_searchTimeOut.current) clearTimeout(_searchTimeOut.current);
+    <div ref={_root} className="har-kanban-filters" role="search" aria-label={t("KanbanBoard.Filters.Label")}>
+      <div className="search">
+        <Input
+          variant="outlined"
+          size="md"
+          border={{ radius: "6" }}
+          onChange={(event) => {
+            if (_searchTimeOut.current) clearTimeout(_searchTimeOut.current);
 
-          _searchTimeOut.current = setTimeout(() => {
-            states.search.set(event.target.value.toLocaleLowerCase());
-          }, 750);
-        }}
-      />
+            _searchTimeOut.current = setTimeout(() => {
+              states.search.set(event.target.value.toLocaleLowerCase());
+            }, 750);
+          }}
+          placeholder={t("KanbanBoard.Search.Input.Placeholder")}
+        />
+      </div>
 
-      <ul>
+      <div className="groups">
         <DateFilters
           states={{
             dateFilters: {
@@ -93,7 +102,7 @@ function Filter<T extends object>({ states, config }: IProps<T>) {
           methods={{ open: handleOpen }}
           config={config}
         />
-      </ul>
+      </div>
     </div>
   );
 }

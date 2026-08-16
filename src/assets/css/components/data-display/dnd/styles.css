@@ -1,72 +1,125 @@
 @import url("./animations.css");
 @import url("./shadow.css");
 
-.ar-dnd {
+@property --_accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #3b82f6;
+}
+
+.har-dnd {
+  --_accent: currentColor;
   display: flex;
   flex-direction: column;
-  gap: 1rem 0;
+  gap: var(--space-8);
+  color: var(--blue-500);
+
+  &.blue {
+    color: var(--blue-500);
+  }
+  &.purple {
+    color: var(--purple-500);
+  }
+  &.pink {
+    color: var(--pink-500);
+  }
+  &.red {
+    color: var(--red-500);
+  }
+  &.orange {
+    color: var(--orange-500);
+  }
+  &.yellow {
+    color: var(--yellow-500);
+  }
+  &.green {
+    color: var(--green-500);
+  }
+  &.teal {
+    color: var(--teal-500);
+  }
+  &.cyan {
+    color: var(--cyan-500);
+  }
+  &.gray {
+    color: var(--gray-500);
+  }
+  &.white {
+    color: var(--gray-300);
+  }
 
   > .item {
     display: flex;
+    align-items: center;
+    gap: var(--space-8);
     position: relative;
-    min-width: 1px;
-    cursor: move;
-    overflow: hidden;
-    transition:
-      transform 0.3s ease,
-      opacity 0.3s ease;
+    min-width: 0;
+    cursor: grab;
+    user-select: none;
+    transition: opacity 0.18s ease;
+
+    &:active {
+      cursor: grabbing;
+    }
 
     &.drag-item {
-      opacity: 0.25;
-    }
-
-    &.over-item {
-      position: relative;
-    }
-
-    &.over-item::after {
-      position: absolute;
-      content: "";
-      background-color: var(--success);
-      left: 1rem;
-      right: 1rem;
-      bottom: 0;
-      height: 5px;
-      border-radius: var(--border-radius-pill);
+      opacity: 0.28;
     }
 
     &.end-item {
-      /* Sırasıyla; Ad, Süre, Hız, Gecikme Süresi, Tekrar Sayısı, Yön, Bitiş Süreci */
-      animation: endItem ease-in-out 1s 0s 1 normal both;
+      animation: endItem ease-out 0.45s 0s 1 normal both;
     }
 
     > .move {
       display: flex;
-      justify-content: center;
+      flex: 0 0 auto;
       align-items: center;
+      justify-content: center;
+      width: 1.15rem;
+      color: currentColor;
+      cursor: grab;
+      touch-action: none;
+
+      &:active {
+        cursor: grabbing;
+      }
     }
 
     > .content {
-      flex: 100%;
+      flex: 1 1 auto;
+      min-width: 0;
       max-width: 100%;
+    }
+  }
+
+  &.is-handle-only > .item {
+    cursor: default;
+
+    &:active {
+      cursor: default;
+    }
+  }
+
+  &.is-dragging,
+  &.is-dragging > .item,
+  &.is-dragging > .item > .move {
+    cursor: grabbing;
+  }
+
+  &.is-disabled {
+    pointer-events: none;
+    opacity: 0.55;
+
+    > .item,
+    > .item > .move {
+      cursor: default;
     }
   }
 
   > .placeholder {
     position: relative;
-    border-bottom: solid 2px var(--blue-500);
-    border-radius: var(--border-radius-pill);
-
-    &::before {
-      position: absolute;
-      left: 0;
-      top: -3px;
-      content: "";
-      background-color: var(--gray-100);
-      width: 7.5px;
-      height: 7.5px;
-      border: solid 2px var(--blue-500);
-      border-radius: var(--border-radius-pill);
-    }
+    height: 0.4rem;
+    border-radius: var(--radius-full);
+    background: color-mix(in srgb, currentColor 42%, transparent);
   }
 }

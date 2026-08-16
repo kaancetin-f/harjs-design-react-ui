@@ -1,0 +1,127 @@
+@import url("./color.checked.css");
+@import url("./color.unchecked.css");
+@import url("./radius.css");
+
+.har-checkbox-card-wrapper {
+  width: auto;
+  max-width: 100%;
+  flex: 0 0 auto;
+
+  &:has(> .har-checkbox-card.has-icon) {
+    width: 100%;
+    min-width: 10rem;
+  }
+
+  > .har-checkbox-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-16);
+    width: 100%;
+    padding: var(--space-12) var(--space-16);
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    transition:
+      background-color 150ms,
+      border 150ms,
+      color 150ms ease-in-out;
+
+    &:focus-visible {
+      outline: solid var(--stroke-2) currentColor;
+      outline-offset: 2px;
+    }
+
+    &.disabled {
+      color: var(--gray-500);
+      cursor: no-drop;
+    }
+
+    > .content {
+      display: flex;
+      flex: 1;
+      min-width: 0;
+
+      &.vertical {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-4);
+      }
+
+      &.horizontal {
+        flex-direction: row;
+        align-items: center;
+        gap: var(--space-12);
+      }
+
+      .har-typography-title,
+      .har-typography-paragraph {
+        margin: 0;
+        color: inherit;
+      }
+    }
+
+    > .har-checkbox-wrapper {
+      flex-shrink: 0;
+      width: auto;
+      pointer-events: none;
+
+      .har-checkbox {
+        border-width: var(--stroke-1-5);
+      }
+    }
+
+    &.filled:not(.disabled) {
+      > .har-checkbox-wrapper .har-checkbox {
+        background-color: color-mix(in srgb, currentColor 22%, transparent);
+        border-color: currentColor;
+      }
+
+      &.checked > .har-checkbox-wrapper .har-checkbox {
+        background-color: var(--white-alpha-100);
+        border-color: var(--white-alpha-100);
+      }
+    }
+
+    &.has-icon {
+      position: relative;
+      flex-direction: column;
+      align-items: stretch;
+      min-width: 10rem;
+      padding: var(--space-20) var(--space-16) var(--space-16);
+
+      > .content {
+        align-items: center;
+        width: 100%;
+        gap: var(--space-8);
+
+        &.vertical {
+          align-items: center;
+        }
+
+        > .icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: inherit;
+
+          svg {
+            width: 1.5rem;
+            height: 1.5rem;
+          }
+        }
+
+        .har-typography-title,
+        .har-typography-paragraph {
+          text-align: center;
+        }
+      }
+
+      > .har-checkbox-wrapper {
+        position: absolute;
+        top: var(--space-12);
+        right: var(--space-12);
+      }
+    }
+  }
+}

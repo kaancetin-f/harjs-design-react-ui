@@ -1,0 +1,153 @@
+---
+title: Pagination
+description: Page through a dataset. Use it under a table or a list, not as a breadcrumb or a wizard.
+---
+
+Pagination is controlled data navigation. Pass `currentPage`, `totalRecords`, and `onChange(currentPage, perPage)`. It does not fetch, route, or own the page in local storage — the parent is the source of truth.
+
+Table already prints “Showing x to y of z” in its footer, so Table turns Pagination’s own total off. Standalone Pagination shows the range by default.
+
+Breadcrumb is the page trail. Menu is app navigation. Steps and Wizard are process flows.
+
+## Import
+
+```tsx
+import { Pagination } from "@harjs/react-ui";
+```
+
+```tsx
+<Pagination
+  currentPage={page}
+  totalRecords={250}
+  perPage={10}
+  onChange={(nextPage, nextSize) => {
+    setPage(nextPage);
+    setPerPage(nextSize);
+  }}
+/>
+```
+
+## Basic
+
+`currentPage` and `totalRecords` are required. `perPage` falls back to `ConfigContext` (`5` without a provider). Size changes call `onChange(1, perPage)`.
+
+<Example>
+  <PaginationBasic />
+</Example>
+
+## Many pages
+
+The range is a fixed window: first page, last page, and siblings around the current page. Extra pages collapse to an ellipsis. Ten thousand pages still render a handful of buttons.
+
+<Example>
+  <PaginationMany />
+</Example>
+
+## Total records
+
+Standalone Pagination shows `21–30 of 250`. The last page clips to the real end (`91–95 of 95`). All shows `1–95 of 95`. Zero records shows “No results” and hides the pager.
+
+<Example>
+  <PaginationTotal />
+</Example>
+
+## Page size
+
+Options are **5, 10, 15, 50, 75, 100**, plus **All**. The Select stays in sync when `perPage` changes.
+
+<Example>
+  <PaginationPageSize />
+</Example>
+
+## Quick jump
+
+`showQuickJumper` adds **Page [n] of N**. Enter submits. Escape and blur restore the current page. Invalid values (`0`, `abc`, out of range) do not call `onChange`.
+
+<Example>
+  <PaginationQuickJump />
+</Example>
+
+## Controlled pagination
+
+The parent owns `currentPage` and `perPage`. Clicking a page only fires `onChange`. Feed the next values back in.
+
+<Example>
+  <PaginationPlayground />
+</Example>
+
+## Loading
+
+`loading` blocks clicks, dims the bar, and sets `aria-busy`. Layout does not shift.
+
+<Example>
+  <PaginationLoading />
+</Example>
+
+## Empty and single page
+
+Zero records: “No results”, no pager. One page: page size and total only — first/prev/next/last stay hidden.
+
+<Example>
+  <PaginationEmpty />
+</Example>
+
+<Example>
+  <PaginationSingle />
+</Example>
+
+## Responsive
+
+Below 768px the page-size label hides. Below 576px the pager collapses to **previous · current / total · next**. Hit targets stay at 32px. No JS breakpoint.
+
+<Example>
+  <PaginationResponsive />
+</Example>
+
+## Accessibility
+
+The root is `<nav>` with a translated label. First, previous, next, last, and page buttons have translated `aria-label`s. The current page is `aria-current="page"`. Tab, Enter, and Space use `Button`. Arrow Left/Right on a pager button move one page. Disabled controls use the native `disabled` attribute. `prefers-reduced-motion: reduce` turns off hover transitions.
+
+<Example>
+  <PaginationKeyboard />
+</Example>
+
+## When to use Pagination
+
+Use it for:
+
+- Large datasets
+- Tables
+- Search results
+- Server-side pages
+
+Do not use it for:
+
+- One or two screens of content
+- A wizard or step flow
+- App or site navigation
+- A breadcrumb trail
+
+## Best practices
+
+- Drive `currentPage` and `perPage` from parent state.
+- Pass `perPage` so the Select matches the size you query with.
+- Reset to page 1 in the parent when filters change. Pagination will follow.
+- Turn `showQuickJumper` on when the page count is large.
+- Prefer **All** only when the full set can render.
+- Do not replace a breadcrumb or a wizard with Pagination.
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `currentPage` | `number` | — | Active page. 1-based. Controlled. |
+| `totalRecords` | `number` | — | Total rows in the set. |
+| `perPage` | `number` | `ConfigContext.perPage` (`5`) | Page size. Select stays in sync when this changes. |
+| `onChange` | `(currentPage: number, perPage: number) => void` | — | Fires on page or size change. Size change always sends page `1`. |
+| `showTotal` | `boolean` | `true` | Record range (`21–30 of 250`). Table and Gantt set this `false`. |
+| `showQuickJumper` | `boolean` | `false` | Direct page input. |
+| `loading` | `boolean` | `false` | Disables controls. No layout shift. |
+| `locale` | `Intl.LocalesArgument` | `"tr"` | `tr` / `en` copy. |
+| `defaultCurrent` | `number` | — | Unused. Kept for compatibility. |
+
+Native attributes are not forwarded. The root class is `ar-pagination`.

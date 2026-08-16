@@ -1,0 +1,103 @@
+---
+title: Drawer
+description: A slide-over panel for secondary flows. Control it with open.get / open.set. One child is a single panel; tabs switch named views.
+---
+
+Drawer is a slide-over overlay. Pass `open={{ get, set }}` — the same contract as Modal. Default `placement` is `"right"`; `"left"` docks the other edge. A single `children` node is one panel. Two or more `tabs` render the Tabs chrome and persist the index when you pass `name`. Escape and backdrop click close it unless you opt out.
+
+## Import
+
+```tsx
+import { Drawer } from "@harjs/react-ui";
+```
+
+```tsx
+const [open, setOpen] = useState(false);
+
+<Button onClick={() => setOpen(true)}>Open</Button>
+<Drawer title="Release notes" open={{ get: open, set: setOpen }}>
+  Sprint 24 is on track.
+</Drawer>
+```
+
+## Usage
+
+The default size is `2xl`. The examples below use `md` so the preview stays readable. Focus moves into the panel on open and returns to the trigger on close.
+
+<Example>
+  <DrawerBasic />
+</Example>
+
+## Examples
+
+### Placement
+
+`placement` is `"right"` (default) or `"left"`. Radius applies to the inner corners so the viewport edge stays flush.
+
+<Example>
+  <DrawerPlacement />
+</Example>
+
+### Size
+
+`sm`–`2xl` are fixed widths. `3xl`–`full` are percentages of the viewport. The panel never exceeds `100%`.
+
+<Example>
+  <DrawerSize />
+</Example>
+
+### Tabs
+
+Pass `tabs` with `title` and `content`. Tab chrome goes through `config.tabs` — the same `orientation` and `variant` as Tabs. Drawer defaults `orientation` to `"vertical"`. `name` stores the active index in `sessionStorage` under the current path, unless `activeTab` is controlled.
+
+<Example>
+  <DrawerTabs />
+</Example>
+
+### Free content
+
+`config.freeContent` drops the body padding. Use it when the child brings its own layout.
+
+<Example>
+  <DrawerFreeContent />
+</Example>
+
+### Close behavior
+
+`disableCloseOnBackdrop` and `disableCloseOnEsc` keep the overlay up until the header close control (or your own button) runs `open.set(false)`.
+
+<Example>
+  <DrawerClose />
+</Example>
+
+### Radius
+
+`border.radius` rounds the leading corners. The trailing edge stays flush to the viewport.
+
+<Example>
+  <DrawerRadius />
+</Example>
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `open.get` | `boolean` | — |
+| `open.set` | `Dispatch<SetStateAction<boolean>>` | — |
+| `title` | `string` | — |
+| `children` | `ReactNode` | — |
+| `tabs` | `{ title: string; content: ReactNode; icon?: { element: JSX.Element; position?: "start" \| "end" }; disabled?: boolean; config?: { canBeClosed?: boolean } }[]` | `[]` |
+| `name` | `string` | — |
+| `activeTab` | `number` | — |
+| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl" \| "3xl" \| "4xl" \| "5xl" \| "6xl" \| "full"` | `"2xl"` |
+| `placement` | `"left" \| "right"` | `"right"` |
+| `border.radius` | `"0" \| "2" \| "4" \| "6" \| "8" \| "12" \| "16" \| "20" \| "40"` | — |
+| `onChange` | `(currentTab: number) => void` | — |
+| `onClose` | `(closeTab: number) => void` | — |
+| `disableCloseOnBackdrop` | `boolean` | `false` |
+| `disableCloseOnEsc` | `boolean` | `false` |
+| `config.freeContent` | `boolean` | `false` |
+| `config.tabs` | `Pick<Tabs, "variant" \| "orientation" \| "defaultActiveTab">` | `{ orientation: "vertical" }` |
+| `validation` | `{ data: T; rules: ValidationProps<T>[] }` | — |
+
+Also accepts standard `div` HTML attributes (`className`, `style`, `id`, `role`, …). `open` is required. When `tabs` is omitted, `children` is the panel. `role` defaults to `"dialog"` with `aria-modal`.

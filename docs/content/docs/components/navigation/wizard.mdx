@@ -1,0 +1,136 @@
+---
+title: Wizard
+description: Full-chrome multi-step flows with a sidebar, a complete action, and optional Drawer wrapping. Use it for setup and onboarding, not for in-page steppers or table paging.
+---
+
+Wizard is a linear process with its own chrome: a titled sidebar, a progress header, and Back / Next / Complete. Pass `name`, `data`, `steps`, and `onChange`. `currentStep` is optional: when it is a number the parent owns the index; when it is omitted, Wizard keeps the index and restores it from `sessionStorage` keyed by `pathname::name`.
+
+Steps is the lighter sibling — same flow rules, no sidebar chrome. Pagination pages a dataset. Menu and Breadcrumb are navigation, not a process.
+
+## Import
+
+```tsx
+import { Wizard } from "@harjs/react-ui";
+```
+
+```tsx
+<Wizard
+  name="onboarding"
+  title="Onboarding"
+  data={{ get: form, set: setForm }}
+  currentStep={step}
+  onChange={setStep}
+  steps={[
+    { key: "account", title: "Account", content: <AccountForm /> },
+    { key: "company", title: "Company", content: <CompanyForm /> },
+  ]}
+/>
+```
+
+## Basic
+
+`onChange` is required. Drive `currentStep` from parent state when the flow should stay in sync with the URL or a form store. The sidebar heading uses `title`, then the `Wizard.Title` locale string. The panel heading uses the current step title.
+
+Completed steps in the sidebar are clickable. Future steps are clickable when there is no `validation`.
+
+<Example>
+  <WizardBasic />
+</Example>
+
+## Validation
+
+`validation.rules` use 1-based `step` indexes (`1` is the first step). Next — and a click on the immediate next step — run `useValidation` for the current step. Skipping ahead is blocked. Going back does not re-validate. Next and Complete are `loading` while submit runs, so a double click cannot jump two steps.
+
+The current step’s `content` root receives `data` always, and `errors` when `validation` is set. Read `errors.field` and pass it to the field’s `validation.text`.
+
+<Example>
+  <WizardValidation />
+</Example>
+
+## Drawer
+
+`Wizard.Drawer` opens the same flow in a Drawer. `config.locale` goes to Wizard. `config.freeContent` goes to Drawer only — set it so Drawer padding does not wrap the chrome. `size` and `placement` are Drawer props.
+
+On Complete, Wizard clears `sessionStorage` and resets its internal index. If you control `currentStep`, reset it in `onCompleted` (and close the drawer if you want).
+
+<Example>
+  <WizardDrawer />
+</Example>
+
+## Locale
+
+Default copy is Turkish (`config.locale` `"tr"`). Pass `"en"` for English. An array locale uses the first tag. `title` wins over `Wizard.Title` in the sidebar.
+
+<Example>
+  <WizardLocale />
+</Example>
+
+## Empty
+
+An empty `steps` array keeps the chrome and shows the empty copy. Out-of-range `currentStep` is clamped.
+
+<Example>
+  <WizardEmpty />
+</Example>
+
+## Accessibility
+
+The sidebar is an ordered list of native buttons. The current item is `aria-current="step"`. Each button’s `aria-label` includes the title and status (`pending` / `in progress` / `completed`). The header track is a `progressbar`. The in-progress spinner rotates unless `prefers-reduced-motion: reduce`. Tab, Enter, and Space move between reachable steps.
+
+<Example>
+  <WizardKeyboard />
+</Example>
+
+## When to use Wizard
+
+Use it for:
+
+- Full-page or drawer setup flows
+- Onboarding that needs a complete action
+- Multi-step forms with a persistent sidebar
+
+Do not use it for:
+
+- An in-page stepper without chrome (Steps)
+- App or site navigation (Menu)
+- A page trail (Breadcrumb)
+- Paging a table (Pagination)
+
+## Best practices
+
+- Keep `name` stable; it is the `sessionStorage` key with the pathname. Do not reuse a Steps `name` on the same path.
+- Prefer controlled `currentStep` when the parent already has the index.
+- Put `step: 1` on rules for the first step. The hook is 1-based.
+- Do not skip validation by jumping the sidebar. That is blocked when `validation` is set.
+- Pass `config.locale` in English docs and apps.
+- Pass `config.freeContent` on `Wizard.Drawer`.
+- Reset controlled `currentStep` in `onCompleted`.
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `name` | `string` | — | Storage key segment. Required. |
+| `data` | `{ get, set }` | — | Form store injected into step content. Required. |
+| `steps` | `StepProps[]` | — | `key`, `title`, `content`, optional `icon`. |
+| `onChange` | `(currentStep: number) => void` | — | Fires after a successful step change. 0-based. |
+| `title` | `string` | locale `Wizard.Title` | Sidebar heading. Panel uses the current step title first. |
+| `description` | `string` | — | Sidebar supporting copy. |
+| `currentStep` | `number` | — | Controlled index. Omit for uncontrolled + `sessionStorage`. |
+| `onCompleted` | `() => void` | — | Fires after the last step validates (or immediately when there is no validation). |
+| `validation` | `{ data, rules }` | — | Current-step rules. Future sidebar steps are not skippable. |
+| `config.locale` | `Intl.LocalesArgument` | `"tr"` | `tr` / `en` copy. Arrays use the first tag. |
+| `size` | `DrawerSizes` | — | Drawer width. Ignored by the inline Wizard. |
+
+### `Wizard.Drawer`
+
+All Wizard props, plus:
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | `{ get, set }` | — | Drawer visibility. Required. |
+| `placement` | `"left" \| "right"` | `"right"` | Drawer edge. |
+| `config.freeContent` | `boolean` | — | Drawer padding. Wizard does not read this. |
+| `config.locale` | `Intl.LocalesArgument` | `"tr"` | Forwarded to Wizard. |
+
+Native attributes are not forwarded on the inline Wizard. The root class is `har-wizard`.

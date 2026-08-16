@@ -1,0 +1,20 @@
+&.__SIZE__ {
+  min-height: __SIZE_NUMBER__ !important;
+  font-size: __FONT_SIZE__;
+
+  > .items > .har-chip {
+    height: __CHIP_HEIGHT__;
+    padding: 0 __CHIP_PADDING__;
+    font-size: __CHIP_FONT_SIZE__;
+
+    > .har-chip-delete {
+      width: __CHIP_DELETE_SIZE__;
+      height: __CHIP_DELETE_SIZE__;
+
+      > svg {
+        width: __CHIP_SVG_SIZE__;
+        height: __CHIP_SVG_SIZE__;
+      }
+    }
+  }
+}

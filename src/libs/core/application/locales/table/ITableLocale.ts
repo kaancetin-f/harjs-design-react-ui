@@ -15,9 +15,41 @@ interface ITableLocale {
   "Table.Filters.Where.Input.Item.7.Text": string;
   "Table.Filters.Where.Input.Item.8.Text": string;
   "Table.Filters.Search.Input.Placeholder": string;
+  "Table.Filters.All.Text": string;
+  "Table.Filters.SelectAll.Text": string;
+  "Table.Filters.Clear.Text": string;
+  "Table.Filters.Boolean.Placeholder": string;
+  "Table.Filters.DateRange.Placeholder": string;
+
+  // Columns
+  "Table.Header.Extra.ClearFilters.Button.Text": string;
+  "Table.Header.Extra.ColumnManager.Button.Text": string;
+  "Table.Columns.Title.Text": string;
+  "Table.Columns.ShowAll.Text": string;
+  "Table.Columns.Visibility.Text": string;
+  "Table.Columns.Pdf.Text": string;
+  "Table.Columns.Pdf.SelectAll.Text": string;
+  "Table.Columns.Pdf.Clear.Text": string;
+
+  "Table.Filters.Popup.Label": string;
+  "Table.Properties.Popup.Label": string;
+
+  // Actions
+  "Table.Actions.Import.Title": string;
+  "Table.Actions.Import.Message": string;
+  "Table.Actions.Import.Upload": string;
+  "Table.Actions.Import.Confirm": string;
+  "Table.Actions.Export.Title": string;
+  "Table.Actions.Export.Message": string;
+  "Table.Actions.Export.Confirm": string;
+  "Table.Actions.Delete.Title": string;
+  "Table.Actions.Delete.Message": string;
+  "Table.Actions.Delete.Confirm": string;
+  "Table.Actions.Cancel": string;
 
   // Body
   "Table.Body.NoData.Text": string;
+  "Table.Body.NoData.Hint": string;
 
   // Pagination
   "Table.Pagination.Information.Text": string;

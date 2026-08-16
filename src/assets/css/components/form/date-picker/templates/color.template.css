@@ -1,0 +1,44 @@
+&.__COLOR__ {
+  color: var(--__COLOR__-700);
+
+  &.filled {
+    background-color: var(--__COLOR__-100);
+    border: var(--stroke-1) solid var(--__COLOR__-300);
+
+    &:focus-within {
+      border: var(--stroke-1) solid var(--__COLOR__-500);
+    }
+  }
+
+  &.surface-borderless {
+    background-color: var(--__COLOR__-100);
+
+    &:focus-within {
+      background-color: transparent;
+      box-shadow: 0 0 0 2.5px var(--__COLOR__-200);
+    }
+  }
+
+  &.outlined {
+    background-color: transparent;
+    border: var(--stroke-1) solid var(--__COLOR__-300);
+
+    &:focus-within {
+      box-shadow: 0 0 0 2.5px var(--__COLOR__-200);
+    }
+  }
+
+  &.dashed {
+    background-color: transparent;
+    border: var(--stroke-1) dashed var(--__COLOR__-300);
+
+    &:focus-within {
+      box-shadow: 0 0 0 2.5px var(--__COLOR__-200);
+    }
+  }
+
+  &.borderless {
+    background-color: transparent;
+    border: var(--stroke-1) solid transparent;
+  }
+}

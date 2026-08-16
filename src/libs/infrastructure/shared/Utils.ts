@@ -15,8 +15,8 @@ class Utils {
     if (variant) classNames.push(variant);
     if (status) classNames.push(status);
     if (color) classNames.push(color);
-    if (border) classNames.push(`border-radius-${border.radius}`);
-    if (size) classNames.push(size);
+    if (border) classNames.push(`radius-${border.radius}`);
+    if (size) classNames.push(`size-${size}`);
     if (icon && icon.element) {
       classNames.push("icon");
       classNames.push(`icon-${icon.position || "start"}`);
@@ -41,15 +41,14 @@ class Utils {
   public GetOS = () => {
     const userAgent = navigator.userAgent;
 
-    // İşletim sistemi bilgilerini tespit etmek için regex kullanıyoruz
-    if (userAgent.indexOf("Win") !== -1) return "Windows";
-    if (userAgent.indexOf("Mac") !== -1) return "MacOS";
-    if (userAgent.indexOf("X11") !== -1) return "UNIX";
-    if (userAgent.indexOf("Linux") !== -1) return "Linux";
-    if (userAgent.indexOf("Android") !== -1) return "Android";
-    if (userAgent.indexOf("like Mac") !== -1) return "iOS";
+    // Sıra önemli: Android UA'da "Linux", iOS UA'da "like Mac" geçer.
+    if (/android/i.test(userAgent)) return "Android";
+    if (/iphone|ipad|ipod|ios/i.test(userAgent) || /like Mac/i.test(userAgent)) return "iOS";
+    if (/win/i.test(userAgent)) return "Windows";
+    if (/mac/i.test(userAgent)) return "MacOS";
+    if (/linux|ubuntu|x11|cros/i.test(userAgent)) return "Linux";
 
-    return "Bilinmeyen OS";
+    return "Unknown";
   };
 
   public GetOSShortCutIcons = () => {
@@ -57,9 +56,10 @@ class Utils {
       case "MacOS":
         return "⌘";
       case "Windows":
-        return "ctrl";
+      case "Linux":
+        return "Ctrl";
       default:
-        return "";
+        return "Ctrl";
     }
   };
 

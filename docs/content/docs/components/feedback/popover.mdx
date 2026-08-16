@@ -1,0 +1,135 @@
+---
+title: Popover
+description: Contextual panel anchored to a trigger. Use it for a short note, custom content, or a confirm/cancel action.
+---
+
+Popover is a floating panel, not a Modal. The child is the trigger. Click to open, click again or outside to close. Escape dismisses. The panel portals to `document.body` and stays inside the viewport. Default confirm labels are `Evet` / `Hayır` — pass `config.buttons` for your own copy.
+
+## Import
+
+```tsx
+import { Popover } from "@harjs/react-ui";
+```
+
+```tsx
+<Popover title="Sprint 24" message="Design is signed off. API review is next.">
+  <Button>Sprint status</Button>
+</Popover>
+```
+
+```tsx
+<Popover
+  title="Delete sprint?"
+  message="Sprint 24 will be removed from the board."
+  onConfirm={(confirm) => {
+    if (confirm) removeSprint();
+  }}
+  config={{ buttons: { okay: "Delete", cancel: "Cancel" } }}
+>
+  <Button color="red">Delete sprint</Button>
+</Popover>
+```
+
+## Usage
+
+`children` is required for a trigger. `title`, `message`, and `content` can be combined. The panel only renders after mount so it is safe in Next.js.
+
+<Example>
+  <PopoverBasic />
+</Example>
+
+## Examples
+
+### Title
+
+`title` sits in the header. `message` is the supporting line.
+
+<Example>
+  <PopoverTitle />
+</Example>
+
+### Custom content
+
+`content` accepts any node — lists, fields, or an upload control. Long content scrolls inside the panel.
+
+<Example>
+  <PopoverContent />
+</Example>
+
+### Confirmation
+
+`onConfirm(true)` is OK. `onConfirm(false)` is Cancel. Cancel is outlined on the left. OK is filled on the right. The panel closes after either action.
+
+<Example>
+  <PopoverConfirmation />
+</Example>
+
+### Full width
+
+`fullWidth` stretches the trigger wrapper to the row. The floating panel keeps its own width.
+
+<Example>
+  <PopoverFullWidth />
+</Example>
+
+### Long content
+
+The body scrolls. The header and footer stay put.
+
+<Example>
+  <PopoverLongContent />
+</Example>
+
+### Keyboard
+
+Escape closes. Tab cycles the actions. Focus returns to the trigger.
+
+<Example>
+  <PopoverKeyboard />
+</Example>
+
+### Responsive
+
+The panel uses `max-width: calc(100vw - gutter)` and clamps to the viewport on resize and scroll.
+
+<Example>
+  <PopoverResponsive />
+</Example>
+
+### Delete item
+
+A destructive confirm. Cancel leaves the record. OK runs the action.
+
+<Example>
+  <PopoverDelete />
+</Example>
+
+`windowBlur` keeps the panel open when the window loses focus. Set it when the content includes a file picker so the OS dialog does not dismiss the popover.
+
+## Accessibility
+
+The panel is `role="dialog"` with `aria-modal="true"`. When the child forwards props (for example Button), it receives `aria-expanded`, `aria-haspopup`, and `aria-controls`. Focus moves into the panel on open and back to the trigger on close. `prefers-reduced-motion: reduce` skips the enter/exit transform.
+
+## Best practices
+
+- Keep the copy short and tied to the trigger.
+- Use Modal or Drawer when the body needs a form, a table, or page-level navigation.
+- Use `onConfirm` for destructive or irreversible actions.
+- Set `windowBlur` when a file picker or other OS dialog can steal focus.
+- Do not replace primary navigation with a stack of popovers.
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `ReactNode` | — |
+| `title` | `string` | — |
+| `message` | `string` | — |
+| `content` | `ReactNode` | — |
+| `onConfirm` | `(confirm: boolean) => void` | — |
+| `windowBlur` | `boolean` | `false` |
+| `fullWidth` | `boolean` | `false` |
+| `config.buttons.okay` | `string` | `"Evet"` |
+| `config.buttons.cancel` | `string` | `"Hayır"` |
+
+`onConfirm` is called with `true` for OK and `false` for Cancel. `windowBlur={true}` disables close-on-blur. `fullWidth` applies to the trigger wrapper. The panel is portaled to `document.body`.

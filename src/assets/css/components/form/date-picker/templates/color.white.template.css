@@ -1,0 +1,45 @@
+&.white {
+  color: var(--gray-700);
+
+  &.filled {
+    background-color: var(--white-500);
+    border: var(--stroke-1) solid var(--gray-300);
+
+    &:focus-within {
+      border: var(--stroke-1) solid var(--gray-400);
+      box-shadow: 0 0 0 2.5px var(--gray-200);
+    }
+  }
+
+  &.surface-borderless {
+    background-color: var(--white-500);
+
+    &:focus-within {
+      background-color: var(--white-500);
+      box-shadow: 0 0 0 2.5px var(--gray-200);
+    }
+  }
+
+  &.outlined {
+    background-color: var(--white-500);
+    border: var(--stroke-1) solid var(--gray-300);
+
+    &:focus-within {
+      box-shadow: 0 0 0 2.5px var(--gray-200);
+    }
+  }
+
+  &.dashed {
+    background-color: var(--white-500);
+    border: var(--stroke-1) dashed var(--gray-300);
+
+    &:focus-within {
+      box-shadow: 0 0 0 2.5px var(--gray-200);
+    }
+  }
+
+  &.borderless {
+    background-color: var(--white-500);
+    border: var(--stroke-1) solid transparent;
+  }
+}

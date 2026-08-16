@@ -1,0 +1,308 @@
+.har-tabs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  font-family: var(--system);
+  color: var(--gray-800);
+
+  > .tabs {
+    position: relative;
+    min-width: 0;
+    user-select: none;
+  }
+
+  > .tabs > .container {
+    display: flex;
+    align-items: stretch;
+    min-width: 0;
+    scrollbar-width: none;
+    scroll-behavior: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  > .tabs > .container > .item {
+    position: relative;
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: var(--space-8);
+    min-width: max-content;
+    padding: var(--space-8) var(--space-12);
+    border: 0;
+    background: transparent;
+    color: var(--gray-500);
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    cursor: pointer;
+    transition:
+      color 0.15s ease,
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
+
+    &:hover:not(.is-disabled):not(.is-active) {
+      color: var(--gray-700);
+    }
+
+    &.is-active {
+      color: var(--gray-800);
+      font-weight: 600;
+    }
+
+    &.is-disabled {
+      opacity: 0.45;
+      cursor: no-drop;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--blue-500);
+      outline-offset: 2px;
+      z-index: 1;
+    }
+
+    > .icon {
+      display: inline-flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      width: 1rem;
+      height: 1rem;
+      color: currentColor;
+
+      > svg {
+        width: 1rem;
+        height: 1rem;
+        fill: currentColor;
+      }
+    }
+
+    > .label {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    > .close {
+      flex-shrink: 0;
+      margin-inline-start: var(--space-2);
+    }
+  }
+
+  > .tabs > .nav {
+    position: absolute;
+    z-index: 2;
+  }
+
+  > .content {
+    min-width: 0;
+    color: var(--gray-700);
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+
+  &.is-horizontal {
+    > .tabs > .container {
+      flex-direction: row;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+
+    > .tabs:has(.nav.start) > .container {
+      padding-inline-start: 2rem;
+    }
+
+    > .tabs:has(.nav.end) > .container {
+      padding-inline-end: 2rem;
+    }
+
+    > .tabs > .nav.start {
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+    }
+
+    > .tabs > .nav.end {
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+    }
+
+    > .content {
+      padding-top: var(--space-16);
+    }
+  }
+
+  &.is-vertical {
+    flex-direction: row;
+    align-items: stretch;
+    gap: var(--space-20);
+
+    > .tabs {
+      flex: 0 0 10rem;
+      width: 10rem;
+      max-width: 10rem;
+    }
+
+    > .tabs > .container {
+      flex-direction: column;
+      align-items: stretch;
+      overflow-x: hidden;
+      overflow-y: auto;
+      max-height: 22rem;
+    }
+
+    > .tabs > .container > .item {
+      width: 100%;
+      min-width: 0;
+    }
+
+    > .tabs:has(.nav.start) > .container {
+      padding-block-start: 2rem;
+    }
+
+    > .tabs:has(.nav.end) > .container {
+      padding-block-end: 2rem;
+    }
+
+    > .tabs > .nav.start {
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    > .tabs > .nav.end {
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    > .content {
+      flex: 1 1 auto;
+      min-width: 0;
+      padding-top: 0;
+    }
+  }
+
+  &.underline.is-horizontal > .tabs {
+    border-bottom: var(--stroke-1) solid var(--gray-200);
+
+    > .container > .item.is-active::after {
+      content: "";
+      position: absolute;
+      right: var(--space-12);
+      bottom: -1px;
+      left: var(--space-12);
+      height: var(--stroke-2);
+      border-radius: var(--radius-full);
+      background: var(--gray-800);
+    }
+  }
+
+  &.underline.is-vertical > .tabs {
+    border-right: var(--stroke-1) solid var(--gray-200);
+
+    > .container > .item.is-active::after {
+      content: "";
+      position: absolute;
+      top: var(--space-8);
+      right: -1px;
+      bottom: var(--space-8);
+      width: var(--stroke-2);
+      border-radius: var(--radius-full);
+      background: var(--gray-800);
+    }
+  }
+
+  &.pill > .tabs > .container {
+    gap: var(--space-4);
+  }
+
+  &.pill > .tabs > .container > .item {
+    border: var(--stroke-1) solid transparent;
+    border-radius: var(--radius-8);
+
+    &.is-active {
+      background: var(--gray-100);
+    }
+  }
+
+  &.segmented > .tabs > .container {
+    gap: var(--space-4);
+    padding: var(--space-4);
+    border: var(--stroke-1) solid var(--gray-200);
+    border-radius: var(--radius-12);
+    background: var(--gray-100);
+  }
+
+  &.segmented > .tabs > .container > .item {
+    border: var(--stroke-1) solid transparent;
+    border-radius: var(--radius-8);
+
+    &.is-active {
+      background: var(--white-500);
+      border-color: var(--gray-200);
+    }
+  }
+
+  &.folder.is-horizontal > .tabs {
+    border-bottom: var(--stroke-1) solid var(--gray-200);
+
+    > .container {
+      gap: var(--space-4);
+      align-items: flex-end;
+    }
+
+    > .container > .item {
+      border: var(--stroke-1) solid transparent;
+      border-bottom: 0;
+      border-radius: var(--radius-8) var(--radius-8) 0 0;
+      margin-bottom: -1px;
+
+      &.is-active {
+        background: var(--white-500);
+        border-color: var(--gray-200);
+        border-top-color: var(--gray-200);
+        border-bottom-color: var(--white-500);
+      }
+    }
+  }
+
+  &.folder.is-vertical > .tabs {
+    border-right: var(--stroke-1) solid var(--gray-200);
+
+    > .container {
+      gap: var(--space-4);
+    }
+
+    > .container > .item {
+      border: var(--stroke-1) solid transparent;
+      border-right: 0;
+      border-radius: var(--radius-8) 0 0 var(--radius-8);
+      margin-right: -1px;
+
+      &.is-active {
+        background: var(--white-500);
+        border-color: var(--gray-200);
+        border-left-width: var(--stroke-2);
+        border-left-color: var(--gray-800);
+        border-right-color: var(--white-500);
+      }
+    }
+  }
+
+  &.minimal > .tabs > .container {
+    gap: var(--space-4);
+  }
+
+  &.minimal > .tabs > .container > .item.is-active {
+    color: var(--gray-800);
+  }
+}

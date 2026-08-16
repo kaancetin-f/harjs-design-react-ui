@@ -1,0 +1,55 @@
+@import url("./color-palette.css");
+@import url("./radius.css");
+@import url("./space.css");
+@import url("./stroke.css");
+@import url("./utils.css");
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: "JetBrainsMono-Bold";
+  src: url("../../../assets/fonts/JetBrainsMono-Bold.ttf");
+}
+
+@font-face {
+  font-family: "JetBrainsMono-Regular";
+  src: url("../../../assets/fonts/JetBrainsMono-Regular.ttf");
+}
+
+/* #region Height */
+:root {
+  --input-height: 2rem;
+}
+/* #endregion */
+/* Height */
+
+/* #region Fonts */
+:root {
+  --system:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  --jetBrainsMonoBold: "JetBrainsMono-Bold";
+  --jetBrainsMonoRegular: "JetBrainsMono-Regular";
+}
+/* #endregion */
+/* Fonts */
+
+/* #region Box Shadow */
+:root {
+  --box-shadow: 0 0.5rem 1.5rem -0.5rem var(--black-alpha-40);
+}
+/* #endregion */
+/* Box Shadow */
+
+.har-validation-text {
+  color: var(--red-500);
+  font-family: var(--system);
+  font-size: 0.8rem;
+  font-weight: 400;
+}

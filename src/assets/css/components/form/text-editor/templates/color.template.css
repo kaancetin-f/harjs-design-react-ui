@@ -1,0 +1,121 @@
+&.__COLOR__ {
+  &.filled {
+    > .har-text-editor {
+      > label {
+        color: var(--__COLOR__-500);
+      }
+
+      > iframe {
+        background-color: var(--__COLOR__-100);
+        border: var(--stroke-1) solid var(--__COLOR__-300);
+
+        &.focused {
+          border: var(--stroke-1) solid var(--__COLOR__-500);
+        }
+      }
+
+      > .toolbar,
+      > .resize {
+        border-left-color: var(--__COLOR__-300);
+        border-right-color: var(--__COLOR__-300);
+        border-bottom-color: var(--__COLOR__-300);
+      }
+    }
+  }
+
+  &.surface-borderless {
+    > .har-text-editor {
+      > label {
+        color: var(--__COLOR__-500);
+      }
+
+      > iframe {
+        background-color: var(--__COLOR__-100);
+        border: var(--stroke-1) solid transparent;
+
+        &.focused {
+          background-color: transparent;
+          box-shadow: 0 0 0 2.5px var(--__COLOR__-200);
+        }
+      }
+
+      > .toolbar,
+      > .resize {
+        border-left-color: transparent;
+        border-right-color: transparent;
+        border-bottom-color: transparent;
+      }
+    }
+  }
+
+  &.outlined {
+    > .har-text-editor {
+      > label {
+        color: var(--__COLOR__-500);
+      }
+
+      > iframe {
+        background-color: transparent;
+        border: var(--stroke-1) solid var(--__COLOR__-300);
+
+        &.focused {
+          box-shadow: 0 0 0 2.5px var(--__COLOR__-200);
+        }
+      }
+
+      > .toolbar,
+      > .resize {
+        border-left-color: var(--__COLOR__-300);
+        border-right-color: var(--__COLOR__-300);
+        border-bottom-color: var(--__COLOR__-300);
+      }
+    }
+  }
+
+  &.dashed {
+    > .har-text-editor {
+      > label {
+        color: var(--__COLOR__-500);
+      }
+
+      > iframe {
+        background-color: transparent;
+        border: var(--stroke-1) dashed var(--__COLOR__-300);
+
+        &.focused {
+          box-shadow: 0 0 0 2.5px var(--__COLOR__-200);
+        }
+      }
+
+      > .toolbar,
+      > .resize {
+        border-left-style: dashed;
+        border-right-style: dashed;
+        border-bottom-style: dashed;
+        border-left-color: var(--__COLOR__-300);
+        border-right-color: var(--__COLOR__-300);
+        border-bottom-color: var(--__COLOR__-300);
+      }
+    }
+  }
+
+  &.borderless {
+    > .har-text-editor {
+      > label {
+        color: var(--__COLOR__-500);
+      }
+
+      > iframe {
+        background-color: transparent;
+        border: var(--stroke-1) solid transparent;
+      }
+
+      > .toolbar,
+      > .resize {
+        border-left-color: transparent;
+        border-right-color: transparent;
+        border-bottom-color: transparent;
+      }
+    }
+  }
+}

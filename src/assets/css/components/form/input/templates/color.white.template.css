@@ -1,0 +1,118 @@
+&.white {
+  &.filled {
+    > .har-input {
+      > label {
+        color: var(--gray-700);
+      }
+
+      > .input {
+        > input {
+          color: var(--gray-700);
+          background-color: var(--white-500);
+          border: var(--stroke-1) solid var(--gray-300);
+
+          &:focus {
+            border: var(--stroke-1) solid var(--gray-400);
+            box-shadow: 0 0 0 2.5px var(--gray-200);
+          }
+
+          &::placeholder {
+            color: var(--gray-400);
+          }
+        }
+      }
+    }
+  }
+
+  &.surface-borderless {
+    > .har-input {
+      > label {
+        color: var(--gray-700);
+      }
+
+      > .input {
+        > input {
+          color: var(--gray-700);
+          background-color: var(--white-500);
+
+          &:focus {
+            background-color: var(--white-500);
+            box-shadow: 0 0 0 2.5px var(--gray-200);
+          }
+
+          &::placeholder {
+            color: var(--gray-400);
+          }
+        }
+      }
+    }
+  }
+
+  &.outlined {
+    > .har-input {
+      > label {
+        color: var(--gray-700);
+      }
+
+      > .input {
+        > input {
+          color: var(--gray-700);
+          background-color: var(--white-500);
+          border: var(--stroke-1) solid var(--gray-300);
+
+          &:focus {
+            box-shadow: 0 0 0 2.5px var(--gray-200);
+          }
+
+          &::placeholder {
+            color: var(--gray-400);
+          }
+        }
+      }
+    }
+  }
+
+  &.dashed {
+    > .har-input {
+      > label {
+        color: var(--gray-700);
+      }
+
+      > .input {
+        > input {
+          color: var(--gray-700);
+          background-color: var(--white-500);
+          border: var(--stroke-1) dashed var(--gray-300);
+
+          &:focus {
+            box-shadow: 0 0 0 2.5px var(--gray-200);
+          }
+
+          &::placeholder {
+            color: var(--gray-400);
+          }
+        }
+      }
+    }
+  }
+
+  &.borderless {
+    > .har-input {
+      > label {
+        color: var(--gray-700);
+      }
+
+      > .input {
+        > input {
+          color: var(--gray-700);
+          background-color: var(--white-500);
+          border: var(--stroke-1) solid transparent;
+
+          &::placeholder {
+            color: var(--gray-400);
+          }
+        }
+      }
+    }
+  }
+}

@@ -18,6 +18,7 @@ interface IProps<T extends object, TColumnProperties> {
   columns: KanbanBoardColumnProps<T, TColumnProperties>[];
   onChange?: (item: T, columnKey: string, columnProperties: TColumnProperties, hoverIndex: number) => void;
   onLazyLoad?: (query: Record<string, string>, perPage: number, currentPage: number) => void;
+  loading?: boolean;
   config?: Config<T>;
 }
 

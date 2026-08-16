@@ -1,22 +1,20 @@
-/* PHONE */
-@import url("./phone/styles.css");
-/* OTP */
-@import url("./otp/styles.css");
-
 /* Core Css */
-@import url("./core/icon.css");
-@import url("./core/border.css");
-@import url("./core/button.css");
-@import url("./core/addon.css");
+@import url("./addon.css");
+@import url("./color.addon.css");
+@import url("./color.css");
+@import url("./icon.css");
+@import url("./radius.css");
+@import url("./size.css");
 
-.ar-input-wrapper {
+.har-input-wrapper {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   width: 100%;
+  font-family: var(--system);
 
-  > .ar-input {
+  > .har-input {
     position: relative;
     width: 100%;
 
@@ -28,16 +26,21 @@
       left: 0.55rem;
       color: var(--gray-600);
       letter-spacing: 1px;
-      transition: top 250ms ease-in-out;
+      line-height: 1;
+      transition:
+        top 250ms ease-in-out,
+        transform 250ms ease-in-out;
       z-index: 1;
 
       &.visible {
         visibility: visible;
         opacity: 1;
-        top: -0.5rem;
+        top: 0;
+        transform: translateY(-50%);
         left: 0.55rem;
         padding: 0 0.5rem;
         font-size: 0.75rem;
+        line-height: 1;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -54,8 +57,15 @@
         > .handle-number-button {
           visibility: visible;
           opacity: 1;
-          width: 1rem;
+          width: 2rem;
         }
+      }
+
+      /* Firefox  */
+      > input[type="date"],
+      > input[type="datetime-local"] {
+        -moz-appearance: textfield;
+        text-align: center;
       }
 
       > input {
@@ -63,14 +73,28 @@
         width: 100%;
         height: var(--input-height);
         padding: 0 0.5rem;
+        border: solid var(--stroke-1) transparent;
+        color: var(--gray-800);
         font-family: var(--system);
-        font-size: 1rem;
+        font-size: 0.875rem;
         outline: none;
         box-sizing: border-box;
         transition:
           background 250ms,
           border 250ms,
           box-shadow 250ms ease-in-out;
+
+        &::placeholder {
+          color: var(--gray-400);
+          font-weight: 300;
+        }
+
+        /* Chrome, Safari, Edge and Opera */
+        &::-webkit-calendar-picker-indicator,
+        &::-webkit-calendar-picker-indicator {
+          display: none !important;
+          -webkit-appearance: none;
+        }
       }
 
       .handle-number-button {
@@ -81,7 +105,7 @@
         position: absolute;
         top: 1px;
         right: 1px;
-        background-color: var(--gray-200);
+        /* background-color: var(--gray-200); */
         width: 0rem;
         height: calc(100% - 2px);
         border-left: solid 1px var(--gray-300);
@@ -96,7 +120,7 @@
           top: 50%;
           transform: translateY(-50%);
           background-color: var(--gray-300);
-          width: 100%;
+          width: 50px;
           height: 1px;
         }
 
@@ -104,17 +128,39 @@
           display: flex;
           justify-content: center;
           align-items: center;
-
           height: 50%;
           cursor: pointer;
+
+          &:active {
+            background-color: var(--gray-100);
+          }
         }
       }
     }
 
-    > .validation {
-      color: var(--danger);
-      font-size: 0.8rem;
-      font-weight: 400;
+    &.disabled {
+      > .input {
+        > input {
+          background-color: var(--gray-100) !important;
+          cursor: no-drop;
+        }
+      }
+    }
+
+    > .har-validation-text {
+      position: absolute;
+      top: 100%;
+      left: 0;
+    }
+  }
+
+  &.pin-input {
+    > .har-input {
+      > .input {
+        > input {
+          text-align: center;
+        }
+      }
     }
   }
 }

@@ -1,42 +1,48 @@
-.ar-table-properties-popup {
-  position: absolute;
-  background-color: var(--white);
-  width: 225px;
-  padding: 0.5rem 0;
-  border-radius: var(--border-radius-sm);
-  box-shadow: 0px 10px 15px -5px rgba(var(--black-rgb), 0.1);
-  transition:
-    top 350ms,
-    left 1s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+.har-table-properties-popup {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  min-width: 14rem;
+  padding: var(--space-6);
+  background-color: var(--gray-50);
+  color: var(--gray-800);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-8);
+  box-shadow: 0 4px 8px color-mix(in srgb, var(--black-alpha-100) 10%, transparent),
+    0 12px 24px -3px color-mix(in srgb, var(--black-alpha-100) 20%, transparent);
   z-index: 1052;
+  animation: har-table-popup 160ms ease;
 
-  > ul {
+  > [role="menuitem"] {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
+    align-items: center;
+    gap: var(--space-8);
+    width: 100%;
+    padding: var(--space-8) var(--space-10);
+    border: 0;
+    border-radius: var(--radius-6);
+    background: transparent;
+    color: inherit;
+    font-family: var(--system);
+    font-size: 0.8125rem;
+    font-weight: 550;
+    letter-spacing: -0.01em;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
 
-    > li {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      width: 100%;
-      padding: 0.5rem;
-      cursor: pointer;
-      transition: background 250ms ease-in-out;
-      user-select: none;
+    &:hover {
+      background-color: var(--gray-100);
+    }
 
-      &:hover {
-        background-color: var(--gray-100);
-      }
+    &:focus-visible {
+      outline: 2px solid var(--blue-500);
+      outline-offset: 2px;
+    }
 
-      > span {
-        position: relative;
-
-        &:first-child {
-          top: 2.5px;
-        }
-      }
+    > span:first-child {
+      display: inline-flex;
+      color: var(--gray-500);
     }
   }
 }

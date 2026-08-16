@@ -1,0 +1,729 @@
+.har-chip {
+  &.blue {
+    &.filled {
+      background-color: var(--blue-500);
+      border: solid var(--stroke-1) var(--blue-500);
+      color: var(--white-alpha-100);
+
+      &:hover {
+        background-color: var(--blue-400);
+        border-color: var(--blue-400);
+      }
+    }
+
+    &.surface {
+      background-color: color-mix(in srgb, var(--blue-500) 12%, var(--gray-50));
+      border: solid var(--stroke-1)
+        color-mix(in srgb, var(--blue-500) 22%, transparent);
+      color: var(--blue-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--blue-500) 18%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.surface-borderless {
+      background-color: color-mix(in srgb, var(--blue-500) 12%, var(--gray-50));
+      border: solid var(--stroke-1) transparent;
+      color: var(--blue-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--blue-500) 18%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.outlined {
+      background-color: var(--gray-50);
+      border: solid var(--stroke-1)
+        color-mix(in srgb, var(--blue-500) 38%, transparent);
+      color: var(--blue-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--blue-500) 8%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.dashed {
+      background-color: transparent;
+      border: dashed var(--stroke-1)
+        color-mix(in srgb, var(--blue-500) 55%, transparent);
+      color: var(--blue-700);
+    }
+
+    &.borderless {
+      background-color: transparent;
+      border: solid var(--stroke-1) transparent;
+      color: var(--blue-700);
+    }
+  }
+
+  &.purple {
+    &.filled {
+      background-color: var(--purple-500);
+      border: solid var(--stroke-1) var(--purple-500);
+      color: var(--white-alpha-100);
+
+      &:hover {
+        background-color: var(--purple-400);
+        border-color: var(--purple-400);
+      }
+    }
+
+    &.surface {
+      background-color: color-mix(
+        in srgb,
+        var(--purple-500) 12%,
+        var(--gray-50)
+      );
+      border: solid var(--stroke-1)
+        color-mix(in srgb, var(--purple-500) 22%, transparent);
+      color: var(--purple-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--purple-500) 18%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.surface-borderless {
+      background-color: color-mix(
+        in srgb,
+        var(--purple-500) 12%,
+        var(--gray-50)
+      );
+      border: solid var(--stroke-1) transparent;
+      color: var(--purple-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--purple-500) 18%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.outlined {
+      background-color: var(--gray-50);
+      border: solid var(--stroke-1)
+        color-mix(in srgb, var(--purple-500) 38%, transparent);
+      color: var(--purple-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--purple-500) 8%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.dashed {
+      background-color: transparent;
+      border: dashed var(--stroke-1)
+        color-mix(in srgb, var(--purple-500) 55%, transparent);
+      color: var(--purple-700);
+    }
+
+    &.borderless {
+      background-color: transparent;
+      border: solid var(--stroke-1) transparent;
+      color: var(--purple-700);
+    }
+  }
+
+  &.pink {
+    &.filled {
+      background-color: var(--pink-500);
+      border: solid var(--stroke-1) var(--pink-500);
+      color: var(--white-alpha-100);
+
+      &:hover {
+        background-color: var(--pink-400);
+        border-color: var(--pink-400);
+      }
+    }
+
+    &.surface {
+      background-color: color-mix(in srgb, var(--pink-500) 12%, var(--gray-50));
+      border: solid var(--stroke-1)
+        color-mix(in srgb, var(--pink-500) 22%, transparent);
+      color: var(--pink-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--pink-500) 18%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.surface-borderless {
+      background-color: color-mix(in srgb, var(--pink-500) 12%, var(--gray-50));
+      border: solid var(--stroke-1) transparent;
+      color: var(--pink-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--pink-500) 18%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.outlined {
+      background-color: var(--gray-50);
+      border: solid var(--stroke-1)
+        color-mix(in srgb, var(--pink-500) 38%, transparent);
+      color: var(--pink-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--pink-500) 8%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.dashed {
+      background-color: transparent;
+      border: dashed var(--stroke-1)
+        color-mix(in srgb, var(--pink-500) 55%, transparent);
+      color: var(--pink-700);
+    }
+
+    &.borderless {
+      background-color: transparent;
+      border: solid var(--stroke-1) transparent;
+      color: var(--pink-700);
+    }
+  }
+
+  &.red {
+    &.filled {
+      background-color: var(--red-500);
+      border: solid var(--stroke-1) var(--red-500);
+      color: var(--white-alpha-100);
+
+      &:hover {
+        background-color: var(--red-400);
+        border-color: var(--red-400);
+      }
+    }
+
+    &.surface {
+      background-color: color-mix(in srgb, var(--red-500) 12%, var(--gray-50));
+      border: solid var(--stroke-1)
+        color-mix(in srgb, var(--red-500) 22%, transparent);
+      color: var(--red-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--red-500) 18%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.surface-borderless {
+      background-color: color-mix(in srgb, var(--red-500) 12%, var(--gray-50));
+      border: solid var(--stroke-1) transparent;
+      color: var(--red-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--red-500) 18%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.outlined {
+      background-color: var(--gray-50);
+      border: solid var(--stroke-1)
+        color-mix(in srgb, var(--red-500) 38%, transparent);
+      color: var(--red-700);
+
+      &:hover {
+        background-color: color-mix(in srgb, var(--red-500) 8%, var(--gray-50));
+      }
+    }
+
+    &.dashed {
+      background-color: transparent;
+      border: dashed var(--stroke-1)
+        color-mix(in srgb, var(--red-500) 55%, transparent);
+      color: var(--red-700);
+    }
+
+    &.borderless {
+      background-color: transparent;
+      border: solid var(--stroke-1) transparent;
+      color: var(--red-700);
+    }
+  }
+
+  &.orange {
+    &.filled {
+      background-color: var(--orange-500);
+      border: solid var(--stroke-1) var(--orange-500);
+      color: var(--white-alpha-100);
+
+      &:hover {
+        background-color: var(--orange-400);
+        border-color: var(--orange-400);
+      }
+    }
+
+    &.surface {
+      background-color: color-mix(
+        in srgb,
+        var(--orange-500) 12%,
+        var(--gray-50)
+      );
+      border: solid var(--stroke-1)
+        color-mix(in srgb, var(--orange-500) 22%, transparent);
+      color: var(--orange-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--orange-500) 18%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.surface-borderless {
+      background-color: color-mix(
+        in srgb,
+        var(--orange-500) 12%,
+        var(--gray-50)
+      );
+      border: solid var(--stroke-1) transparent;
+      color: var(--orange-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--orange-500) 18%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.outlined {
+      background-color: var(--gray-50);
+      border: solid var(--stroke-1)
+        color-mix(in srgb, var(--orange-500) 38%, transparent);
+      color: var(--orange-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--orange-500) 8%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.dashed {
+      background-color: transparent;
+      border: dashed var(--stroke-1)
+        color-mix(in srgb, var(--orange-500) 55%, transparent);
+      color: var(--orange-700);
+    }
+
+    &.borderless {
+      background-color: transparent;
+      border: solid var(--stroke-1) transparent;
+      color: var(--orange-700);
+    }
+  }
+
+  &.yellow {
+    &.filled {
+      background-color: var(--yellow-500);
+      border: solid var(--stroke-1) var(--yellow-500);
+      color: var(--white-alpha-100);
+
+      &:hover {
+        background-color: var(--yellow-400);
+        border-color: var(--yellow-400);
+      }
+    }
+
+    &.surface {
+      background-color: color-mix(
+        in srgb,
+        var(--yellow-500) 12%,
+        var(--gray-50)
+      );
+      border: solid var(--stroke-1)
+        color-mix(in srgb, var(--yellow-500) 22%, transparent);
+      color: var(--yellow-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--yellow-500) 18%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.surface-borderless {
+      background-color: color-mix(
+        in srgb,
+        var(--yellow-500) 12%,
+        var(--gray-50)
+      );
+      border: solid var(--stroke-1) transparent;
+      color: var(--yellow-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--yellow-500) 18%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.outlined {
+      background-color: var(--gray-50);
+      border: solid var(--stroke-1)
+        color-mix(in srgb, var(--yellow-500) 38%, transparent);
+      color: var(--yellow-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--yellow-500) 8%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.dashed {
+      background-color: transparent;
+      border: dashed var(--stroke-1)
+        color-mix(in srgb, var(--yellow-500) 55%, transparent);
+      color: var(--yellow-700);
+    }
+
+    &.borderless {
+      background-color: transparent;
+      border: solid var(--stroke-1) transparent;
+      color: var(--yellow-700);
+    }
+  }
+
+  &.green {
+    &.filled {
+      background-color: var(--green-500);
+      border: solid var(--stroke-1) var(--green-500);
+      color: var(--white-alpha-100);
+
+      &:hover {
+        background-color: var(--green-400);
+        border-color: var(--green-400);
+      }
+    }
+
+    &.surface {
+      background-color: color-mix(
+        in srgb,
+        var(--green-500) 12%,
+        var(--gray-50)
+      );
+      border: solid var(--stroke-1)
+        color-mix(in srgb, var(--green-500) 22%, transparent);
+      color: var(--green-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--green-500) 18%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.surface-borderless {
+      background-color: color-mix(
+        in srgb,
+        var(--green-500) 12%,
+        var(--gray-50)
+      );
+      border: solid var(--stroke-1) transparent;
+      color: var(--green-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--green-500) 18%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.outlined {
+      background-color: var(--gray-50);
+      border: solid var(--stroke-1)
+        color-mix(in srgb, var(--green-500) 38%, transparent);
+      color: var(--green-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--green-500) 8%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.dashed {
+      background-color: transparent;
+      border: dashed var(--stroke-1)
+        color-mix(in srgb, var(--green-500) 55%, transparent);
+      color: var(--green-700);
+    }
+
+    &.borderless {
+      background-color: transparent;
+      border: solid var(--stroke-1) transparent;
+      color: var(--green-700);
+    }
+  }
+
+  &.teal {
+    &.filled {
+      background-color: var(--teal-500);
+      border: solid var(--stroke-1) var(--teal-500);
+      color: var(--white-alpha-100);
+
+      &:hover {
+        background-color: var(--teal-400);
+        border-color: var(--teal-400);
+      }
+    }
+
+    &.surface {
+      background-color: color-mix(in srgb, var(--teal-500) 12%, var(--gray-50));
+      border: solid var(--stroke-1)
+        color-mix(in srgb, var(--teal-500) 22%, transparent);
+      color: var(--teal-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--teal-500) 18%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.surface-borderless {
+      background-color: color-mix(in srgb, var(--teal-500) 12%, var(--gray-50));
+      border: solid var(--stroke-1) transparent;
+      color: var(--teal-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--teal-500) 18%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.outlined {
+      background-color: var(--gray-50);
+      border: solid var(--stroke-1)
+        color-mix(in srgb, var(--teal-500) 38%, transparent);
+      color: var(--teal-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--teal-500) 8%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.dashed {
+      background-color: transparent;
+      border: dashed var(--stroke-1)
+        color-mix(in srgb, var(--teal-500) 55%, transparent);
+      color: var(--teal-700);
+    }
+
+    &.borderless {
+      background-color: transparent;
+      border: solid var(--stroke-1) transparent;
+      color: var(--teal-700);
+    }
+  }
+
+  &.cyan {
+    &.filled {
+      background-color: var(--cyan-500);
+      border: solid var(--stroke-1) var(--cyan-500);
+      color: var(--white-alpha-100);
+
+      &:hover {
+        background-color: var(--cyan-400);
+        border-color: var(--cyan-400);
+      }
+    }
+
+    &.surface {
+      background-color: color-mix(in srgb, var(--cyan-500) 12%, var(--gray-50));
+      border: solid var(--stroke-1)
+        color-mix(in srgb, var(--cyan-500) 22%, transparent);
+      color: var(--cyan-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--cyan-500) 18%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.surface-borderless {
+      background-color: color-mix(in srgb, var(--cyan-500) 12%, var(--gray-50));
+      border: solid var(--stroke-1) transparent;
+      color: var(--cyan-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--cyan-500) 18%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.outlined {
+      background-color: var(--gray-50);
+      border: solid var(--stroke-1)
+        color-mix(in srgb, var(--cyan-500) 38%, transparent);
+      color: var(--cyan-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--cyan-500) 8%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.dashed {
+      background-color: transparent;
+      border: dashed var(--stroke-1)
+        color-mix(in srgb, var(--cyan-500) 55%, transparent);
+      color: var(--cyan-700);
+    }
+
+    &.borderless {
+      background-color: transparent;
+      border: solid var(--stroke-1) transparent;
+      color: var(--cyan-700);
+    }
+  }
+
+  &.gray {
+    &.filled {
+      background-color: var(--gray-500);
+      border: solid var(--stroke-1) var(--gray-500);
+      color: var(--white-alpha-100);
+
+      &:hover {
+        background-color: var(--gray-400);
+        border-color: var(--gray-400);
+      }
+    }
+
+    &.surface {
+      background-color: color-mix(in srgb, var(--gray-500) 12%, var(--gray-50));
+      border: solid var(--stroke-1)
+        color-mix(in srgb, var(--gray-500) 22%, transparent);
+      color: var(--gray-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--gray-500) 18%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.surface-borderless {
+      background-color: color-mix(in srgb, var(--gray-500) 12%, var(--gray-50));
+      border: solid var(--stroke-1) transparent;
+      color: var(--gray-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--gray-500) 18%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.outlined {
+      background-color: var(--gray-50);
+      border: solid var(--stroke-1)
+        color-mix(in srgb, var(--gray-500) 38%, transparent);
+      color: var(--gray-700);
+
+      &:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--gray-500) 8%,
+          var(--gray-50)
+        );
+      }
+    }
+
+    &.dashed {
+      background-color: transparent;
+      border: dashed var(--stroke-1)
+        color-mix(in srgb, var(--gray-500) 55%, transparent);
+      color: var(--gray-700);
+    }
+
+    &.borderless {
+      background-color: transparent;
+      border: solid var(--stroke-1) transparent;
+      color: var(--gray-700);
+    }
+  }
+}

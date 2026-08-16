@@ -1,0 +1,165 @@
+---
+title: Grid System
+description: Flex, Grid, a 12-column row, and a one-line box for clustered actions.
+---
+
+Import `GridSystem` once and pull the primitives you need. `Flex` is a CSS flex container. `Grid` is a CSS grid. `Row` / `Column` is a 12-column layout. `Box` is a horizontal cluster with start, center, or end alignment.
+
+## Import
+
+```tsx
+import { GridSystem } from "@harjs/react-ui";
+
+const { Flex, Grid, Row, Column, Box } = GridSystem;
+```
+
+```tsx
+<Flex gap="var(--space-12)" width="100%">…</Flex>
+<Grid columns={4} gap="var(--space-12)">
+  <Grid.Item colSpan={2} rowSpan={2}>…</Grid.Item>
+</Grid>
+<Row>
+  <Column size={{ xs: 12, md: 6 }}>…</Column>
+  <Column size={6}>…</Column>
+</Row>
+<Box direction="flex-end">…</Box>
+```
+
+## Usage
+
+`Box` lines up actions. `Row` / `Column` split the page. `size` is 1–12, or a breakpoint map.
+
+<Example>
+  <GridBasic />
+</Example>
+
+## Examples
+
+### Flex
+
+`gap` is the space between items. `justifyContent` and `flexWrap` control the main axis and overflow. `width` / `height` / `flex*` apply as inline styles.
+
+<Example>
+  <GridFlex />
+</Example>
+
+### Grid
+
+`columns` is a count or a track list. `gap` is the space between cells. Extra items wrap to the next row.
+
+<Example>
+  <CssGrid />
+</Example>
+
+#### Column Span
+
+`Grid.Item` with `colSpan` stretches across columns. A number is `span N`. `"full"` spans the whole row.
+
+<Example>
+  <GridColSpan />
+</Example>
+
+#### RowSpan
+
+`rowSpan` stretches across rows. `"full"` spans the whole column.
+
+<Example>
+  <GridRowSpan />
+</Example>
+
+### Columns
+
+`Column size` accepts a number (all breakpoints) or `{ xs, sm, md, lg, xl }`. Values are 1–12. Omit `size` to fill leftover space.
+
+<Example>
+  <GridColumns />
+</Example>
+
+### Box
+
+`direction` aligns children on the main axis. Default is `flex-start`. `gap` overrides the default `8px`.
+
+<Example>
+  <GridBox />
+</Example>
+
+## Props
+
+### Flex
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `ReactNode` | — |
+| `flexDirection` | CSS `flex-direction` | `"row"` |
+| `flexWrap` | CSS `flex-wrap` | `"nowrap"` |
+| `justifyContent` | CSS `justify-content` | `"flex-start"` |
+| `alignItems` | CSS `align-items` | `"stretch"` |
+| `alignContent` | CSS `align-content` | — |
+| `alignSelf` | CSS `align-self` | — |
+| `flex` | CSS `flex` | — |
+| `flexGrow` | CSS `flex-grow` | — |
+| `flexShrink` | CSS `flex-shrink` | — |
+| `flexBasis` | CSS `flex-basis` | — |
+| `gap` | CSS `gap` | — |
+| `rowGap` | CSS `row-gap` | — |
+| `columnGap` | CSS `column-gap` | — |
+| `width` | CSS `width` | — |
+| `height` | CSS `height` | — |
+| `inline` | `boolean` | — |
+| `className` | `string` | — |
+
+### Grid
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `ReactNode` | — |
+| `columns` | `number` or CSS `grid-template-columns` | — |
+| `rows` | `number` or CSS `grid-template-rows` | — |
+| `autoFlow` | CSS `grid-auto-flow` | — |
+| `justifyItems` | CSS `justify-items` | — |
+| `alignItems` | CSS `align-items` | — |
+| `justifyContent` | CSS `justify-content` | — |
+| `alignContent` | CSS `align-content` | — |
+| `gap` | CSS `gap` | — |
+| `rowGap` | CSS `row-gap` | — |
+| `columnGap` | CSS `column-gap` | — |
+| `width` | CSS `width` | — |
+| `height` | CSS `height` | — |
+| `inline` | `boolean` | — |
+| `className` | `string` | — |
+
+### Grid.Item
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `ReactNode` | — |
+| `colSpan` | `number`, `"full"`, or CSS `grid-column` | — |
+| `rowSpan` | `number`, `"full"`, or CSS `grid-row` | — |
+| `className` | `string` | — |
+
+### Row
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `ReactNode` | — |
+| `className` | `string` | — |
+
+### Column
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `ReactNode` | — |
+| `size` | `1–12` or `{ xs?, sm?, md?, lg?, xl? }` | — |
+| `align` | `"left" \| "center" \| "right"` | — |
+| `className` | `string` | — |
+
+### Box
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `ReactNode` | — |
+| `direction` | `"flex-start" \| "center" \| "flex-end"` | `"flex-start"` |
+| `gap` | CSS `gap` | `"8px"` |
+| `className` | `string` | — |
+
+`inline` on Flex renders `inline-flex`, on Grid `inline-grid`. A numeric `columns` / `rows` / `colSpan` / `rowSpan` sets a CSS variable; the `repeat()` / `span` rule lives in CSS so 13 works the same as 3. A custom track list stays an inline style. `"full"` is `col-span-full` / `row-span-full`. `gap` / `width` / `height` stay inline, like Flex. A numeric `Column size` applies at every breakpoint.

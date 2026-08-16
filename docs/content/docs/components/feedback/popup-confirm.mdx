@@ -1,0 +1,118 @@
+---
+title: Popup Confirm
+description: A confirmation dialog for an action the user should accept or dismiss. Use it before a destructive or irreversible step.
+---
+
+Popup Confirm is a modal confirmation, not a toast. It asks the user to accept or dismiss one action. `isOpen` shows the dialog. OK calls `onConfirm(true)`. Cancel, Escape, and the overlay call `onConfirm(false)`. Default labels are `Tamam` and `Vazgeç`. Cancel only renders when `buttons.cancel` is set.
+
+In an app, wrap once with `NotificationProvider` and call `useConfirm().ask(...)`. The call returns `Promise<boolean>`. You can also render PopupConfirm yourself with `isOpen`.
+
+## Import
+
+```tsx
+import { PopupConfirm, NotificationProvider, useConfirm } from "@harjs/react-ui";
+```
+
+```tsx
+<NotificationProvider>
+  <App />
+</NotificationProvider>
+```
+
+```tsx
+const confirm = useConfirm();
+
+const ok = await confirm.ask({
+  title: "Delete this record?",
+  message: "Sprint 24 will be removed from the board.",
+  status: "delete",
+  confirmText: "Delete",
+  cancelText: "Keep sprint",
+});
+
+if (ok) removeSprint();
+```
+
+## Usage
+
+`title` and `status` are required. Omit `message` when the title is enough. Pass `buttons.cancel` when the user needs a dismiss action.
+
+<Example>
+  <PopupConfirmBasic />
+</Example>
+
+## Examples
+
+### Status
+
+`success`, `save`, `warning`, `information`, `error`, and `delete`. The icon and the OK color follow the status. HTTP-style numbers map the same way as Notification: `2xx` success, `4xx` and `5xx` error.
+
+<Example>
+  <PopupConfirmStatus />
+</Example>
+
+### Delete
+
+`status="delete"` is the destructive case. Cancel sits on the left. Focus lands on Cancel when that control is present.
+
+<Example>
+  <PopupConfirmDelete />
+</Example>
+
+### Custom buttons
+
+`buttons.okay` and `buttons.cancel` are Button props. Children replace `Tamam` / `Vazgeç`. Color, variant, loading, and `onClick` pass through.
+
+<Example>
+  <PopupConfirmCustomButtons />
+</Example>
+
+### Handling confirmation
+
+`onConfirm(true)` is OK. `onConfirm(false)` is Cancel, Escape, or the overlay.
+
+<Example>
+  <PopupConfirmResult />
+</Example>
+
+### Long message
+
+The copy wraps inside the panel. Use Modal when the body needs a form.
+
+<Example>
+  <PopupConfirmLongMessage />
+</Example>
+
+### With the hook
+
+`useConfirm().ask` opens the provider dialog and resolves `true` on OK, `false` on Cancel, Escape, or the overlay. `confirmText` and `cancelText` set the button labels. `confirm.close()` dismisses as false.
+
+<Example>
+  <PopupConfirmHook />
+</Example>
+
+## Accessibility
+
+The panel is `role="alertdialog"` with `aria-modal="true"`. The title labels it. The message describes it. Tab stays inside the dialog. Escape dismisses. Focus returns to the control that opened it. `prefers-reduced-motion: reduce` skips the transform.
+
+## Best practices
+
+- Use a confirmation for a destructive or irreversible step, not for every save.
+- Say what will happen in the title and the message.
+- Keep Cancel and OK as two clear actions. Pass `buttons.cancel` when dismiss must be explicit.
+- Use Modal or Drawer when the user needs to edit fields.
+- Do not stack a confirmation on top of another confirmation.
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `title` | `string` | — |
+| `message` | `string` | — |
+| `status` | `"success" \| "warning" \| "information" \| "error" \| "save" \| "delete" \| number` | — |
+| `isOpen` | `boolean` | — |
+| `buttons.okay` | `Button` props | `{ children: "Tamam" }` |
+| `buttons.cancel` | `Button` props | — |
+| `onConfirm` | `(confirm: boolean) => void` | — |
+
+`title`, `status`, and `isOpen` are required. Cancel renders only when `buttons.cancel` is set. `useConfirm().ask` takes `{ title, message?, status, confirmText?, cancelText?, buttons? }` and returns `Promise<boolean>`. It throws outside `NotificationProvider`.

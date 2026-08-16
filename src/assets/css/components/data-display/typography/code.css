@@ -1,0 +1,69 @@
+.har-typography-code {
+  /* Palet dark'ta gray-50/900 tersine döner; kod zemini her zaman koyu kalsın. */
+  --har-code-bg: #111827;
+  --har-code-ink: #f3f4f6;
+  --har-code-keyword: #f87171;
+  --har-code-string: #7dd3fc;
+  --har-code-number: #93c5fd;
+  --har-code-type: #fb923c;
+  --har-code-tag: #4ade80;
+  --har-code-attr: #7dd3fc;
+  --har-code-comment: #9ca3af;
+  --har-code-ident: #f3f4f6;
+
+  margin: 0;
+  overflow: auto;
+  padding: var(--space-16);
+  border-radius: var(--radius-8);
+  background: var(--har-code-bg);
+  color: var(--har-code-ink);
+  font-family: var(--jetBrainsMonoRegular), var(--system);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  tab-size: 2;
+
+  > code {
+    display: block;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    white-space: pre;
+    tab-size: 2;
+  }
+
+  .tok-comment {
+    color: var(--har-code-comment);
+    font-style: italic;
+  }
+
+  .tok-string {
+    color: var(--har-code-string);
+  }
+
+  .tok-keyword {
+    color: var(--har-code-keyword);
+  }
+
+  .tok-number {
+    color: var(--har-code-number);
+  }
+
+  .tok-type {
+    color: var(--har-code-type);
+  }
+
+  .tok-tag {
+    color: var(--har-code-tag);
+  }
+
+  .tok-attr {
+    color: var(--har-code-attr);
+  }
+
+  .tok-ident {
+    color: var(--har-code-ident);
+  }
+}

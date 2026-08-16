@@ -1,6 +1,17 @@
-import { IColorProps, IDisabledProps, IValidationProps } from "../../../libs/infrastructure/types/IGlobalProps";
+import {
+  IBorderProps,
+  IColorProps,
+  IDisabledProps,
+  IValidationProps,
+  IVariantProps,
+} from "../../../libs/infrastructure/types/IGlobalProps";
 
-export interface IProps<T> extends IValidationProps, IColorProps, IDisabledProps {
+export interface IProps<T>
+  extends IValidationProps,
+    IColorProps,
+    IDisabledProps,
+    IVariantProps<{ component: "text-editor" }>,
+    IBorderProps {
   name?: string;
   value?: string;
   onChange: (value?: string) => void;

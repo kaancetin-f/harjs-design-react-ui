@@ -1,37 +1,52 @@
 import { Dispatch, memo, SetStateAction, useState } from "react";
 import { Actions } from "../IProps";
 import React from "react";
-import Grid from "../../grid-system";
+import GridSystem from "../../../layout/grid-system";
 import Popover from "../../../feedback/popover";
 import Upload from "../../../form/upload";
 import Tooltip from "../../../feedback/tooltip";
 import Button from "../../../form/button";
-import { ARIcon } from "../../../icons";
+import { Icon } from "../../../icons";
+import Flex from "../../../layout/grid-system/flex/Flex";
+import { useTranslation } from "@harjs/translation";
+import ITableLocale from "../../../../libs/core/application/locales/table/ITableLocale";
+import TableTR from "../../../../libs/core/application/locales/table/tr";
+import TableEN from "../../../../libs/core/application/locales/table/en";
 
 interface IProps {
   states: {
     createTrigger: { get: boolean; set: Dispatch<SetStateAction<boolean>> };
   };
   actions: Actions;
+  locale?: Intl.LocalesArgument;
 }
 
-const { Row, Column } = Grid;
+const icons = {
+  import: <Icon icon="Import" size={24} />,
+  export: <Icon icon="Export" size={24} />,
+  create: <Icon icon="Add" size={16} />,
+};
 
-const ActionButtons = ({ states, actions }: IProps) => {
+const { Row, Column } = GridSystem;
+
+const ActionButtons = ({ states, actions, locale }: IProps) => {
   // states
   const [files, setFiles] = useState<File[]>([]);
   const [formData, setFormData] = useState<FormData | undefined>(undefined);
   const [base64, setBase64] = useState<string[]>([]);
 
+  // hooks
+  const { t } = useTranslation<ITableLocale>(String(locale ?? "tr"), {
+    tr: { ...TableTR },
+    en: { ...TableEN },
+  });
+
   return (
-    <div className="actions">
+    <Flex flexDirection="row" justifyContent="flex-end" alignItems="center" gap="var(--space-8)">
       {actions.import && (
         <Popover
-          title={actions.import.title ?? "İçeri Aktar"}
-          message={
-            actions.import.message ??
-            "Seçtiğiniz dosyaları uygulamaya yükleyebilirsiniz. Bu işlem, dosyalardaki verileri sistemimize aktarır ve verilerle işlem yapmanıza olanak tanır."
-          }
+          title={actions.import.title ?? t("Table.Actions.Import.Title")}
+          message={actions.import.message ?? t("Table.Actions.Import.Message")}
           content={
             <>
               {actions.import.prefixItem && (
@@ -43,7 +58,7 @@ const ActionButtons = ({ states, actions }: IProps) => {
               <Row>
                 <Column size={12}>
                   <Upload
-                    text={actions.import.buttonText ?? "Belge Yükleyin"}
+                    text={actions.import.buttonText ?? t("Table.Actions.Import.Upload")}
                     allowedTypes={actions.import.allowedTypes}
                     files={files}
                     onChange={(formData, files, base64) => {
@@ -51,7 +66,7 @@ const ActionButtons = ({ states, actions }: IProps) => {
                       setFiles(files);
                       setBase64(base64);
                     }}
-                    size="small"
+
                     fullWidth
                   />
                 </Column>
@@ -61,6 +76,7 @@ const ActionButtons = ({ states, actions }: IProps) => {
             </>
           }
           onConfirm={(confirm) => {
+            // İptalde seçilen dosyaları sıfırla.
             if (!confirm) {
               setFiles([]);
 
@@ -69,26 +85,19 @@ const ActionButtons = ({ states, actions }: IProps) => {
 
             if (actions.import && actions.import.onClick) actions.import.onClick(formData, files, base64);
           }}
-          config={{ buttons: { okay: "Yükle", cancel: "İptal" } }}
+          config={{ buttons: { okay: t("Table.Actions.Import.Confirm"), cancel: t("Table.Actions.Cancel") } }}
           windowBlur
         >
           <Tooltip text={actions.import.tooltip}>
-            <Button
-              variant="outlined"
-              color="purple"
-              icon={{ element: <ARIcon icon="Upload" fill="currentcolor" /> }}
-            />
+            <Button variant="outlined" color="purple" shape="square" icon={{ element: icons.import }} />
           </Tooltip>
         </Popover>
       )}
 
       {actions.export && (
         <Popover
-          title={actions.export.title ?? "Dışarı Aktar"}
-          message={
-            actions.export.message ??
-            "Seçtiğiniz verileri bilgisayarınıza indirebilirsiniz. Bu işlem, sistemimizdeki verileri dosya olarak dışa aktarır ve verileri harici olarak kullanmanıza olanak tanır."
-          }
+          title={actions.export.title ?? t("Table.Actions.Export.Title")}
+          message={actions.export.message ?? t("Table.Actions.Export.Message")}
           content={actions.export.content}
           onConfirm={(confirm) => {
             if (!confirm) {
@@ -99,15 +108,11 @@ const ActionButtons = ({ states, actions }: IProps) => {
 
             if (actions.export && actions.export.onClick) actions.export.onClick();
           }}
-          config={{ buttons: { okay: "Dışarı Aktar", cancel: "İptal" } }}
+          config={{ buttons: { okay: t("Table.Actions.Export.Confirm"), cancel: t("Table.Actions.Cancel") } }}
           windowBlur
         >
           <Tooltip text={actions.export.tooltip}>
-            <Button
-              variant="outlined"
-              color="blue"
-              icon={{ element: <ARIcon icon="Download" fill="currentcolor" /> }}
-            />
+            <Button variant="outlined" color="blue" shape="square" icon={{ element: icons.export }} />
           </Tooltip>
         </Popover>
       )}
@@ -117,11 +122,13 @@ const ActionButtons = ({ states, actions }: IProps) => {
           <Button
             variant="outlined"
             color="green"
-            icon={{ element: <ARIcon icon="Add" size={24} /> }}
+            shape="square"
+            icon={{ element: icons.create }}
             onClick={(event) => {
               if (!actions.create) return;
 
               actions.create.onClick(event);
+              // Tablo yeni satır açsın diye create tetikleyicisini çevir.
               states.createTrigger.set((prev) => !prev);
             }}
           />
@@ -130,27 +137,26 @@ const ActionButtons = ({ states, actions }: IProps) => {
 
       {actions.delete && (
         <Popover
-          title={actions.delete.title ?? "Siliniyor"}
-          message={
-            actions.delete.message ??
-            "Seçtiğiniz verileri uygulamadan silebilirsiniz. Bu işlem, verilerin sistemimizden tamamen kaldırılmasını sağlar ve bu verilerle artık işlem yapılamaz."
-          }
+          title={actions.delete.title ?? t("Table.Actions.Delete.Title")}
+          message={actions.delete.message ?? t("Table.Actions.Delete.Message")}
           onConfirm={(confirm) => {
             if (!confirm) return;
 
             if (actions.delete && actions.delete.onClick) actions.delete.onClick();
           }}
+          config={{ buttons: { okay: t("Table.Actions.Delete.Confirm"), cancel: t("Table.Actions.Cancel") } }}
         >
           <Tooltip text={actions.delete.tooltip}>
             <Button
               variant="outlined"
               color="red"
-              icon={{ element: <ARIcon icon="Trash-Fill" fill="currentcolor" /> }}
+              shape="square"
+              icon={{ element: <Icon icon="Trash-Fill" fill="currentColor" /> }}
             />
           </Tooltip>
         </Popover>
       )}
-    </div>
+    </Flex>
   );
 };
 

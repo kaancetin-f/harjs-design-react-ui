@@ -1,0 +1,161 @@
+.har-text-editor-wrapper {
+  &.radius-0 {
+    > .har-text-editor {
+      > iframe {
+        border-top-left-radius: var(--radius-0);
+        border-top-right-radius: var(--radius-0);
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      > .resize {
+        border-bottom-left-radius: var(--radius-0);
+        border-bottom-right-radius: var(--radius-0);
+      }
+    }
+  }
+
+  &.radius-2 {
+    > .har-text-editor {
+      > iframe {
+        border-top-left-radius: var(--radius-2);
+        border-top-right-radius: var(--radius-2);
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      > .resize {
+        border-bottom-left-radius: var(--radius-2);
+        border-bottom-right-radius: var(--radius-2);
+      }
+    }
+  }
+
+  &.radius-4 {
+    > .har-text-editor {
+      > iframe {
+        border-top-left-radius: var(--radius-4);
+        border-top-right-radius: var(--radius-4);
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      > .resize {
+        border-bottom-left-radius: var(--radius-4);
+        border-bottom-right-radius: var(--radius-4);
+      }
+    }
+  }
+
+  &.radius-6 {
+    > .har-text-editor {
+      > iframe {
+        border-top-left-radius: var(--radius-6);
+        border-top-right-radius: var(--radius-6);
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      > .resize {
+        border-bottom-left-radius: var(--radius-6);
+        border-bottom-right-radius: var(--radius-6);
+      }
+    }
+  }
+
+  &.radius-8 {
+    > .har-text-editor {
+      > iframe {
+        border-top-left-radius: var(--radius-8);
+        border-top-right-radius: var(--radius-8);
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      > .resize {
+        border-bottom-left-radius: var(--radius-8);
+        border-bottom-right-radius: var(--radius-8);
+      }
+    }
+  }
+
+  &.radius-12 {
+    > .har-text-editor {
+      > iframe {
+        border-top-left-radius: var(--radius-12);
+        border-top-right-radius: var(--radius-12);
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      > .resize {
+        border-bottom-left-radius: var(--radius-12);
+        border-bottom-right-radius: var(--radius-12);
+      }
+    }
+  }
+
+  &.radius-16 {
+    > .har-text-editor {
+      > iframe {
+        border-top-left-radius: var(--radius-16);
+        border-top-right-radius: var(--radius-16);
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      > .resize {
+        border-bottom-left-radius: var(--radius-16);
+        border-bottom-right-radius: var(--radius-16);
+      }
+    }
+  }
+
+  &.radius-20 {
+    > .har-text-editor {
+      > iframe {
+        border-top-left-radius: var(--radius-20);
+        border-top-right-radius: var(--radius-20);
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      > .resize {
+        border-bottom-left-radius: var(--radius-20);
+        border-bottom-right-radius: var(--radius-20);
+      }
+    }
+  }
+
+  &.radius-40 {
+    > .har-text-editor {
+      > iframe {
+        border-top-left-radius: var(--radius-40);
+        border-top-right-radius: var(--radius-40);
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      > .resize {
+        border-bottom-left-radius: var(--radius-40);
+        border-bottom-right-radius: var(--radius-40);
+      }
+    }
+  }
+
+  &.radius-full {
+    > .har-text-editor {
+      > iframe {
+        border-top-left-radius: var(--radius-full);
+        border-top-right-radius: var(--radius-full);
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      > .resize {
+        border-bottom-left-radius: var(--radius-full);
+        border-bottom-right-radius: var(--radius-full);
+      }
+    }
+  }
+}

@@ -2,99 +2,127 @@
 
 import React from "react";
 import "../../../assets/css/components/feedback/alert/styles.css";
-import IProps from "./IProps";
+import IProps, { AlertMessage } from "./IProps";
 import Utils from "../../../libs/infrastructure/shared/Utils";
+import { Icon } from "../../icons";
+import { Icons } from "../../../libs/infrastructure/types";
+
+const STATUS_ICON: Record<string, Icons> = {
+  information: "Info",
+  success: "CheckCircle",
+  warning: "Warning",
+  danger: "XCircle",
+};
+
+const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+const emphasizeText = (text: string, terms?: string[]): React.ReactNode => {
+  if (!terms?.length) return text;
+
+  const unique = [...new Set(terms.filter((term) => term.length > 0))];
+  if (!unique.length) return text;
+
+  const pattern = unique
+    .slice()
+    .sort((a, b) => b.length - a.length)
+    .map(escapeRegExp)
+    .join("|");
+
+  const regex = new RegExp(`(${pattern})`, "gi");
+  const parts = text.split(regex);
+
+  return parts.map((part, index) => {
+    const matched = unique.some((term) => term.toLocaleLowerCase() === part.toLocaleLowerCase());
+    if (!matched || part === "") return part;
+
+    return (
+      <span key={index} className="har-alert-tag">
+        {part}
+      </span>
+    );
+  });
+};
+
+const MessageList = ({
+  items,
+  nested,
+  emphasize,
+}: {
+  items: AlertMessage[];
+  nested?: boolean;
+  emphasize?: string[];
+}) => (
+  <ul>
+    {items.map((item, index) =>
+      Array.isArray(item) ? (
+        <li key={index} className="group">
+          <MessageList items={item} nested emphasize={emphasize} />
+        </li>
+      ) : (
+        <li key={index} className={nested ? "message nested" : "message"}>
+          {emphasizeText(item, emphasize)}
+        </li>
+      ),
+    )}
+  </ul>
+);
 
 const Alert: React.FC<IProps> = ({
   children,
   message,
-  variant = "filled",
-  status = "primary",
-  border = { radius: "sm" },
+  variant = "surface",
+  status = "information",
+  border = { radius: "8" },
   emphasize,
+  icon,
+  className,
+  style,
+  role,
+  config,
+  ...attributes
 }) => {
-  const _className: string[] = ["ar-alert"];
+  // variables
+  const iconPosition = icon?.position ?? "start";
+  const iconNode = icon?.element ?? (
+    <Icon icon={STATUS_ICON[status] ?? "Info"} size={18} />
+  );
+  const liveRole = role ?? (status === "danger" || status === "warning" ? "alert" : "status");
+  const mark = <span className="icon">{iconNode}</span>;
+  const bar =
+    config?.bar === true
+      ? { side: "start" as const, size: "3" as const }
+      : config?.bar
+        ? { side: config.bar.side ?? "start", size: config.bar.size ?? "3" }
+        : null;
 
-  _className.push(...Utils.GetClassName(variant, status, undefined, border, undefined, undefined, undefined));
+  // refs
+  const _alertClassName: string[] = [
+    "har-alert",
+    `icon-${iconPosition}`,
+    ...Utils.GetClassName(variant, status, undefined, border, undefined, undefined, className),
+  ].filter(Boolean) as string[];
 
-  // methods
-  const formattedTags = (message: string) => {
-    // TODO: Şuan için sadece transparent olan alert tiplerinde çalışmakta.
-    // TODO: Bu konu hakkında düşünüp karar verilecek.
-    if (!emphasize) return message;
+  if (bar) {
+    _alertClassName.push("has-bar", `has-bar-${bar.side}`, `bar-size-${bar.size}`);
+  }
 
-    let _lowerCaseMessage = message.toLocaleLowerCase();
-
-    return emphasize.reduce((currentMessage, emphasize) => {
-      let _lowerCaseEmphasize = emphasize.toLocaleLowerCase();
-      let startIndex = _lowerCaseMessage.indexOf(_lowerCaseEmphasize);
-
-      while (startIndex !== -1) {
-        const endIndex = startIndex + emphasize.length;
-
-        const firstValue = currentMessage.substring(0, startIndex);
-        const originalTag = currentMessage.substring(startIndex, endIndex);
-        const lastValue = currentMessage.substring(endIndex);
-
-        currentMessage = `${firstValue} <span class="ar-alert-tag">${originalTag}</span> ${lastValue}`;
-        _lowerCaseMessage = currentMessage.toLocaleLowerCase();
-        startIndex = _lowerCaseMessage.indexOf(
-          _lowerCaseEmphasize,
-          startIndex + `<span class="ar-alert-tag">${originalTag}</span>`.length
-        );
-      }
-
-      return currentMessage;
-    }, message);
-  };
-
-  const createList = (message: any, isSubMessage?: boolean) => {
-    let className: string = "";
-
-    if (isSubMessage) className += "sub-message";
-    else className += "message";
-
-    return (
-      <ul>
-        {Array.isArray(message)
-          ? message.map((messageItem, index) => (
-              <li key={index} className={className}>
-                {Array.isArray(messageItem) ? (
-                  createList(messageItem, true)
-                ) : (
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: formattedTags(cleanMessage(messageItem)) ?? "",
-                    }}
-                  ></div>
-                )}
-              </li>
-            ))
-          : message}
-      </ul>
+  let body: React.ReactNode = children;
+  if (message != null && message !== "") {
+    body = Array.isArray(message) ? (
+      <MessageList items={message} emphasize={emphasize} />
+    ) : (
+      <p>{emphasizeText(message, emphasize)}</p>
     );
-  };
-
-  /**
-   *
-   * @param message Yalnızca alfanümerik karakterleri (harfler ve sayılar) ve boşlukları tutar.
-   * @returns
-   */
-  const cleanMessage = (message: string) => message.replace(/<\/?[^>]+>/g, "");
+  }
 
   return (
-    <div className={_className.map((c) => c).join(" ")}>
-      {message ? (
-        Array.isArray(message) ? (
-          createList(message)
-        ) : (
-          <p dangerouslySetInnerHTML={{ __html: formattedTags(cleanMessage(message)) ?? "" }}></p>
-        )
-      ) : (
-        children
-      )}
+    <div {...attributes} className={_alertClassName.map((c) => c).join(" ")} style={style} role={liveRole}>
+      {iconPosition === "start" ? mark : null}
+      <div className="body">{body}</div>
+      {iconPosition === "end" ? mark : null}
     </div>
   );
 };
 
+Alert.displayName = "Alert";
 export default Alert;

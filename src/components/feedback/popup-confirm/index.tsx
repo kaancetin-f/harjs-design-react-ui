@@ -1,151 +1,285 @@
 "use client";
 
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
+import { createPortal } from "react-dom";
 import IProps from "./IProps";
 import "../../../assets/css/components/feedback/popup-confirm/styles.css";
 import Button from "../../form/button";
-import ReactDOM from "react-dom";
 import { NotificationContext } from "../../../libs/core/application/contexts/Notification";
-import { Color } from "../../../libs/infrastructure/types";
-import { ARIcon } from "../../icons";
-import Row from "../../data-display/grid-system/row/Row";
-import Column from "../../data-display/grid-system/column/Column";
+import Typography from "../../data-display/typography";
+import { getPopupConfirmConfig } from "./helpers";
+import { Icon } from "../../icons";
 
-const PopupConfirm = ({ title, message, status, isOpen, buttons, onConfirm }: IProps) => {
-  // contexts
-  const { setIsPopupOpen } = useContext(NotificationContext);
+const { Title, Paragraph } = Typography;
 
-  // refs
-  const _arNotificationPopupWrapper = useRef<HTMLDivElement>(null);
-  const _arNotificationPopup = useRef<HTMLDivElement>(null);
+const FOCUSABLE =
+  'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-  // states
-  const _notificaitonPopupWrapperClassName: string[] = ["ar-notification-popup-wrapper"];
-  const [className, setClassName] = useState<string[]>(["ar-notification-popup", ""]);
+const EXIT_MS = 180;
+
+let lockCount = 0;
+
+const lockScroll = () => {
+  if (typeof document === "undefined") return;
+  if (lockCount === 0) {
+    const gutter = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.overflow = "hidden";
+    if (gutter > 0) document.body.style.paddingRight = `${gutter}px`;
+  }
+  lockCount += 1;
+};
+
+const unlockScroll = () => {
+  if (typeof document === "undefined") return;
+  lockCount = Math.max(0, lockCount - 1);
+  if (lockCount === 0) {
+    document.body.style.removeProperty("overflow");
+    document.body.style.removeProperty("padding-right");
+  }
+};
+
+const visibleFocusable = (root: HTMLElement) =>
+  [...root.querySelectorAll<HTMLElement>(FOCUSABLE)].filter(
+    (node) => node.getClientRects().length > 0,
+  );
+
+const PopupConfirm = ({
+  title,
+  message,
+  status,
+  isOpen,
+  buttons,
+  onConfirm,
+}: IProps) => {
+  // hooks
+  const context = useContext(NotificationContext);
 
   // methods
-  const buttonColor = (): Color => {
-    switch (status) {
-      case "success":
-      case "save":
-        return "green";
-      case "warning":
-        return "orange";
-      case "information":
-        return "cyan";
-      case "error":
-      case "delete":
-        return "red";
+  const close = useCallback(() => {
+    context?.setIsPopupOpen(false);
+  }, [context]);
 
-      default:
-        return "light";
-    }
-  };
+  // hooks
+  const uid = useId();
 
-  const buttonIcons = () => {
-    switch (status) {
-      case "success":
-        return <ARIcon icon="CheckAll" fill="var(--success)" size={24} />;
-      case "save":
-        return <ARIcon icon="Floppy-Fill" fill="var(--success)" size={24} />;
-      case "warning":
-        return <ARIcon icon="ExclamationDiamond-Fill" fill="var(--warning)" size={24} />;
-      case "information":
-        return <ARIcon icon="Information-Circle-Fill" fill="var(--information)" size={24} />;
-      case "error":
-        return <ARIcon icon="XCircle-Fill" fill="var(--danger)" size={24} />;
-      case "delete":
-        return <ARIcon icon="Trash-Fill" fill="var(--danger)" size={24} />;
+  // variables
+  const titleId = `${uid}-title`;
+  const messageId = `${uid}-message`;
 
-      default:
-        return "light";
-    }
-  };
+  // refs
+  const _dialogRef = useRef<HTMLDivElement>(null);
+  const _previousFocus = useRef<HTMLElement | null>(null);
+
+  // states
+  const [mounted, setMounted] = useState(false);
+  const [entered, setEntered] = useState(false);
+  const [exited, setExited] = useState(!isOpen);
+
+  // variables
+  const visual = getPopupConfirmConfig(status);
+  const visible = isOpen || !exited;
+  const hasCancel = Boolean(buttons?.cancel);
+
+  // refs
+  const _onConfirmRef = useRef(onConfirm);
+  _onConfirmRef.current = onConfirm;
+
+  // methods
+  const finish = useCallback(
+    (confirm: boolean) => {
+      _onConfirmRef.current?.(confirm);
+      close();
+    },
+    [close],
+  );
 
   // useEffects
   useEffect(() => {
-    setClassName((prev) => {
-      const updated = [...prev.slice(0, -1), isOpen ? "open" : ""];
+    setMounted(true);
+  }, []);
 
-      return updated;
-    });
+  useEffect(() => {
+    if (isOpen) {
+      setExited(false);
+      return;
+    }
 
-    if (isOpen) document.body.style.overflow = "hidden";
+    setEntered(false);
 
-    return () => {
-      document.body.style.removeProperty("overflow");
-    };
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      setExited(true);
+      return;
+    }
+
+    const timeout = window.setTimeout(() => setExited(true), EXIT_MS);
+    return () => window.clearTimeout(timeout);
   }, [isOpen]);
 
-  return (
-    isOpen &&
-    ReactDOM.createPortal(
-      <div ref={_arNotificationPopupWrapper} className={_notificaitonPopupWrapperClassName.map((c) => c).join(" ")}>
-        <div
-          className="ar-notification-popup-bg"
-          onMouseDown={(event) => {
-            event.stopPropagation();
+  useEffect(() => {
+    if (!isOpen) return;
 
-            const target = event.target as HTMLElement;
-            if (_arNotificationPopup.current && !_arNotificationPopup.current.contains(target)) {
-              setClassName((prev) => {
-                const updated = [...prev.slice(0, -1), isOpen ? "open" : ""];
+    _previousFocus.current = document.activeElement as HTMLElement | null;
+    lockScroll();
 
-                return updated;
-              });
-            }
-          }}
-        ></div>
+    const handleKeys = (event: KeyboardEvent) => {
+      const root = _dialogRef.current;
+      if (!root) return;
 
-        <div ref={_arNotificationPopup} className={className.map((c) => c).join(" ")}>
-          <div className={`icon ${status}`}>{buttonIcons()}</div>
+      if (event.key === "Tab") {
+        const nodes = visibleFocusable(root);
+        if (nodes.length === 0) {
+          event.preventDefault();
+          return;
+        }
+        const first = nodes[0];
+        const last = nodes[nodes.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+        return;
+      }
 
-          <div className="content">
-            <span className={`title ${status}`}>{title}</span>
-            <span className="message">{message}</span>
-          </div>
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      finish(false);
+    };
 
-          <div className="footer">
-            <Row>
-              <Column size={buttons?.cancel ? 6 : 12}>
-                <Button
-                  color={buttonColor()}
-                  onClick={(event) => {
-                    buttons?.okay?.onClick?.(event);
+    document.addEventListener("keydown", handleKeys, true);
 
-                    onConfirm?.(true);
-                    setIsPopupOpen?.((prev) => !prev);
-                  }}
-                  fullWidth
-                >
-                  {buttons?.okay?.children ?? "Tamam"}
-                </Button>
-              </Column>
+    return () => {
+      document.removeEventListener("keydown", handleKeys, true);
+      unlockScroll();
+      _previousFocus.current?.focus({ preventScroll: true });
+    };
+  }, [isOpen, finish]);
 
-              {buttons?.cancel && (
-                <Column size={6}>
-                  <Button
-                    variant="outlined"
-                    color={buttons.cancel.color ?? "gray"}
-                    onClick={(event) => {
-                      buttons?.cancel?.onClick?.(event);
+  // Yıkıcı işlemde iptale, diğerlerinde onaya odaklan.
+  useEffect(() => {
+    if (!isOpen || !entered) return;
+    const root = _dialogRef.current;
+    if (!root) return;
+    const nodes = visibleFocusable(root);
+    const focusTarget =
+      visual.destructive && hasCancel
+        ? (nodes[0] ?? root)
+        : (nodes[nodes.length - 1] ?? root);
+    focusTarget.focus({ preventScroll: true });
+  }, [entered, hasCancel, isOpen, visual.destructive]);
 
-                      onConfirm?.(false);
-                      setIsPopupOpen?.((prev) => !prev);
-                    }}
-                    fullWidth
-                  >
-                    {buttons.cancel.children ?? "Vazgeç"}
-                  </Button>
-                </Column>
-              )}
-            </Row>
-          </div>
+  useEffect(() => {
+    if (!isOpen || !mounted) return;
+    let inner = 0;
+    const outer = window.requestAnimationFrame(() => {
+      inner = window.requestAnimationFrame(() => setEntered(true));
+    });
+    return () => {
+      window.cancelAnimationFrame(outer);
+      window.cancelAnimationFrame(inner);
+    };
+  }, [isOpen, mounted]);
+
+  if (!mounted || !visible) return null;
+
+  // variables
+  const shellClass = [
+    "ar-notification-popup-wrapper",
+    entered ? "open" : undefined,
+  ]
+    .filter(Boolean)
+    .join(" ");
+  const panelClass = ["ar-notification-popup", entered ? "open" : undefined]
+    .filter(Boolean)
+    .join(" ");
+
+  return createPortal(
+    <div className={shellClass}>
+      <div
+        className="ar-notification-popup-bg"
+        onMouseDown={() => finish(false)}
+      />
+
+      <div
+        ref={_dialogRef}
+        className={panelClass}
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        aria-describedby={message ? messageId : undefined}
+        tabIndex={-1}
+      >
+        <div className={`icon ${visual.kind}`} aria-hidden="true">
+          <Icon icon={visual.icon} size={24} />
         </div>
-      </div>,
-      document.body,
-    )
+
+        <div className="content">
+          <Title
+            id={titleId}
+            className={`title ${visual.kind}`}
+            size="md"
+            align="left"
+          >
+            {title}
+          </Title>
+          {message ? (
+            <Paragraph
+              id={messageId}
+              className="message"
+              size="sm"
+              align="left"
+            >
+              {message}
+            </Paragraph>
+          ) : null}
+        </div>
+
+        <div className="footer">
+          {hasCancel ? (
+            <Button
+              {...buttons?.cancel}
+              variant={buttons?.cancel?.variant ?? "outlined"}
+              color={buttons?.cancel?.color ?? "gray"}
+              size={buttons?.cancel?.size ?? "md"}
+              onClick={(event) => {
+                buttons?.cancel?.onClick?.(event);
+                finish(false);
+              }}
+            >
+              {buttons?.cancel?.children ?? "Vazgeç"}
+            </Button>
+          ) : null}
+          <Button
+            {...buttons?.okay}
+            color={buttons?.okay?.color ?? visual.color}
+            size={buttons?.okay?.size ?? "md"}
+            onClick={(event) => {
+              buttons?.okay?.onClick?.(event);
+              finish(true);
+            }}
+          >
+            {buttons?.okay?.children ?? "Tamam"}
+          </Button>
+        </div>
+      </div>
+    </div>,
+    document.body,
   );
 };
 
+PopupConfirm.displayName = "PopupConfirm";
 export default PopupConfirm;

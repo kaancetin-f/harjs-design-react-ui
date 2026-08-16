@@ -1,18 +1,8 @@
-import {
-  IBorderProps,
-  IColorProps,
-  IValidationProps,
-  IVariantProps,
-} from "../../../../libs/infrastructure/types/IGlobalProps";
 import { Option } from "../../../../libs/infrastructure/types";
+import { ComponentProps } from "react";
+import Input from "..";
 
-interface IProps
-  extends
-    Omit<React.InputHTMLAttributes<HTMLInputElement>, "color">,
-    IVariantProps,
-    IColorProps,
-    IBorderProps,
-    IValidationProps {
+interface IProps extends ComponentProps<typeof Input> {
   options?: Option[];
   values: { option?: string; value: string | number | readonly string[] | undefined };
   onSelected?: (option: Option | undefined) => void;

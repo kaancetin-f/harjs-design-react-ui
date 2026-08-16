@@ -1,0 +1,21 @@
+/* X-Large (Standart Laptop & Küçük Desktop) */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .har-layout {
+    > .har-sider.right {
+      width: 100%;
+    }
+
+    > .har-content {
+      width: 100%;
+
+      > .har-header {
+        padding: 0 2.5rem;
+      }
+
+      > .har-section:not(.full-width) {
+        max-width: 960px;
+        padding: 2.5rem;
+      }
+    }
+  }
+}

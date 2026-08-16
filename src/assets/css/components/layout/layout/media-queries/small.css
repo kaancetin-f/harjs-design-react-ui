@@ -1,0 +1,18 @@
+/* Small (Küçük Telefonlar) */
+@media (max-width: 575px) {
+  .har-layout {
+    --har-layout-header-height: 4rem;
+
+    > .har-content {
+      width: 100%;
+
+      > .har-header {
+        padding: 0 1rem;
+      }
+
+      > .har-section {
+        padding: 1rem;
+      }
+    }
+  }
+}

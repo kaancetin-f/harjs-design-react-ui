@@ -1,0 +1,34 @@
+.har-row,
+.row {
+  display: flex;
+  flex-flow: row wrap;
+  margin-top: calc(var(--space-12) * -1);
+  margin-left: calc(var(--space-12) * -1);
+
+  &:has(+ .row),
+  &:has(+ .har-row) {
+    margin-bottom: var(--space-12);
+  }
+
+  > * {
+    min-width: 0;
+    padding-top: var(--space-12);
+    padding-left: var(--space-12);
+  }
+
+  > .col {
+    position: relative;
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
+  }
+}
+
+@media (width <= 575px) {
+  .har-row,
+  .row {
+    > .col {
+      min-width: 100%;
+    }
+  }
+}

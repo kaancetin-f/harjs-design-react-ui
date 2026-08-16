@@ -1,0 +1,76 @@
+&.white {
+  &.filled {
+    background-color: var(--white-400);
+    border: solid var(--stroke-1) var(--gray-400);
+    color: var(--gray-800);
+
+    &:hover {
+      background-color: var(--white-500);
+      border-color: var(--gray-500);
+    }
+
+    &:active {
+      background-color: var(--white-600);
+      border-color: var(--gray-500);
+    }
+  }
+
+  &.surface {
+    background-color: var(--white-400);
+    border: solid var(--stroke-1) var(--gray-400);
+    color: var(--gray-800);
+
+    &:hover {
+      background-color: var(--white-500);
+    }
+
+    &:active {
+      background-color: var(--white-600);
+    }
+  }
+
+  &.surface-borderless {
+    background-color: var(--white-400);
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+
+    &:hover {
+      background-color: var(--white-500);
+    }
+
+    &:active {
+      background-color: var(--white-600);
+    }
+  }
+
+  &.outlined {
+    background-color: var(--white-400);
+    border: solid var(--stroke-1) var(--gray-400);
+    color: var(--gray-800);
+
+    &:hover {
+      background-color: var(--white-500);
+      border-color: var(--gray-500);
+    }
+
+    &:active {
+      background-color: var(--white-600);
+    }
+  }
+
+  &.dashed {
+    background-color: var(--white-400);
+    border: dashed var(--stroke-1) var(--gray-400);
+    color: var(--gray-800);
+
+    &:hover {
+      border-color: var(--gray-500);
+      background-color: var(--white-500);
+    }
+
+    &:active {
+      border-color: var(--gray-400);
+      background-color: var(--white-600);
+    }
+  }
+}

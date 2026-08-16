@@ -74,8 +74,9 @@ web_modules/
 .cache
 .parcel-cache
 
-# Next.js build output
+# Next.js / Fumadocs
 .next
+.source
 out
 
 # Nuxt.js build / generate output
@@ -141,3 +142,9 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# CodeGraph
+.codegraph
+.cursor
+.gemini
+GEMINI.md

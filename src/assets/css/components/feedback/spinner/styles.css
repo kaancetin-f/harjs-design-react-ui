@@ -1,0 +1,104 @@
+.har-spinner {
+  --har-spinner-size: var(--space-20);
+  --har-spinner-stroke: var(--stroke-2);
+  --har-spinner-color: var(--blue-500);
+
+  display: inline-flex;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: var(--har-spinner-size);
+  height: var(--har-spinner-size);
+  margin: 0;
+  padding: 0;
+  color: var(--har-spinner-color);
+  vertical-align: middle;
+
+  > .label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  > .track {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    border: var(--har-spinner-stroke) solid currentColor;
+    border-right-color: transparent;
+    border-radius: var(--radius-full);
+    animation: har-spinner-rotate 0.65s linear infinite;
+  }
+
+  &.size-xs {
+    --har-spinner-size: var(--space-12);
+    --har-spinner-stroke: var(--stroke-1-5);
+  }
+
+  &.size-sm {
+    --har-spinner-size: var(--space-16);
+    --har-spinner-stroke: var(--stroke-2);
+  }
+
+  &.size-md {
+    --har-spinner-size: var(--space-20);
+    --har-spinner-stroke: var(--stroke-2);
+  }
+
+  &.size-lg {
+    --har-spinner-size: var(--space-24);
+    --har-spinner-stroke: var(--stroke-2);
+  }
+
+  &.size-xl {
+    --har-spinner-size: var(--space-32);
+    --har-spinner-stroke: var(--stroke-3);
+  }
+
+  &.size-2xl {
+    --har-spinner-size: var(--space-40);
+    --har-spinner-stroke: var(--stroke-3);
+  }
+
+  &.primary,
+  &.information {
+    --har-spinner-color: var(--blue-500);
+  }
+
+  &.secondary {
+    --har-spinner-color: var(--gray-500);
+  }
+
+  &.success {
+    --har-spinner-color: var(--green-500);
+  }
+
+  &.warning {
+    --har-spinner-color: var(--orange-500);
+  }
+
+  &.danger {
+    --har-spinner-color: var(--red-500);
+  }
+}
+
+@keyframes har-spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .har-spinner > .track {
+    animation: none;
+    border-right-color: currentColor;
+    opacity: 0.55;
+  }
+}

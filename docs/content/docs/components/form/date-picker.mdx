@@ -1,0 +1,86 @@
+---
+title: Date Picker
+description: Select a single date or a date range.
+---
+
+Date Picker is controlled. Single mode uses a date string. Range mode uses `{ start, end }` with `multiple` and `direction`. Styling tokens match Input (`variant`, `color`, `size`, `border`).
+
+## Import
+
+```tsx
+import { DatePicker } from '@harjs/react-ui'
+```
+
+```tsx
+<DatePicker value={value} onChange={setValue} />
+<DatePicker multiple direction="row" value={range} onChange={setRange} />
+```
+
+## Usage
+
+<Example>
+  <DatePickerBasic />
+</Example>
+
+## Examples
+
+### Time
+
+`config.isClock` adds a time picker next to the calendar.
+
+<Example>
+  <DatePickerTime />
+</Example>
+
+### Time only
+
+`config.isOnlyClock` hides the calendar and shows only the clock.
+
+<Example>
+  <DatePickerClockOnly />
+</Example>
+
+### Range
+
+`multiple` selects a start and end date. `direction` lays the two fields out in a row or a column.
+
+<Example>
+  <DatePickerRange />
+</Example>
+
+### Disabled
+
+<Example>
+  <DatePickerDisabled />
+</Example>
+
+### Validation
+
+`validation.text` shows an error message and paints the field red. Clear it when the value is valid.
+
+<Example>
+  <DatePickerValidation />
+</Example>
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `value` | `string` or `{ start: string; end: string }` | — |
+| `onChange` | `(value) => void` | — |
+| `multiple` | `boolean` | `false` |
+| `direction` | `"row" \| "column"` | — |
+| `placeholder` | `string` | — |
+| `variant` | `"filled" \| "surface-borderless" \| "outlined" \| "dashed" \| "borderless"` | `"outlined"` |
+| `color` | `"blue" \| "purple" \| "pink" \| "red" \| "orange" \| "yellow" \| "green" \| "teal" \| "cyan" \| "gray" \| "white"` | `"gray"` |
+| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl"` | `"lg"` |
+| `border.radius` | `"0" \| "2" \| "4" \| "6" \| "8" \| "12" \| "16" \| "20" \| "40" \| "full"` | `"4"` |
+| `disabled` | `boolean` | — |
+| `validation` | `{ text?: string; scrollTo?: boolean }` | — |
+| `config.locale` | `Intl.LocalesArgument` | `"tr"` |
+| `config.isClock` | `boolean` | — |
+| `config.isOnlyClock` | `boolean` | — |
+| `config.isShortcutButtons` | `boolean` | `true` |
+| `config.isFooterButton` | `boolean` | `true` |
+
+`surface` is not available — same as Input. When `multiple` is set, `direction` is required and `value` / `onChange` use `{ start, end }`.

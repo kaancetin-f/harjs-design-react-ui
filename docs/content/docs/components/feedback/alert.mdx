@@ -1,0 +1,110 @@
+---
+title: Alert
+description: Inline status banners. Surface is the default callout. Filled stops the page. Pass children when the message needs an action.
+---
+
+Alert is a status banner, not a toast. `status` sets the color and the default icon. `variant` is the same set as Button — `surface` is a soft wash with a 1px frame, `filled` is the solid banner. Pass `config.bar` for a status rail on one edge. Pass `message` for a string or a nested list. Omit it and use `children` when the body needs actions.
+
+## Import
+
+```tsx
+import { Alert } from "@harjs/react-ui";
+```
+
+```tsx
+<Alert status="success" message="Aurora is live." />
+<Alert status="danger" message="The email field is required." emphasize={["email"]} />
+<Alert status="warning">
+  Review the API contract. <Button size="sm">Open diff</Button>
+</Alert>
+```
+
+## Usage
+
+The default is `variant="surface"` and `status="information"`. `danger` and `warning` use `role="alert"`; other statuses use `role="status"`.
+
+<Example>
+  <AlertBasic />
+</Example>
+
+## Examples
+
+### Status
+
+`information`, `success`, `warning`, and `danger`. Each status brings its own mark.
+
+<Example>
+  <AlertStatus />
+</Example>
+
+### Variants
+
+Same tokens as Button. `surface` is the default callout: soft wash and a 1px status frame. `filled` is solid. `outlined` and `dashed` keep a frame. `borderless` is copy and icon only.
+
+<Example>
+  <AlertVariants />
+</Example>
+
+### Status bar
+
+The leading rail is not part of `surface`. Pass `config.bar` — `true` is a 3px start rail. Set `side` to `start`, `end`, `top`, or `bottom`, and `size` to `"2"`, `"3"`, or `"4"` (stroke tokens). Works on any variant.
+
+<Example>
+  <AlertBar />
+</Example>
+
+### Icons
+
+A status mark is on by default. Pass `icon.element` to replace it. `icon.position` is `"start"` or `"end"`.
+
+<Example>
+  <AlertIcons />
+</Example>
+
+### Emphasize
+
+`emphasize` wraps matching substrings. Matches are case-insensitive and keep the original casing.
+
+<Example>
+  <AlertEmphasize />
+</Example>
+
+### Lists
+
+`message` accepts a nested array. Nested groups sit on a rail under the parent items.
+
+<Example>
+  <AlertLists />
+</Example>
+
+### With actions
+
+When `message` is omitted, `children` render in the body. Pair copy with a control.
+
+<Example>
+  <AlertChildren />
+</Example>
+
+### Radius
+
+Set `border.radius` to any radius token. The default is `"8"`.
+
+<Example>
+  <AlertRadius />
+</Example>
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `message` | `string \| AlertMessage[]` | — |
+| `children` | `ReactNode` | — |
+| `emphasize` | `string[]` | — |
+| `icon.element` | `JSX.Element` | status mark |
+| `icon.position` | `"start" \| "end"` | `"start"` |
+| `status` | `"information" \| "success" \| "danger" \| "warning"` | `"information"` |
+| `variant` | `"filled" \| "surface" \| "surface-borderless" \| "outlined" \| "dashed" \| "borderless"` | `"surface"` |
+| `border` | `{ radius: "0" \| "2" \| "4" \| "6" \| "8" \| "12" \| "16" \| "20" \| "40" \| "full" }` | `{ radius: "8" }` |
+| `config.bar` | `true \| { side?: "start" \| "end" \| "top" \| "bottom"; size?: "2" \| "3" \| "4" }` | — |
+
+Also accepts standard `div` HTML attributes (`className`, `style`, `id`, `role`, …). `AlertMessage` is recursive: `string | AlertMessage[]`. Colors use palette tokens, so they follow dark mode.

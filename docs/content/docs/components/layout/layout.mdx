@@ -1,0 +1,278 @@
+---
+title: Layout
+description: Page shell with header, sider, content, and footer. Nest Layout to mix a top bar with a sidebar. Below 768px a sider becomes a drawer.
+---
+
+`Layout` is a flex container. **Column** by default. **Row** when a `Layout.Sider` is a direct child. Nest a second `Layout` when you need both directions.
+
+## Import
+
+```tsx
+import { Layout, Menu } from "@harjs/react-ui";
+```
+
+## Basic structure
+
+Four ways to place the regions. Copy the snippet that matches the preview.
+
+### Header / content / footer
+
+No sider. Outer `Layout` stays a column.
+
+```tsx
+<Layout>
+  <Layout.Header>Header</Layout.Header>
+  <Layout.Content>Content</Layout.Content>
+  <Layout.Footer>Footer</Layout.Footer>
+</Layout>
+```
+
+<Example
+  name="LayoutStructureTop"
+  code={`<Layout>
+  <Layout.Header>Header</Layout.Header>
+  <Layout.Content>Content</Layout.Content>
+  <Layout.Footer>Footer</Layout.Footer>
+</Layout>`}
+>
+  <LayoutStructureTop />
+</Example>
+
+### Header + left sider
+
+Header is full width. Nest a `Layout` under it so the sider and content sit **side by side**.
+
+```tsx
+<Layout>
+  <Layout.Header>Header</Layout.Header>
+  <Layout>
+    <Layout.Sider>Sider</Layout.Sider>
+    <Layout.Content>Content</Layout.Content>
+  </Layout>
+</Layout>
+```
+
+<Example
+  name="LayoutStructureHeaderSider"
+  code={`<Layout>
+  <Layout.Header>Header</Layout.Header>
+  <Layout>
+    <Layout.Sider>Sider</Layout.Sider>
+    <Layout.Content>Content</Layout.Content>
+  </Layout>
+</Layout>`}
+>
+  <LayoutStructureHeaderSider />
+</Example>
+
+### Header + right sider
+
+Same as above. Put `Sider` after `Content`, or set `position="right"`.
+
+```tsx
+<Layout>
+  <Layout.Header>Header</Layout.Header>
+  <Layout>
+    <Layout.Content>Content</Layout.Content>
+    <Layout.Sider>Sider</Layout.Sider>
+  </Layout>
+</Layout>
+```
+
+<Example
+  name="LayoutStructureHeaderSiderRight"
+  code={`<Layout>
+  <Layout.Header>Header</Layout.Header>
+  <Layout>
+    <Layout.Content>Content</Layout.Content>
+    <Layout.Sider>Sider</Layout.Sider>
+  </Layout>
+</Layout>`}
+>
+  <LayoutStructureHeaderSiderRight />
+</Example>
+
+### Sider + app column
+
+`Sider` is a **direct** child of the outer `Layout`, so that `Layout` is a row and the sider is full height. Header / content / footer go in a nested `Layout`.
+
+```tsx
+<Layout>
+  <Layout.Sider>Sider</Layout.Sider>
+  <Layout>
+    <Layout.Header>Header</Layout.Header>
+    <Layout.Content>Content</Layout.Content>
+    <Layout.Footer>Footer</Layout.Footer>
+  </Layout>
+</Layout>
+```
+
+<Example
+  name="LayoutStructureSide"
+  code={`<Layout>
+  <Layout.Sider>Sider</Layout.Sider>
+  <Layout>
+    <Layout.Header>Header</Layout.Header>
+    <Layout.Content>Content</Layout.Content>
+    <Layout.Footer>Footer</Layout.Footer>
+  </Layout>
+</Layout>`}
+>
+  <LayoutStructureSide />
+</Example>
+
+This last pattern is the usual app shell. A filled example:
+
+<Example>
+  <LayoutBasic />
+</Example>
+
+## Examples
+
+### Header-content-footer
+
+Top navigation only. First-level menu lives in the header.
+
+<Example>
+  <LayoutHeaderContentFooter />
+</Example>
+
+### Header-sider
+
+Documentation-site pattern: full-width header, nested sider + content.
+
+<Example>
+  <LayoutHeaderSider />
+</Example>
+
+### Collapsed sider
+
+`defaultCollapsed` starts the rail narrow. Pin expands it. Hover peeks on desktop. `collapsed` + `onCollapse` make it controlled. Give each shell a unique `name` so pin state does not collide across instances.
+
+<Example>
+  <LayoutCollapsed />
+</Example>
+
+### Custom trigger
+
+Hide the pin with `trigger={null}` and toggle `collapsed` from a header button.
+
+<Example>
+  <LayoutCustomTrigger />
+</Example>
+
+### Collapsible overlay
+
+`mode="overlay"` expands over the content instead of pushing it.
+
+<Example>
+  <LayoutOverlay />
+</Example>
+
+### Responsive
+
+Below 768px the sider becomes a drawer. Open it from the header menu button, the backdrop, Escape, or the in-panel close control.
+
+<Example>
+  <LayoutResponsive />
+</Example>
+
+### Fixed header
+
+`stickyHeader` (default `true`) keeps the header visible while the section scrolls.
+
+<Example>
+  <LayoutFixedHeader />
+</Example>
+
+### Fixed sider
+
+`stickySider` (default `true`) keeps the rail in view beside long content.
+
+<Example>
+  <LayoutFixedSider />
+</Example>
+
+### Header actions
+
+Leading content is `children` — title and search. Trailing controls go in `actions` — notifications and the account menu. On narrow widths search collapses to an icon.
+
+<Example name="LayoutHeaderActions">
+  <LayoutHeaderActions />
+</Example>
+
+### Full width section
+
+`fullWidth` or `maxWidth` on `Layout.Section`.
+
+<Example>
+  <LayoutFullWidth />
+</Example>
+
+### Theme colors
+
+`theme` sets background, border, text, and lock-button tokens per region.
+
+<Example>
+  <LayoutTheme />
+</Example>
+
+### Selected menu colors
+
+Selected styles come from `Menu` `theme.selected`. Put `Menu` inside `Layout.Sider` so labels follow the expanded state.
+
+<Example>
+  <LayoutSelectedColors />
+</Example>
+
+## Accessibility
+
+The sider is an `aside` labeled “Main navigation”. The pin control is a real button with `aria-pressed`. The logo is a button only when `logo.onClick` is set. Overlay mode: hamburger in the header, Escape, backdrop click, and an in-panel close button. `prefers-reduced-motion: reduce` turns off width and transform transitions. Header-content-footer has no sider, so the hamburger is omitted.
+
+## Props
+
+### Layout
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `ReactNode` | — | Compound regions, including nested `Layout` |
+| `name` | `string` | — | Storage key segment. Omit to use the global menu-lock key. |
+| `hasSider` | `boolean` | auto | Force row layout. Omit to detect a direct `Layout.Sider`. |
+| `className` | `string` | — | Root class name |
+| `style` | `CSSProperties` | — | Merged after theme CSS vars |
+| `siderWidth` | `number \| string` | `280` | Expanded sider width |
+| `collapsedWidth` | `number \| string` | `4.85rem` | Collapsed sider width |
+| `headerHeight` | `number \| string` | `4.5rem` | Sticky header / logo row height |
+| `stickyHeader` | `boolean` | `true` | Sticky header |
+| `stickySider` | `boolean` | `true` | Sticky sider |
+| `theme` | `ILayoutTheme` | — | Region color tokens |
+| `slots` | `ILayoutSlots` | — | Extra class/style per region |
+
+### Layout.Sider
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `logo` | `{ default, mini?, onClick? }` | — | Expanded / collapsed logo |
+| `footer` | `ReactNode` | — | Sider footer. Omitted when empty. |
+| `defaultCollapsed` | `boolean` | `false` | Uncontrolled start. Storage wins on refresh. |
+| `collapsed` | `boolean` | — | Controlled rail. `true` is narrow. |
+| `onCollapse` | `(collapsed: boolean) => void` | — | Controlled change |
+| `collapsible` | `boolean` | `true` | Show the pin control on desktop |
+| `trigger` | `ReactNode \| null` | — | Custom pin control. `null` hides it. |
+| `mode` | `"push" \| "overlay"` | `"push"` | Overlay expands over content |
+| `width` | `number \| string` | — | Local width override |
+| `collapsedWidth` | `number \| string` | — | Local collapsed override |
+| `position` | `"left" \| "right"` | `"left"` | Edge; also used for the overlay |
+| `reverseArrow` | `boolean` | `false` | Flip the pin chevron (right sider flips by default) |
+
+### Layout.Header
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `ReactNode` | — | Leading header content |
+| `actions` | `ReactNode` | — | Trailing actions |
+| `menuButton` | `boolean` | `true` | Overlay hamburger when a sider exists. Hide it if you drive collapse from a custom control. |
+
+### Layout.Content / Section / Footer
+
+`Content` is the main column. `Section` takes `fullWidth` and `maxWidth`. `Footer` is the page footer. Header, Content, and Footer can be direct children of `Layout` when there is no sider.

@@ -1,0 +1,67 @@
+---
+title: Spinner
+description: Inline activity indicator. Size and status come from the design tokens. The label is for screen readers.
+---
+
+Spinner is an inline loading mark, not a page overlay. `Loading` / `LoadingProvider` still own the fullscreen veil. Default `size` is `"md"`. Default `status` is `"primary"`. `label` is announced and hidden visually. Pass `label=""` when the parent already names the pending work.
+
+## Import
+
+```tsx
+import { Spinner } from "@harjs/react-ui";
+```
+
+```tsx
+<Spinner />
+<Spinner size="sm" />
+<Spinner size="lg" status="success" />
+<Spinner label="Publishing…" />
+```
+
+## Usage
+
+The default is a rotating ring. It does not add margin or padding, so it sits in a button, a card, or a toast without shifting the layout.
+
+<Example>
+  <SpinnerBasic />
+</Example>
+
+## Examples
+
+### Sizes
+
+`xs`, `sm`, `md`, `lg`, `xl`, and `2xl`. Same size tokens as Button and Chip.
+
+<Example>
+  <SpinnerSizes />
+</Example>
+
+### Status
+
+`primary`, `secondary`, `information`, `success`, `warning`, and `danger`. Color comes from the theme tokens.
+
+<Example>
+  <SpinnerStatus />
+</Example>
+
+### Label
+
+`label` is read by assistive tech. Pair it with visible copy when the pending state needs a caption.
+
+<Example>
+  <SpinnerLabel />
+</Example>
+
+`notification.promise` uses this spinner on the loading toast, then swaps back to the status mark when the promise settles.
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl"` | `"md"` |
+| `status` | `"primary" \| "secondary" \| "success" \| "danger" \| "warning" \| "information"` | `"primary"` |
+| `label` | `string` | `"Loading"` |
+| `className` | `string` | — |
+| `style` | `CSSProperties` | — |
+
+Native `span` attributes are forwarded. `prefers-reduced-motion: reduce` stops the rotation and holds a static ring.

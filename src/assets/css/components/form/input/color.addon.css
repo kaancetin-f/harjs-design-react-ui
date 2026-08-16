@@ -1,0 +1,787 @@
+.har-input-wrapper {
+  &.blue {
+    &.filled {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--blue-100);
+          border: var(--stroke-1) solid var(--blue-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.surface-borderless {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--blue-100);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.outlined {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) solid var(--blue-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.dashed {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) dashed var(--blue-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.borderless {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) solid transparent;
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+  }
+
+  &.purple {
+    &.filled {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--purple-100);
+          border: var(--stroke-1) solid var(--purple-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.surface-borderless {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--purple-100);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.outlined {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) solid var(--purple-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.dashed {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) dashed var(--purple-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.borderless {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) solid transparent;
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+  }
+
+  &.pink {
+    &.filled {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--pink-100);
+          border: var(--stroke-1) solid var(--pink-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.surface-borderless {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--pink-100);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.outlined {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) solid var(--pink-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.dashed {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) dashed var(--pink-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.borderless {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) solid transparent;
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+  }
+
+  &.red {
+    &.filled {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--red-100);
+          border: var(--stroke-1) solid var(--red-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.surface-borderless {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--red-100);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.outlined {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) solid var(--red-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.dashed {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) dashed var(--red-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.borderless {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) solid transparent;
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+  }
+
+  &.orange {
+    &.filled {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--orange-100);
+          border: var(--stroke-1) solid var(--orange-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.surface-borderless {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--orange-100);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.outlined {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) solid var(--orange-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.dashed {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) dashed var(--orange-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.borderless {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) solid transparent;
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+  }
+
+  &.yellow {
+    &.filled {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--yellow-100);
+          border: var(--stroke-1) solid var(--yellow-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.surface-borderless {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--yellow-100);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.outlined {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) solid var(--yellow-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.dashed {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) dashed var(--yellow-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.borderless {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) solid transparent;
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+  }
+
+  &.green {
+    &.filled {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--green-100);
+          border: var(--stroke-1) solid var(--green-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.surface-borderless {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--green-100);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.outlined {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) solid var(--green-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.dashed {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) dashed var(--green-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.borderless {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) solid transparent;
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+  }
+
+  &.teal {
+    &.filled {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--teal-100);
+          border: var(--stroke-1) solid var(--teal-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.surface-borderless {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--teal-100);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.outlined {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) solid var(--teal-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.dashed {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) dashed var(--teal-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.borderless {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) solid transparent;
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+  }
+
+  &.cyan {
+    &.filled {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--cyan-100);
+          border: var(--stroke-1) solid var(--cyan-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.surface-borderless {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--cyan-100);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.outlined {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) solid var(--cyan-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.dashed {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) dashed var(--cyan-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.borderless {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) solid transparent;
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+  }
+
+  &.gray {
+    &.filled {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--gray-100);
+          border: var(--stroke-1) solid var(--gray-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.surface-borderless {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--gray-100);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.outlined {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) solid var(--gray-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.dashed {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) dashed var(--gray-300);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.borderless {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: transparent;
+          border: var(--stroke-1) solid transparent;
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+  }
+
+  &.white {
+    &.filled {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--white-500);
+          border: var(--stroke-1) solid var(--gray-300);
+          color: var(--gray-700);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.surface-borderless {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--white-500);
+          color: var(--gray-700);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.outlined {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--white-500);
+          border: var(--stroke-1) solid var(--gray-300);
+          color: var(--gray-700);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.dashed {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--white-500);
+          border: var(--stroke-1) dashed var(--gray-300);
+          color: var(--gray-700);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+
+    &.borderless {
+      > .addon-before,
+      > .addon-after {
+        &:has(input, select, button, textarea) {
+          background-color: var(--white-500);
+          border: var(--stroke-1) solid transparent;
+          color: var(--gray-700);
+        }
+
+        &:has(.har-select, .har-input) {
+          border: none !important;
+        }
+      }
+    }
+  }
+}

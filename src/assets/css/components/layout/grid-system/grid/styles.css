@@ -1,0 +1,117 @@
+.har-grid,
+.grid {
+  display: grid;
+
+  &.inline-grid {
+    display: inline-grid;
+  }
+
+  /* columns / rows — count comes from --har-grid-cols / --har-grid-rows */
+  &.grid-columns {
+    grid-template-columns: repeat(var(--har-grid-cols), minmax(0, 1fr));
+  }
+
+  &.grid-rows {
+    grid-template-rows: repeat(var(--har-grid-rows), minmax(0, 1fr));
+  }
+
+  /* auto-flow */
+  &.grid-auto-flow-row {
+    grid-auto-flow: row;
+  }
+
+  &.grid-auto-flow-column {
+    grid-auto-flow: column;
+  }
+
+  &.grid-auto-flow-dense {
+    grid-auto-flow: dense;
+  }
+
+  &.grid-auto-flow-row-dense {
+    grid-auto-flow: row dense;
+  }
+
+  &.grid-auto-flow-column-dense {
+    grid-auto-flow: column dense;
+  }
+
+  /* justify-items */
+  &.justify-items-start {
+    justify-items: start;
+  }
+
+  &.justify-items-end {
+    justify-items: end;
+  }
+
+  &.justify-items-center {
+    justify-items: center;
+  }
+
+  &.justify-items-stretch {
+    justify-items: stretch;
+  }
+
+  &.justify-items-baseline {
+    justify-items: baseline;
+  }
+
+  /* grid keywords Flex CSS does not cover */
+  &.align-items-start {
+    align-items: start;
+  }
+
+  &.align-items-end {
+    align-items: end;
+  }
+
+  &.justify-content-start {
+    justify-content: start;
+  }
+
+  &.justify-content-end {
+    justify-content: end;
+  }
+
+  &.align-content-start {
+    align-content: start;
+  }
+
+  &.align-content-end {
+    align-content: end;
+  }
+}
+
+.har-grid {
+  > * {
+    min-width: 0;
+  }
+}
+
+.har-grid-item {
+  display: flex;
+  min-width: 0;
+
+  > * {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* col-span / row-span — count comes from --har-col-span / --har-row-span */
+  &.col-span {
+    grid-column: span var(--har-col-span);
+  }
+
+  &.col-span-full {
+    grid-column: 1 / -1;
+  }
+
+  &.row-span {
+    grid-row: span var(--har-row-span);
+  }
+
+  &.row-span-full {
+    grid-row: 1 / -1;
+  }
+}

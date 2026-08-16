@@ -1,0 +1,118 @@
+.har-input-wrapper {
+  &:has(> .addon-before),
+  &:has(> .addon-after) {
+    > .addon-before,
+    > .addon-after {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      align-self: stretch;
+      background-color: var(--gray-100);
+      padding: 0 0.5rem;
+      color: var(--gray-500);
+      font-family: var(--system);
+
+      &:has(input, select, button, textarea, .har-select, .har-button) {
+        position: relative;
+        flex: none;
+        overflow: visible;
+        background-color: transparent;
+        padding: 0 !important;
+        z-index: 10;
+      }
+
+      + .addon-before {
+        border-radius: 0 !important;
+
+        &:not(:has(input, select, button, textarea, .har-select, .har-button)) {
+          &::before {
+            position: absolute;
+            left: 0;
+            content: "";
+            background-color: rgba(0, 0, 0, 0.1);
+            width: 1px;
+            height: 65%;
+          }
+        }
+      }
+
+      &:has(+ .addon-after) {
+        border-radius: 0 !important;
+      }
+
+      + .addon-after {
+        &:not(:has(input, select, button, textarea, .har-select, .har-button)) {
+          &::before {
+            position: absolute;
+            left: 0;
+            content: "";
+            background-color: rgba(0, 0, 0, 0.1);
+            width: 1px;
+            height: 65%;
+          }
+        }
+      }
+    }
+
+    > .addon-before:has(input, select, button, textarea, .har-select, .har-button) {
+      margin-right: -1px;
+    }
+
+    > .addon-after:has(input, select, button, textarea, .har-select, .har-button) {
+      margin-left: -1px;
+    }
+  }
+
+  &:has(> .addon-before) {
+    > .addon-before {
+      border-top-right-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
+
+      :is(input, button, .har-button, .har-input-wrapper, .addon-after, .addon-before) {
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+      }
+    }
+
+    > .har-input {
+      > .input {
+        > input {
+          border-top-left-radius: 0 !important;
+          border-bottom-left-radius: 0 !important;
+        }
+      }
+    }
+  }
+
+  &:has(> .addon-after) {
+    > .addon-after {
+      border-top-left-radius: 0 !important;
+      border-bottom-left-radius: 0 !important;
+
+      :is(input, button, .har-button, .har-input-wrapper, .addon-after, .addon-before) {
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+      }
+    }
+
+    > .har-input {
+      > .input {
+        > input {
+          border-top-right-radius: 0 !important;
+          border-bottom-right-radius: 0 !important;
+        }
+      }
+    }
+  }
+
+  &:has(> .addon-before):has(> .addon-after) {
+    > .har-input {
+      > .input {
+        > input {
+          border-radius: 0 !important;
+        }
+      }
+    }
+  }
+}

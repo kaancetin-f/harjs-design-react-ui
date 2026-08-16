@@ -1,0 +1,35 @@
+.har-date-picker {
+  > .container {
+    > .inputs-field {
+      &.size-xs {
+        height: 1.5rem;
+        font-size: 0.75rem;
+      }
+
+      &.size-sm {
+        height: 1.75rem;
+        font-size: 0.75rem;
+      }
+
+      &.size-md {
+        height: 2rem;
+        font-size: 0.875rem;
+      }
+
+      &.size-lg {
+        height: 2.25rem;
+        font-size: 0.875rem;
+      }
+
+      &.size-xl {
+        height: 2.5rem;
+        font-size: 1rem;
+      }
+
+      &.size-2xl {
+        height: 3rem;
+        font-size: 1.125rem;
+      }
+    }
+  }
+}

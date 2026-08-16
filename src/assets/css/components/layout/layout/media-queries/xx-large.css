@@ -1,0 +1,14 @@
+/* XX-Large (Laptop & Büyük Desktop Ekranlar) */
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .har-layout {
+    > .har-sider.right {
+      width: 100%;
+    }
+
+    > .har-content {
+      > .har-section:not(.full-width) {
+        max-width: 1140px;
+      }
+    }
+  }
+}

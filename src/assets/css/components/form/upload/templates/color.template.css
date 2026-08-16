@@ -1,0 +1,6 @@
+&.__COLOR__ {
+  --upload-accent-300: var(--__COLOR__-300);
+  --upload-accent-400: var(--__COLOR__-400);
+  --upload-accent-500: var(--__COLOR__-500);
+  --upload-accent-600: var(--__COLOR__-600);
+}

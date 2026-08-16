@@ -1,49 +1,141 @@
-.ar-paper {
-  background-color: var(--white);
-  padding: 1rem;
-  border-radius: var(--border-radius-lg);
-  box-shadow: 0px 10px 15px -5px rgba(var(--black-rgb), 0.1);
+.har-paper {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: var(--space-20);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-12);
+  background: var(--gray-50);
+  box-shadow: none;
+  font-family: var(--system);
+  color: var(--gray-800);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    color 0.15s ease;
 
   > .header {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-wrap: wrap;
     align-items: center;
-    background-color: transparent;
-    margin-bottom: 0.75rem;
+    gap: var(--space-12);
+    min-width: 0;
+
+    > h3 {
+      flex: 1 1 12rem;
+      min-width: 0;
+      margin: 0;
+      overflow: hidden;
+      color: var(--gray-800);
+      font-size: 0.9375rem;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+      line-height: 1.35;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    > .actions {
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      gap: var(--space-8);
+      margin-left: auto;
+    }
+  }
+
+  > .header + .content {
+    margin-top: var(--space-16);
+    padding-top: var(--space-16);
+    border-top: 1px solid var(--gray-200);
+  }
+
+  > .content {
+    min-width: 0;
+    color: var(--gray-500);
+    font-size: 0.875rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.55;
+  }
+
+  &.elevation-0 {
+    box-shadow: none;
+  }
+
+  &.elevation-1 {
+    box-shadow:
+      0 1px 2px color-mix(in srgb, var(--black-alpha-100) 6%, transparent),
+      0 1px 3px color-mix(in srgb, var(--black-alpha-100) 8%, transparent);
+  }
+
+  &.elevation-2 {
+    box-shadow:
+      0 1px 2px color-mix(in srgb, var(--black-alpha-100) 7%, transparent),
+      0 3px 6px -1px color-mix(in srgb, var(--black-alpha-100) 12%, transparent);
+  }
+
+  &.elevation-3 {
+    box-shadow:
+      0 1px 3px color-mix(in srgb, var(--black-alpha-100) 8%, transparent),
+      0 4px 8px -1px color-mix(in srgb, var(--black-alpha-100) 14%, transparent);
+  }
+
+  &.elevation-4 {
+    box-shadow:
+      0 2px 4px color-mix(in srgb, var(--black-alpha-100) 8%, transparent),
+      0 6px 12px -2px color-mix(in srgb, var(--black-alpha-100) 16%, transparent);
+  }
+
+  &.elevation-6 {
+    box-shadow:
+      0 3px 6px color-mix(in srgb, var(--black-alpha-100) 9%, transparent),
+      0 8px 16px -2px color-mix(in srgb, var(--black-alpha-100) 18%, transparent);
+  }
+
+  &.elevation-8 {
+    box-shadow:
+      0 4px 8px color-mix(in srgb, var(--black-alpha-100) 10%, transparent),
+      0 12px 24px -3px color-mix(in srgb, var(--black-alpha-100) 20%, transparent);
+  }
+
+  &.elevation-12 {
+    box-shadow:
+      0 6px 12px color-mix(in srgb, var(--black-alpha-100) 11%, transparent),
+      0 16px 32px -4px color-mix(in srgb, var(--black-alpha-100) 22%, transparent);
+  }
+
+  &.elevation-16 {
+    box-shadow:
+      0 8px 16px color-mix(in srgb, var(--black-alpha-100) 12%, transparent),
+      0 20px 40px -6px color-mix(in srgb, var(--black-alpha-100) 24%, transparent);
+  }
+
+  &.elevation-24 {
+    box-shadow:
+      0 12px 24px color-mix(in srgb, var(--black-alpha-100) 14%, transparent),
+      0 28px 56px -8px color-mix(in srgb, var(--black-alpha-100) 28%, transparent);
   }
 }
 
-/* --- [KÜÇÜK MOBİL - IPHONE SE VB.] --- */
-/* Çok dar ekranlar için özel düzeltmeler */
-@media (max-width: 375px) {
-}
-
-/* --- [MOBİL - STANDART] --- */
-/* Ekran 576px ve altına düştüğünde çalışır */
 @media (max-width: 576px) {
-  .ar-paper {
-    border-radius: 0;
-    box-shadow: none;
+  .har-paper {
+    padding: var(--space-16);
 
-    > .header {
+    > .header > h3 {
+      flex-basis: 100%;
+      white-space: normal;
+    }
+
+    > .header > .actions {
+      margin-left: 0;
     }
   }
 }
 
-/* --- [TABLET DİKEY & BÜYÜK TELEFONLAR] --- */
-/* Ekran 768px ve altına düştüğünde çalışır */
-@media (max-width: 768px) {
-  .ar-paper {
-    border-radius: 0;
-    box-shadow: none;
-
-    > .header {
-    }
+@media (prefers-reduced-motion: reduce) {
+  .har-paper {
+    transition: none;
   }
-}
-
-/* --- [TABLET & KÜÇÜK LAPTOP] --- */
-/* Ekran 1024px ve altına düştüğünde çalışır */
-@media (max-width: 1024px) {
 }

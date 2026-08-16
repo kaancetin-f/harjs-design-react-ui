@@ -1,0 +1,164 @@
+---
+title: Progress
+description: Show how far a measurable task has completed. Use Spinner when the remaining work is unknown.
+---
+
+Progress is a determinate indicator. Pass `value` from `0` to `100`. Default `type` is `"line"`. Use `type="circle"` for a round ring. Palette color follows the value unless you set `color`. `Loading` / `LoadingProvider` still own the fullscreen veil. Spinner is the indeterminate mark.
+
+## Import
+
+```tsx
+import { Progress } from "@harjs/react-ui";
+```
+
+```tsx
+<Progress value={50} />
+<Progress value={50} size="sm" />
+<Progress type="circle" value={72} isVisibleValue />
+<Progress value={40} color="green" />
+```
+
+## Usage
+
+The bar fills to `value`. Width comes from the parent. Invalid numbers clamp to `0`–`100`. While the value is between `0` and `100`, a light sheen travels along the fill. Hover the bar to peek the percent. `0` breathes on the track; `100` settles.
+
+<Example>
+  <ProgressBasic />
+</Example>
+
+## Examples
+
+### Sizes
+
+`xs`, `sm`, `md`, `lg`, `xl`, and `2xl`. Same size tokens as Button, Chip, and Spinner. Default is `"md"`. Height uses the space tokens.
+
+<Example>
+  <ProgressSizes />
+</Example>
+
+### Circle
+
+`type="circle"` is a round ring. Size sets the diameter. Caps are round. `isVisibleValue` puts the percent in the center.
+
+<Example>
+  <ProgressCircle />
+</Example>
+
+### Circle sizes
+
+Same `xs`–`2xl` tokens. Default `"md"`.
+
+<Example>
+  <ProgressCircleSizes />
+</Example>
+
+### Circle color
+
+Explicit `color` works the same as the bar. Tokens match Button and Chip.
+
+<Example>
+  <ProgressCircleColors />
+</Example>
+
+### Zero
+
+An empty bar. Color inference treats `0` as the low band.
+
+<Example>
+  <ProgressZero />
+</Example>
+
+### Complete
+
+A full bar. Color inference treats `100` as the high band.
+
+<Example>
+  <ProgressComplete />
+</Example>
+
+### Different values
+
+`25`, `50`, `75`, and `100` sit in the four inference bands.
+
+<Example>
+  <ProgressValues />
+</Example>
+
+### Color
+
+When `color` is omitted, the palette follows the value:
+
+- `0–25` red
+- `26–50` orange
+- `51–75` blue
+- `76–100` green
+
+<Example>
+  <ProgressStatus />
+</Example>
+
+### Explicit color
+
+`color` turns inference off. Same palette as Button and Chip. The bars below are `40` (orange if inferred).
+
+<Example>
+  <ProgressColors />
+</Example>
+
+### Visible value
+
+`isVisibleValue` pins the rounded percent above the fill. Default hides it until hover.
+
+<Example>
+  <ProgressVisibleValue />
+</Example>
+
+### Reverse
+
+`reverse` inverts the inference bands. It does not flip fill direction. `color` still wins.
+
+<Example>
+  <ProgressReverse />
+</Example>
+
+### Real-world
+
+Use Progress for a known remaining amount — a sprint, an install, a file upload. Use Spinner while the amount is unknown.
+
+<Example>
+  <ProgressUpload />
+</Example>
+
+### Edge cases
+
+`0` and `100` are valid endpoints. Values below `0`, above `100`, `NaN`, and `Infinity` clamp into that range.
+
+<Example>
+  <ProgressEdge />
+</Example>
+
+## Accessibility
+
+The root is `role="progressbar"` with `aria-valuemin="0"`, `aria-valuemax="100"`, and `aria-valuenow` set to the rounded value. The visible percent is decorative so assistive tech does not read it twice. There is no `aria-live` — a bar that ticks every frame should not announce each percent.
+
+## Best practices
+
+- Use Progress when the remaining work is a known ratio.
+- Use Spinner when the remaining work is unknown.
+- Keep the scale `0`–`100` for the user.
+- Set `color` when the bar should not follow the value bands.
+- Prefer `prefers-reduced-motion` over extra motion. The sheen, idle sweep, and label float stop under `reduce`.
+- Do not add `aria-live` to a bar that updates continuously.
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `number` | — | Completion from `0` to `100`. Values outside that range, `NaN`, and `Infinity` clamp to `0`–`100`. |
+| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl"` | `"md"` | Bar height for `"line"`. Diameter for `"circle"`. Same size tokens as Button, Chip, and Spinner. |
+| `type` | `"line" \| "circle"` | `"line"` | `"line"` is the bar. `"circle"` is a round ring. |
+| `reverse` | `boolean` | `false` | Inverts value-based color inference. Does not change fill direction. Ignored when `color` is set. |
+| `isVisibleValue` | `boolean` | `false` | Pins the rounded percent above the fill. Hover still peeks it when this is `false`. |
+| `color` | `"blue" \| "purple" \| "pink" \| "red" \| "orange" \| "yellow" \| "green" \| "teal" \| "cyan" \| "gray" \| "white"` | inferred | Palette color. When set, value-based inference is off. |
+
+Fill color uses theme tokens. `prefers-reduced-motion: reduce` removes the width transition, sheen, idle sweep, and label float.

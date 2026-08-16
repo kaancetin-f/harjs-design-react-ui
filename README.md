@@ -25,3 +25,13 @@ To inject this package into your user interface layer workspace, execute the com
 ```bash
 npm install @harjs/react-ui
 ```
+
+## Documentation
+
+Local docs site (Fumadocs + Next.js):
+
+```bash
+npm run docs:dev
+```
+
+Open [http://localhost:3001](http://localhost:3001). Content lives in `docs/content/docs`.

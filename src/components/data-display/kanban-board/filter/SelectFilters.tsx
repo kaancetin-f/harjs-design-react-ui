@@ -1,62 +1,50 @@
-import React, { Dispatch, JSX, memo, SetStateAction } from "react";
-import { ARIcon } from "../../../icons";
+import React, { JSX, memo } from "react";
+import { Icon } from "../../../icons";
 import Checkbox from "../../../form/checkbox";
-import Grid from "../../grid-system";
 import Button from "../../../form/button";
 import Divider from "../../divider";
-import { Config } from "../IProps";
+import { ISelectFiltersProps } from "./types";
 import { useTranslation } from "@harjs/translation";
 import IKanbanBoardLocale from "../../../../libs/core/application/locales/kanban-board/IKanbanBoardLocale";
 import KanbanBoardTR from "../../../../libs/core/application/locales/kanban-board/tr";
 import KanbanBoardEN from "../../../../libs/core/application/locales/kanban-board/en";
 
-interface IProps<T extends object> {
-  states: {
-    selectFilters: {
-      get: { [key: string]: (string | null)[] };
-      set: Dispatch<SetStateAction<{ [key: string]: (string | null)[] }>>;
-    };
-    selectedFilters: {
-      get: Record<string, Set<string | null>>;
-      set: Dispatch<SetStateAction<Record<string, Set<string | null>>>>;
-    };
-    openName: {
-      get: string | null;
-    };
-  };
-  methods: {
-    open: (name: string | null) => void;
-  };
-  config?: Config<T>;
-}
-
-const { Box } = Grid;
-
-function SelectFilters<T extends object>({ states, methods, config }: IProps<T>) {
+function SelectFilters<T extends object>({ states, methods, config }: ISelectFiltersProps<T>) {
   // hooks
   const { t } = useTranslation<IKanbanBoardLocale>(String(config?.locale ?? "tr"), {
     tr: { ...KanbanBoardTR },
     en: { ...KanbanBoardEN },
   });
 
-  return Object.entries(states.selectFilters.get).map(([name, values], index) => {
-    const isEqualsName = states.openName.get === name;
-    const className: string[] = [];
-
-    if (isEqualsName) className.push("active");
+  return Object.entries(states.selectFilters.get).map(([name, values]) => {
+    const isOpen = states.openName.get === name;
+    const selectedCount = states.selectedFilters.get[name]?.size ?? 0;
+    const triggerClass = ["trigger", isOpen ? "is-open" : undefined, selectedCount > 0 ? "is-active" : undefined]
+      .filter(Boolean)
+      .join(" ");
 
     return (
-      <li key={index} className={className.map((c) => c).join(" ")} onClick={() => methods.open(name)}>
-        <div>
-          <span>{name}</span>
-          <ARIcon icon={"ChevronDown"} />
-        </div>
+      <div key={name} className="filter">
+        <button
+          type="button"
+          className={triggerClass}
+          aria-expanded={isOpen}
+          aria-haspopup="dialog"
+          onClick={() => methods.open(name)}
+        >
+          <span className="label">{name}</span>
+          {selectedCount > 0 ? <span className="badge">{selectedCount}</span> : null}
+          <span className="chevron" aria-hidden>
+            <Icon icon={"ChevronDown"} fill="currentColor" stroke="currentColor" />
+          </span>
+        </button>
 
-        {isEqualsName && (
-          <ul className={className.map((c) => c).join(" ")} onClick={(event) => event.stopPropagation()}>
-            {values.map((value, index) => (
-              <li key={index}>
+        {isOpen && (
+          <div className="panel" role="dialog" aria-label={name} onPointerDown={(event) => event.stopPropagation()}>
+            <div className="options">
+              {values.map((value) => (
                 <Checkbox
+                  key={String(value)}
                   label={String(value ?? "-")}
                   checked={states.selectedFilters.get[name]?.has(value) ?? false}
                   onChange={() => {
@@ -71,32 +59,33 @@ function SelectFilters<T extends object>({ states, methods, config }: IProps<T>)
                     });
                   }}
                 />
-              </li>
-            ))}
+              ))}
+            </div>
 
             <Divider config={{ margin: "0.5rem 0" }} />
 
-            <Box direction="flex-end">
+            <div className="panel-footer">
               <Button
+                variant="borderless"
                 color="red"
-                size="small"
+                size="sm"
+                disabled={selectedCount === 0}
                 onClick={() => {
                   states.selectedFilters.set((prev) => {
                     const next = { ...prev };
                     delete next[name];
-
                     return next;
                   });
                 }}
               >
                 {t("KanbanBoard.Search.Button.Clear.Text")}
               </Button>
-            </Box>
-          </ul>
+            </div>
+          </div>
         )}
-      </li>
+      </div>
     );
   });
 }
 
-export default memo(SelectFilters) as <T extends object>(props: IProps<T>) => JSX.Element;
+export default memo(SelectFilters) as <T extends object>(props: ISelectFiltersProps<T>) => JSX.Element;

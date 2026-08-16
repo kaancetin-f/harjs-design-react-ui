@@ -1,0 +1,227 @@
+---
+title: Button
+description: Trigger an action, group related controls, or open a menu of secondary actions.
+---
+
+Buttons trigger a single action. Compose related controls with `Button.Group`, attach a dropdown with `Button.Action`, or keep a primary click plus a menu with `Button.Split`. Import `Button` once — the compounds hang off the same export.
+
+## Import
+
+```tsx
+import { Button } from '@harjs/react-ui'
+```
+
+```tsx
+<Button>Save</Button>
+<Button.Group>...</Button.Group>
+<Button.Action>...</Button.Action>
+<Button.Split>...</Button.Split>
+```
+
+## Usage
+
+<Example>
+  <ButtonBasic />
+</Example>
+
+## Examples
+
+### Variants
+
+`variant` controls emphasis. Use `filled` for the primary action, `outlined` or `dashed` for secondary, and `borderless` / `surface` for quieter controls.
+
+<Example>
+  <ButtonVariants />
+</Example>
+
+### Colors
+
+`color` is independent of `variant`. Each row below is a color token; columns are variants.
+
+<Example>
+  <ButtonColors />
+</Example>
+
+### Sizes
+
+<Example>
+  <ButtonSizes />
+</Example>
+
+### Radius
+
+Set `border.radius` to any radius token.
+
+<Example>
+  <ButtonRadius />
+</Example>
+
+### Icons
+
+Pass `icon.element` with `position: 'start'` or `'end'`. Omit the label and set `shape` for an icon-only control.
+
+<Example>
+  <ButtonIcons />
+</Example>
+
+### Shapes
+
+`shape` renders an icon-only circle or square. The text label is hidden when `shape` is set.
+
+<Example>
+  <ButtonShapes />
+</Example>
+
+### Uppercase
+
+`upperCase` uppercases string children.
+
+<Example>
+  <ButtonUpperCase />
+</Example>
+
+### Full width
+
+`fullWidth` stretches the button to its container.
+
+<Example>
+  <ButtonFullWidth />
+</Example>
+
+### Align
+
+`align` packs the icon and label to the left, center, or right. `icon.position` still chooses which side of the text the icon sits on. The difference shows on `fullWidth` buttons.
+
+<Example>
+  <ButtonAlign />
+</Example>
+
+### Disabled
+
+Disabled buttons ignore clicks and render as a muted gray surface.
+
+<Example>
+  <ButtonDisabled />
+</Example>
+
+### Loading
+
+`loading` shows a spinner, keeps the button color, and blocks clicks. On icon buttons the spinner replaces the icon.
+
+<Example>
+  <ButtonLoading />
+</Example>
+
+### Custom spinner
+
+Pass `spinner` to replace the default ring. The node inherits the button color via `currentColor`.
+
+<Example>
+  <ButtonLoadingSpinner />
+</Example>
+
+### Position
+
+`position` places a floating button with `absolute` or `fixed` positioning and inset edges. The preview uses `absolute` inside a relative container.
+
+<Example>
+  <ButtonPosition />
+</Example>
+
+## Button.Group
+
+`Button.Group` wraps related `Button` children and clones shared props onto each child. Child props win when both are set. Only `Button` children are allowed.
+
+<Example>
+  <ButtonGroupBasic />
+</Example>
+
+### Shared variant and color
+
+<Example>
+  <ButtonGroupVariants />
+</Example>
+
+## Button.Action
+
+`Button.Action` renders a trigger and a dropdown of child `Button`s. `_color` and `_icon` style the trigger; `color`, `size`, `upperCase`, and `icon` are forwarded to each item. Omit `title` for an icon-only trigger.
+
+<Example>
+  <ButtonActionBasic />
+</Example>
+
+## Button.Split
+
+`Button.Split` is a normal button with a chevron on the right. The main control fires `onClick`. The chevron opens and closes the menu — it does not run the primary action. Nested `Button` children become menu items.
+
+Use `Button.Action` when the whole control should open a menu. Use `Button.Split` when the label should still perform an action.
+
+<Example>
+  <ButtonSplitBasic />
+</Example>
+
+## Props
+
+### Button
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `ReactNode` | — |
+| `variant` | `"filled" \| "surface" \| "surface-borderless" \| "outlined" \| "dashed" \| "borderless"` | `"filled"` |
+| `color` | `"blue" \| "purple" \| "pink" \| "red" \| "orange" \| "yellow" \| "green" \| "teal" \| "cyan" \| "gray" \| "white"` | `"gray"` |
+| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl"` | `"lg"` |
+| `border.radius` | `"0" \| "2" \| "4" \| "6" \| "8" \| "12" \| "16" \| "20" \| "40" \| "full"` | `"4"` |
+| `shape` | `"circle" \| "square"` | — |
+| `icon` | `{ element: JSX.Element; position?: "start" \| "end" }` | — |
+| `align` | `"left" \| "center" \| "right"` | `"center"` |
+| `fullWidth` | `boolean` | — |
+| `upperCase` | `boolean` | — |
+| `position` | `{ type: "fixed" \| "absolute"; inset: ("top" \| "right" \| "bottom" \| "left")[] }` | — |
+| `disabled` | `boolean` | — |
+| `loading` | `boolean` | — |
+| `spinner` | `ReactNode` | default ring |
+| `type` | `"button" \| "submit" \| "reset"` | `"button"` |
+
+Also accepts standard `button` HTML attributes (except `color`).
+
+### Button.Group
+
+Accepts the same props as `Button` except `children`, and merges them into each child. Child props take precedence.
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `Button \| Button[]` | — |
+| `variant` | Button `variant` | — |
+| `color` | Button `color` | — |
+| `size` | Button `size` | — |
+| `border` | Button `border` | — |
+| `disabled` | `boolean` | — |
+| `upperCase` | `boolean` | — |
+
+### Button.Action
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `Button \| Button[]` | — |
+| `title` | `string` | — |
+| `variant` | Button `variant` | `"filled"` |
+| `_color` | Button `color` | — |
+| `_icon` | Button `icon` | dotted icon |
+| `color` | Button `color` | — |
+| `size` | Button `size` | — |
+| `upperCase` | `boolean` | — |
+| `icon` | Button `icon` | — |
+
+### Button.Split
+
+Accepts the same props as `Button` (except `shape` and `position`). Text children become the primary label; nested `Button` children become menu items.
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `ReactNode \| Button \| Button[]` | — |
+| `onClick` | `MouseEventHandler` | — |
+| `variant` | Button `variant` | `"filled"` |
+| `color` | Button `color` | `"gray"` |
+| `size` | Button `size` | `"lg"` |
+| `loading` | `boolean` | — |
+| `disabled` | `boolean` | — |

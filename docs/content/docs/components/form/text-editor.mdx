@@ -1,0 +1,34 @@
+---
+title: Text Editor
+description: Rich text editing with an HTML value.
+---
+
+Text Editor is a controlled rich-text field. The value is an HTML string updated through `onChange`.
+
+## Import
+
+```tsx
+import { TextEditor } from '@harjs/react-ui'
+```
+
+## Usage
+
+<Example>
+  <TextEditorBasic />
+</Example>
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | — | Controlled HTML content |
+| `onChange` | `(value?: string) => void` | — | Called with HTML (or `undefined` when empty) |
+| `height` | `number` | — | Editor iframe height in px |
+| `placeholder` | `string` | — | Floating label |
+| `variant` | `"filled" \| "outlined" \| "dashed" \| "borderless"` | `"outlined"` | Visual style (`surface` is not supported) |
+| `color` | `"blue" \| "purple" \| "pink" \| "red" \| "orange" \| "yellow" \| "green" \| "teal" \| "cyan" \| "gray" \| "white"` | `"gray"` | Theme color |
+| `border.radius` | radius tokens | `"4"` | Corner radius |
+| `name` | `string` | — | iframe name |
+| `disabled` | `boolean` | — | Disable editing |
+| `validation` | `{ text?: string }` | — | Error message |
+| `dynamicList` | `{ render; triggerKey?; onTagged }` | — | Optional @-mention list |

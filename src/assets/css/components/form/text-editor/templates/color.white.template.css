@@ -1,0 +1,127 @@
+&.white {
+  &.filled {
+    > .har-text-editor {
+      > label {
+        color: var(--gray-700);
+      }
+
+      > iframe {
+        color: var(--gray-700);
+        background-color: var(--white-500);
+        border: var(--stroke-1) solid var(--gray-300);
+
+        &.focused {
+          border: var(--stroke-1) solid var(--gray-400);
+          box-shadow: 0 0 0 2.5px var(--gray-200);
+        }
+      }
+
+      > .toolbar,
+      > .resize {
+        border-left-color: var(--gray-300);
+        border-right-color: var(--gray-300);
+        border-bottom-color: var(--gray-300);
+      }
+    }
+  }
+
+  &.surface-borderless {
+    > .har-text-editor {
+      > label {
+        color: var(--gray-700);
+      }
+
+      > iframe {
+        color: var(--gray-700);
+        background-color: var(--white-500);
+        border: var(--stroke-1) solid transparent;
+
+        &.focused {
+          background-color: transparent;
+          box-shadow: 0 0 0 2.5px var(--gray-200);
+        }
+      }
+
+      > .toolbar,
+      > .resize {
+        border-left-color: transparent;
+        border-right-color: transparent;
+        border-bottom-color: transparent;
+      }
+    }
+  }
+
+  &.outlined {
+    > .har-text-editor {
+      > label {
+        color: var(--gray-700);
+      }
+
+      > iframe {
+        color: var(--gray-700);
+        background-color: transparent;
+        border: var(--stroke-1) solid var(--gray-300);
+
+        &.focused {
+          box-shadow: 0 0 0 2.5px var(--gray-200);
+        }
+      }
+
+      > .toolbar,
+      > .resize {
+        border-left-color: var(--gray-300);
+        border-right-color: var(--gray-300);
+        border-bottom-color: var(--gray-300);
+      }
+    }
+  }
+
+  &.dashed {
+    > .har-text-editor {
+      > label {
+        color: var(--gray-700);
+      }
+
+      > iframe {
+        color: var(--gray-700);
+        background-color: transparent;
+        border: var(--stroke-1) dashed var(--gray-300);
+
+        &.focused {
+          box-shadow: 0 0 0 2.5px var(--gray-200);
+        }
+      }
+
+      > .toolbar,
+      > .resize {
+        border-left-style: dashed;
+        border-right-style: dashed;
+        border-bottom-style: dashed;
+        border-left-color: var(--gray-300);
+        border-right-color: var(--gray-300);
+        border-bottom-color: var(--gray-300);
+      }
+    }
+  }
+
+  &.borderless {
+    > .har-text-editor {
+      > label {
+        color: var(--gray-700);
+      }
+
+      > iframe {
+        color: var(--gray-700);
+        background-color: transparent;
+        border: var(--stroke-1) solid transparent;
+      }
+
+      > .toolbar,
+      > .resize {
+        border-left-color: transparent;
+        border-right-color: transparent;
+        border-bottom-color: transparent;
+      }
+    }
+  }
+}

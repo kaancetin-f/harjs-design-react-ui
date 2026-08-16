@@ -1,153 +1,256 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import { createPortal } from "react-dom";
 import IProps from "./IProps";
-import ReactDOM from "react-dom";
+import { calculateTooltipPosition, type TooltipDirection } from "./position";
 import "../../../assets/css/components/feedback/tooltip/styles.css";
 
 const Tooltip: React.FC<IProps> = ({ children, text, direction = "top" }) => {
+  // hooks
+  const reactId = useId();
+
+  // variables
+  const tooltipId = `har-tooltip${reactId.replace(/:/g, "")}`;
+
   // refs
-  const _arTooltip = useRef<HTMLDivElement>(null);
-  const _children = useRef<HTMLDivElement>(null);
+  const _triggerRef = useRef<HTMLDivElement>(null);
+  const _tooltipRef = useRef<HTMLDivElement>(null);
+  const _preferredDirection = useRef<TooltipDirection>(direction);
+  const _positionFrame = useRef(0);
+  // Hover ve focus ayrı tutulur; ikisinden biri varken açık kalır.
+  const _hovered = useRef(false);
+  const _focused = useRef(false);
 
   // states
-  const [mouseEnter, setMouseEnter] = useState<boolean>(false);
-  const [_direction, setDirection] = useState<string>(direction);
+  const [mounted, setMounted] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [ready, setReady] = useState(false);
+  const [resolvedDirection, setResolvedDirection] =
+    useState<TooltipDirection>(direction);
 
-  // 💡 Donma ve sonsuz döngüyü engellemek için dışarıdan seçilen ana yönü bir ref'te saklıyoruz
-  const currentInitialDirection = useRef<string>(direction);
-
-  useEffect(() => {
-    currentInitialDirection.current = direction;
-    setDirection(direction); // Storybook panelinden elle yön değiştiğinde senkronize et
-  }, [direction]);
+  _preferredDirection.current = direction;
 
   // methods
-  const handlePosition = useCallback(() => {
-    const child = _children.current;
-    const tooltip = _arTooltip.current;
+  const syncOpen = useCallback(() => {
+    setOpen(_hovered.current || _focused.current);
+  }, []);
 
-    if (!child || !tooltip) return;
+  const show = useCallback(() => {
+    _hovered.current = true;
+    syncOpen();
+  }, [syncOpen]);
 
-    const margin = 17.5;
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
+  const hideFromPointer = useCallback(() => {
+    _hovered.current = false;
+    syncOpen();
+  }, [syncOpen]);
 
-    const childRect = child.getBoundingClientRect();
-    const tooltipRect = tooltip.getBoundingClientRect();
+  const showFromFocus = useCallback(() => {
+    _focused.current = true;
+    syncOpen();
+  }, [syncOpen]);
 
-    const spaceTop = childRect.top;
-    const spaceBottom = windowHeight - childRect.bottom;
-    const spaceLeft = childRect.left;
-    const spaceRight = windowWidth - childRect.right;
+  const hideFromFocus = useCallback(
+    (event: React.FocusEvent<HTMLDivElement>) => {
+      const next = event.relatedTarget as Node | null;
+      if (next && event.currentTarget.contains(next)) return;
+      _focused.current = false;
+      syncOpen();
+    },
+    [syncOpen],
+  );
 
-    // 💡 Hesaplamaya state'ten değil, doğrudan orijinal seçilen yönden başlıyoruz
-    let finalDirection = currentInitialDirection.current;
+  const dismiss = useCallback(() => {
+    _hovered.current = false;
+    _focused.current = false;
+    setOpen(false);
+  }, []);
 
-    // Sıkışma durumlarına göre yönü dinamik değiştir
-    if (finalDirection === "top" && spaceTop < tooltipRect.height + margin) {
-      finalDirection = "bottom";
-    } else if (finalDirection === "bottom" && spaceBottom < tooltipRect.height + margin) {
-      finalDirection = "top";
-    } else if (finalDirection === "left" && spaceLeft < tooltipRect.width + margin) {
-      finalDirection = "right";
-    } else if (finalDirection === "right" && spaceRight < tooltipRect.width + margin) {
-      finalDirection = "left";
-    }
+  const updatePosition = useCallback(() => {
+    if (typeof window === "undefined") return;
 
-    // Eğer hala hiçbir yere sığmıyorsa en geniş boşluğu bul
-    const maxSpace = Math.max(spaceTop, spaceBottom, spaceLeft, spaceRight);
-    if (
-      (finalDirection === "top" && spaceTop < tooltipRect.height + margin) ||
-      (finalDirection === "bottom" && spaceBottom < tooltipRect.height + margin) ||
-      (finalDirection === "left" && spaceLeft < tooltipRect.width + margin) ||
-      (finalDirection === "right" && spaceRight < tooltipRect.width + margin)
-    ) {
-      if (maxSpace === spaceTop) finalDirection = "top";
-      else if (maxSpace === spaceBottom) finalDirection = "bottom";
-      else if (maxSpace === spaceLeft) finalDirection = "left";
-      else if (maxSpace === spaceRight) finalDirection = "right";
-    }
+    const trigger = _triggerRef.current;
+    const tooltip = _tooltipRef.current;
+    if (!trigger || !tooltip) return;
 
-    let top = 0;
-    let left = 0;
-
-    switch (finalDirection) {
-      case "top":
-        top = childRect.top - tooltipRect.height - margin;
-        left = childRect.left + childRect.width / 2 - tooltipRect.width / 2;
-        break;
-      case "right":
-        top = childRect.top + childRect.height / 2 - tooltipRect.height / 2;
-        left = childRect.right + margin;
-        break;
-      case "bottom":
-        top = childRect.bottom + margin;
-        left = childRect.left + childRect.width / 2 - tooltipRect.width / 2;
-        break;
-      case "left":
-        top = childRect.top + childRect.height / 2 - tooltipRect.height / 2;
-        left = childRect.left - tooltipRect.width - margin;
-        break;
-    }
-
-    // Ekran taşma koruması
-    if (left < 10) left = 10;
-    if (left + tooltipRect.width > windowWidth - 10) {
-      left = windowWidth - tooltipRect.width - 10;
-    }
-
-    tooltip.style.top = `${top}px`;
-    tooltip.style.left = `${left}px`;
-
-    // 💡 KRİTİK DEĞİŞİKLİK: Sadece yön gerçekten değiştiyse state güncellenir.
-    // Bu kontrol MutationObserver'ın yarattığı kısır döngüyü anında kırar.
-    setDirection((prev) => {
-      if (prev !== finalDirection) return finalDirection;
-      return prev;
+    const next = calculateTooltipPosition({
+      triggerRect: trigger.getBoundingClientRect(),
+      tooltipRect: tooltip.getBoundingClientRect(),
+      direction: _preferredDirection.current,
+      viewport: { width: window.innerWidth, height: window.innerHeight },
     });
-  }, []); // Bağımlılık dizisini boş bırakarak fonksiyonun kimliğini sabitliyoruz
+
+    tooltip.style.top = `${next.top}px`;
+    tooltip.style.left = `${next.left}px`;
+
+    setResolvedDirection((prev) =>
+      prev === next.direction ? prev : next.direction,
+    );
+  }, []);
+
+  const schedulePosition = useCallback(() => {
+    if (typeof window === "undefined") return;
+    if (_positionFrame.current) return;
+
+    _positionFrame.current = window.requestAnimationFrame(() => {
+      _positionFrame.current = 0;
+      updatePosition();
+    });
+  }, [updatePosition]);
 
   // useEffects
   useEffect(() => {
-    window.addEventListener("resize", handlePosition);
-    window.addEventListener("scroll", handlePosition, { passive: true });
+    setMounted(true);
+  }, []);
 
-    const observer = new MutationObserver(() => {
-      handlePosition();
+  useEffect(() => {
+    setResolvedDirection(direction);
+  }, [direction]);
+
+  useLayoutEffect(() => {
+    if (!open || !mounted) {
+      setReady(false);
+      return;
+    }
+
+    updatePosition();
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setReady(true);
+      return;
+    }
+
+    let inner = 0;
+    const outer = window.requestAnimationFrame(() => {
+      inner = window.requestAnimationFrame(() => setReady(true));
     });
 
-    observer.observe(document.body, {
+    return () => {
+      window.cancelAnimationFrame(outer);
+      window.cancelAnimationFrame(inner);
+    };
+  }, [open, mounted, direction, updatePosition]);
+
+  useEffect(() => {
+    if (
+      !open ||
+      !mounted ||
+      typeof window === "undefined" ||
+      typeof document === "undefined"
+    ) {
+      return;
+    }
+
+    const tooltipNode = _tooltipRef.current;
+
+    window.addEventListener("resize", schedulePosition);
+    window.addEventListener("scroll", schedulePosition, {
+      capture: true,
+      passive: true,
+    });
+
+    const resizeObserver =
+      tooltipNode && typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(() => schedulePosition())
+        : null;
+    if (tooltipNode && resizeObserver) resizeObserver.observe(tooltipNode);
+
+    const mutationObserver = new MutationObserver((records) => {
+      const self = _tooltipRef.current;
+      if (
+        self &&
+        records.every(
+          (record) => record.target === self || self.contains(record.target),
+        )
+      ) {
+        return;
+      }
+      schedulePosition();
+    });
+
+    mutationObserver.observe(document.body, {
       attributes: true,
       childList: true,
       subtree: true,
     });
 
     return () => {
-      window.removeEventListener("resize", handlePosition);
-      window.removeEventListener("scroll", handlePosition);
-      observer.disconnect();
+      window.removeEventListener("resize", schedulePosition);
+      window.removeEventListener("scroll", schedulePosition, true);
+      resizeObserver?.disconnect();
+      mutationObserver.disconnect();
+      if (_positionFrame.current) {
+        window.cancelAnimationFrame(_positionFrame.current);
+        _positionFrame.current = 0;
+      }
     };
-  }, [handlePosition]);
+  }, [open, mounted, schedulePosition]);
 
-  useEffect(() => {
-    if (mouseEnter) setTimeout(() => handlePosition(), 0);
-  }, [mouseEnter, handlePosition]);
+  // methods
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key !== "Escape" || !open) return;
+    event.stopPropagation();
+    dismiss();
+  };
+
+  // variables
+  const describedBy = open ? tooltipId : undefined;
+  const trigger = React.isValidElement<{ "aria-describedby"?: string }>(
+    children,
+  )
+    ? React.cloneElement(children, {
+        "aria-describedby":
+          [children.props["aria-describedby"], describedBy]
+            .filter(Boolean)
+            .join(" ") || undefined,
+      })
+    : children;
+
+  const lines = Array.isArray(text) ? text : null;
 
   return (
     <div className="ar-tooltip-wrapper">
-      <div ref={_children} onMouseEnter={() => setMouseEnter(true)} onMouseLeave={() => setMouseEnter(false)}>
-        {children}
+      <div
+        ref={_triggerRef}
+        onMouseEnter={show}
+        onMouseLeave={hideFromPointer}
+        onFocus={showFromFocus}
+        onBlur={hideFromFocus}
+        onKeyDown={handleKeyDown}
+      >
+        {trigger}
       </div>
 
-      {mouseEnter &&
-        ReactDOM.createPortal(
-          <div ref={_arTooltip} className={`ar-tooltip ${_direction}`}>
-            {Array.isArray(text) ? (
-              text.map((t, index) => (
-                <span key={index} className="text">
-                  <span className="bullet">&#8226;</span>
-                  <span>{t}</span>
+      {mounted &&
+        open &&
+        createPortal(
+          <div
+            ref={_tooltipRef}
+            id={tooltipId}
+            role="tooltip"
+            className={[
+              "ar-tooltip",
+              resolvedDirection,
+              ready ? "is-ready" : undefined,
+            ]
+              .filter(Boolean)
+              .join(" ")}
+          >
+            {lines ? (
+              lines.map((line, index) => (
+                <span key={`${index}:${line}`} className="text">
+                  <span className="bullet" aria-hidden="true">
+                    &#8226;
+                  </span>
+                  <span>{line}</span>
                 </span>
               ))
             ) : (

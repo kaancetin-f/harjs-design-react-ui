@@ -1,0 +1,10 @@
+/* XXX-Large (Geniş Ekranlar) */
+@media (min-width: 1400px) {
+  .har-layout {
+    > .har-content {
+      > .har-section:not(.full-width) {
+        max-width: 1320px;
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import React, { Dispatch, memo, SetStateAction } from "react";
 import Button from "../../form/button";
-import { ARIcon } from "../../icons";
-import { ExtractKey } from "./Helpers";
+import { Icon } from "../../icons";
+import { ExtractKey, PlaceTablePopup, PROPERTIES_POPUP_WIDTH } from "./Helpers";
 import { Config, Sort } from "./IProps";
 import { TableColumnProps } from "../../../libs/infrastructure/types";
 
@@ -42,13 +42,19 @@ const MemoizedTHeadCell = function <T extends object>({
   return (
     <>
       {columns.map((c, cIndex) => {
+        // variables
         const { isProperties = true } = c.config ?? {};
+
+        if (c.isShow === false) return;
+
         // Orijinal c.key araması optimize edildi ve string formatına güvenli şekilde çekildi
         const columnKeyString = String(ExtractKey(c.key) ?? cIndex);
         const _direction = states.sort.get.find((s) => s.key === columnKeyString)?.direction;
+
+        // refs
         let _className: string[] = [];
 
-        if (c.config?.sticky) _className.push(`sticky-${c.config.sticky}`);
+        if (c.config?.sticky) _className.push(`sticky sticky-${c.config.sticky}`);
         if (!c.config?.width) _className.push("min-w");
         if (c.config?.alignContent) {
           _className.push(`align-content-${c.config.alignContent}`);
@@ -73,8 +79,8 @@ const MemoizedTHeadCell = function <T extends object>({
               <span style={{ fontWeight: 500 }}>
                 {(_direction === "asc" || _direction === "desc") && (
                   <span>
-                    {_direction === "asc" && <ARIcon icon="ArrowUp" />}
-                    {_direction === "desc" && <ARIcon icon="ArrowDown" />}
+                    {_direction === "asc" && <Icon icon="ArrowUp" fill="currentColor" />}
+                    {_direction === "desc" && <Icon icon="ArrowDown" fill="currentColor" />}
                   </span>
                 )}
                 {c.title}
@@ -94,20 +100,15 @@ const MemoizedTHeadCell = function <T extends object>({
                     event.stopPropagation();
 
                     const rect = event.currentTarget.getBoundingClientRect();
-                    const screenCenterX = window.innerWidth / 2;
-                    const coordinateX = rect.x > screenCenterX ? rect.x + rect.width - 225 : rect.x;
-                    const coordinateY = rect.y + rect.height;
 
                     states.sortCurrentColumn.set(c);
-                    states.propertiesButtonCoordinate.set({
-                      x: coordinateX,
-                      y: coordinateY,
-                    });
+                    states.propertiesButtonCoordinate.set(PlaceTablePopup(rect, PROPERTIES_POPUP_WIDTH));
 
                     states.sort.set((prev) => {
                       const key = ExtractKey(c.key) as keyof T;
                       const index = prev.findIndex((s) => s.key === key);
 
+                      // Popup açılsın diye kolon sort listesinde yoksa null direction ile ekle.
                       if (index === -1) return [...prev, { key, direction: null }];
                       return prev;
                     });
@@ -117,8 +118,10 @@ const MemoizedTHeadCell = function <T extends object>({
                 >
                   <Button
                     variant="borderless"
+                    shape="square"
+                    size="xs"
                     icon={{
-                      element: <ARIcon size={16} icon="ThreeDotsVertical" fill="var(--dark)" strokeWidth={0} />,
+                      element: <Icon icon="ThreeDotsVertical" size={20} />,
                     }}
                   />
                 </span>

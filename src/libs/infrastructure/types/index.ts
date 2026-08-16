@@ -4,18 +4,21 @@ import React from "react";
 // 1. GLOBAL DESIGN SYSTEM TOKENS (Shared Types)
 // ============================================================================
 
-export type Variants = "filled" | "surface" | "outlined" | "dashed" | "borderless";
+export type Variants = "filled" | "surface" | "surface-borderless" | "outlined" | "dashed" | "borderless";
 
-export type Status =
-  | "primary"
-  | "primary-light"
-  | "secondary"
-  | "success"
-  | "danger"
-  | "warning"
-  | "information"
-  | "dark"
-  | "light";
+export type Status = "primary" | "secondary" | "success" | "danger" | "warning" | "information";
+
+export type GrayColorScale =
+  | "gray-50"
+  | "gray-100"
+  | "gray-200"
+  | "gray-300"
+  | "gray-400"
+  | "gray-500"
+  | "gray-600"
+  | "gray-700"
+  | "gray-800"
+  | "gray-900";
 
 export type Color =
   | "blue"
@@ -28,23 +31,20 @@ export type Color =
   | "teal"
   | "cyan"
   | "gray"
-  | "light";
+  | "white";
 
-export type ParagraphColors =
-  | "gray-100"
-  | "gray-200"
-  | "gray-300"
-  | "gray-400"
-  | "gray-500"
-  | "gray-600"
-  | "gray-700"
-  | "gray-800"
-  | "gray-900";
+export type ParagraphColors = Color | GrayColorScale;
+
+export type CardColors = Color | GrayColorScale;
 
 export type Border = { radius: BorderRadiuses };
-export type BorderRadiuses = "sm" | "lg" | "xl" | "xxl" | "pill" | "none";
+export type BorderRadiuses = "0" | "2" | "4" | "6" | "8" | "12" | "16" | "20" | "40" | "full";
 
-export type Sizes = "large" | "normal" | "small";
+export type Sizes = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+export type DrawerSizes = Sizes | "3xl" | "4xl" | "5xl" | "6xl" | "full";
+export type DrawerPlacement = "left" | "right";
+
+export type FontWeight = "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900";
 
 export type Icon = { element: React.JSX.Element; position?: "start" | "end" };
 export type Option = { value: string | number | null; text: string };
@@ -74,15 +74,19 @@ export type MenuItemVariants = "vertical" | "horizontal";
 
 /** Holds content mapping configurations for segmented wizard or tracking interfaces. */
 export interface StepProps {
+  key: string;
   title: string;
   content: React.ReactNode;
+  icon?: Icons;
 }
 
 /** Holds panel metrics and window toggles for dynamic horizontal navigation hubs. */
 export interface TabProps {
   title: string;
   content: React.ReactNode;
-  config?: { canBeClosed: boolean };
+  icon?: Icon;
+  disabled?: boolean;
+  config?: { canBeClosed?: boolean };
 }
 
 // ============================================================================
@@ -93,6 +97,9 @@ export type FilterDataType =
   | "string"
   | "number"
   | "date"
+  | "datetime-local"
+  | "date-multiple"
+  | "datetime-local-multiple"
   | "bigint"
   | "boolean"
   | "symbol"
@@ -104,6 +111,13 @@ export type FilterDataType =
  * Blueprint layout schema defining rendering pipelines, in-line editing configurations,
  * content behavior alignments, and server/client-side data query filtering.
  */
+/** Header band spanning consecutive columns that share the same group title. */
+export type TableColumnGroup = {
+  title: string;
+  color?: Color;
+  align?: "left" | "center" | "right";
+};
+
 export interface TableColumnProps<T> {
   /** The descriptive header text displayed for the specific data scope. */
   title?: string;
@@ -128,8 +142,18 @@ export interface TableColumnProps<T> {
       | "multiple-select";
     options?: Option[];
     method?: () => void | Promise<void>;
+    /** When `true`, the editor is disabled. Historical name; behavior is unchanged. */
     where?: boolean;
   };
+  isShow?: boolean;
+  /** Whether this column is included in PDF exports by default. Defaults to `true`. */
+  pdfExport?: boolean;
+  /**
+   * Optional group band above the column title.
+   * Consecutive visible columns with the same `group.title` are merged via `colSpan`.
+   */
+  group?: TableColumnGroup;
+
   /** Geometric layout restrictions, structural alignment rules, and layer stickiness. */
   config?: {
     width?: number | "auto" | "fit-content" | "max-content" | "min-content";
@@ -137,6 +161,7 @@ export interface TableColumnProps<T> {
     sticky?: "left" | "right";
     textWrap?: "wrap" | "nowrap";
     isProperties?: boolean;
+    step?: { minutes?: number };
   };
 }
 
@@ -208,6 +233,35 @@ export type EdgeData = {
   to: { id: string | number; port: "top" | "right" | "bottom" | "left" };
 };
 
+// Upload Progress
+/** Lifecycle state for an individual file in the Upload component. */
+export type UploadFileStatus = "ready" | "uploading" | "success" | "error";
+
+/** Progress snapshot for a single file keyed by file name. */
+export type UploadProgressItem = {
+  /** Completion percentage in the range `0–100`. */
+  percent: number;
+  /** Current upload lifecycle status. Defaults to `"uploading"` when omitted. */
+  status?: UploadFileStatus;
+};
+
+/**
+ * Controlled progress map keyed by `File.name`.
+ * Drive this from the parent after `onChange`, or let `customRequest` manage it.
+ */
+export type UploadProgress = Record<string, UploadProgressItem>;
+
+/**
+ * Contract for a consumer-provided upload handler.
+ * Call `onProgress` / `onSuccess` / `onError` to keep the UI in sync.
+ */
+export type UploadRequestOption = {
+  file: File;
+  onProgress: (percent: number) => void;
+  onSuccess: () => void;
+  onError: (error?: Error) => void;
+};
+
 // Media Registry Types
 export type MimeTypes =
   | "image/jpeg"
@@ -268,24 +322,41 @@ export type Icons =
   | "ArrowUp"
   | "Bold"
   | "BulletList"
+  | "Calendar"
   | "CameraReels"
+  | "CaretDoubleLeft"
+  | "CaretDoubleRight"
+  | "CaretLeft"
+  | "CaretRight"
+  | "Check"
   | "CheckAll"
+  | "CheckCircle"
+  | "CheckCircle-Fill"
   | "ChevronBarLeft"
   | "ChevronBarRight"
   | "ChevronDown"
   | "ChevronExpand"
   | "ChevronUp"
+  | "Circle"
+  | "Clock"
   | "CloseCircle"
   | "CloseSquare"
   | "CloudUpload-Fill"
+  | "Columns"
+  | "CreditCard"
   | "Dash"
   | "Document"
   | "Download"
   | "ExclamationCircle"
   | "ExclamationDiamond-Fill"
+  | "Export"
   | "Eye-Fill"
   | "File"
+  | "FileAudio"
+  | "FileCode"
   | "FileEarmark-Fill"
+  | "FileImage"
+  | "FileSvg"
   | "FileTypeCsv"
   | "FileTypeDoc"
   | "FileTypeDocx"
@@ -298,6 +369,7 @@ export type Icons =
   | "FileTypeXlsx"
   | "FileTypeXml"
   | "FileTypeZip"
+  | "FileVideo"
   | "Filter"
   | "Floppy-Fill"
   | "Folder"
@@ -305,9 +377,11 @@ export type Icons =
   | "GripVertical"
   | "Import"
   | "Inbox-Fill"
+  | "Info"
   | "Information-Circle-Fill"
   | "Italic"
   | "NumberList"
+  | "Spinner"
   | "Strikethrough"
   | "TextAlingCenter"
   | "TextAlingLeft"
@@ -318,4 +392,7 @@ export type Icons =
   | "Underline"
   | "Upload"
   | "Warning"
+  | "Warning-Fill"
+  | "X"
+  | "XCircle"
   | "XCircle-Fill";

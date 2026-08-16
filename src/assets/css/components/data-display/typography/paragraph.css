@@ -1,0 +1,35 @@
+.har-typography-paragraph {
+  color: var(--gray-800);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+
+  &.size-xs {
+    font-size: 0.75rem;
+    line-height: 1.125rem;
+  }
+
+  &.size-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  &.size-md {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+
+  &.size-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+
+  &.size-xl {
+    font-size: 1.25rem;
+    line-height: 1.875rem;
+  }
+
+  &.size-2xl {
+    font-size: 1.5rem;
+    line-height: 2.25rem;
+  }
+}

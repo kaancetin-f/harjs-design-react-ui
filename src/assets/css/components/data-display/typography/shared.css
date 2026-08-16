@@ -1,0 +1,102 @@
+.har-typography-title,
+.har-typography-paragraph {
+  margin: 0;
+  font-family: var(--system);
+  text-wrap: pretty;
+
+  &.left {
+    text-align: left;
+  }
+
+  &.center {
+    text-align: center;
+  }
+
+  &.right {
+    text-align: right;
+  }
+
+  &.blue {
+    color: var(--blue-500);
+  }
+
+  &.purple {
+    color: var(--purple-500);
+  }
+
+  &.pink {
+    color: var(--pink-500);
+  }
+
+  &.red {
+    color: var(--red-500);
+  }
+
+  &.orange {
+    color: var(--orange-500);
+  }
+
+  &.yellow {
+    color: var(--yellow-500);
+  }
+
+  &.green {
+    color: var(--green-500);
+  }
+
+  &.teal {
+    color: var(--teal-500);
+  }
+
+  &.cyan {
+    color: var(--cyan-500);
+  }
+
+  &.gray {
+    color: var(--gray-500);
+  }
+
+  &.white {
+    color: var(--white-alpha-100);
+  }
+
+  &.gray-50 {
+    color: var(--gray-50);
+  }
+
+  &.gray-100 {
+    color: var(--gray-100);
+  }
+
+  &.gray-200 {
+    color: var(--gray-200);
+  }
+
+  &.gray-300 {
+    color: var(--gray-300);
+  }
+
+  &.gray-400 {
+    color: var(--gray-400);
+  }
+
+  &.gray-500 {
+    color: var(--gray-500);
+  }
+
+  &.gray-600 {
+    color: var(--gray-600);
+  }
+
+  &.gray-700 {
+    color: var(--gray-700);
+  }
+
+  &.gray-800 {
+    color: var(--gray-800);
+  }
+
+  &.gray-900 {
+    color: var(--gray-900);
+  }
+}

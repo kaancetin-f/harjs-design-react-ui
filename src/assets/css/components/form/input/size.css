@@ -1,0 +1,133 @@
+.har-input-wrapper {
+  &.size-xs {
+    > .addon-before,
+    > .addon-after {
+      height: 1.5rem;
+      font-size: 0.75rem;
+    }
+
+    > .har-input {
+      > .input {
+        > input {
+          height: 1.5rem;
+          font-size: 0.75rem;
+        }
+      }
+    }
+
+    &.pin-input {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+
+  &.size-sm {
+    > .addon-before,
+    > .addon-after {
+      height: 1.75rem;
+      font-size: 0.75rem;
+    }
+
+    > .har-input {
+      > .input {
+        > input {
+          height: 1.75rem;
+          font-size: 0.75rem;
+        }
+      }
+    }
+
+    &.pin-input {
+      width: 1.75rem;
+      height: 1.75rem;
+    }
+  }
+
+  &.size-md {
+    > .addon-before,
+    > .addon-after {
+      height: 2rem;
+      font-size: 0.875rem;
+    }
+
+    > .har-input {
+      > .input {
+        > input {
+          height: 2rem;
+          font-size: 0.875rem;
+        }
+      }
+    }
+
+    &.pin-input {
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+
+  &.size-lg {
+    > .addon-before,
+    > .addon-after {
+      height: 2.25rem;
+      font-size: 0.875rem;
+    }
+
+    > .har-input {
+      > .input {
+        > input {
+          height: 2.25rem;
+          font-size: 0.875rem;
+        }
+      }
+    }
+
+    &.pin-input {
+      width: 2.25rem;
+      height: 2.25rem;
+    }
+  }
+
+  &.size-xl {
+    > .addon-before,
+    > .addon-after {
+      height: 2.5rem;
+      font-size: 1rem;
+    }
+
+    > .har-input {
+      > .input {
+        > input {
+          height: 2.5rem;
+          font-size: 1rem;
+        }
+      }
+    }
+
+    &.pin-input {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+  }
+
+  &.size-2xl {
+    > .addon-before,
+    > .addon-after {
+      height: 3rem;
+      font-size: 1.125rem;
+    }
+
+    > .har-input {
+      > .input {
+        > input {
+          height: 3rem;
+          font-size: 1.125rem;
+        }
+      }
+    }
+
+    &.pin-input {
+      width: 3rem;
+      height: 3rem;
+    }
+  }
+}

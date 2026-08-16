@@ -1,5 +1,4 @@
-.ar-table {
-  /* Scroll durumu */
+.har-table {
   &:is(.scroll) {
     > .content {
       max-width: 100%;
@@ -10,7 +9,40 @@
           > tr {
             > th {
               position: sticky;
+
+              &:not(.column-group) {
+                background-color: var(--gray-100);
+              }
+            }
+
+            &:nth-child(1) > th {
               top: 0;
+              z-index: 21;
+            }
+
+            &:nth-child(2) > th {
+              top: 2.5rem;
+              z-index: 20;
+            }
+
+            &:nth-child(3) > th {
+              top: 5rem;
+              z-index: 19;
+            }
+
+            &.column-groups > th {
+              top: 0;
+              z-index: 22;
+            }
+
+            &.column-groups + tr > th {
+              top: 2.5rem;
+              z-index: 21;
+            }
+
+            &.column-groups + tr + tr > th {
+              top: 5rem;
+              z-index: 20;
             }
           }
         }
@@ -20,37 +52,25 @@
 
   > .content {
     > table {
-      th[class^="sticky-"] {
-        z-index: 50;
+      th.sticky-left,
+      th.sticky-right {
+        z-index: 30;
       }
 
       > thead {
         > tr {
           > th {
-            &:is(.sticky-left, .sticky-right) {
-              &:is(.sticky, .active-sticky) {
-                background-color: var(--gray-100);
-
-                &::after {
-                  position: absolute;
-                  top: 50%;
-                  transform: translateY(-50%);
-                  content: "";
-                  background-color: var(--gray-200);
-                  width: 1px;
-                  height: 50%;
-                }
-              }
+            &.sticky-left,
+            &.sticky-right {
+              background-color: var(--gray-100);
             }
 
             &.sticky-left {
               position: sticky;
               left: 0;
 
-              &:is(.sticky, .active-sticky) {
-                &::after {
-                  right: 0;
-                }
+              &.active-sticky {
+                box-shadow: inset -1px 0 0 0 var(--gray-200);
               }
             }
 
@@ -58,11 +78,23 @@
               position: sticky;
               right: 0;
 
-              &:is(.sticky, .active-sticky) {
-                &::after {
-                  left: 0;
-                  right: auto;
-                }
+              &.active-sticky {
+                box-shadow: inset 1px 0 0 0 var(--gray-200);
+              }
+            }
+
+            &.column-group {
+              > .column-group-title {
+                position: sticky;
+                left: var(--har-table-sticky-inset-left, 0px);
+                z-index: 1;
+                display: inline-block;
+                width: max-content;
+                max-width: 100%;
+                padding-inline: var(--space-4);
+                background-color: inherit;
+                box-decoration-break: clone;
+                -webkit-box-decoration-break: clone;
               }
             }
           }
@@ -72,17 +104,16 @@
       > tbody {
         > tr {
           > td {
-            &:is(.sticky-left, .sticky-right) {
-              &:is(.sticky, .active-sticky) {
-                background-color: var(--gray-100);
-              }
+            &.sticky-left,
+            &.sticky-right {
+              background-color: var(--white-500);
             }
 
             &.sticky-left {
               position: sticky;
               left: 0;
 
-              &:is(.sticky, .active-sticky) {
+              &.active-sticky {
                 box-shadow: inset -1px 0 0 0 var(--gray-200);
               }
             }
@@ -91,118 +122,18 @@
               position: sticky;
               right: 0;
 
-              &.sticky {
+              &.active-sticky {
                 box-shadow: inset 1px 0 0 0 var(--gray-200);
               }
             }
           }
-        }
-      }
-    }
-  }
-}
 
-/* --- [KÜÇÜK MOBİL - IPHONE SE VB.] --- */
-/* Çok dar ekranlar için özel düzeltmeler */
-@media (max-width: 375px) {
-}
-
-/* --- [MOBİL - STANDART] --- */
-/* Ekran 576px ve altına düştüğünde çalışır */
-@media (max-width: 576px) {
-}
-
-/* --- [TABLET DİKEY & BÜYÜK TELEFONLAR] --- */
-/* Ekran 768px ve altına düştüğünde çalışır */
-@media (max-width: 768px) {
-  .ar-table {
-    /* Scroll durumu */
-    &:is(.scroll) {
-      > .content {
-        > table {
-          > thead {
-            > tr {
-              > th {
-              }
-            }
-          }
-        }
-      }
-    }
-
-    > .content {
-      > table {
-        th[class^="sticky-"] {
-        }
-
-        > thead {
-          > tr {
-            > th {
-              &:is(.sticky-left, .sticky-right) {
-                &:is(.sticky, .active-sticky) {
-                  &::after {
-                  }
-                }
-              }
-
-              &.sticky-left {
-                position: static;
-                left: auto;
-
-                &:is(.sticky, .active-sticky) {
-                  &::after {
-                  }
-                }
-              }
-
-              &.sticky-right {
-                position: static;
-                right: auto;
-
-                &:is(.sticky, .active-sticky) {
-                  &::after {
-                  }
-                }
-              }
-            }
-          }
-        }
-
-        > tbody {
-          > tr {
-            > td {
-              &:is(.sticky-left, .sticky-right) {
-                &:is(.sticky, .active-sticky) {
-                  background-color: transparent;
-                }
-              }
-
-              &.sticky-left {
-                position: static;
-                left: auto;
-
-                &:is(.sticky, .active-sticky) {
-                  box-shadow: none;
-                }
-              }
-
-              &.sticky-right {
-                position: static;
-                right: auto;
-
-                &.sticky {
-                  box-shadow: none;
-                }
-              }
-            }
+          &:hover > td.sticky-left,
+          &:hover > td.sticky-right {
+            background-color: var(--gray-100);
           }
         }
       }
     }
   }
-}
-
-/* --- [TABLET & KÜÇÜK LAPTOP] --- */
-/* Ekran 1024px ve altına düştüğünde çalışır */
-@media (max-width: 1024px) {
 }

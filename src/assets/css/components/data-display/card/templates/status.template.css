@@ -1,0 +1,41 @@
+&.__COLOR__ {
+  --_color: var(--__COLOR__-__COLOR_SCALE__);
+  --_color-border: color-mix(in srgb, var(--_color) 38%, transparent);
+  --_color-surface: color-mix(in srgb, var(--_color) 8%, var(--gray-50));
+
+  &.filled {
+    background-color: var(--_color);
+    border: solid var(--stroke-1) var(--_color);
+    color: var(--white-alpha-100);
+  }
+
+  &.surface {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.surface-borderless {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+
+  &.outlined {
+    background-color: var(--gray-50);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.dashed {
+    background-color: var(--gray-50);
+    border: dashed var(--stroke-1) var(--_color);
+    color: var(--gray-800);
+  }
+
+  &.borderless {
+    background-color: transparent;
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+}

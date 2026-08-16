@@ -1,0 +1,84 @@
+---
+title: Modal
+description: A centered dialog for focused work. Control it with open.get / open.set. The header close control is always present. Footer is optional.
+---
+
+Modal is a centered overlay portaled to `document.body`. Pass `open={{ get, set }}` — the same contract as Drawer. Default `size` is `"lg"`. Escape and backdrop click close it unless you opt out. Focus moves into the dialog on open and returns to the trigger on close. Body scroll locks while it is open.
+
+## Import
+
+```tsx
+import { Modal } from "@harjs/react-ui";
+```
+
+```tsx
+const [open, setOpen] = useState(false);
+
+<Button onClick={() => setOpen(true)}>Open</Button>
+<Modal title="Release notes" open={{ get: open, set: setOpen }}>
+  Sprint 24 is on track.
+</Modal>
+```
+
+## Usage
+
+The default size is `lg` (640px). The example below uses `md` so the preview stays readable. `description` sits under the title and sets `aria-describedby`.
+
+<Example>
+  <ModalBasic />
+</Example>
+
+## Examples
+
+### Size
+
+`xs`–`2xl` are fixed widths. `full` fills the viewport minus padding. Default is `lg`. Below `768px`, every size except `full` stretches to the overlay padding.
+
+<Example>
+  <ModalSize />
+</Example>
+
+### Footer
+
+`footer` is a slot under the body. Put actions there — typically Cancel and a primary Button.
+
+<Example>
+  <ModalFooter />
+</Example>
+
+### Close behavior
+
+`disableCloseOnBackdrop` and `disableCloseOnEsc` keep the overlay up until the header close control (or your own button) runs `open.set(false)`. The close control renders even without a `title`.
+
+<Example>
+  <ModalClose />
+</Example>
+
+### Confirm close
+
+`closePopover` wraps the header close control in a Popover. Confirming should call `open.set(false)`. Button labels go through `config.buttons`. Escape closes the Popover first.
+
+<Example>
+  <ModalClosePopover />
+</Example>
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `open.get` | `boolean` | — |
+| `open.set` | `Dispatch<SetStateAction<boolean>>` | — |
+| `title` | `string` | — |
+| `description` | `string` | — |
+| `children` | `ReactNode` | — |
+| `footer` | `ReactNode` | — |
+| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl" \| "full"` | `"lg"` |
+| `border.radius` | `"0" \| "2" \| "4" \| "6" \| "8" \| "12" \| "16" \| "20" \| "40" \| "full"` | `"4"` |
+| `onClose` | `() => void` | — |
+| `closePopover` | `{ title?: string; message?: string; content?: JSX.Element; onConfirm?: (confirm: boolean) => void; config?: { buttons: { okay: string; cancel?: string } }; windowBlur?: boolean; fullWidth?: boolean }` | — |
+| `disableCloseOnBackdrop` | `boolean` | `false` |
+| `disableCloseOnEsc` | `boolean` | `false` |
+| `config.freeContent` | `boolean` | `false` |
+| `config.keepMounted` | `boolean` | `false` |
+
+Also accepts standard `div` HTML attributes (`className`, `style`, `id`, `role`, …). `open` is required. `role` defaults to `"dialog"` with `aria-modal`. The dialog unmounts after the close animation unless `config.keepMounted` is set.

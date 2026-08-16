@@ -1,0 +1,129 @@
+---
+title: Card
+description: A titled surface for grouping related content, metrics, and actions.
+---
+
+Card is a content panel with optional `title` and `actions`. `variant`, `color`, and `status` stay independent — the body copy stays readable while the surface carries the accent.
+
+## Import
+
+```tsx
+import { Card } from "@harjs/react-ui";
+```
+
+```tsx
+<Card
+  title="Studio North"
+  image={{ src: "/studio.jpg", alt: "Studio interior" }}
+>
+  Open workspace in Şişli.
+</Card>
+```
+
+## Usage
+
+<Example>
+  <CardBasic />
+</Example>
+
+## Examples
+
+### Variants
+
+Card supports `filled`, `surface`, `surface-borderless`, and `outlined`. The default is `outlined`.
+
+<Example>
+  <CardVariants />
+</Example>
+
+### Colors
+
+`color` tints the border and fill. Body text stays on the gray scale so nested content stays readable.
+
+<Example>
+  <CardColors />
+</Example>
+
+### Status
+
+`status` adds a semantic accent bar. Use it for deploy, billing, and review states.
+
+<Example>
+  <CardStatus />
+</Example>
+
+### Actions
+
+`actions` sits on the right of the title row. Pass one control or a short group.
+
+<Example>
+  <CardActions />
+</Example>
+
+### Metrics
+
+Omit `title` and lead with a label, value, and delta for KPI tiles.
+
+<Example>
+  <CardMetrics />
+</Example>
+
+### Team
+
+Cards can hold avatars, status chips, and a single action without extra layout primitives.
+
+<Example>
+  <CardTeam />
+</Example>
+
+### Pricing
+
+Pair a highlighted plan with a quieter neighbor. `variant` and `color` do the emphasis.
+
+<Example>
+  <CardPricing />
+</Example>
+
+### Activity
+
+A title, a live chip, and a stacked list. `Divider` separates rows inside the body.
+
+<Example>
+  <CardActivity />
+</Example>
+
+### With Image
+
+Pass `image` with a `src`. `position` is `top` by default. `overlay` sits type on the photo. `start` and `end` place a portrait on the left or right.
+
+<Example>
+  <CardImage />
+</Example>
+
+### Form
+
+Put fields in the body and keep submit in the card. `actions` holds a secondary control.
+
+<Example>
+  <CardForm />
+</Example>
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `ReactNode` | — |
+| `title` | `string` | — |
+| `actions` | `JSX.Element` | — |
+| `variant` | `"filled" \| "surface" \| "surface-borderless" \| "outlined"` | `"outlined"` |
+| `color` | Color or gray scale token | `"gray-500"` |
+| `status` | `"primary" \| "success" \| "danger" \| "warning"` | — |
+| `image.src` | `string` | — |
+| `image.alt` | `string` | `""` |
+| `image.position` | `"top" \| "overlay" \| "start" \| "end"` | `"top"` |
+| `image.height` | `string \| number` | — |
+| `image.width` | `string \| number` | — |
+| `image.fit` | `"cover" \| "contain"` | `"cover"` |
+| `border.radius` | `"0" \| "2" \| "4" \| "6" \| "8" \| "12" \| "16" \| "20" \| "40" \| "full"` | `"12"` |
+
+`title`, `actions`, and `image` are optional. `height` applies to `top` and `overlay`; `width` applies to `start` and `end`.

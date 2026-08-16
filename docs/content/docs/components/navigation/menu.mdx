@@ -1,0 +1,147 @@
+---
+title: Menu
+description: Hierarchical application navigation. Use it in a sider or a header, not as a page trail or a wizard.
+---
+
+Menu renders a `data` tree of items, groups, and dividers. Clicking a leaf stores the selected key in `sessionStorage`. Groups expand in place. Layout.Sider toggles the locked (labels visible) and unlocked (icons only) states through the same storage events.
+
+Breadcrumb is the page trail. Steps and Wizard are process flows. Pagination moves through a dataset.
+
+## Import
+
+```tsx
+import { Menu } from "@harjs/react-ui";
+```
+
+```tsx
+<Menu
+  data={[
+    { key: "dashboard", render: "Dashboard" },
+    { key: "products", render: "Products" },
+    { key: "settings", render: "Settings" },
+  ]}
+/>
+```
+
+## Usage
+
+`data` is required. Default `variant` is `"vertical"`. Native `nav` attributes are forwarded. Selection is restored from `sessionStorage` when the tree contains that key.
+
+<Example>
+  <MenuBasic />
+</Example>
+
+## Examples
+
+### Variants
+
+`vertical` stacks the list. `horizontal` rows it and wraps.
+
+<Example>
+  <MenuVariants />
+</Example>
+
+### Nested menu
+
+`type: "group"` with `submenu` opens on click. A selected child keeps its parent path open.
+
+<Example>
+  <MenuNested />
+</Example>
+
+### Selected item
+
+The selected leaf gets a quiet accent fill, a 2px left indicator, and `aria-current="page"`. The key is written to `sessionStorage` as `selected-menu-item`. `theme.selected` still maps to color, background, and ring.
+
+<Example>
+  <MenuSelected />
+</Example>
+
+### Locked / unlocked
+
+`is-menu-locked` in `sessionStorage` plus a `menuLock` window event. Locked shows labels and submenus. Unlocked keeps icons only. Layout.Sider already dispatches this.
+
+<Example>
+  <MenuLocked />
+</Example>
+
+### Custom theme
+
+`theme.hover` and `theme.selected` map to CSS variables on the `nav`.
+
+<Example>
+  <MenuTheme />
+</Example>
+
+### Icons
+
+Pass `icon` as an SVG node. Missing icons keep a placeholder so rows stay aligned.
+
+<Example>
+  <MenuIcons />
+</Example>
+
+### Keyboard
+
+Tab into the list. Arrow Up/Down move. Arrow Right opens a group. Arrow Left closes it. Escape closes the open submenu.
+
+<Example>
+  <MenuKeyboard />
+</Example>
+
+### Real-world
+
+A workspace sider: dashboard, a group, a divider, then settings.
+
+<Example>
+  <MenuRealWorld />
+</Example>
+
+## Menu vs other navigation
+
+| | Menu | Breadcrumb | Pagination | Steps |
+| --- | --- | --- | --- | --- |
+| Purpose | App / site navigation | Page hierarchy | Dataset pages | Process progression |
+| Typical place | Sider or header | Below the header | Below a table | Wizard or onboarding |
+| Current item | Selected leaf | Last crumb | Active page | Active step |
+
+Do not replace a breadcrumb with a Menu. Do not use Menu for a linear flow.
+
+## Accessibility
+
+The root is `<nav>`. Pass `aria-label` if the page has more than one navigation landmark. Leaves are buttons with `aria-current="page"` when selected. Groups use `aria-expanded` and `aria-controls`. Closed submenus are `aria-hidden` and are not in the tab order. `prefers-reduced-motion: reduce` skips submenu motion.
+
+There is no `href` on `NavigationMenuProps`. Items are actions that select a key. Wrap `render` with your own Link if the app needs a URL.
+
+## Best practices
+
+- Keep labels short.
+- Use groups for hierarchy, not for the current page trail.
+- Put Menu in Layout.Sider when you need lock/unlock.
+- Set `theme.selected` when the sider is not the default blue.
+- Give each item a stable `key`. Do not reuse labels as keys.
+- Do not store primary actions only inside a collapsed unlocked Menu.
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `data` | `NavigationMenuProps[]` | — | Tree of items, groups, and dividers. |
+| `variant` | `"vertical" \| "horizontal"` | `"vertical"` | List axis. |
+| `theme.hover.backgroundColor` | `string` | — | Hover fill (`--menu-hover-bg`). |
+| `theme.hover.textColor` | `string` | — | Hover text (`--menu-hover-color`). |
+| `theme.selected.color` | `string` | — | Selected text (`--selected-icon-color`). |
+| `theme.selected.backgroundColor` | `string` | — | Selected fill (`--selected-icon-bg-color`). |
+| `theme.selected.ringColor` | `string` | — | Selected inset ring. |
+
+Native `nav` attributes are forwarded. `className` is merged with `har-menu`.
+
+### Item
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `key` | `string \| number` | Stable id. Persisted when the leaf is selected. |
+| `render` | `string \| ReactElement` | Visible label. |
+| `type` | `"group" \| "divider"` | Group toggles a submenu. Divider is not selectable. |
+| `icon` | `ReactElement` | Leading icon. Optional. |
+| `submenu` | `NavigationMenuProps[]` | Nested items. Used with `type: "group"`. |

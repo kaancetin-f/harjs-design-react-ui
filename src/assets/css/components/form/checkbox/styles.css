@@ -1,0 +1,78 @@
+@import url("./checked.css");
+@import url("./color.checked.css");
+@import url("./color.radio-checked.css");
+@import url("./color.radio-unchecked.css");
+@import url("./color.unchecked.css");
+@import url("./radius.css");
+@import url("./size.css");
+
+.har-checkbox-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-start;
+  width: max-content;
+
+  > label {
+    color: var(--gray-800);
+    font-family: var(--system);
+    font-size: 1rem;
+    cursor: pointer;
+
+    > :is(input[type="checkbox"]),
+    > :is(input[type="radio"]) {
+      display: none;
+
+      + span {
+        > .har-checkbox {
+          &.disabled {
+            border: solid var(--stroke-1) var(--gray-300) !important;
+            cursor: no-drop;
+
+            + span.label {
+              color: var(--gray-500);
+              cursor: no-drop;
+            }
+
+            &:hover {
+              background-color: transparent !important;
+            }
+          }
+        }
+      }
+
+      &:checked {
+        + span {
+          > .har-checkbox {
+            z-index: 2;
+          }
+        }
+      }
+    }
+
+    > span {
+      display: flex;
+      align-items: center;
+      gap: 0 0.5rem;
+      user-select: none;
+
+      > .har-checkbox {
+        position: relative;
+        display: inline-block;
+      }
+
+      > .trace {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: inline-block;
+        content: "";
+        width: 1rem;
+        height: 1rem;
+        border-radius: var(--radius-full);
+        z-index: 1;
+      }
+    }
+  }
+}

@@ -1,26 +1,57 @@
-.ar-dnd-shadow {
+.har-dnd-ghost,
+.har-dnd-shadow {
+  box-sizing: border-box;
   position: relative;
   display: flex;
-  justify-content: center;
   align-items: center;
-  background-color: var(--white);
-  min-width: 150px;
-  height: 50px;
-  border-radius: var(--border-radius-lg);
+  background: var(--white-500);
+  border: solid 1px var(--gray-200);
+  border-radius: var(--radius-8);
+  box-shadow:
+    0 1px 2px var(--black-alpha-10),
+    0 8px 24px var(--black-alpha-20);
   overflow: hidden;
+  pointer-events: none;
+}
+
+.har-dnd-ghost {
+  --_accent: currentColor;
+  padding: 0.35rem 0.75rem;
+
+  > .item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    width: 100%;
+    min-width: 0;
+    opacity: 1;
+
+    > .move {
+      color: currentColor;
+    }
+
+    > .content {
+      flex: 1 1 auto;
+      min-width: 0;
+      color: var(--gray-800);
+    }
+  }
+}
+
+.har-dnd-shadow {
+  justify-content: center;
+  min-width: 160px;
+  height: 52px;
+  padding: 0 1rem;
 
   > i {
-    position: absolute;
-    left: -15px;
-    color: var(--gray-100);
-    font-size: 4rem;
-    z-index: 0;
+    display: none;
   }
 
   > span {
-    color: var(--gray-500);
+    color: var(--gray-700);
     font-family: var(--system);
-    font-weight: 700;
-    z-index: 1;
+    font-size: 0.8125rem;
+    font-weight: 600;
   }
 }

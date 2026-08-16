@@ -22,8 +22,11 @@ interface IProps<T> {
 }
 
 const Body = function <T>({ trackedBy, data, renderItem, states, config }: IProps<T>) {
-  if (states.view.get === "Day") return <Day />;
-  else if (states.view.get === "Week")
+  // variables
+  const view = states.view.get;
+
+  if (view === "Day") return <Day />;
+  if (view === "Week")
     return (
       <Week
         trackedBy={trackedBy}
@@ -33,7 +36,7 @@ const Body = function <T>({ trackedBy, data, renderItem, states, config }: IProp
         config={config}
       />
     );
-  else if (states.view.get === "Month") return <Month />;
+  if (view === "Month") return <Month />;
 
   return <>...</>;
 };

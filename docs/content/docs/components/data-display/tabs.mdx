@@ -1,0 +1,88 @@
+---
+title: Tabs
+description: Switch between named panels. Persist the active tab, add icons, and choose a layout variant.
+---
+
+Tabs takes a `name` (used as the session-storage key) and a `tabs` array of title + content. `variant` sets the chrome. `orientation="vertical"` stacks the list. Pass `icon` on a tab for a leading (or trailing) mark.
+
+## Import
+
+```tsx
+import { Tabs } from "@harjs/react-ui";
+```
+
+```tsx
+<Tabs
+  name="workspace"
+  tabs={[
+    { title: "Overview", content: "…" },
+    { title: "Activity", content: "…" },
+  ]}
+/>
+<Tabs name="nav" variant="segmented" orientation="vertical" tabs={tabs} />
+```
+
+## Usage
+
+The default is `underline`. The active index is stored in `sessionStorage` under the current path and `name`, unless you pass `activeTab`.
+
+<Example>
+  <TabsBasic />
+</Example>
+
+## Examples
+
+### Icons
+
+`icon.element` sits before the title. Set `icon.position` to `"end"` to place it after.
+
+<Example>
+  <TabsIcons />
+</Example>
+
+### Variants
+
+`underline`, `pill`, `segmented`, `folder`, and `minimal`.
+
+<Example>
+  <TabsVariants />
+</Example>
+
+### Vertical
+
+`orientation="vertical"` puts the list on the left. Underline becomes a side mark; folder connects on the left edge.
+
+<Example>
+  <TabsVertical />
+</Example>
+
+### Closable
+
+`config.canBeClosed` shows a close control. Keep the tab list in state and drop the index from `onClose`.
+
+<Example>
+  <TabsClosable />
+</Example>
+
+### Disabled
+
+`disabled` on a tab skips click and keyboard. Arrow keys move past it.
+
+<Example>
+  <TabsDisabled />
+</Example>
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `name` | `string` | — |
+| `tabs` | `{ title: string; content: ReactNode; icon?: { element: JSX.Element; position?: "start" \| "end" }; disabled?: boolean; config?: { canBeClosed?: boolean } }[]` | `[]` |
+| `activeTab` | `number` | — |
+| `defaultActiveTab` | `number` | `0` |
+| `variant` | `"underline" \| "pill" \| "segmented" \| "folder" \| "minimal"` | `"underline"` |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` |
+| `onChange` | `(currentTab: number) => void` | — |
+| `onClose` | `(closeTab: number) => void` | — |
+
+`name` is required. When `activeTab` is set, the component is controlled and `sessionStorage` does not override it. Arrow keys move between tabs; `Home` / `End` jump to the ends.

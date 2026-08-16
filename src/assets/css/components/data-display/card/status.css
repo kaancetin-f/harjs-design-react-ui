@@ -1,0 +1,800 @@
+.har-card {
+&.blue {
+  --_color: var(--blue-500);
+  --_color-border: color-mix(in srgb, var(--_color) 38%, transparent);
+  --_color-surface: color-mix(in srgb, var(--_color) 8%, var(--gray-50));
+
+  &.filled {
+    background-color: var(--_color);
+    border: solid var(--stroke-1) var(--_color);
+    color: var(--white-alpha-100);
+  }
+
+  &.surface {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.surface-borderless {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+
+  &.outlined {
+    background-color: var(--gray-50);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.dashed {
+    background-color: var(--gray-50);
+    border: dashed var(--stroke-1) var(--_color);
+    color: var(--gray-800);
+  }
+
+  &.borderless {
+    background-color: transparent;
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+}
+
+&.purple {
+  --_color: var(--purple-500);
+  --_color-border: color-mix(in srgb, var(--_color) 38%, transparent);
+  --_color-surface: color-mix(in srgb, var(--_color) 8%, var(--gray-50));
+
+  &.filled {
+    background-color: var(--_color);
+    border: solid var(--stroke-1) var(--_color);
+    color: var(--white-alpha-100);
+  }
+
+  &.surface {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.surface-borderless {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+
+  &.outlined {
+    background-color: var(--gray-50);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.dashed {
+    background-color: var(--gray-50);
+    border: dashed var(--stroke-1) var(--_color);
+    color: var(--gray-800);
+  }
+
+  &.borderless {
+    background-color: transparent;
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+}
+
+&.pink {
+  --_color: var(--pink-500);
+  --_color-border: color-mix(in srgb, var(--_color) 38%, transparent);
+  --_color-surface: color-mix(in srgb, var(--_color) 8%, var(--gray-50));
+
+  &.filled {
+    background-color: var(--_color);
+    border: solid var(--stroke-1) var(--_color);
+    color: var(--white-alpha-100);
+  }
+
+  &.surface {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.surface-borderless {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+
+  &.outlined {
+    background-color: var(--gray-50);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.dashed {
+    background-color: var(--gray-50);
+    border: dashed var(--stroke-1) var(--_color);
+    color: var(--gray-800);
+  }
+
+  &.borderless {
+    background-color: transparent;
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+}
+
+&.red {
+  --_color: var(--red-500);
+  --_color-border: color-mix(in srgb, var(--_color) 38%, transparent);
+  --_color-surface: color-mix(in srgb, var(--_color) 8%, var(--gray-50));
+
+  &.filled {
+    background-color: var(--_color);
+    border: solid var(--stroke-1) var(--_color);
+    color: var(--white-alpha-100);
+  }
+
+  &.surface {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.surface-borderless {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+
+  &.outlined {
+    background-color: var(--gray-50);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.dashed {
+    background-color: var(--gray-50);
+    border: dashed var(--stroke-1) var(--_color);
+    color: var(--gray-800);
+  }
+
+  &.borderless {
+    background-color: transparent;
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+}
+
+&.orange {
+  --_color: var(--orange-500);
+  --_color-border: color-mix(in srgb, var(--_color) 38%, transparent);
+  --_color-surface: color-mix(in srgb, var(--_color) 8%, var(--gray-50));
+
+  &.filled {
+    background-color: var(--_color);
+    border: solid var(--stroke-1) var(--_color);
+    color: var(--white-alpha-100);
+  }
+
+  &.surface {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.surface-borderless {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+
+  &.outlined {
+    background-color: var(--gray-50);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.dashed {
+    background-color: var(--gray-50);
+    border: dashed var(--stroke-1) var(--_color);
+    color: var(--gray-800);
+  }
+
+  &.borderless {
+    background-color: transparent;
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+}
+
+&.yellow {
+  --_color: var(--yellow-500);
+  --_color-border: color-mix(in srgb, var(--_color) 38%, transparent);
+  --_color-surface: color-mix(in srgb, var(--_color) 8%, var(--gray-50));
+
+  &.filled {
+    background-color: var(--_color);
+    border: solid var(--stroke-1) var(--_color);
+    color: var(--white-alpha-100);
+  }
+
+  &.surface {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.surface-borderless {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+
+  &.outlined {
+    background-color: var(--gray-50);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.dashed {
+    background-color: var(--gray-50);
+    border: dashed var(--stroke-1) var(--_color);
+    color: var(--gray-800);
+  }
+
+  &.borderless {
+    background-color: transparent;
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+}
+
+&.green {
+  --_color: var(--green-500);
+  --_color-border: color-mix(in srgb, var(--_color) 38%, transparent);
+  --_color-surface: color-mix(in srgb, var(--_color) 8%, var(--gray-50));
+
+  &.filled {
+    background-color: var(--_color);
+    border: solid var(--stroke-1) var(--_color);
+    color: var(--white-alpha-100);
+  }
+
+  &.surface {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.surface-borderless {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+
+  &.outlined {
+    background-color: var(--gray-50);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.dashed {
+    background-color: var(--gray-50);
+    border: dashed var(--stroke-1) var(--_color);
+    color: var(--gray-800);
+  }
+
+  &.borderless {
+    background-color: transparent;
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+}
+
+&.teal {
+  --_color: var(--teal-500);
+  --_color-border: color-mix(in srgb, var(--_color) 38%, transparent);
+  --_color-surface: color-mix(in srgb, var(--_color) 8%, var(--gray-50));
+
+  &.filled {
+    background-color: var(--_color);
+    border: solid var(--stroke-1) var(--_color);
+    color: var(--white-alpha-100);
+  }
+
+  &.surface {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.surface-borderless {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+
+  &.outlined {
+    background-color: var(--gray-50);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.dashed {
+    background-color: var(--gray-50);
+    border: dashed var(--stroke-1) var(--_color);
+    color: var(--gray-800);
+  }
+
+  &.borderless {
+    background-color: transparent;
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+}
+
+&.cyan {
+  --_color: var(--cyan-500);
+  --_color-border: color-mix(in srgb, var(--_color) 38%, transparent);
+  --_color-surface: color-mix(in srgb, var(--_color) 8%, var(--gray-50));
+
+  &.filled {
+    background-color: var(--_color);
+    border: solid var(--stroke-1) var(--_color);
+    color: var(--white-alpha-100);
+  }
+
+  &.surface {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.surface-borderless {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+
+  &.outlined {
+    background-color: var(--gray-50);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.dashed {
+    background-color: var(--gray-50);
+    border: dashed var(--stroke-1) var(--_color);
+    color: var(--gray-800);
+  }
+
+  &.borderless {
+    background-color: transparent;
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+}
+
+&.gray-50 {
+  --_color: var(--gray-50);
+  --_color-border: color-mix(in srgb, var(--_color) 38%, transparent);
+  --_color-surface: color-mix(in srgb, var(--_color) 8%, var(--gray-50));
+
+  &.filled {
+    background-color: var(--_color);
+    border: solid var(--stroke-1) var(--_color);
+    color: var(--white-alpha-100);
+  }
+
+  &.surface {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.surface-borderless {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+
+  &.outlined {
+    background-color: var(--gray-50);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.dashed {
+    background-color: var(--gray-50);
+    border: dashed var(--stroke-1) var(--_color);
+    color: var(--gray-800);
+  }
+
+  &.borderless {
+    background-color: transparent;
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+}
+
+&.gray-100 {
+  --_color: var(--gray-100);
+  --_color-border: color-mix(in srgb, var(--_color) 38%, transparent);
+  --_color-surface: color-mix(in srgb, var(--_color) 8%, var(--gray-50));
+
+  &.filled {
+    background-color: var(--_color);
+    border: solid var(--stroke-1) var(--_color);
+    color: var(--white-alpha-100);
+  }
+
+  &.surface {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.surface-borderless {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+
+  &.outlined {
+    background-color: var(--gray-50);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.dashed {
+    background-color: var(--gray-50);
+    border: dashed var(--stroke-1) var(--_color);
+    color: var(--gray-800);
+  }
+
+  &.borderless {
+    background-color: transparent;
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+}
+
+&.gray-200 {
+  --_color: var(--gray-200);
+  --_color-border: color-mix(in srgb, var(--_color) 38%, transparent);
+  --_color-surface: color-mix(in srgb, var(--_color) 8%, var(--gray-50));
+
+  &.filled {
+    background-color: var(--_color);
+    border: solid var(--stroke-1) var(--_color);
+    color: var(--white-alpha-100);
+  }
+
+  &.surface {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.surface-borderless {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+
+  &.outlined {
+    background-color: var(--gray-50);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.dashed {
+    background-color: var(--gray-50);
+    border: dashed var(--stroke-1) var(--_color);
+    color: var(--gray-800);
+  }
+
+  &.borderless {
+    background-color: transparent;
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+}
+
+&.gray-300 {
+  --_color: var(--gray-300);
+  --_color-border: color-mix(in srgb, var(--_color) 38%, transparent);
+  --_color-surface: color-mix(in srgb, var(--_color) 8%, var(--gray-50));
+
+  &.filled {
+    background-color: var(--_color);
+    border: solid var(--stroke-1) var(--_color);
+    color: var(--white-alpha-100);
+  }
+
+  &.surface {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.surface-borderless {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+
+  &.outlined {
+    background-color: var(--gray-50);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.dashed {
+    background-color: var(--gray-50);
+    border: dashed var(--stroke-1) var(--_color);
+    color: var(--gray-800);
+  }
+
+  &.borderless {
+    background-color: transparent;
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+}
+
+&.gray-400 {
+  --_color: var(--gray-400);
+  --_color-border: color-mix(in srgb, var(--_color) 38%, transparent);
+  --_color-surface: color-mix(in srgb, var(--_color) 8%, var(--gray-50));
+
+  &.filled {
+    background-color: var(--_color);
+    border: solid var(--stroke-1) var(--_color);
+    color: var(--white-alpha-100);
+  }
+
+  &.surface {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.surface-borderless {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+
+  &.outlined {
+    background-color: var(--gray-50);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.dashed {
+    background-color: var(--gray-50);
+    border: dashed var(--stroke-1) var(--_color);
+    color: var(--gray-800);
+  }
+
+  &.borderless {
+    background-color: transparent;
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+}
+
+&.gray-500 {
+  --_color: var(--gray-500);
+  --_color-border: color-mix(in srgb, var(--_color) 38%, transparent);
+  --_color-surface: color-mix(in srgb, var(--_color) 8%, var(--gray-50));
+
+  &.filled {
+    background-color: var(--_color);
+    border: solid var(--stroke-1) var(--_color);
+    color: var(--white-alpha-100);
+  }
+
+  &.surface {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.surface-borderless {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+
+  &.outlined {
+    background-color: var(--gray-50);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.dashed {
+    background-color: var(--gray-50);
+    border: dashed var(--stroke-1) var(--_color);
+    color: var(--gray-800);
+  }
+
+  &.borderless {
+    background-color: transparent;
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+}
+
+&.gray-600 {
+  --_color: var(--gray-600);
+  --_color-border: color-mix(in srgb, var(--_color) 38%, transparent);
+  --_color-surface: color-mix(in srgb, var(--_color) 8%, var(--gray-50));
+
+  &.filled {
+    background-color: var(--_color);
+    border: solid var(--stroke-1) var(--_color);
+    color: var(--white-alpha-100);
+  }
+
+  &.surface {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.surface-borderless {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+
+  &.outlined {
+    background-color: var(--gray-50);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.dashed {
+    background-color: var(--gray-50);
+    border: dashed var(--stroke-1) var(--_color);
+    color: var(--gray-800);
+  }
+
+  &.borderless {
+    background-color: transparent;
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+}
+
+&.gray-700 {
+  --_color: var(--gray-700);
+  --_color-border: color-mix(in srgb, var(--_color) 38%, transparent);
+  --_color-surface: color-mix(in srgb, var(--_color) 8%, var(--gray-50));
+
+  &.filled {
+    background-color: var(--_color);
+    border: solid var(--stroke-1) var(--_color);
+    color: var(--white-alpha-100);
+  }
+
+  &.surface {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.surface-borderless {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+
+  &.outlined {
+    background-color: var(--gray-50);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.dashed {
+    background-color: var(--gray-50);
+    border: dashed var(--stroke-1) var(--_color);
+    color: var(--gray-800);
+  }
+
+  &.borderless {
+    background-color: transparent;
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+}
+
+&.gray-800 {
+  --_color: var(--gray-800);
+  --_color-border: color-mix(in srgb, var(--_color) 38%, transparent);
+  --_color-surface: color-mix(in srgb, var(--_color) 8%, var(--gray-50));
+
+  &.filled {
+    background-color: var(--_color);
+    border: solid var(--stroke-1) var(--_color);
+    color: var(--white-alpha-100);
+  }
+
+  &.surface {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.surface-borderless {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+
+  &.outlined {
+    background-color: var(--gray-50);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.dashed {
+    background-color: var(--gray-50);
+    border: dashed var(--stroke-1) var(--_color);
+    color: var(--gray-800);
+  }
+
+  &.borderless {
+    background-color: transparent;
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+}
+
+&.gray-900 {
+  --_color: var(--gray-900);
+  --_color-border: color-mix(in srgb, var(--_color) 38%, transparent);
+  --_color-surface: color-mix(in srgb, var(--_color) 8%, var(--gray-50));
+
+  &.filled {
+    background-color: var(--_color);
+    border: solid var(--stroke-1) var(--_color);
+    color: var(--white-alpha-100);
+  }
+
+  &.surface {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.surface-borderless {
+    background-color: var(--_color-surface);
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+
+  &.outlined {
+    background-color: var(--gray-50);
+    border: solid var(--stroke-1) var(--_color-border);
+    color: var(--gray-800);
+  }
+
+  &.dashed {
+    background-color: var(--gray-50);
+    border: dashed var(--stroke-1) var(--_color);
+    color: var(--gray-800);
+  }
+
+  &.borderless {
+    background-color: transparent;
+    border: solid var(--stroke-1) transparent;
+    color: var(--gray-800);
+  }
+}
+
+}

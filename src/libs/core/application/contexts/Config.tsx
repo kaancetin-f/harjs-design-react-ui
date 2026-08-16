@@ -3,22 +3,10 @@
 import React, { createContext, useState } from "react";
 
 type ConfigOptions = {
-  layout: {
-    sider: {
-      left: { element: React.ReactNode | null; active: boolean };
-      right: { element: React.ReactNode | null; active: boolean };
-    };
-  };
   perPage: number;
 };
 
 const defaultOptions: ConfigOptions = {
-  layout: {
-    sider: {
-      left: { element: null, active: true },
-      right: { element: null, active: true },
-    },
-  },
   perPage: 5,
 };
 
@@ -35,6 +23,7 @@ export const ConfigContext = createContext<ConfigContextProps>({
 });
 
 const ConfigProvider = ({ children }: ConfigProviderProps) => {
+  // states
   const [config, setConfig] = useState<ConfigOptions>(defaultOptions);
 
   return <ConfigContext.Provider value={{ config, setConfig }}>{children}</ConfigContext.Provider>;

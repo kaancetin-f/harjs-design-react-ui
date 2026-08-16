@@ -1,0 +1,142 @@
+---
+title: Chip
+description: Compact labels for tags, filters, and removable selections.
+---
+
+Chip is a small labeled token. `variant`, `color`, `size`, and `border.radius` stay independent. Add an icon or a photo on either side — the image radius follows the chip radius.
+
+## Import
+
+```tsx
+import { Chip } from "@harjs/react-ui";
+```
+
+```tsx
+<Chip text="Design" color="blue" />
+```
+
+## Usage
+
+<Example>
+  <ChipBasic />
+</Example>
+
+## Examples
+
+### Variants
+
+`variant` controls emphasis. The default is `outlined`. Use `filled` for a selected state, `surface` for a quiet tint, and `dashed` / `borderless` when the chip should recede.
+
+<Example>
+  <ChipVariants />
+</Example>
+
+### Colors
+
+`color` is independent of `variant`. Each row is a color token; columns are filled, surface, and outlined.
+
+<Example>
+  <ChipColors />
+</Example>
+
+### Sizes
+
+`size` changes height and type. The default is `lg`.
+
+<Example>
+  <ChipSizes />
+</Example>
+
+### Radius
+
+Set `border.radius` to any radius token. `full` is the pill shape. Photos use the same token, inset by a few pixels so the inner corners stay concentric.
+
+<Example>
+  <ChipRadius />
+</Example>
+
+### Image
+
+Pass `image` with a `src`. `position` is `start` (left) by default; set `end` for the right. Pass an array to put a photo on both sides.
+
+<Example>
+  <ChipImage />
+</Example>
+
+### Font weight
+
+`fontWeight` accepts numeric tokens from `100` to `900`.
+
+<Example>
+  <ChipFontWeight />
+</Example>
+
+### Uppercase
+
+`upperCase` uppercases `text`.
+
+<Example>
+  <ChipUpperCase />
+</Example>
+
+### Icons
+
+Pass `icon.element`. `position` is `start` by default; set `end` to place the mark after the label.
+
+<Example>
+  <ChipIcons />
+</Example>
+
+### Delete
+
+`onDelete` renders a close control. The click does not bubble to parent handlers.
+
+<Example>
+  <ChipDelete />
+</Example>
+
+### Custom color
+
+`customColor` overrides the background. Pair it with `variant="borderless"` when you do not want a token border.
+
+<Example>
+  <ChipCustomColor />
+</Example>
+
+### Status
+
+Surface chips with `radius: "full"` work as compact status tokens.
+
+<Example>
+  <ChipStatus />
+</Example>
+
+### Filters
+
+Toggle `variant` between `outlined` and `filled` to treat chips as a multi-select filter.
+
+<Example>
+  <ChipFilters />
+</Example>
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `text` | `string` | — |
+| `variant` | `"filled" \| "surface" \| "surface-borderless" \| "outlined" \| "dashed" \| "borderless"` | `"outlined"` |
+| `color` | `"blue" \| "purple" \| "pink" \| "red" \| "orange" \| "yellow" \| "green" \| "teal" \| "cyan" \| "gray" \| "white"` | `"gray"` |
+| `customColor` | `string` | — |
+| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl"` | `"lg"` |
+| `border.radius` | `"0" \| "2" \| "4" \| "6" \| "8" \| "12" \| "16" \| "20" \| "40" \| "full"` | `"4"` |
+| `icon.element` | `JSX.Element` | — |
+| `icon.position` | `"start" \| "end"` | `"start"` |
+| `image.src` | `string` | — |
+| `image.alt` | `string` | `""` |
+| `image.position` | `"start" \| "end"` | `"start"` |
+| `image.fit` | `"cover" \| "contain"` | `"cover"` |
+| `upperCase` | `boolean` | — |
+| `fontWeight` | `"100" \| … \| "900"` | — |
+| `onDelete` | `(event) => void` | — |
+
+`text` is required. `customColor` overrides the background and sets the label to black. `image` accepts one photo or an array for both sides. The photo radius tracks `border.radius`.

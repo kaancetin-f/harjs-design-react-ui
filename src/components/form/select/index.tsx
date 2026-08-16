@@ -9,12 +9,15 @@ import Checkbox from "../checkbox";
 import { Option } from "../../../libs/infrastructure/types/index";
 import Utils from "../../../libs/infrastructure/shared/Utils";
 import ReactDOM from "react-dom";
+import Button from "../button";
+import { Icon } from "../../icons";
 
 const Select: React.FC<Props> = ({
   variant = "outlined",
   status,
-  color,
-  border = { radius: "sm" },
+  color = "gray",
+  border = { radius: "4" },
+  size = "lg",
   style,
   options,
   value,
@@ -30,9 +33,9 @@ const Select: React.FC<Props> = ({
   readOnly,
   config = { clear: true, validation: { text: "visible" } },
 }) => {
-  const _selectionClassName: string[] = ["selections"];
-
   // refs
+  const _mWrapperClassName: string[] = ["wrapper"];
+  const _selectionClassName: string[] = ["selections"];
   const _arSelect = useRef<HTMLDivElement>(null);
   const _singleInput = useRef<HTMLInputElement>(null);
   const _multipleInput = useRef<HTMLDivElement>(null);
@@ -51,20 +54,14 @@ const Select: React.FC<Props> = ({
   const [singleInputText, setSingleInputText] = useState<string>("");
   const [navigationIndex, setNavigationIndex] = useState<number>(0);
 
+  // hooks
   // options referans kararlılığı için JSON key
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const optionsKey = useMemo(() => JSON.stringify(options), [options]);
 
+  // variables
   _selectionClassName.push(
-    ...Utils.GetClassName(
-      variant,
-      undefined,
-      validation?.text ? "red" : "light",
-      border,
-      undefined,
-      undefined,
-      undefined,
-    ),
+    ...Utils.GetClassName(variant, undefined, validation?.text ? "red" : "gray", border, size, undefined, undefined),
   );
 
   // methods
@@ -134,6 +131,31 @@ const Select: React.FC<Props> = ({
     }
   };
 
+  const handleSelectAll = () => {
+    if (!multiple || filteredOptions.length === 0) return;
+
+    const allFilteredSelected = filteredOptions.every((option) =>
+      value.some((item) => item.value === option.value && item.text === option.text),
+    );
+
+    if (allFilteredSelected) {
+      onChange(
+        value.filter(
+          (item) => !filteredOptions.some((option) => option.value === item.value && option.text === item.text),
+        ),
+      );
+      return;
+    }
+
+    const nextValue = [...value];
+    filteredOptions.forEach((option) => {
+      if (!nextValue.some((item) => item.value === option.value && item.text === option.text)) {
+        nextValue.push(option);
+      }
+    });
+    onChange(nextValue);
+  };
+
   const handleCleanSelection = () => {
     if (multiple) {
       if (_searchField.current) setSearchText("");
@@ -189,6 +211,7 @@ const Select: React.FC<Props> = ({
       .replace(/[a-z]/g, (match) => match.toUpperCase());
   };
 
+  // useEffects
   // value değiştiğinde input metnini güncelle
   useEffect(() => {
     if (multiple) setSearchText("");
@@ -246,7 +269,6 @@ const Select: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [optionsOpen]);
 
-  // arama metni değiştiğinde filtrele
   useEffect(() => {
     if (searchText.length > 0 && onSearch) {
       onSearch(searchText);
@@ -291,12 +313,22 @@ const Select: React.FC<Props> = ({
 
   const handleBlur = () => setOptionsOpen(false);
 
+  // variables
+  const selectedFilteredCount = multiple
+    ? filteredOptions.filter((option) =>
+        value.some((item) => item.value === option.value && item.text === option.text),
+      ).length
+    : 0;
+
+  const allFilteredSelected =
+    multiple && filteredOptions.length > 0 && selectedFilteredCount === filteredOptions.length;
+
   return (
-    <div ref={_arSelect} className="ar-select-wrapper">
+    <div ref={_arSelect} className="har-select-wrapper">
       {/* :Begin: Select and Multiple Select Field */}
-      <div ref={_multipleInput} className="ar-select">
+      <div ref={_multipleInput} className="har-select">
         {multiple ? (
-          <div className="wrapper">
+          <div className={_mWrapperClassName.map((c) => c).join(" ")}>
             <div
               {...(value.length > 0
                 ? {
@@ -316,6 +348,7 @@ const Select: React.FC<Props> = ({
                 : {})}
               className={_selectionClassName.join(" ")}
               onClick={() => {
+                if (disabled || readOnly) return;
                 onClick && onClick();
                 setOptionsOpen((prev) => !prev);
               }}
@@ -327,15 +360,31 @@ const Select: React.FC<Props> = ({
                     variant={status?.selected?.variant || "filled"}
                     color={status?.selected?.color || status?.color}
                     text={_value.text}
+                    size={status?.selected?.size || size}
+                    border={{ radius: "full" }}
+                    {...(!disabled &&
+                      !readOnly && {
+                        onDelete: () => {
+                          onChange(value.filter((v) => !(v.value === _value.value && v.text === _value.text)));
+                        },
+                      })}
                   />
                 ))}
               </div>
+              <span className="toggle-arrow" aria-hidden="true">
+                {optionsOpen ? (
+                  <Icon icon="ChevronUp" size={16} />
+                ) : (
+                  <Icon icon="ChevronDown" size={16} />
+                )}
+              </span>
             </div>
 
             <span
               ref={_placeholder}
               className={`placeholder ${value.length > 0 ? "visible" : "hidden"}`}
               onClick={() => {
+                if (disabled || readOnly) return;
                 onClick && onClick();
                 setOptionsOpen((prev) => !prev);
               }}
@@ -347,10 +396,11 @@ const Select: React.FC<Props> = ({
         ) : (
           <Input
             ref={_singleInput}
-            style={{ ...style, paddingRight: config.clear === false ? "1.5rem" : "3.5rem" }}
+            style={{ ...style }}
             variant={variant}
             color={!Utils.IsNullOrEmpty(validation?.text) ? "red" : color}
             border={{ radius: border.radius }}
+            size={size}
             value={singleInputText}
             onClick={() => {
               onClick && onClick();
@@ -372,10 +422,53 @@ const Select: React.FC<Props> = ({
             }}
             disabled={disabled}
             readOnly={readOnly}
-          />
+          >
+            {config?.clear === true && (
+              <Input.AddonAfter>
+                <Button
+                  variant="borderless"
+                  color="red"
+                  border={border}
+                  size={size}
+                  shape="square"
+                  icon={{
+                    element: <Icon icon="X" size={16} fill="var(--red-500)" />,
+                  }}
+                  onClick={(event) => {
+                    if (disabled) return;
+                    event.stopPropagation();
+                    handleCleanSelection();
+                  }}
+                />
+              </Input.AddonAfter>
+            )}
+
+            <Input.AddonAfter>
+              <Button
+                variant="borderless"
+                color={color}
+                border={border}
+                size={size}
+                shape="square"
+                icon={{
+                  element: optionsOpen ? (
+                    <Icon icon="ChevronUp" size={16} />
+                  ) : (
+                    <Icon icon="ChevronDown" size={16} />
+                  ),
+                }}
+                onClick={(event) => {
+                  if (disabled) return;
+                  onClick && onClick();
+                  event.stopPropagation();
+                  setOptionsOpen((prev) => !prev);
+                }}
+              />
+            </Input.AddonAfter>
+          </Input>
         )}
 
-        <div className="buttons">
+        {/* <div className="buttons">
           {config?.clear === true && (
             <span
               className={`button-clear ${!disabled && (multiple ? value.length > 0 : value) ? "opened" : "closed"}`}
@@ -396,10 +489,10 @@ const Select: React.FC<Props> = ({
               setOptionsOpen((prev) => !prev);
             }}
           />
-        </div>
+        </div> */}
 
         {multiple && validation && config.validation?.text === "visible" && (
-          <span className="validation">{validation.text}</span>
+          <span className="har-validation-text">{validation.text}</span>
         )}
       </div>
       {/* :End: Select and Multiple Select Field */}
@@ -408,7 +501,7 @@ const Select: React.FC<Props> = ({
       {!disabled &&
         optionsOpen &&
         ReactDOM.createPortal(
-          <div ref={_options} className="ar-select-options">
+          <div ref={_options} className="har-select-options">
             {multiple && (
               <div className="search-field">
                 <Input
@@ -419,6 +512,29 @@ const Select: React.FC<Props> = ({
                   onChange={(event) => setSearchText(event.target.value)}
                   onClick={(event) => event.stopPropagation()}
                 />
+              </div>
+            )}
+
+            {multiple && filteredOptions.length > 0 && (
+              <div
+                className={["select-all", allFilteredSelected ? "selected" : ""].filter(Boolean).join(" ")}
+                role="button"
+                tabIndex={0}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleSelectAll();
+                }}
+                onKeyDown={(event) => {
+                  if (event.key !== "Enter" && event.key !== " ") return;
+                  event.preventDefault();
+                  handleSelectAll();
+                }}
+              >
+                <Checkbox checked={!!allFilteredSelected} color={allFilteredSelected ? "blue" : "gray"} disabled />
+                <span className="label">{allFilteredSelected ? "Tümünü Kaldır" : "Tümünü Seç"}</span>
+                <span className="count">
+                  {selectedFilteredCount}/{filteredOptions.length}
+                </span>
               </div>
             )}
 
@@ -442,7 +558,7 @@ const Select: React.FC<Props> = ({
                         handleItemSelected(option);
                       }}
                     >
-                      {multiple && <Checkbox checked={isItem} color={isItem ? "blue" : "light"} disabled />}
+                      {multiple && <Checkbox checked={isItem} color={isItem ? "blue" : "gray"} disabled />}
                       <span>{option.text}</span>
                     </li>
                   );

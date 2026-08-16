@@ -1,0 +1,19 @@
+.har-box {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--space-8);
+
+  &.is-start {
+    justify-content: flex-start;
+  }
+
+  &.is-center {
+    justify-content: center;
+  }
+
+  &.is-end {
+    justify-content: flex-end;
+  }
+}

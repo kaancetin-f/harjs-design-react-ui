@@ -1,0 +1,172 @@
+.har-typography-blockquote {
+  margin: 0;
+  padding: var(--space-12) var(--space-16);
+  border: 0;
+  border-left: 3px solid var(--gray-300);
+  border-radius: 0 var(--radius-6) var(--radius-6) 0;
+  background: color-mix(in srgb, var(--gray-200) 55%, transparent);
+  color: var(--gray-800);
+  font-family: var(--system);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+
+  > .cite {
+    display: block;
+    margin-top: var(--space-8);
+    color: var(--gray-500);
+    font-size: 0.8125rem;
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1.25;
+  }
+
+  &.left {
+    text-align: left;
+  }
+
+  &.center {
+    text-align: center;
+  }
+
+  &.right {
+    text-align: right;
+  }
+
+  &.size-xs {
+    font-size: 0.75rem;
+    line-height: 1.125rem;
+  }
+
+  &.size-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  &.size-md {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+
+  &.size-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+
+  &.size-xl {
+    font-size: 1.25rem;
+    line-height: 1.875rem;
+  }
+
+  &.size-2xl {
+    font-size: 1.5rem;
+    line-height: 2.25rem;
+  }
+
+  &.blue {
+    border-left-color: var(--blue-500);
+    background: color-mix(in srgb, var(--blue-500) 8%, transparent);
+  }
+
+  &.purple {
+    border-left-color: var(--purple-500);
+    background: color-mix(in srgb, var(--purple-500) 8%, transparent);
+  }
+
+  &.pink {
+    border-left-color: var(--pink-500);
+    background: color-mix(in srgb, var(--pink-500) 8%, transparent);
+  }
+
+  &.red {
+    border-left-color: var(--red-500);
+    background: color-mix(in srgb, var(--red-500) 8%, transparent);
+  }
+
+  &.orange {
+    border-left-color: var(--orange-500);
+    background: color-mix(in srgb, var(--orange-500) 8%, transparent);
+  }
+
+  &.yellow {
+    border-left-color: var(--yellow-500);
+    background: color-mix(in srgb, var(--yellow-500) 8%, transparent);
+  }
+
+  &.green {
+    border-left-color: var(--green-500);
+    background: color-mix(in srgb, var(--green-500) 8%, transparent);
+  }
+
+  &.teal {
+    border-left-color: var(--teal-500);
+    background: color-mix(in srgb, var(--teal-500) 8%, transparent);
+  }
+
+  &.cyan {
+    border-left-color: var(--cyan-500);
+    background: color-mix(in srgb, var(--cyan-500) 8%, transparent);
+  }
+
+  &.gray {
+    border-left-color: var(--gray-300);
+    background: color-mix(in srgb, var(--gray-200) 55%, transparent);
+  }
+
+  &.white {
+    border-left-color: var(--gray-300);
+    background: color-mix(in srgb, var(--white-alpha-100) 6%, transparent);
+  }
+
+  &.gray-50 {
+    border-left-color: var(--gray-50);
+    background: color-mix(in srgb, var(--gray-50) 55%, transparent);
+  }
+
+  &.gray-100 {
+    border-left-color: var(--gray-100);
+    background: color-mix(in srgb, var(--gray-100) 55%, transparent);
+  }
+
+  &.gray-200 {
+    border-left-color: var(--gray-200);
+    background: color-mix(in srgb, var(--gray-200) 55%, transparent);
+  }
+
+  &.gray-300 {
+    border-left-color: var(--gray-300);
+    background: color-mix(in srgb, var(--gray-300) 18%, transparent);
+  }
+
+  &.gray-400 {
+    border-left-color: var(--gray-400);
+    background: color-mix(in srgb, var(--gray-400) 12%, transparent);
+  }
+
+  &.gray-500 {
+    border-left-color: var(--gray-500);
+    background: color-mix(in srgb, var(--gray-500) 10%, transparent);
+  }
+
+  &.gray-600 {
+    border-left-color: var(--gray-600);
+    background: color-mix(in srgb, var(--gray-600) 10%, transparent);
+  }
+
+  &.gray-700 {
+    border-left-color: var(--gray-700);
+    background: color-mix(in srgb, var(--gray-700) 10%, transparent);
+  }
+
+  &.gray-800 {
+    border-left-color: var(--gray-800);
+    background: color-mix(in srgb, var(--gray-800) 8%, transparent);
+  }
+
+  &.gray-900 {
+    border-left-color: var(--gray-900);
+    background: color-mix(in srgb, var(--gray-900) 8%, transparent);
+  }
+}

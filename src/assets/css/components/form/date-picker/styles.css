@@ -1,0 +1,90 @@
+@import url("./color.css");
+@import url("./radius.css");
+@import url("./size.css");
+
+@import url("./calendar/calendar.css");
+@import url("./calendar/header.css");
+@import url("./calendar/content.css");
+@import url("./calendar/footer.css");
+
+@import url("./clock/clock.css");
+@import url("./clock/header.css");
+@import url("./clock/content.css");
+@import url("./clock/footer.css");
+
+:root {
+  --header-height: 2.75rem;
+  --footer-height: 2.75rem;
+}
+
+.har-date-picker {
+  position: relative;
+
+  > .container {
+    display: block;
+
+    > .inputs-field {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 0 0.5rem;
+      box-sizing: border-box;
+      cursor: pointer;
+      outline: none;
+      transition:
+        background 250ms,
+        border 250ms,
+        box-shadow 250ms ease-in-out;
+
+      &.disabled {
+        cursor: no-drop;
+        opacity: 0.65;
+      }
+
+      &:has(.flex-direction-column) {
+        height: auto;
+        padding-block: 0.35rem;
+      }
+
+      > .flex {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .har-input-wrapper {
+        flex: 1;
+        min-width: 0;
+        width: auto;
+
+        .har-input > label,
+        .har-validation-text {
+          display: none;
+        }
+      }
+
+      svg {
+        flex-shrink: 0;
+        fill: currentColor;
+      }
+    }
+  }
+
+  > label {
+    position: absolute;
+    top: 0;
+    transform: translateY(-50%);
+    left: 0.55rem;
+    padding: 0 0.5rem;
+    color: var(--gray-600);
+    font-size: 0.75rem;
+    line-height: 1;
+    letter-spacing: 1px;
+    transition: top 250ms ease-in-out, transform 250ms ease-in-out;
+    z-index: 1;
+  }
+
+  > .har-validation-text {
+    display: block;
+    margin-top: 0.35rem;
+  }
+}

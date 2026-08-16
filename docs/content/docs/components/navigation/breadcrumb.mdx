@@ -1,0 +1,162 @@
+---
+title: Breadcrumb
+description: Hierarchical trail of the current page. Use it to show where the user is and to move back up the tree.
+---
+
+Breadcrumb shows the page’s place in a hierarchy. It is a trail, not a menu. The last item is the current page. Earlier items can be links (`href`) or actions (`onClick`). The layer is a `<nav>` with an ordered list. It does not depend on a router — pass a native `href`, or wrap the label with your own Link.
+
+Menu is primary navigation. Pagination moves through a dataset. Steps and Wizard move through a process.
+
+## Import
+
+```tsx
+import { Breadcrumb } from "@harjs/react-ui";
+```
+
+```tsx
+<Breadcrumb
+  items={[
+    { label: "Home", href: "/home" },
+    { label: "Products", href: "/products" },
+    { label: "Electronics" },
+  ]}
+/>
+```
+
+## Usage
+
+`items` is required. An empty array renders nothing. A single item is the current page. Default `separator` is `/`.
+
+<Example>
+  <BreadcrumbBasic />
+</Example>
+
+## Examples
+
+### Current page
+
+The last item is not a link. It receives `aria-current="page"`. `href` and `onClick` on that item are ignored.
+
+<Example>
+  <BreadcrumbCurrent />
+</Example>
+
+### Custom separator
+
+Pass a string or a node. Separators are decorative and `aria-hidden`.
+
+<Example>
+  <BreadcrumbSeparator />
+</Example>
+
+### Icon
+
+Put an icon in `label`. Keep a text name next to icon-only marks.
+
+<Example>
+  <BreadcrumbIcon />
+</Example>
+
+### Clickable items
+
+`href` renders a native `<a>`. The library does not import Next.js Link.
+
+<Example>
+  <BreadcrumbClickable />
+</Example>
+
+### Action item
+
+`onClick` without `href` renders a button. Use it when the trail is owned by in-app state.
+
+<Example>
+  <BreadcrumbAction />
+</Example>
+
+### Custom content
+
+`label` accepts a React node. Keep the crumb short so the trail stays readable.
+
+<Example>
+  <BreadcrumbCustom />
+</Example>
+
+### Dropdown menu
+
+Pass `menu` on an item for siblings or shortcuts. The chevron opens a list. The crumb itself still navigates.
+
+<Example>
+  <BreadcrumbMenu />
+</Example>
+
+### Long breadcrumb
+
+`maxItems` collapses the middle. The ellipsis opens a menu of hidden pages so you can jump without expanding the trail.
+
+<Example>
+  <BreadcrumbLong />
+</Example>
+
+### Responsive
+
+Crumbs wrap. Long labels ellipsis. On narrow viewports the max label width tightens.
+
+<Example>
+  <BreadcrumbResponsive />
+</Example>
+
+### Real-world
+
+A settings page inside a project.
+
+<Example>
+  <BreadcrumbRealWorld />
+</Example>
+
+## Breadcrumb vs other navigation
+
+| | Breadcrumb | Menu | Pagination | Steps |
+| --- | --- | --- | --- | --- |
+| Purpose | Page hierarchy | Primary navigation | Dataset pages | Process progression |
+| Typical place | Below the header | Sidebar or bar | Below a table | Wizard or onboarding |
+| Current item | Last crumb | Selected item | Active page | Active step |
+
+Do not replace the main nav with a breadcrumb. Do not use it for a linear flow — that is Steps or Wizard.
+
+## Accessibility
+
+The root is `<nav aria-label="Breadcrumb">` with an `<ol>`. The current crumb is `aria-current="page"`. Separators are `aria-hidden`. Links, action buttons, and dropdown triggers are keyboard reachable. Dropdowns are `role="menu"`. Escape and outside click close them. Disabled crumbs stay in the trail and are not activated. `prefers-reduced-motion: reduce` drops the hover transition.
+
+## Best practices
+
+- Use Breadcrumb for hierarchical location, not as the main nav.
+- Keep labels short.
+- Make the current page obvious — leave `href` off the last item.
+- Give keyboard users the same ancestors as pointer users.
+- Collapse long trails with `maxItems`. The ellipsis menu keeps hidden pages reachable.
+- Use `menu` for sibling shortcuts. Do not replace the crumb’s own `href` with the dropdown.
+- Do not hide unique information only inside a breadcrumb.
+- On small screens, keep the trail readable; wrapping and ellipsis are the default.
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `items` | `BreadcrumbItem[]` | — | Trail. Last item is the current page. |
+| `separator` | `ReactNode` | `"/"` | Decorative divider between crumbs. |
+| `maxItems` | `number` | — | Collapse the middle when the trail is longer. The ellipsis opens a menu. Minimum useful value is `2`. |
+| `aria-label` | `string` | `"Breadcrumb"` | Accessible name of the landmark. |
+| `className` | `string` | — | Extra class on the `<nav>`. |
+
+Native `nav` attributes are forwarded.
+
+### Item
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `key` | `string \| number` | Stable React key. Do not use the label — duplicates are allowed. |
+| `label` | `ReactNode` | Visible crumb. |
+| `href` | `string` | Renders an `<a>`. Ignored on the last item and on disabled items. |
+| `onClick` | `MouseEventHandler` | Action handler. Without `href`, renders a button. Ignored on the last item and on disabled items. |
+| `disabled` | `boolean` | Stays visible, cannot be activated. |
+| `menu` | `BreadcrumbItem[]` | Dropdown of related pages. One level. Ignored on the current item. |

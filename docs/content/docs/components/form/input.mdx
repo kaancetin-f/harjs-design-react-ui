@@ -1,0 +1,196 @@
+---
+title: Input
+description: Collect text, compose addons, or use specialized decimal, phone, and PIN fields.
+---
+
+Input is a styled text field. Compose prefixes and suffixes with `Input.AddonBefore` and `Input.AddonAfter`, place icons with `Input.Icon`, or switch to `Input.Pin`, `Input.Decimal`, `Input.FormattedDecimal`, and `Input.Phone`. Import `Input` once — the compounds hang off the same export.
+
+## Import
+
+```tsx
+import { Input } from '@harjs/react-ui'
+```
+
+```tsx
+<Input placeholder="Email" />
+<Input.AddonBefore>...</Input.AddonBefore>
+<Input.AddonAfter>...</Input.AddonAfter>
+<Input.Icon position="start">...</Input.Icon>
+<Input.Pin character={4} />
+<Input.Decimal locale="tr-TR" />
+<Input.FormattedDecimal locale="tr-TR" />
+<Input.Phone values={{ value: phone }} />
+```
+
+## Usage
+
+<Example>
+  <InputBasic />
+</Example>
+
+## Examples
+
+### Variants
+
+`variant` controls the field surface. `surface` is not available on Input.
+
+<Example>
+  <InputVariants />
+</Example>
+
+### Sizes
+
+`size` changes the field height. The default is `lg`.
+
+<Example>
+  <InputSizes />
+</Example>
+
+### Icons
+
+`Input.Icon` sits inside the field. Use `position: "start"` or `"end"`.
+
+<Example>
+  <InputIcons />
+</Example>
+
+### Addons
+
+`Input.AddonBefore` and `Input.AddonAfter` attach text prefixes and suffixes. They share the field height and join the corners.
+
+<Example>
+  <InputAddons />
+</Example>
+
+### With Button
+
+Pass a `Button` as an addon child for search, submit, or copy actions. The addon goes transparent so the button sits flush with the field.
+
+<Example>
+  <InputAddonButton />
+</Example>
+
+### With Select
+
+Pass a `Select` as an addon child for protocols, currencies, or units. Disable `config.clear` when the prefix should stay compact.
+
+<Example>
+  <InputAddonSelect />
+</Example>
+
+### Disabled
+
+`disabled` prevents editing and mutes the field.
+
+<Example>
+  <InputDisabled />
+</Example>
+
+### Validation
+
+`validation.text` shows an error message and paints the field red. Clear it when the value is valid.
+
+<Example>
+  <InputValidation />
+</Example>
+
+## Input.Pin
+
+`Input.Pin` renders a row of boxes for OTP-style entry. `character` is the number of digits.
+
+<Example>
+  <InputPin />
+</Example>
+
+## Input.Decimal
+
+`Input.Decimal` accepts locale-aware decimal input and emits a normalized value with `.` as the decimal separator.
+
+<Example>
+  <InputDecimal />
+</Example>
+
+## Input.FormattedDecimal
+
+`Input.FormattedDecimal` formats the value with locale grouping while typing (`1.234,56` in `tr-TR`). `onChange` still emits a normalized number string. Use `digits` to lock fraction length.
+
+<Example>
+  <InputFormattedDecimal />
+</Example>
+
+## Input.Phone
+
+`Input.Phone` formats a phone number. Pass `options` for the country select, and `values` with the digit string plus the selected country `option`.
+
+<Example>
+  <InputPhone />
+</Example>
+
+## Props
+
+### Input
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `variant` | `"filled" \| "outlined" \| "dashed" \| "borderless"` | `"outlined"` |
+| `color` | `"blue" \| "purple" \| "pink" \| "red" \| "orange" \| "yellow" \| "green" \| "teal" \| "cyan" \| "gray" \| "white"` | `"gray"` |
+| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl"` | `"lg"` |
+| `border.radius` | `"0" \| "2" \| "4" \| "6" \| "8" \| "12" \| "16" \| "20" \| "40" \| "full"` | `"4"` |
+| `placeholder` | `string` | — |
+| `value` | `string \| number` | — |
+| `upperCase` | `boolean` | — |
+| `disabled` | `boolean` | — |
+| `validation` | `{ text?: string; scrollTo?: boolean }` | — |
+| `children` | `Input.Icon \| Input.AddonBefore \| Input.AddonAfter` | — |
+
+Also accepts standard `input` HTML attributes (except `children`, `size`, `color`).
+
+### Input.AddonBefore / Input.AddonAfter
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `ReactNode` | — |
+
+Text, `Button`, `Select`, or another field. Controls inside the addon sit flush with the input.
+
+### Input.Icon
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `ReactNode` | — |
+| `position` | `"start" \| "end"` | — |
+
+### Input.Pin
+
+Accepts the same props as `Input`, plus `character`.
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `character` | `number` | — |
+
+### Input.Decimal
+
+Accepts the same props as `Input`. Emits a normalized decimal string on `onChange`.
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `locale` | `Intl.LocalesArgument` | `"tr-TR"` |
+
+### Input.FormattedDecimal
+
+Accepts the same props as `Input`. Displays grouped digits and emits a normalized decimal string on `onChange`.
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `locale` | `Intl.LocalesArgument` | `"tr-TR"` |
+| `digits` | `{ minimum?: number; maximum?: number }` | `{ minimum: 0; maximum: 2 }` |
+
+### Input.Phone
+
+Accepts the same props as `Input`, except the value is passed through `values`.
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `values` | `{ option?: string; value: string \| number }` | — |
+| `options` | `{ value: string \| number \| null; text: string }[]` | — |
+| `onSelected` | `(option) => void` | — |

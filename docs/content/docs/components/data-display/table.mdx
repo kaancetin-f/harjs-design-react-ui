@@ -1,0 +1,269 @@
+---
+title: Table
+description: A typed data grid for filters, sort, paging, selection, inline edit, and column layout.
+---
+
+Table is the data workbench in `@harjs/react-ui`. You pass a typed `data` array and a `columns` schema. The grid then owns search, operators, sort, paging, selection, sticky columns, grouped headers, nested fields, subrows, inline editors, and a column manager — client-side or as a query surface for your API.
+
+`trackBy` should return a stable id. Column `key` reads a field; pass `render` when the cell needs custom markup. Set `config.locale` to `"en"` or `"tr"` (default `"tr"`).
+
+## Import
+
+```tsx
+import { Table } from "@harjs/react-ui";
+```
+
+```tsx
+<Table
+  trackBy={(item) => item.id}
+  data={people}
+  columns={[
+    { title: "Name", key: "name" },
+    { title: "Role", key: "role" },
+  ]}
+  config={{ locale: "en" }}
+/>
+```
+
+## Anatomy
+
+A titled Table is a header, an optional toolbar, the grid, and a footer.
+
+- **Header** — `title`, `description`, `actions`, and the column manager when a header is shown.
+- **Filter row** — appears when `config.isSearchable` is on. Each column with `filterDataType` gets a field; `filters` adds a checklist.
+- **Column menu** — `config.isProperties` adds sort (asc, desc, clear) on each heading.
+- **Body** — cells from `key`, nested `{ field, nestedKey }`, `render`, or `editable`.
+- **Footer** — range copy plus `pagination` when you pass it.
+
+`data` and `columns` are required. Keep `trackBy` unique so selection, edit, and subrows do not collide.
+
+## Usage
+
+<Example>
+  <TableBasic />
+</Example>
+
+## Examples
+
+### Custom cells
+
+`render` replaces the default text. Use it for chips, avatars, and numeric alignment. `config.alignContent` and `config.width` still apply to the cell.
+
+<Example>
+  <TableRender />
+</Example>
+
+### Search
+
+`config.isSearchable` draws a filter row. Set `filterDataType` on every column you want to query. The filter menu operators are Contains, Does not contain, Equals, Does not equal, Starts with, Ends with, Is empty, and Is not empty.
+
+<Example>
+  <TableSearchable />
+</Example>
+
+### Filters
+
+`filters` is a checklist of `{ value, text }` options. `filterDataType: "boolean"` uses a true / false control. Combine both with free-text columns on the same row.
+
+<Example>
+  <TableFilters />
+</Example>
+
+### Sorting
+
+`config.isProperties` adds a menu on each heading. Sorting is client-side unless `isServerSide` is on — then `sortedParams` fires with the active keys.
+
+<Example>
+  <TableSorting />
+</Example>
+
+### Pagination
+
+Pass `pagination` and Table slices `data` for you. `totalRecords` drives the footer; `perPage` is the page size. On the server, send only the current page in `data` and keep `totalRecords` as the full count.
+
+<Example>
+  <TablePagination />
+</Example>
+
+### Selection
+
+`selections` adds a checkbox column and reports the checked rows. `selectionDisabled` locks a row. `previousSelections` restores a checked set when data reloads.
+
+<Example>
+  <TableSelections />
+</Example>
+
+### Inline editing
+
+`editable` turns a cell into an input, checkbox, decimal, date picker, or select. `onEditable` receives the patched row, `trackBy` value, and column key — write that row back into state.
+
+<Example>
+  <TableEditable />
+</Example>
+
+### Column groups
+
+Set the same `group.title` on consecutive columns. Table merges them into one band with `colSpan`. `group.color` and `group.align` style that band.
+
+<Example>
+  <TableGroups />
+</Example>
+
+### Sticky columns
+
+`config.sticky: "left"` or `"right"` pins a column while the rest scroll. Pair it with `config.scroll.maxHeight` so the header stays put vertically as well.
+
+<Example>
+  <TableSticky />
+</Example>
+
+### Column manager
+
+The manager is on by default whenever the table header is visible. Toggle visibility, drag order, and PDF columns. Set a unique `columnManagement.storageKey` so layouts do not collide across pages. `pdfExport: false` hides the PDF toggles.
+
+<Example>
+  <TableColumns />
+</Example>
+
+### Header actions
+
+`actions` is `create`, `export`, `import`, and `delete`. Create is immediate. Export, import, and delete open a confirm dialog. Import uses Upload and calls `onClick(formData, files, base64)`. Export receives `{ pdfColumns }` from the manager.
+
+<Example>
+  <TableActions />
+</Example>
+
+### Nested fields
+
+When the value lives on a nested object, pass `key: { field, nestedKey }` instead of a top-level key.
+
+<Example>
+  <TableNested />
+</Example>
+
+### Subrows
+
+Put children on `subitems` (or `config.subrow.selector`). `config.subrow.button` shows the expand control. `openAutomatically` expands every node. `isTreeView` tightens nested indent. `config.subrow.render` can replace the child table with a custom panel.
+
+<Example>
+  <TableSubrows />
+</Example>
+
+### Row tone
+
+`rowBackgroundColor` returns a CSS color per item. Use it for leave, overdue, or review states without changing cell renderers.
+
+<Example>
+  <TableRowTone />
+</Example>
+
+### Server-side
+
+`config.isServerSide` stops Table from filtering, sorting, or slicing. You own the query:
+
+1. `searchedParams(params, query, operator)` when filters change.
+2. `sortedParams(sorts, query)` when sort changes.
+3. `pagination.onChange(page, perPage)` when the pager moves.
+
+Feed the current page back through `data`, and the full match count through `pagination.totalRecords`.
+
+<Example>
+  <TableServer />
+</Example>
+
+## Client vs Server
+
+|                           | Client (`isServerSide` omitted) | Server (`isServerSide: true`)            |
+| ------------------------- | ------------------------------- | ---------------------------------------- |
+| Filter / search           | Table filters `data`            | You filter; Table emits `searchedParams` |
+| Sort                      | Table sorts `data`              | You sort; Table emits `sortedParams`     |
+| Pagination                | Table slices `data`             | You slice; pass the page in `data`       |
+| `pagination.totalRecords` | Footer uses the filtered length | Footer uses the number you pass          |
+
+For an API, keep `data` as the current page, set `isServerSide`, and map `searchedParams` / `sortedParams` / `onChange` onto query string or body params.
+
+## Locale
+
+`config.locale` selects built-in copy (`"tr"` default, `"en"` supported): empty state, filter operators, column manager, sort, and footer range. The English footer string still says “agreements”; override by wrapping with your own i18n later if you need a generic label.
+
+## Ref
+
+The table ref exposes `filterCleaner()` to clear every active filter from outside.
+
+```tsx
+const ref = useRef<HTMLTableElement>(null);
+ref.current?.filterCleaner();
+```
+
+## Props
+
+| Prop                 | Type                                                 | Default             |
+| -------------------- | ---------------------------------------------------- | ------------------- |
+| `data`               | `T[]`                                                | —                   |
+| `columns`            | `TableColumnProps<T>[]`                              | —                   |
+| `trackBy`            | `(item: T) => string`                                | —                   |
+| `title`              | `string`                                             | —                   |
+| `description`        | `string`                                             | —                   |
+| `actions`            | `{ import?; export?; create?; delete? }`             | —                   |
+| `selections`         | `(items: T[]) => void`                               | —                   |
+| `selectionDisabled`  | `(item: T) => boolean`                               | —                   |
+| `previousSelections` | `T[]`                                                | —                   |
+| `sortedParams`       | `(params, query) => void`                            | —                   |
+| `searchedParams`     | `(params, query, operator) => void`                  | —                   |
+| `onEditable`         | `(item, trackByValue, key) => void`                  | —                   |
+| `onPdfColumnsChange` | `(keys: string[]) => void`                           | —                   |
+| `onDnD`              | `(items: T[]) => void`                               | —                   |
+| `rowBackgroundColor` | `(item: T) => string`                                | —                   |
+| `pagination`         | `{ totalRecords; perPage; currentPage?; onChange? }` | —                   |
+| `children`           | `ReactNode`                                          | — extra header slot |
+
+### Column
+
+| Prop                  | Type                                                                                                                   | Default |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------- |
+| `title`               | `string`                                                                                                               | —       |
+| `key`                 | `keyof T` or `{ field; nestedKey }`                                                                                    | —       |
+| `render`              | `(item: T) => ReactNode`                                                                                               | —       |
+| `filterDataType`      | `"string" \| "number" \| "date" \| "datetime-local" \| "date-multiple" \| "datetime-local-multiple" \| "boolean" \| …` | —       |
+| `filters`             | `{ value; text }[]`                                                                                                    | —       |
+| `editable`            | `(item) => { type; options?; method?; where? }`                                                                        | —       |
+| `isShow`              | `boolean`                                                                                                              | `true`  |
+| `pdfExport`           | `boolean`                                                                                                              | `true`  |
+| `group`               | `{ title: string; color?; align? }`                                                                                    | —       |
+| `config.width`        | `number \| "auto" \| "fit-content" \| "max-content" \| "min-content"`                                                  | —       |
+| `config.alignContent` | `"left" \| "center" \| "right"`                                                                                        | —       |
+| `config.sticky`       | `"left" \| "right"`                                                                                                    | —       |
+| `config.textWrap`     | `"wrap" \| "nowrap"`                                                                                                   | —       |
+| `config.isProperties` | `boolean`                                                                                                              | `true`  |
+| `config.step`         | `{ minutes?: number }`                                                                                                 | —       |
+
+`editable.type` is `"string"`, `"number"`, `"boolean"`, `"decimal"`, `"input-formatted-decimal"`, `"date-picker"`, `"single-select"`, or `"multiple-select"`. `where: true` disables that editor.
+
+### Config
+
+| Prop                          | Type                   | Default                         |
+| ----------------------------- | ---------------------- | ------------------------------- |
+| `locale`                      | `Intl.LocalesArgument` | `"tr"`                          |
+| `isSearchable`                | `boolean`              | `false`                         |
+| `isServerSide`                | `boolean`              | `false`                         |
+| `isProperties`                | `boolean`              | —                               |
+| `scroll.maxHeight`            | `number`               | —                               |
+| `columnManagement.enabled`    | `boolean`              | `true` when the header is shown |
+| `columnManagement.storageKey` | `string`               | derived from `title`            |
+| `columnManagement.pdfExport`  | `boolean`              | `true`                          |
+| `subrow.selector`             | `string`               | `"subitems"`                    |
+| `subrow.button`               | `boolean`              | `false`                         |
+| `subrow.openAutomatically`    | `boolean`              | `false`                         |
+| `subrow.render`               | `{ styles; element }`  | —                               |
+| `isTreeView`                  | `boolean`              | —                               |
+| `validation.errors`           | `Errors<T>`            | —                               |
+| `dnd.renderItem`              | `ReactElement`         | —                               |
+
+### Actions
+
+| Prop                                                                | Notes                                                   |
+| ------------------------------------------------------------------- | ------------------------------------------------------- |
+| `create.tooltip` / `create.onClick`                                 | Immediate. No dialog.                                   |
+| `export.tooltip` / `title` / `message` / `content` / `onClick`      | Confirm dialog. `onClick` may receive `{ pdfColumns }`. |
+| `import.tooltip` / `title` / `message` / `allowedTypes` / `onClick` | Confirm dialog with Upload.                             |
+| `delete.tooltip` / `title` / `message` / `onClick`                  | Confirm dialog. Combine with `selections`.              |

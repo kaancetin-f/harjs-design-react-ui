@@ -1,0 +1,21 @@
+/* Large (Tablet Yatay & Büyük Tablet) */
+@media (min-width: 768px) and (max-width: 991px) {
+  .har-layout {
+    > .har-sider.right {
+      width: 100%;
+    }
+
+    > .har-content {
+      width: 100%;
+
+      > .har-header {
+        padding: 0 2.5rem;
+      }
+
+      > .har-section:not(.full-width) {
+        max-width: none;
+        padding: 2.5rem;
+      }
+    }
+  }
+}

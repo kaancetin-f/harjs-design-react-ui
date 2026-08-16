@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "../../form/button";
-import { ARIcon } from "../../icons";
-import Box from "../grid-system/box/Box";
+import { Icon } from "../../icons";
+import Box from "../../layout/grid-system/box/Box";
 import { View } from "../../../libs/infrastructure/types";
 
 interface IProps {
@@ -34,21 +34,23 @@ const Header = ({ states, config }: IProps) => {
   return (
     <div className="header">
       <Box>
-        <Button variant="outlined" color="green" border={{ radius: "xxl" }} onClick={() => changeWeek("today")}>
+        <Button variant="outlined" color="green" border={{ radius: "16" }} onClick={() => changeWeek("today")}>
           Bugün
         </Button>
         <Button
           variant="borderless"
-          color="light"
-          border={{ radius: "pill" }}
-          icon={{ element: <ARIcon icon={"ArrowLeft"} stroke="currentColor" /> }}
+          color="gray"
+          border={{ radius: "full" }}
+          shape="square"
+          icon={{ element: <Icon icon={"ArrowLeft"} stroke="currentColor" /> }}
           onClick={() => changeWeek("prev")}
         />
         <Button
           variant="borderless"
-          color="light"
-          border={{ radius: "pill" }}
-          icon={{ element: <ARIcon icon={"ArrowRight"} stroke="currentColor" /> }}
+          color="gray"
+          border={{ radius: "full" }}
+          shape="square"
+          icon={{ element: <Icon icon={"ArrowRight"} stroke="currentColor" /> }}
           onClick={() => changeWeek("next")}
         />
 

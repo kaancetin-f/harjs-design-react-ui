@@ -1,0 +1,126 @@
+---
+title: Notification
+description: Viewport toasts for system events. Use the hook in an app. Flip trigger when you render the component yourself.
+---
+
+Notification is a toast, not an inline Alert. Default `direction` is `"bottom-left"`. Default `duration` is `3000`. The close control dismisses immediately and clears the timer. `error` and `warning` use `role="alert"`; `success` and `information` use `role="status"`.
+
+In an app, wrap once with `NotificationProvider` and call `useNotification()`. The hook returns `show`, `success`, `error`, `warning`, `information`, and `promise`. Confirmations are a separate hook: `useConfirm`.
+
+## Import
+
+```tsx
+import { Notification, NotificationProvider, useNotification } from "@harjs/react-ui";
+```
+
+```tsx
+<NotificationProvider direction="bottom-left" duration={3000}>
+  <App />
+</NotificationProvider>
+```
+
+```tsx
+const notification = useNotification();
+
+notification.success("Aurora is live", {
+  message: "Sprint 24 shipped to production.",
+});
+
+notification.error("Publish failed");
+```
+
+```tsx
+await notification.promise(saveAurora(), {
+  loading: { title: "Publishing…", message: "Deploying Sprint 24." },
+  success: (data) => ({ title: "Published", message: `${data.name} is live.` }),
+  error: { title: "Publish failed", message: "Check the pipeline." },
+});
+```
+
+Or render Notification yourself. `trigger` must change to push — the first mount does not create a toast.
+
+```tsx
+const [trigger, setTrigger] = useState(false);
+
+<Button onClick={() => setTrigger((value) => !value)}>Show toast</Button>
+<Notification
+  title="Aurora is live"
+  message="Sprint 24 shipped to production."
+  status="success"
+  direction="bottom-left"
+  trigger={trigger}
+/>
+```
+
+## Usage
+
+`title` is required on the component. Omit `message` when the title is enough. Status can be a semantic token or an HTTP-style number.
+
+<Example>
+  <NotificationBasic />
+</Example>
+
+## Examples
+
+### Hook
+
+`useNotification` must sit under `NotificationProvider`. Status methods take a title and optional `{ message, duration }`. `show` takes a full payload when the status is dynamic.
+
+<Example>
+  <NotificationHook />
+</Example>
+
+### Status
+
+`information`, `success`, `warning`, and `error`. Numbers map by hundreds: `1xx` information, `2xx` success, `3xx` warning, `4xx` and `5xx` error. Anything else falls back to `information`.
+
+<Example>
+  <NotificationStatus />
+</Example>
+
+### Direction
+
+`bottom-left` (default), `bottom-right`, `top-left`, `top-right`. Each toast keeps the corner it was created with. Set it on the provider for hook toasts.
+
+<Example>
+  <NotificationDirection />
+</Example>
+
+### Duration
+
+`duration` is milliseconds. Default is `3000`. `0` or `Infinity` keeps the toast until it is updated or closed. The close button ignores the remaining time. Set it on the provider, or pass it per call.
+
+<Example>
+  <NotificationDuration />
+</Example>
+
+### Promise
+
+`notification.promise` shows one toast for a pending promise, then updates that same toast when it resolves or rejects. Pass a `Promise` or a function that returns one. Each state can be a string, an object (`title`, `message`, `status`, `duration`), or a function of the resolved value / rejection reason.
+
+Loading uses `information` and stays until the promise settles. The toast shows a Spinner in the icon slot, then swaps back to the status mark on success or error. Success and error then auto-dismiss with the provider duration.
+
+<Example>
+  <NotificationPromise />
+</Example>
+
+### Stack
+
+Each `trigger` flip — or each hook call — pushes another toast. They stack with a gap. More than five compact into a pile; the latest stays fully opaque.
+
+<Example>
+  <NotificationStack />
+</Example>
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `title` | `string` | — |
+| `message` | `string` | — |
+| `status` | `"success" \| "warning" \| "information" \| "error" \| number` | `"information"` |
+| `direction` | `"top-left" \| "top-right" \| "bottom-left" \| "bottom-right"` | `"bottom-left"` |
+| `trigger` | `boolean` | `false` |
+| `duration` | `number` | `3000` |
+
+`useNotification()` returns `{ show, success, error, warning, information, promise }`. It throws outside `NotificationProvider`. Confirmations use [useConfirm](/docs/components/feedback/popup-confirm).

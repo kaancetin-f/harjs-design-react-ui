@@ -1,0 +1,43 @@
+.har-chip {
+  &.size-xs {
+    height: 1.5rem;
+    font-size: 0.75rem;
+    padding: 0 0.375rem;
+    --_chip-image-inset: 2px;
+  }
+
+  &.size-sm {
+    height: 1.75rem;
+    font-size: 0.75rem;
+    padding: 0 0.5rem;
+    --_chip-image-inset: 2px;
+  }
+
+  &.size-md {
+    height: 2rem;
+    font-size: 0.875rem;
+    padding: 0 0.5rem;
+    --_chip-image-inset: 3px;
+  }
+
+  &.size-lg {
+    height: 2.25rem;
+    font-size: 0.875rem;
+    padding: 0 0.625rem;
+    --_chip-image-inset: 3px;
+  }
+
+  &.size-xl {
+    height: 2.5rem;
+    font-size: 1rem;
+    padding: 0 0.75rem;
+    --_chip-image-inset: 3px;
+  }
+
+  &.size-2xl {
+    height: 3rem;
+    font-size: 1.125rem;
+    padding: 0 0.875rem;
+    --_chip-image-inset: 4px;
+  }
+}

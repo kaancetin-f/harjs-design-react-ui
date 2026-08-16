@@ -1,0 +1,75 @@
+---
+title: Divider
+description: A rule for separating content, with an optional label.
+---
+
+Divider is a separator. The default line fades at both ends. Pass children for a label, `orientation="vertical"` in a row, or `variant` / `color` to change the stroke. `config.margin` overrides the spacing.
+
+## Import
+
+```tsx
+import { Divider } from "@harjs/react-ui";
+```
+
+```tsx
+<Divider />
+<Divider>or</Divider>
+<Divider orientation="vertical" />
+<Divider variant="dashed" color="blue" />
+<Divider config={{ margin: "1.5rem 0" }} />
+```
+
+## Usage
+
+The default is a fade rule. Children sit in the middle of the line.
+
+<Example>
+  <DividerBasic />
+</Example>
+
+## Examples
+
+### Label
+
+`align` places the label. Default is `center`. `start` and `end` keep a short cap on that side.
+
+<Example>
+  <DividerLabel />
+</Example>
+
+### Vertical
+
+`orientation="vertical"` stretch-fills a flex row. `variant`, `color`, and label work the same way.
+
+<Example>
+  <DividerVertical />
+</Example>
+
+### Variants
+
+`fade` softens both ends. `solid` and `dashed` are a hard stroke.
+
+<Example>
+  <DividerVariants />
+</Example>
+
+### Colors
+
+`color` tints the line and the label. The default is `gray`.
+
+<Example>
+  <DividerColors />
+</Example>
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `ReactNode` | — |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` |
+| `variant` | `"fade" \| "solid" \| "dashed"` | `"fade"` |
+| `align` | `"start" \| "center" \| "end"` | `"center"` |
+| `color` | `"blue" \| "purple" \| "pink" \| "red" \| "orange" \| "yellow" \| "green" \| "teal" \| "cyan" \| "gray" \| "white"` | `"gray"` |
+| `config.margin` | `string \| number` | — |
+
+`align` only applies when `children` is set. Vertical dividers stretch to the height of the flex row. `config.margin` replaces the orientation default (`24px 0` horizontal, `0 16px` vertical).

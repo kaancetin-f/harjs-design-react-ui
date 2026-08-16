@@ -1,0 +1,73 @@
+---
+title: DnD
+description: Reorder a list by dragging items.
+---
+
+Pass `data` and `renderItem`. Keep the list in state and write it back from `onChange`. `itemKey` should be stable so items do not remount while dragging. The grip starts the drag by default — set `config.handle` to `false` to drag from the row, or `disabled` to lock the list.
+
+## Import
+
+```tsx
+import { DnD } from "@harjs/react-ui";
+```
+
+```tsx
+<DnD
+  data={items}
+  itemKey={(item) => item.id}
+  onChange={setItems}
+  renderItem={(item) => <div>{item.title}</div>}
+/>
+<DnD data={items} renderItem={renderItem} config={{ handle: false }} />
+<DnD data={items} renderItem={renderItem} disabled />
+```
+
+## Usage
+
+Grab the grip to reorder. Escape cancels the drag.
+
+<Example>
+  <DnDBasic />
+</Example>
+
+## Examples
+
+### Handle
+
+`config.handle={false}` hides the grip. Drag from anywhere on the row.
+
+<Example>
+  <DnDHandle />
+</Example>
+
+### Disabled
+
+`disabled` locks the list. Items stay visible.
+
+<Example>
+  <DnDDisabled />
+</Example>
+
+### Colors
+
+`config.color` tints the grip, drop pulse, and cross-list placeholder. The default is `blue`.
+
+<Example>
+  <DnDColors />
+</Example>
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `data` | `T[]` | — |
+| `renderItem` | `(item: T, index: number) => JSX.Element` | — |
+| `onChange` | `(data: T[]) => void` | — |
+| `itemKey` | `(item: T, index: number) => string \| number` | index |
+| `columnKey` | `string` | — |
+| `disabled` | `boolean` | — |
+| `config.handle` | `boolean` | `true` |
+| `config.handleOnly` | `boolean` | `true` |
+| `config.color` | `"blue" \| "purple" \| "pink" \| "red" \| "orange" \| "yellow" \| "green" \| "teal" \| "cyan" \| "gray" \| "white"` | `"blue"` |
+
+`data` and `renderItem` are required. `handleOnly` only applies when `handle` is on — drag starts from the grip, so controls inside the row stay clickable. `columnKey` is for cross-list moves such as Kanban. `confing.isMoveIcon` still maps to `config.handle`.

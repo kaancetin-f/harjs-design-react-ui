@@ -1,0 +1,18 @@
+/* X-Small (Çok Küçük Cihazlar) */
+@media (max-width: 374px) {
+  .har-layout {
+    --har-layout-header-height: 3.5rem;
+
+    > .har-content {
+      width: 100%;
+
+      > .har-header {
+        padding: 0 0.75rem;
+      }
+
+      > .har-section {
+        padding: 0.75rem;
+      }
+    }
+  }
+}

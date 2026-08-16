@@ -2,6 +2,7 @@
 
 import React, { Dispatch, MutableRefObject, ReactNode, SetStateAction, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
+import useAnchoredPosition from "./popup/useAnchoredPosition";
 
 interface IProps {
   refs: {
@@ -13,16 +14,29 @@ interface IProps {
   };
   children: ReactNode;
   coordinate: { x: number; y: number };
+  label?: string;
 }
 
-const FilterPopup = ({ children, refs, states, coordinate }: IProps) => {
+const FilterPopup = ({ children, refs, states, coordinate, label }: IProps) => {
   // refs
   const _arTableFilterPopup = useRef<HTMLDivElement>(null);
 
+  // hooks
+  const position = useAnchoredPosition(states.open.get, coordinate, _arTableFilterPopup);
+
   // methods
-  const handleClickOutSide = (event: MouseEvent) => {
-    const target = event.target as HTMLElement;
-    const clickedInsidePopup = _arTableFilterPopup.current && _arTableFilterPopup.current.contains(target);
+  const isPortaledOverlay = (target: EventTarget | null) => {
+    const el = target instanceof Element ? target : null;
+    if (!el) return false;
+    return Boolean(el.closest(".har-date-calendar, .har-select-options"));
+  };
+
+  const handleClickOutSide = (event: Event) => {
+    const target = event.target instanceof Element ? event.target : null;
+    if (!target) return;
+    if (isPortaledOverlay(target)) return;
+
+    const clickedInsidePopup = Boolean(_arTableFilterPopup.current?.contains(target));
     const isOneOfButtons = refs.buttons.current.some((button) => button === target || button?.contains(target));
 
     if (!clickedInsidePopup && !isOneOfButtons) handleClose();
@@ -34,50 +48,46 @@ const FilterPopup = ({ children, refs, states, coordinate }: IProps) => {
     if (key === "Escape") states.open.set(false);
   };
 
-  const handleOpen = () => states.open.set(true);
-
   const handleClose = () => states.open.set(false);
+
+  const handleScrollAway = (event: Event) => {
+    if (isPortaledOverlay(event.target)) return;
+    handleClose();
+  };
 
   // useEffects
   useEffect(() => {
-    const currentButtons = refs.buttons.current;
-    currentButtons.forEach((button) => {
-      if (button) button.addEventListener("click", handleOpen);
-    });
+    if (!states.open.get) return;
 
-    return () => {
-      currentButtons.forEach((button) => {
-        if (button) button.removeEventListener("click", handleOpen);
-      });
-    };
-  }, [refs.buttons]);
-
-  useEffect(() => {
     const tableContentRef = refs.tableContent.current;
     if (tableContentRef) {
       tableContentRef.addEventListener("scroll", handleClose);
     }
 
-    document.addEventListener("click", handleClickOutSide);
+    document.addEventListener("pointerdown", handleClickOutSide);
     document.addEventListener("keydown", handleKeys);
+    window.addEventListener("scroll", handleScrollAway, true);
 
     return () => {
-      document.removeEventListener("click", handleClickOutSide);
+      document.removeEventListener("pointerdown", handleClickOutSide);
       document.removeEventListener("keydown", handleKeys);
+      window.removeEventListener("scroll", handleScrollAway, true);
 
       if (tableContentRef) {
         tableContentRef.removeEventListener("scroll", handleClose);
       }
     };
-  }, []);
+  }, [states.open.get]);
 
   return (
     states.open.get &&
     ReactDOM.createPortal(
       <div
         ref={_arTableFilterPopup}
-        className="ar-table-filter-popup"
-        style={{ top: coordinate.y, left: coordinate.x }}
+        className="har-table-filter-popup"
+        role="dialog"
+        aria-label={label}
+        style={{ top: position.y, left: position.x }}
       >
         {children}
       </div>,

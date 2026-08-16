@@ -2,7 +2,6 @@ import {
   IBorderProps,
   IColorProps,
   IDisabledProps,
-  IIconProps,
   ISizeProps,
   IUpperCaseProps,
   IValidationProps,
@@ -11,16 +10,19 @@ import {
 
 interface IProps
   extends
-    IVariantProps,
+    IVariantProps<{ component: "switch" }>,
     IColorProps,
     IBorderProps,
-    IIconProps,
     ISizeProps,
     IUpperCaseProps,
     IValidationProps,
     IDisabledProps,
     Omit<React.InputHTMLAttributes<HTMLInputElement>, "children" | "size" | "color"> {
   label?: string;
+  icon?: {
+    checked?: React.ReactNode;
+    unchecked?: React.ReactNode;
+  };
 }
 
 export default IProps;

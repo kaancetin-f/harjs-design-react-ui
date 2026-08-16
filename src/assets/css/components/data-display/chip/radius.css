@@ -1,0 +1,51 @@
+.har-chip {
+  &.radius-0 {
+    --_chip-radius: var(--radius-0);
+    border-radius: var(--_chip-radius);
+  }
+
+  &.radius-2 {
+    --_chip-radius: var(--radius-2);
+    border-radius: var(--_chip-radius);
+  }
+
+  &.radius-4 {
+    --_chip-radius: var(--radius-4);
+    border-radius: var(--_chip-radius);
+  }
+
+  &.radius-6 {
+    --_chip-radius: var(--radius-6);
+    border-radius: var(--_chip-radius);
+  }
+
+  &.radius-8 {
+    --_chip-radius: var(--radius-8);
+    border-radius: var(--_chip-radius);
+  }
+
+  &.radius-12 {
+    --_chip-radius: var(--radius-12);
+    border-radius: var(--_chip-radius);
+  }
+
+  &.radius-16 {
+    --_chip-radius: var(--radius-16);
+    border-radius: var(--_chip-radius);
+  }
+
+  &.radius-20 {
+    --_chip-radius: var(--radius-20);
+    border-radius: var(--_chip-radius);
+  }
+
+  &.radius-40 {
+    --_chip-radius: var(--radius-40);
+    border-radius: var(--_chip-radius);
+  }
+
+  &.radius-full {
+    --_chip-radius: var(--radius-full);
+    border-radius: var(--_chip-radius);
+  }
+}

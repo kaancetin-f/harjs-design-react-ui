@@ -1,98 +1,127 @@
-.ar-text-editor {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+/* Core Css */
+@import url("./color.css");
+@import url("./radius.css");
+
+.har-text-editor-wrapper {
+  position: relative;
   width: 100%;
+  font-family: var(--system);
 
-  > label {
-    position: absolute;
-    top: 1.5rem;
-    left: 0.85rem;
-    display: block;
-    padding: 0 0.5rem;
-    color: var(--gray-500);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-
-    &.visible {
-      visibility: visible;
-      opacity: 1;
-      display: block;
-      top: 0.25rem;
-      left: 1.25rem;
-      padding: 0 0.5rem;
-      font-size: 0.75rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-  }
-
-  > iframe {
-    width: 100%;
-    border-bottom-left-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
-  }
-
-  > .toolbar {
-    display: flex;
-    flex-direction: row;
-    gap: 0.25rem;
-    margin-top: -1px;
-    border: solid 1px transparent;
-    border-left-color: var(--gray-300);
-    border-right-color: var(--gray-300);
-    border-bottom-color: var(--gray-300);
-  }
-
-  > .resize {
+  > .har-text-editor {
     position: relative;
-    background-color: var(--gray-100);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
     width: 100%;
-    height: 1.5rem;
-    border: solid 1px transparent;
-    border-left-color: var(--gray-300);
-    border-right-color: var(--gray-300);
-    border-bottom-color: var(--gray-300);
-    border-bottom-left-radius: var(--border-radius-sm);
-    border-bottom-right-radius: var(--border-radius-sm);
-    cursor: ns-resize;
 
-    &::before {
-      content: "";
+    > label {
+      visibility: hidden;
+      opacity: 0;
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: var(--gray-500);
-      width: 1.5rem;
-      height: 0.1rem;
-      box-shadow:
-        0px -5px 0 0px var(--gray-500),
-        0px 5px 0 0px var(--gray-500);
+      top: 0.5rem;
+      left: 0.55rem;
+      color: var(--gray-600);
+      letter-spacing: 1px;
+      line-height: 1;
+      transition:
+        top 250ms ease-in-out,
+        transform 250ms ease-in-out;
+      z-index: 1;
+
+      &.visible {
+        visibility: visible;
+        opacity: 1;
+        top: 0;
+        transform: translateY(-50%);
+        left: 0.55rem;
+        padding: 0 0.5rem;
+        font-size: 0.75rem;
+        line-height: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+      }
+    }
+
+    > iframe {
+      width: 100%;
+      border: solid var(--stroke-1) transparent;
+      outline: none;
+      box-sizing: border-box;
+      transition:
+        background 250ms,
+        border 250ms,
+        box-shadow 250ms ease-in-out;
+    }
+
+    > .toolbar {
+      display: flex;
+      flex-direction: row;
+      gap: 0.25rem;
+      margin-top: -1px;
+      border: solid var(--stroke-1) transparent;
+    }
+
+    > .resize {
+      position: relative;
+      background-color: var(--gray-100);
+      width: 100%;
+      height: 1.5rem;
+      border: solid var(--stroke-1) transparent;
+      cursor: ns-resize;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: var(--gray-500);
+        width: 1.5rem;
+        height: 0.1rem;
+        box-shadow:
+          0px -5px 0 0px var(--gray-500),
+          0px 5px 0 0px var(--gray-500);
+      }
+    }
+
+    > .har-validation-text {
+      position: absolute;
+      top: 100%;
+      left: 0;
     }
   }
 
-  > .validation {
-    color: var(--danger);
-    font-size: 0.8rem;
-    font-weight: 400;
+  &.disabled {
+    > .har-text-editor {
+      > iframe {
+        background-color: var(--gray-100) !important;
+        cursor: default;
+      }
+
+      > .toolbar,
+      > .resize {
+        pointer-events: none;
+        opacity: 0.6;
+        cursor: no-drop;
+      }
+    }
   }
 }
 
-.ar-alias-panel {
+.har-alias-panel {
   visibility: hidden;
   opacity: 0;
   position: absolute;
-  background-color: var(--white);
+  background-color: var(--white-500);
   width: 200px;
   max-height: 250px;
   border: solid 1px var(--gray-200);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-4);
   overflow-y: auto;
   overflow-x: hidden;
-  box-shadow: 0 10px 15px -5px rgba(var(--black-rgb), 0.1);
+  box-shadow: 0 10px 15px -5px var(--black-alpha-10);
   /* Sırasıyla; Ad, Süre, Hız, Gecikme Süresi, Tekrar Sayısı, Yön, Bitiş Süreci */
   animation: opened ease-in-out 250ms 0s 1 normal both;
 
@@ -112,7 +141,7 @@
   }
 }
 
-.ar-text-editor--block-item {
+.har-text-editor--block-item {
   position: absolute;
   inset: 0;
   cursor: ns-resize;

@@ -6,7 +6,7 @@ import DatePicker from "../../../form/date-picker";
 import { Option, TableColumnProps } from "../../../../libs/infrastructure/types";
 import Select from "../../../form/select";
 import { Config } from "../IProps";
-import { ExtractKey } from "../Helpers";
+import { ExtractKey, GetColumnValue, PatchColumnValue } from "../Helpers";
 import Checkbox from "../../../form/checkbox";
 
 interface IProps<T extends object> {
@@ -18,34 +18,39 @@ interface IProps<T extends object> {
 }
 
 const Editable = function <T extends object>({ c, item, trackByValue, onEditable, config }: IProps<T>) {
-  // refs
-
   // variables
-  const key = c.key as keyof T;
-  const itemValue = item[c.key as keyof T];
+  const itemValue = GetColumnValue(item, c.key);
   const selectItem = c.editable?.(item)?.options?.find((x) => x.value === itemValue);
+  // Çoklu seçimde hücre değerini option listesine eşle.
   const selectItems = Array.isArray(itemValue)
     ? (c.editable?.(item)?.options?.filter((x) => itemValue.includes(x.value)) as Option[])
     : [];
   const validation = config.validation;
-  const _vText = validation?.errors?.[`${c.key as string}_${trackByValue}` as keyof typeof validation.errors];
+  // Hata metni kolon + satır kimliğiyle tutuluyor.
+  const validationKey = `${String(ExtractKey(c.key) ?? "")}_${trackByValue}`;
+  const _vText = validation?.errors?.[validationKey as keyof typeof validation.errors];
+  const isDisabled = Boolean(c.editable?.(item)?.where);
 
   // states
-  const [_value, setValue] = useState<string | number | boolean | readonly string[] | undefined>(itemValue as string);
+  const [_value, setValue] = useState<string | number | boolean | readonly string[] | undefined>(
+    itemValue as string | number | boolean | readonly string[] | undefined,
+  );
 
   // methods
   const handleChange = useCallback(
-    (value: any, set: boolean = true) => {
-      if (set) setValue(value);
-      onEditable({ ...item, [key]: value } as T, trackByValue, ExtractKey(c.key));
+    (value: unknown, set = true) => {
+      // Select'te local state'i güncelleme; option.value doğrudan satıra yazılır.
+      if (set) setValue(value as string | number | boolean | readonly string[] | undefined);
+      onEditable(PatchColumnValue(item, c.key, value), trackByValue, ExtractKey(c.key));
     },
-    [item],
+    [c.key, item, onEditable, trackByValue],
   );
 
   // useEffects
-  useEffect(() => setValue(itemValue as string), [itemValue]);
+  useEffect(() => {
+    setValue(itemValue as string | number | boolean | readonly string[] | undefined);
+  }, [itemValue]);
 
-  // return
   switch (c.editable?.(item)?.type) {
     case "string":
     case "number":
@@ -57,55 +62,44 @@ const Editable = function <T extends object>({ c, item, trackByValue, onEditable
             handleChange(c.editable?.(item)?.type === "number" ? Number(event.target.value) : event.target.value);
           }}
           validation={{ text: _vText }}
-          {...(c.editable?.(item).where ? { disabled: c.editable?.(item).where } : {})}
+          disabled={isDisabled}
         />
       );
     case "boolean":
       return (
         <Checkbox
-          variant="borderless"
+          variant="outlined"
           color="blue"
           checked={Boolean(_value)}
           onChange={(event) => {
-            const checked = event.target.checked;
-
-            setValue(checked);
-
-            onEditable(
-              {
-                ...item,
-                [key]: checked,
-              } as T,
-              trackByValue,
-              ExtractKey(c.key),
-            );
+            handleChange(event.target.checked);
           }}
           validation={{ text: _vText }}
-          {...(c.editable?.(item).where ? { disabled: c.editable?.(item).where } : {})}
+          disabled={isDisabled}
         />
       );
     case "decimal":
       return (
         <Input.Decimal
           variant="borderless"
-          name={c.key as string}
+          name={String(ExtractKey(c.key) ?? "")}
           value={String(_value ?? "")}
-          onChange={(event) => handleChange(event.target.value)}
+          onChange={(event) => handleChange(Number(event.target.value))}
           validation={{ text: _vText }}
           locale={config.locale}
-          {...(c.editable?.(item).where ? { disabled: c.editable?.(item).where } : {})}
+          disabled={isDisabled}
         />
       );
     case "input-formatted-decimal":
       return (
         <Input.FormattedDecimal
           variant="borderless"
-          name={c.key as string}
+          name={String(ExtractKey(c.key) ?? "")}
           value={String(_value ?? "")}
-          onChange={(event) => handleChange(event.target.value)}
+          onChange={(event) => handleChange(Number(event.target.value))}
           validation={{ text: _vText }}
           locale={config.locale}
-          {...(c.editable?.(item).where ? { disabled: c.editable?.(item).where } : {})}
+          disabled={isDisabled}
         />
       );
     case "date-picker":
@@ -115,7 +109,7 @@ const Editable = function <T extends object>({ c, item, trackByValue, onEditable
           value={String(_value ?? "")}
           onChange={(value) => handleChange(value)}
           validation={{ text: _vText }}
-          {...(c.editable?.(item).where ? { disabled: c.editable?.(item).where } : {})}
+          disabled={isDisabled}
         />
       );
     case "single-select":
@@ -127,7 +121,7 @@ const Editable = function <T extends object>({ c, item, trackByValue, onEditable
           onClick={async () => await c.editable?.(item)?.method?.()}
           onChange={(option) => handleChange(option?.value, false)}
           validation={{ text: _vText }}
-          {...(c.editable?.(item).where ? { disabled: c.editable?.(item).where } : {})}
+          disabled={isDisabled}
         />
       );
     case "multiple-select":
@@ -145,7 +139,7 @@ const Editable = function <T extends object>({ c, item, trackByValue, onEditable
           }
           validation={{ text: _vText }}
           multiple
-          {...(c.editable?.(item).where ? { disabled: c.editable?.(item).where } : {})}
+          disabled={isDisabled}
         />
       );
     default:

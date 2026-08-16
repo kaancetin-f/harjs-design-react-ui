@@ -1,0 +1,27 @@
+.har-modal-wrapper {
+  > .har-modal {
+    &.size-xs {
+      width: var(--space-320);
+    }
+
+    &.size-sm {
+      width: 384px;
+    }
+
+    &.size-md {
+      width: 512px;
+    }
+
+    &.size-lg {
+      width: 640px;
+    }
+
+    &.size-xl {
+      width: 896px;
+    }
+
+    &.size-2xl {
+      width: 1200px;
+    }
+  }
+}

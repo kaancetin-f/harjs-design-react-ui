@@ -1,0 +1,212 @@
+.har-notification-item {
+  opacity: 1;
+  position: fixed;
+  left: 2rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0 0.5rem;
+  background-color: var(--white-500);
+  width: 350px;
+  height: 7.5rem;
+  border-radius: var(--radius-8);
+  box-shadow: 0 5px 15px -5px var(--black-alpha-30);
+  transition: all 250ms ease-in-out;
+  overflow: hidden;
+  /* Sırasıyla; Ad, Süre, Hız, Gecikme Süresi, Tekrar Sayısı, Yön, Bitiş Süreci */
+  animation: openedSnackbar ease-in-out 500ms 0s 1 normal both;
+  z-index: 1051;
+
+  &.previous {
+    /* Sırasıyla; Ad, Süre, Hız, Gecikme Süresi, Tekrar Sayısı, Yön, Bitiş Süreci */
+    animation: previousSnackbar ease-in-out 500ms 0s 1 normal both;
+  }
+
+  &.closed {
+    /* Sırasıyla; Ad, Süre, Hız, Gecikme Süresi, Tekrar Sayısı, Yön, Bitiş Süreci */
+    animation: closedSnackbar ease-in-out 500ms 0s 1 normal both;
+  }
+
+    > .icon {
+    position: relative;
+    min-width: 3rem;
+    border-top-left-radius: var(--radius-8);
+    border-bottom-left-radius: var(--radius-8);
+    overflow: hidden;
+
+    &.is-pending {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: color-mix(in srgb, var(--blue-500) 10%, var(--white-500));
+    }
+
+    &:not(.is-pending) > span {
+      position: absolute;
+      border-radius: var(--radius-full);
+
+      &:nth-child(1) {
+        top: 0.5rem;
+        left: 0.5rem;
+        width: 0.25rem;
+        height: 0.25rem;
+      }
+
+      &:nth-child(2) {
+        top: 1.5rem;
+        left: 0.5rem;
+        width: 0.5rem;
+        height: 0.5rem;
+      }
+
+      &:nth-child(3) {
+        top: 2rem;
+        left: 1.75rem;
+        width: 1rem;
+        height: 1rem;
+      }
+
+      &:nth-child(4) {
+        bottom: -1.5rem;
+        left: -0.5rem;
+        width: 3rem;
+        height: 3rem;
+      }
+
+      &:nth-child(5) {
+        bottom: 1.15rem;
+        left: 1rem;
+        width: 0.55rem;
+        height: 0.55rem;
+      }
+
+      &.success {
+        background-color: var(--green-500);
+      }
+
+      &.warning {
+        background-color: var(--orange-500);
+      }
+
+      &.information {
+        background-color: var(--cyan-500);
+      }
+
+      &.error {
+        background-color: var(--red-500);
+      }
+    }
+  }
+
+  > .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.75rem 0;
+    width: 100%;
+    padding: 0 1rem;
+    color: var(--gray-700);
+
+    > .title {
+      font-size: 1.2rem;
+    }
+
+    > .message {
+      color: var(--gray-600);
+    }
+  }
+
+  > .close {
+    min-width: 2.5rem;
+
+    &::before,
+    &::after {
+      position: absolute;
+      top: 0.75rem;
+      right: 1.25rem;
+      content: "";
+      width: var(--space-2);
+      height: 15px;
+      background-color: var(--gray-500);
+      transform-origin: center;
+      transform: rotate(45deg);
+    }
+
+    &::after {
+      transform: rotate(-45deg);
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .har-notification {
+    &.top-left {
+      inset: 1rem 1rem auto 1rem;
+    }
+
+    &.top-right {
+      inset: 1rem 1rem auto 1rem;
+    }
+
+    &.bottom-left {
+      inset: auto 1rem 1rem 1rem;
+    }
+
+    &.bottom-right {
+      inset: auto 1rem 1rem 1rem;
+    }
+  }
+}
+
+.har-notification-item.top-right,
+.har-notification-item.bottom-right {
+  animation-name: openedSnackbarFromEnd;
+
+  &.closed {
+    animation-name: closedSnackbarFromEnd;
+  }
+}
+
+@keyframes openedSnackbar {
+  0% {
+    transform: translateX(-500px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes openedSnackbarFromEnd {
+  0% {
+    transform: translateX(500px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes previousSnackbar {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  100% {
+    transform: translateX(0) translateY(120px);
+  }
+}
+
+@keyframes closedSnackbar {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-500px);
+  }
+}
+
+@keyframes closedSnackbarFromEnd {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(500px);
+  }
+}

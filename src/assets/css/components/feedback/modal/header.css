@@ -1,56 +1,46 @@
-.ar-modal-wrapper > .ar-modal > .header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  height: 3.5rem;
-  padding: 0 2rem;
-  border-bottom: solid 1px var(--gray-200);
-}
-.ar-modal-wrapper > .ar-modal > .header > .ar-typography-title {
-  width: calc(100% - 2.75rem);
-  text-wrap: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
+.har-modal-wrapper {
+  > .har-modal {
+    > .header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: var(--space-12);
+      flex-shrink: 0;
+      min-height: 3.5rem;
+      padding: var(--space-16) var(--space-20);
+      border-bottom: solid 1px var(--gray-200);
 
-.ar-modal-wrapper > .ar-modal > .header .close {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--white);
-  min-width: 2rem;
-  min-height: 2rem;
-  border: solid 1px var(--gray-300);
-  border-radius: var(--border-radius-sm);
-  cursor: pointer;
-  user-select: none;
-  transition: background 250ms, border 250ms ease-in-out;
-}
-.ar-modal-wrapper > .ar-modal > .header .close::before,
-.ar-modal-wrapper > .ar-modal > .header .close::after {
-  position: absolute;
-  content: "";
-  width: 2px;
-  height: 15px;
-  background-color: var(--gray-300);
-  transform-origin: center;
-  transform: rotate(-45deg);
-  transition: transform 250ms ease-in-out;
-}
-.ar-modal-wrapper > .ar-modal > .header .close::after {
-  transform: rotate(45deg);
-}
-.ar-modal-wrapper > .ar-modal > .header .close:hover {
-  background-color: rgba(var(--danger-rgb), 0.1);
-  border: solid 1px var(--danger);
-  color: rgba(var(--danger-rgb), 0.75);
-}
-.ar-modal-wrapper > .ar-modal > .header .close:hover::before,
-.ar-modal-wrapper > .ar-modal > .header .close:hover::after {
-  background-color: var(--danger);
-  transform: rotate(45deg);
-}
-.ar-modal-wrapper > .ar-modal > .header .close:hover::after {
-  transform: rotate(-45deg);
+      > .heading {
+        min-width: 0;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+        padding-top: var(--space-4);
+
+        > .har-typography-title {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          text-wrap: nowrap;
+        }
+      }
+
+      > .close,
+      > .har-popover-wrapper {
+        flex-shrink: 0;
+      }
+
+      &.bare {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 1;
+        min-height: 0;
+        padding: var(--space-12);
+        border: 0;
+        background: transparent;
+      }
+    }
+  }
 }

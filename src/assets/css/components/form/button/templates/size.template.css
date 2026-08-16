@@ -1,0 +1,11 @@
+&.__SIZE__ {
+  height: __SIZE_NUMBER__;
+  padding: 0 __PADDING__;
+  font-size: __FONT_SIZE__;
+
+  &.shape {
+    width: __SIZE_NUMBER__;
+    aspect-ratio: 1;
+    padding: 0;
+  }
+}

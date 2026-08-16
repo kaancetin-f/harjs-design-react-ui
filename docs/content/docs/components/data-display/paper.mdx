@@ -1,0 +1,49 @@
+---
+title: Paper
+description: A content sheet with an optional header and action slot.
+---
+
+Paper is a quiet content surface. Pass `title` and `action` for a header row; omit both to render only the body. It stays unaccented so Card can carry color, status, and variants.
+
+## Import
+
+```tsx
+import { Paper } from "@harjs/react-ui";
+```
+
+```tsx
+<Paper title="Overview">Paper is a content surface.</Paper>
+```
+
+## Usage
+
+<Example>
+  <PaperBasic />
+</Example>
+
+## Examples
+
+### Actions
+
+`action` sits on the right of the header. Pass one control or a short group.
+
+<Example>
+  <PaperActions />
+</Example>
+
+### Elevation
+
+`elevation` lifts the sheet. Allowed values are `0`, `1`, `2`, `3`, `4`, `6`, `8`, `12`, `16`, and `24`. The default is `1`.
+
+<Example>
+  <PaperElevation />
+</Example>
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `ReactNode` | — |
+| `title` | `string` | — |
+| `action` | `ReactNode` | — |
+| `elevation` | `0 \| 1 \| 2 \| 3 \| 4 \| 6 \| 8 \| 12 \| 16 \| 24` | `1` |

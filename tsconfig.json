@@ -22,7 +22,7 @@
     /* Emit */
     "declaration": true,
     "outDir": "./dist",
-    "importHelpers": true,
+    "importHelpers": false,
 
     /* Interop Constraints */
     "esModuleInterop": true,
@@ -38,6 +38,6 @@
     /* Completeness */
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "global.d.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "global.d.ts", "src/assets/css/components/form/input/css.cjs"],
+  "exclude": ["node_modules", "dist", "src/**/*.test.ts"]
 }

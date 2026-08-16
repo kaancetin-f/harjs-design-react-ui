@@ -1,11 +1,8 @@
 @keyframes endItem {
   0% {
-    box-shadow: 0 0 0 0px var(--blue-500);
-  }
-  50% {
-    box-shadow: 0 0 0 5px var(--blue-100);
+    box-shadow: 0 0 0 0 color-mix(in srgb, currentColor 40%, transparent);
   }
   100% {
-    box-shadow: 0 0 0 7.5px transparent;
+    box-shadow: 0 0 0 6px transparent;
   }
 }

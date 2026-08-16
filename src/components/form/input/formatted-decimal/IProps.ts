@@ -1,25 +1,7 @@
-import {
-  IBorderProps,
-  IColorProps,
-  IDisabledProps,
-  IPlaceholderProps,
-  IUpperCaseProps,
-  IValidationProps,
-  IVariantProps,
-} from "../../../../libs/infrastructure/types/IGlobalProps";
+import { ComponentProps } from "react";
+import Input from "..";
 
-interface IProps
-  extends
-    IVariantProps,
-    IColorProps,
-    IBorderProps,
-    IUpperCaseProps,
-    IValidationProps,
-    IPlaceholderProps,
-    IDisabledProps {
-  name: string;
-  value: string | number | readonly string[] | undefined;
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+interface IProps extends ComponentProps<typeof Input> {
   locale?: Intl.LocalesArgument;
   digits?: { minimum?: number; maximum?: number };
 }

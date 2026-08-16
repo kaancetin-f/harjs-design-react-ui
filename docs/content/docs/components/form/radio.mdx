@@ -1,0 +1,181 @@
+---
+title: Radio
+description: Select a single option, group related choices, or pick a card.
+---
+
+Radios pick one option from a set. Compose related options with `Radio.Group`, or a selectable surface with `Radio.Card`. Import `Radio` once — the compounds hang off the same export.
+
+## Import
+
+```tsx
+import { Radio } from "@harjs/react-ui";
+```
+
+```tsx
+<Radio label="Notify me" />
+<Radio.Group>...</Radio.Group>
+<Radio.Card title="Pro plan" description="Unlimited projects and priority support." />
+```
+
+## Usage
+
+<Example>
+  <RadioBasic />
+</Example>
+
+## Examples
+
+### Variants
+
+`variant` controls the control surface. `borderless` is not available on Radio.
+
+<Example>
+  <RadioVariants />
+</Example>
+
+### Colors
+
+`color` is independent of `variant`. Each row below is a color token; columns are variants.
+
+<Example>
+  <RadioColors />
+</Example>
+
+### Sizes
+
+<Example>
+  <RadioSizes />
+</Example>
+
+### Disabled
+
+<Example>
+  <RadioDisabled />
+</Example>
+
+### Validation
+
+`validation.text` shows an error message and paints the control red. Clear it when the value is valid.
+
+<Example>
+  <RadioValidation />
+</Example>
+
+On `Radio.Group`, the same prop paints every child red and shows one message under the group.
+
+<Example>
+  <RadioValidationGroup />
+</Example>
+
+## Radio.Card
+
+`Radio.Card` is a selectable surface. Click anywhere on the card to select it. Pass `title`, `description`, and optional `icon`. `filled` uses a white radio on the saturated surface; other variants use the card color. A selected card stays selected until another option in the same group is chosen.
+
+<Example>
+  <RadioCardBasic />
+</Example>
+
+### Variants
+
+`variant` uses the same tokens as Radio. `filled` uses a white radio so it stays visible on the saturated surface.
+
+<Example>
+  <RadioCardVariants />
+</Example>
+
+### Orientation
+
+`orientation` lays out title and description in a column or a row.
+
+<Example>
+  <RadioCardOrientation />
+</Example>
+
+### Icons
+
+`icon` places a graphic above the title. The radio sits in the top-right corner.
+
+<Example>
+  <RadioCardIcons />
+</Example>
+
+## Radio.Group
+
+`Radio.Group` arranges `Radio` or `Radio.Card` children and clones shared props such as `name`, `color`, and `size`. Keep selection controlled on each child with a shared selected value.
+
+<Example>
+  <RadioGroupBasic />
+</Example>
+
+### Orientation
+
+`orientation="horizontal"` places options in a row.
+
+<Example>
+  <RadioGroupOrientation />
+</Example>
+
+### Cards
+
+`Radio.Group` also accepts `Radio.Card` children. `orientation="horizontal"` places the cards in a row.
+
+<Example>
+  <RadioGroupCards />
+</Example>
+
+## Props
+
+### Radio
+
+| Prop             | Type                                                                                                                | Default      |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------- | ------------ |
+| `label`          | `string`                                                                                                            | —            |
+| `variant`        | `"filled" \| "surface" \| "surface-borderless" \| "outlined" \| "dashed"`                                           | `"outlined"` |
+| `color`          | `"blue" \| "purple" \| "pink" \| "red" \| "orange" \| "yellow" \| "green" \| "teal" \| "cyan" \| "gray" \| "white"` | `"blue"`     |
+| `size`           | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl"`                                                                     | `"sm"`       |
+| `value`          | `string`                                                                                                            | —            |
+| `name`           | `string`                                                                                                            | —            |
+| `upperCase`      | `boolean`                                                                                                           | —            |
+| `validation`     | `{ text?: string; scrollTo?: boolean }`                                                                             | —            |
+| `checked`        | `boolean`                                                                                                           | —            |
+| `defaultChecked` | `boolean`                                                                                                           | —            |
+| `disabled`       | `boolean`                                                                                                           | —            |
+| `trace`          | `{ color: Color }`                                                                                                  | —            |
+| `pastTrace`      | `{ color: Color }`                                                                                                  | —            |
+
+Also accepts standard radio `input` attributes (except `children`, `size`, `color`, `border`).
+
+### Radio.Card
+
+| Prop             | Type                                    | Default      |
+| ---------------- | --------------------------------------- | ------------ |
+| `title`          | `string`                                | —            |
+| `description`    | `string`                                | —            |
+| `icon`           | `ReactNode`                             | —            |
+| `orientation`    | `"horizontal" \| "vertical"`            | `"vertical"` |
+| `variant`        | Radio `variant`                         | `"surface"`  |
+| `color`          | Radio `color`                           | `"blue"`     |
+| `border.radius`  | border radius tokens                    | `"6"`        |
+| `value`          | `string`                                | —            |
+| `name`           | `string`                                | —            |
+| `checked`        | `boolean`                               | —            |
+| `defaultChecked` | `boolean`                               | —            |
+| `disabled`       | `boolean`                               | —            |
+| `validation`     | `{ text?: string; scrollTo?: boolean }` | —            |
+
+### Radio.Group
+
+Accepts the same props as `Radio` except `children`, and merges them into each child. `name` is always taken from the group.
+
+| Prop          | Type                         | Default      |
+| ------------- | ---------------------------- | ------------ |
+| `children`    | `Radio \| Radio.Card`        | —            |
+| `name`        | `string`                     | —            |
+| `title`       | `string`                     | —            |
+| `orientation` | `"horizontal" \| "vertical"` | `"vertical"` |
+| `columns`     | `number`                     | —            |
+| `color`       | Radio `color`                | —            |
+| `size`        | Radio `size`                 | —            |
+| `variant`     | Radio `variant`              | —            |
+| `validation`  | `{ text?: string }`          | —            |
+| `disabled`    | `boolean`                    | —            |

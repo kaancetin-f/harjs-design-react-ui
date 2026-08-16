@@ -1,25 +1,33 @@
 "use client";
 
-import React, { ChangeEvent, forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  ComponentProps,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import "../../../assets/css/components/form/input/styles.css";
-import Button from "../button";
 import IProps from "./IProps";
 import Utils from "../../../libs/infrastructure/shared/Utils";
-import { ARIcon } from "../../icons";
-import Otp from "./otp/Otp";
+import { Icon } from "../../icons";
 import FormattedDecimal from "./formatted-decimal/FormattedDecimal";
 import Phone from "./phone/Phone";
 import Decimal from "./decimal/Decimal";
+import { IChildrenProps } from "../../../libs/infrastructure/types/IGlobalProps";
+import Pin from "./pin/Pin";
 
 const BaseInput = forwardRef<HTMLInputElement, IProps>(
   (
     {
+      children,
       variant = "outlined",
-      color = "light",
-      icon,
-      border = { radius: "sm" },
-      button,
-      addon,
+      color = "gray",
+      border = { radius: "4" },
+      size = "lg",
       upperCase,
       validation,
       ...attributes
@@ -32,42 +40,28 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
 
     // states
     const [value, setValue] = useState<string | number | readonly string[] | undefined>("");
-
+    const [labelMaxWidth, setLabelMaxWidth] = useState<number | undefined>(undefined);
+    const [labelClipWidth, setLabelClipWidth] = useState<number>(0);
     // hooks
     // Dışarıdan gelen ref'i _innerRef'e bağla.
     useImperativeHandle(ref, () => _innerRef.current as HTMLInputElement);
 
     // variables
-    const _wrapperClassName: string[] = ["ar-input-wrapper"];
-    const _inputClassName: string[] = [];
-    const _addonBeforeClassName: string[] = ["addon-before"];
-    const _addonAfterClassName: string[] = ["addon-after"];
+    const _wrapperClassName: string[] = ["har-input-wrapper"];
 
-    _inputClassName.push(
+    _wrapperClassName.push(
       ...Utils.GetClassName(
         variant,
         undefined,
         !Utils.IsNullOrEmpty(validation?.text) ? "red" : color,
         border,
+        size,
         undefined,
-        icon,
         attributes.className,
       ),
     );
 
-    // addon className
-    if (addon) {
-      _wrapperClassName.push("addon");
-
-      _addonBeforeClassName.push(`${addon.variant || "filled"}`);
-      _addonBeforeClassName.push(`${status}`);
-
-      _addonAfterClassName.push(`${addon.variant || "filled"}`);
-      _addonAfterClassName.push(`${status}`);
-
-      _addonBeforeClassName.push(`border-radius-${border.radius}`);
-      _addonAfterClassName.push(`border-radius-${border.radius}`);
-    }
+    if (attributes.disabled) _wrapperClassName.push("disabled");
 
     // methods
     const handleNumberChange = (delta: number) => {
@@ -86,6 +80,54 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
           dataset: dataset,
         },
       } as unknown as ChangeEvent<HTMLInputElement>);
+    };
+
+    const renderIcon = () => {
+      const iconElements = React.Children.toArray(children).filter((child) => {
+        return React.isValidElement(child) && child.type === Input.Icon;
+      });
+
+      if (iconElements.length === 0) return null;
+
+      return iconElements.map((child) => {
+        if (React.isValidElement(child)) return React.cloneElement(child);
+
+        return child;
+      });
+    };
+
+    const renderAddon = (position: "before" | "after") => {
+      const addons = React.Children.toArray(children).filter((child) => {
+        return (
+          React.isValidElement(child) && child.type === (position === "before" ? Input.AddonBefore : Input.AddonAfter)
+        );
+      });
+
+      if (addons.length === 0) return null;
+
+      return addons.map((child, index) => {
+        const isFirst = index === 0;
+        const isLast = index === addons.length - 1 && addons.length > 1;
+        const isMiddle = !isFirst && !isLast;
+
+        if (React.isValidElement(child))
+          return (
+            <div
+              className={[
+                `addon-${position}`,
+                position === "after" && isFirst && addons.length > 1 ? "n-first" : "first",
+                isMiddle && "middle",
+                isLast && "last",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            >
+              {React.cloneElement(child)}
+            </div>
+          );
+
+        return child;
+      });
     };
 
     // Özel büyük harfe dönüştürme işlevi.
@@ -111,36 +153,71 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
       if (attributes.value !== undefined) setValue(attributes.value ?? "");
     }, [attributes.value]);
 
-    return (
-      <div className={_wrapperClassName.map((c) => c).join(" ")}>
-        {/* Addon Before */}
-        {addon?.before && <span className={_addonBeforeClassName.map((c) => c).join(" ")}>{addon?.before}</span>}
+    useLayoutEffect(() => {
+      const label = _label.current;
+      const input = _innerRef.current;
 
-        <div className="ar-input">
-          {/* Icon */}
-          {icon?.element && <span className="icon-element">{icon.element}</span>}
+      if (!label || !input) return;
+
+      const measure = () => {
+        if (!value || !attributes.placeholder) {
+          setLabelMaxWidth(undefined);
+          setLabelClipWidth(0);
+          return;
+        }
+
+        // maxWidth kısıtı olmadan doğal genişliği ölç
+        const previousMaxWidth = label.style.maxWidth;
+        label.style.maxWidth = "none";
+        const naturalWidth = label.getBoundingClientRect().width;
+        label.style.maxWidth = previousMaxWidth;
+
+        // Label'ın sığabileceği alan: input genişliği - sol offset - sağ boşluk
+        const leftOffset = label.offsetLeft;
+        const availableWidth = Math.max(0, input.offsetWidth - leftOffset - 8);
+
+        setLabelMaxWidth(availableWidth);
+        setLabelClipWidth(Math.min(naturalWidth, availableWidth));
+      };
+
+      measure();
+
+      const resizeObserver = new ResizeObserver(measure);
+      resizeObserver.observe(input);
+
+      return () => resizeObserver.disconnect();
+    }, [value, attributes.placeholder]);
+
+    return (
+      <div
+        className={_wrapperClassName.map((c) => c).join(" ")}
+        {...(validation?.text ? { style: { marginBottom: "var(--space-20)" } } : {})}
+      >
+        {renderAddon("before")}
+
+        <div className="har-input">
+          {renderIcon() && <div className="icon-element">{renderIcon()}</div>}
 
           {attributes.placeholder && (
             <label
               ref={_label}
               className={value ? "visible" : "hidden"}
-              {...(value ? { style: { maxWidth: _innerRef.current?.getBoundingClientRect().width } } : {})}
+              {...(value && labelMaxWidth !== undefined ? { style: { maxWidth: labelMaxWidth } } : {})}
             >
               {validation && "* "}
               {attributes.placeholder}
             </label>
           )}
 
-          {/* Input */}
-          <div className="input">
+          <div className="input" style={{ width: attributes.width }}>
             <input
               ref={_innerRef}
               {...attributes}
               type={attributes.type === "number" ? "text" : attributes.type}
               placeholder={`${validation ? "* " : ""}${attributes.placeholder ?? ""}`}
               value={value ?? attributes.value} // `value` varsa onu kullan, yoksa `internalValue`'yu kullan
-              size={attributes.size || 20}
-              className={_inputClassName.map((c) => c).join(" ")}
+              // size={attributes.size || 20}
+              // className={_inputClassName.map((c) => c).join(" ")}
               {...(attributes.type === "number"
                 ? {
                     onKeyDown: (event) => {
@@ -151,25 +228,24 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
                     },
                   }
                 : {})}
-              {...(value
+              {...(value && labelClipWidth > 0 && attributes.placeholder
                 ? {
                     style: {
                       ...attributes.style,
                       clipPath: `polygon(
-                            -15px 0,
-                            10px -5px,
-                            10px 5px,
-                            calc(${_label.current?.getBoundingClientRect().width}px + 7px) 5px,
-                            calc(${_label.current?.getBoundingClientRect().width}px + 7px) -5px,
-                            100% -70px,
-                            calc(100% + 5px) calc(100% + 5px),
-                            -5px calc(100% + 5px)
-                          )`,
+                                        -15px 0,
+                                        10px -8px,
+                                        10px 8px,
+                                        calc(${labelClipWidth}px + 7px) 8px,
+                                        calc(${labelClipWidth}px + 7px) -8px,
+                                        100% -70px,
+                                        calc(100% + 5px) calc(100% + 5px),
+                                        -5px calc(100% + 5px)
+                                      )`,
                     },
                   }
                 : { style: { ...attributes.style } })}
               onChange={(event) => {
-                // Disabled gelmesi durumunda işlem yapmasına izin verme...
                 if (attributes.disabled) return;
 
                 (() => {
@@ -205,41 +281,54 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
             {!attributes.disabled && attributes.type === "number" && (
               <div className="handle-number-button">
                 <span onClick={() => handleNumberChange(1)}>
-                  <ARIcon icon="ChevronUp" size={12} fill="var(--gray-500)" />
+                  <Icon icon="ChevronUp" size={12} fill="var(--gray-500)" />
                 </span>
 
                 <span onClick={() => handleNumberChange(-1)}>
-                  <ARIcon icon="ChevronDown" size={12} fill="var(--gray-500)" />
+                  <Icon icon="ChevronDown" size={12} fill="var(--gray-500)" />
                 </span>
               </div>
             )}
           </div>
 
-          {validation?.text && <span className="validation">{validation.text}</span>}
+          {validation?.text && <span className="har-validation-text">{validation.text}</span>}
         </div>
 
-        {/* Addon Afrer */}
-        {addon?.after && <span className={_addonAfterClassName.map((c) => c).join(" ")}>{addon?.after}</span>}
-
-        {/* Button */}
-        {button && <Button {...button} border={{ radius: border.radius }} disabled={attributes.disabled} />}
+        {renderAddon("after")}
       </div>
     );
   },
 );
 
 interface InputCompound extends React.ForwardRefExoticComponent<IProps & React.RefAttributes<HTMLInputElement>> {
+  AddonBefore: ({ children }: IChildrenProps) => React.JSX.Element;
+  AddonAfter: ({ children }: IChildrenProps) => React.JSX.Element;
+  Icon: ({ children, position }: ComponentProps<typeof Input> & { position: "start" | "end" }) => React.JSX.Element;
+
   Decimal: typeof Decimal;
   FormattedDecimal: typeof FormattedDecimal;
+  Pin: typeof Pin;
   Phone: typeof Phone;
-  Otp: typeof Otp;
 }
 
 const Input = BaseInput as InputCompound;
+Input.AddonBefore = ({ children }) => <>{children}</>;
+Input.AddonAfter = ({ children }) => <>{children}</>;
+Input.Icon = ({ children, position, ...attributes }) => {
+  return (
+    <span
+      {...attributes}
+      className={`icon ${position} ${attributes.className} ${attributes.onClick ? "cursor-pointer" : "cursor-text"}`}
+    >
+      {children}
+    </span>
+  );
+};
+
 Input.Decimal = Decimal;
 Input.FormattedDecimal = FormattedDecimal;
 Input.Phone = Phone;
-Input.Otp = Otp;
+Input.Pin = Pin;
 
 BaseInput.displayName = "Input";
 export default Input;

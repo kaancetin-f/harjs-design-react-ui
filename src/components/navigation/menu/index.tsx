@@ -1,105 +1,158 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useId, useState } from "react";
 import "../../../assets/css/components/navigation/menu/styles.css";
-import IProps from "./IProps";
-import { DispatchEvent, SessionStorage } from "../../../libs/infrastructure/shared/Enums";
+import IProps, { MenuItemProps } from "./IProps";
 import { NavigationMenuProps } from "../../../libs/infrastructure/types";
+import {
+  DispatchEvent,
+  findMenuPath,
+  menuKey,
+  readMenuLocked,
+  readSelectedMenuKey,
+  SessionStorage,
+  writeSessionItem,
+} from "./helpers";
+import { useLayoutSider } from "../../layout/layout/context";
 
-const Menu: React.FC<IProps> = ({ data, variant = "vertical", config, ...attributes }) => {
+const visibleMenuButtons = (root: HTMLElement) =>
+  [...root.querySelectorAll<HTMLButtonElement>("button.item-render")].filter(
+    (button) => button.tabIndex !== -1,
+  );
+
+const Menu: React.FC<IProps> = ({
+  data,
+  variant = "vertical",
+  theme,
+  className,
+  style,
+  ...attributes
+}) => {
+  // refs
+  const _navClassName: string[] = ["har-menu", variant, className].filter(Boolean) as string[];
+
   // states
   const [openMenus, setOpenMenus] = useState<string[]>([]);
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
-  const [isMenuLocked, setIsMenuLocked] = useState<boolean>(true);
+  const [storedLocked, setStoredLocked] = useState<boolean>(() => readMenuLocked());
+
+  // hooks
+  const uid = useId().replace(/:/g, "");
+  const layoutSider = useLayoutSider();
+
+  // variables
+  const items = Array.isArray(data) ? data : [];
+  const isMenuLocked =
+    variant === "horizontal" ? true : layoutSider ? layoutSider.expanded : storedLocked;
+  const inLayout = layoutSider != null;
+  const menuStyle: React.CSSProperties = {
+    ...(theme?.hover?.backgroundColor
+      ? { ["--menu-hover-bg" as string]: theme.hover.backgroundColor }
+      : {}),
+    ...(theme?.hover?.textColor
+      ? { ["--menu-hover-color" as string]: theme.hover.textColor }
+      : {}),
+    ...(theme?.selected?.color
+      ? { ["--selected-icon-color" as string]: theme.selected.color }
+      : {}),
+    ...(theme?.selected?.backgroundColor
+      ? {
+          ["--selected-icon-bg-color" as string]:
+            theme.selected.backgroundColor,
+        }
+      : {}),
+    ...(theme?.selected?.ringColor
+      ? {
+          ["--selected-icon-ring-color" as string]: theme.selected.ringColor,
+          ["--selected-icon-bg-color-rgb" as string]: theme.selected.ringColor,
+        }
+      : {}),
+    ...style,
+  };
 
   // methods
-  const handleItemClick = (item: NavigationMenuProps) => {
-    if (!isMenuLocked && item.type === "group") return;
-
-    if (item.type === "group") {
-      const parents = findPath(item.key as string, data) ?? [];
-
-      setOpenMenus((prev) => {
-        const isOpen = prev.includes(item.key as string);
-
-        if (isOpen) return prev.filter((k) => k !== item.key);
-
-        return [...parents, item.key as string];
-      });
-
+  const restoreSelection = useCallback((nextData: NavigationMenuProps[]) => {
+    if (!nextData.length) {
+      setSelectedKey(null);
       return;
     }
 
-    if (item.type !== "divider") {
-      setSelectedKey(item.key as string);
-      sessionStorage.setItem(SessionStorage.SelectedMenuItem, String(item.key));
-    }
-  };
+    const stored = readSelectedMenuKey();
+    const path = stored ? findMenuPath(stored, nextData) : null;
+    setSelectedKey(path !== null && stored ? stored : null);
+    if (path) setOpenMenus(path);
+  }, []);
 
-  const findPath = (key: string, items: NavigationMenuProps[], path: string[] = []): string[] | null => {
-    for (const item of items) {
-      if (item.key === key) return path;
+  const handleItemClick = useCallback(
+    (item: NavigationMenuProps) => {
+      if (item.type === "divider") return;
 
-      if (item.submenu) {
-        const result = findPath(key, item.submenu, [...path, item.key as string]);
+      const key = menuKey(item.key);
 
-        if (result) return result;
+      // Kilitli değilken grup öğesinin açılmasına izin verme...
+      if (!isMenuLocked && item.type === "group") return;
+
+      if (item.type === "group") {
+        const parents = findMenuPath(key, items) ?? [];
+        setOpenMenus((prev) => {
+          const isOpen = prev.includes(key);
+          if (isOpen) return prev.filter((entry) => entry !== key);
+          return [...parents, key];
+        });
+        return;
       }
-    }
-    return null;
-  };
+
+      setSelectedKey(key);
+      writeSessionItem(SessionStorage.SelectedMenuItem, key);
+    },
+    [isMenuLocked, items],
+  );
 
   // useEffects
   useEffect(() => {
-    if (!data.length) return;
-
-    const selectedMenuItem = sessionStorage.getItem(SessionStorage.SelectedMenuItem) ?? "";
-
-    setSelectedKey(selectedMenuItem);
-
-    const parents = findPath(selectedMenuItem, data);
-
-    if (parents) setOpenMenus(parents);
-  }, [data]);
+    restoreSelection(items);
+  }, [items, restoreSelection]);
 
   useEffect(() => {
-    const onStorageChangeSelectedMenuItem = () => {
-      setSelectedKey(JSON.parse(sessionStorage.getItem(SessionStorage.SelectedMenuItem) ?? ""));
+    const onSelectedMenuItemChange = () => {
+      const stored = readSelectedMenuKey();
+      const path = stored ? findMenuPath(stored, items) : null;
+      setSelectedKey(path !== null ? stored : null);
     };
 
-    const onStorageChangeMenuLock = () => {
-      setIsMenuLocked(JSON.parse(sessionStorage.getItem(SessionStorage.MenuIsLocked) ?? "true"));
+    const onMenuLockChange = () => {
+      setStoredLocked(readMenuLocked());
     };
 
-    window.addEventListener(DispatchEvent.SelectedMenuItem, onStorageChangeSelectedMenuItem);
-    window.addEventListener(DispatchEvent.MenuLock, onStorageChangeMenuLock);
-
-    const styles = document.createElement("style");
-    styles.innerHTML = `
-      :root {
-        --selected-icon-color: ${config?.icon?.selectedColor};
-        --selected-icon-bg-color: ${config?.icon?.selectedBackgroundColor};
-        --selected-icon-bg-color-rgb: ${config?.icon?.selectedBackgroundBorderColor};
-      }
-    `;
-    document.head.appendChild(styles);
+    window.addEventListener(
+      DispatchEvent.SelectedMenuItem,
+      onSelectedMenuItemChange,
+    );
+    if (!inLayout) {
+      window.addEventListener(DispatchEvent.MenuLock, onMenuLockChange);
+    }
 
     return () => {
-      window.removeEventListener(DispatchEvent.SelectedMenuItem, onStorageChangeSelectedMenuItem);
-      window.removeEventListener(DispatchEvent.MenuLock, onStorageChangeMenuLock);
+      window.removeEventListener(
+        DispatchEvent.SelectedMenuItem,
+        onSelectedMenuItemChange,
+      );
+      window.removeEventListener(DispatchEvent.MenuLock, onMenuLockChange);
     };
-  }, []);
+  }, [inLayout, items]);
 
   return (
-    <nav className="ar-menu" {...attributes}>
+    <nav {...attributes} className={_navClassName.map((c) => c).join(" ")} style={menuStyle}>
       <ul>
-        {data.map((item) => (
+        {items.map((item, index) => (
           <MenuItem
-            key={item.key}
+            key={item.key ?? `menu-${index}`}
             item={item}
             openMenus={openMenus}
             selectedKey={selectedKey}
             isMenuLocked={isMenuLocked}
+            focusable
+            idPrefix={uid}
             onClick={handleItemClick}
           />
         ))}
@@ -108,45 +161,147 @@ const Menu: React.FC<IProps> = ({ data, variant = "vertical", config, ...attribu
   );
 };
 
-interface MenuItemProps {
-  item: NavigationMenuProps;
-  openMenus: string[];
-  selectedKey: string | null;
-  isMenuLocked: boolean;
-  onClick: (item: NavigationMenuProps) => void;
-}
+const MenuItem: React.FC<MenuItemProps> = ({
+  item,
+  openMenus,
+  selectedKey,
+  isMenuLocked,
+  focusable,
+  idPrefix,
+  onClick,
+}) => {
+  // variables
+  const key = menuKey(item.key);
+  const isGroup = item.type === "group";
+  const isDivider = item.type === "divider";
+  const isOpen = openMenus.includes(key);
+  const isSelected = selectedKey === key && !isGroup && !isDivider;
+  const hasSubmenu = Boolean(item.submenu?.length);
+  const submenuId = `${idPrefix}-${key}-submenu`;
+  const label = typeof item.render === "string" ? item.render : undefined;
 
-const MenuItem: React.FC<MenuItemProps> = ({ item, openMenus, selectedKey, isMenuLocked, onClick }) => {
-  const isOpen = openMenus.includes(item.key as string);
-  const isSelected = selectedKey === item.key && item.type !== "group";
+  // refs
+  const _itemClassName: string[] = [
+    isDivider ? "divider" : undefined,
+    isSelected ? "selected" : undefined,
+    hasSubmenu ? "has-submenu" : undefined,
+  ].filter(Boolean) as string[];
+  const _renderClassName: string[] = [
+    "item-render",
+    isMenuLocked ? "align-left" : "align-center",
+    hasSubmenu ? "with-submenu" : undefined,
+    isOpen ? "opened" : undefined,
+  ].filter(Boolean) as string[];
+
+  // methods
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    const nav = event.currentTarget.closest("nav.har-menu");
+    if (!(nav instanceof HTMLElement)) return;
+
+    if (event.key === "Escape") {
+      // Escape ile açık grubu kapat ve tetikleyiciye odaklan...
+      const submenu = event.currentTarget.closest("ul.submenu.opened");
+      const group = submenu?.parentElement?.querySelector<HTMLButtonElement>(
+        ":scope > .item-render",
+      );
+      if (!group) return;
+      event.preventDefault();
+      group.click();
+      group.focus();
+      return;
+    }
+
+    if (event.key === "ArrowRight" && isGroup && isMenuLocked && !isOpen) {
+      event.preventDefault();
+      onClick(item);
+      return;
+    }
+
+    if (event.key === "ArrowLeft" && isGroup && isMenuLocked && isOpen) {
+      event.preventDefault();
+      onClick(item);
+      return;
+    }
+
+    const buttons = visibleMenuButtons(nav);
+    const index = buttons.indexOf(event.currentTarget);
+    if (index < 0) return;
+
+    if (
+      event.key === "ArrowDown" ||
+      event.key === "ArrowUp" ||
+      event.key === "Home" ||
+      event.key === "End"
+    ) {
+      event.preventDefault();
+      const nextIndex =
+        event.key === "Home"
+          ? 0
+          : event.key === "End"
+            ? buttons.length - 1
+            : event.key === "ArrowDown"
+              ? (index + 1) % buttons.length
+              : (index - 1 + buttons.length) % buttons.length;
+      buttons[nextIndex]?.focus();
+    }
+  };
 
   return (
-    <li
-      data-menu-id={`ar-menu-${item.key}`}
-      className={`${item.type === "divider" ? "divider" : ""} ${isSelected ? "selected" : ""}`}
-    >
-      <div className={`item-render ${isMenuLocked ? "align-left" : "align-center"}`} onClick={() => onClick(item)}>
-        {item.type !== "divider" && <span className="icon">{item.icon ?? <span className="no-icon" />}</span>}
-
-        {isMenuLocked && (item.type === "divider" ? <hr /> : <span className="item">{item.render}</span>)}
-
-        {isMenuLocked && item.type === "group" && <span className={`angel-down ${isOpen ? "opened" : ""}`} />}
-      </div>
+    <li data-menu-id={`har-menu-${key}`} className={_itemClassName.map((c) => c).join(" ") || undefined}>
+      {isDivider ? (
+        <div className={_renderClassName.map((c) => c).join(" ")}>
+          {isMenuLocked ? (
+            <hr />
+          ) : (
+            <span className="icon">
+              {item.icon ?? <span className="no-icon" />}
+            </span>
+          )}
+        </div>
+      ) : (
+        <button
+          type="button"
+          className={_renderClassName.map((c) => c).join(" ")}
+          tabIndex={focusable ? 0 : -1}
+          aria-current={isSelected ? "page" : undefined}
+          aria-expanded={
+            isGroup && hasSubmenu && isMenuLocked ? isOpen : undefined
+          }
+          aria-controls={
+            isGroup && hasSubmenu && isMenuLocked ? submenuId : undefined
+          }
+          aria-label={!isMenuLocked ? label : undefined}
+          onClick={() => onClick(item)}
+          onKeyDown={handleKeyDown}
+        >
+          <span className="icon">
+            {item.icon ?? <span className="no-icon" />}
+          </span>
+          {isMenuLocked && <span className="item">{item.render}</span>}
+          {isMenuLocked && hasSubmenu && (
+            <span className={`submenu-arrow ${isOpen ? "opened" : ""}`} />
+          )}
+        </button>
+      )}
 
       {item.submenu && isMenuLocked && (
-        <ul className={`submenu ${isOpen ? "opened" : ""}`}>
-          <div className="submenu-inner">
-            {item.submenu.map((sub) => (
-              <MenuItem
-                key={sub.key}
-                item={sub}
-                openMenus={openMenus}
-                selectedKey={selectedKey}
-                isMenuLocked={isMenuLocked}
-                onClick={onClick}
-              />
-            ))}
-          </div>
+        <ul
+          id={submenuId}
+          className={`submenu ${isOpen ? "opened" : ""}`}
+          aria-hidden={!isOpen}
+        >
+          {item.submenu.map((sub, index) => (
+            <MenuItem
+              key={sub.key ?? `${key}-${index}`}
+              item={sub}
+              openMenus={openMenus}
+              selectedKey={selectedKey}
+              isMenuLocked={isMenuLocked}
+              focusable={focusable && isOpen}
+              idPrefix={idPrefix}
+              onClick={onClick}
+            />
+          ))}
         </ul>
       )}
     </li>

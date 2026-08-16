@@ -1,0 +1,89 @@
+---
+title: Switch
+description: Toggle a setting on or off.
+---
+
+Switch is a binary toggle. Prefer controlled `checked` + `onChange` for form state.
+
+## Import
+
+```tsx
+import { Switch } from "@harjs/react-ui";
+```
+
+```tsx
+<Switch label="Notifications" />
+<Switch icon={{ checked: <MoonIcon />, unchecked: <SunIcon /> }} />
+```
+
+## Usage
+
+<Example>
+  <SwitchBasic />
+</Example>
+
+## Examples
+
+### Variants
+
+`variant` controls the track surface. `outlined`, `dashed`, and `borderless` are not available on Switch.
+
+<Example>
+  <SwitchVariants />
+</Example>
+
+### Colors
+
+`color` is independent of `variant`. Each row below is a color token; columns are variants.
+
+<Example>
+  <SwitchColors />
+</Example>
+
+### Label
+
+`label` sits beside the track.
+
+<Example>
+  <SwitchLabel />
+</Example>
+
+### Icons
+
+Pass your own SVGs through `icon.checked` and `icon.unchecked`. They sit in the track, opposite the handle — moon/sun, yes/no, or anything else.
+
+<Example>
+  <SwitchIcons />
+</Example>
+
+### Disabled
+
+<Example>
+  <SwitchDisabled />
+</Example>
+
+### Validation
+
+`validation.text` shows an error message and paints the control red. Clear it when the value is valid.
+
+<Example>
+  <SwitchValidation />
+</Example>
+
+## Props
+
+| Prop             | Type                                                                                                                | Default      |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------- | ------------ |
+| `label`          | `string`                                                                                                            | —            |
+| `variant`        | `"filled" \| "surface" \| "surface-borderless"`                                                                     | `"filled"`   |
+| `color`          | `"blue" \| "purple" \| "pink" \| "red" \| "orange" \| "yellow" \| "green" \| "teal" \| "cyan" \| "gray" \| "white"` | `"blue"`     |
+| `size`           | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl"`                                                                     | —            |
+| `border.radius`  | `"0" \| "2" \| "4" \| "6" \| "8" \| "12" \| "16" \| "20" \| "40" \| "full"`                                         | `"full"`     |
+| `icon`           | `{ checked?: ReactNode; unchecked?: ReactNode }`                                                                    | —            |
+| `upperCase`      | `boolean`                                                                                                           | —            |
+| `validation`     | `{ text?: string; scrollTo?: boolean }`                                                                             | —            |
+| `checked`        | `boolean`                                                                                                           | —            |
+| `defaultChecked` | `boolean`                                                                                                           | —            |
+| `disabled`       | `boolean`                                                                                                           | —            |
+
+Also accepts standard checkbox `input` attributes (except `children`, `size`, `color`).

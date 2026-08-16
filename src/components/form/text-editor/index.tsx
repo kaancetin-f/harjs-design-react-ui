@@ -1,17 +1,19 @@
 "use client";
 
 import "../../../assets/css/components/form/text-editor/styles.css";
-import { ARIcon } from "../../icons";
+import { Icon } from "../../icons";
 import { Icons } from "../../../libs/infrastructure/types";
 import Button from "../button";
 import IProps from "./IProps";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Utils from "../../../libs/infrastructure/shared/Utils";
 import ReactDOM from "react-dom";
 import Tooltip from "../../feedback/tooltip";
 
 const TextEditor = <T extends object>({
-  color = "light",
+  variant = "outlined",
+  color = "gray",
+  border = { radius: "4" },
   name,
   value,
   onChange,
@@ -25,16 +27,19 @@ const TextEditor = <T extends object>({
   // refs
   const _container = useRef<HTMLDivElement>(null);
   const _label = useRef<HTMLLabelElement>(null);
-  const _arIframe = useRef<HTMLIFrameElement>(null);
+  const _harIframe = useRef<HTMLIFrameElement>(null);
   const _onChange = useRef(onChange);
   const _onChangeTimeOut = useRef<NodeJS.Timeout | null>(null);
+  const _disabled = useRef(disabled);
   // refs -> Alias Panel
   const _target = useRef<Node | null>(null);
-  const _arAliasPanel = useRef<HTMLDivElement>(null);
+  const _harAliasPanel = useRef<HTMLDivElement>(null);
 
   // states
   const [iframe, setIframe] = useState<HTMLIFrameElement | null>(null);
   const [iframeDocument, setIframeDocument] = useState<Document | undefined>(undefined);
+  const [labelMaxWidth, setLabelMaxWidth] = useState<number | undefined>(undefined);
+  const [labelClipWidth, setLabelClipWidth] = useState<number>(0);
   // states -> Data
   const [tagged, setTagged] = useState<T[]>([]);
   // states -> Alias Panel
@@ -52,39 +57,42 @@ const TextEditor = <T extends object>({
     { command: "justifyCenter", icon: "TextAlingCenter", tooltip: "Align Center" },
     { command: "justifyRight", icon: "TextAlingRight", tooltip: "Align Right" },
   ];
-  const _iframeClassName: string[] = [];
-  _iframeClassName.push(
+  const _wrapperClassName: string[] = ["har-text-editor-wrapper"];
+  _wrapperClassName.push(
     ...Utils.GetClassName(
-      "outlined",
+      variant,
       undefined,
       !Utils.IsNullOrEmpty(validation?.text) ? "red" : color,
-      { radius: "sm" },
+      border,
       undefined,
       undefined,
       undefined,
     ),
   );
+  if (disabled) _wrapperClassName.push("disabled");
 
   // methods
   const execCommand = (command: string) => {
-    if (!_arIframe.current) return;
+    if (disabled || !_harIframe.current) return;
 
-    const iframeDoc = _arIframe.current.contentDocument || _arIframe.current.contentWindow?.document;
+    const iframeDoc = _harIframe.current.contentDocument || _harIframe.current.contentWindow?.document;
     if (iframeDoc) iframeDoc.execCommand(command, true, undefined);
   };
 
-  const handleFocus = () => _arIframe.current?.classList.add("focused");
+  const handleFocus = () => _harIframe.current?.classList.add("focused");
 
   const handleBlur = () => {
-    _arIframe.current?.classList.remove("focused");
+    _harIframe.current?.classList.remove("focused");
     // setAtRect(null);
   };
 
   const handleMouseDown = () => {
+    if (disabled) return;
+
     // Resizebar a tıklandığında iframe içerisinde bulunan window'un event listenerı olmadığı için orada resize çalışmayacaktır.
     // Bu yüzden önüne bir duvar örüyoruz ve mevcut sayfanın window'unda işlem yapmaya devam ediyor.
     const resizeItem = document.createElement("div");
-    resizeItem.classList.add("ar-text-editor--block-item");
+    resizeItem.classList.add("har-text-editor--block-item");
     _container.current?.appendChild(resizeItem);
 
     window.addEventListener("mousemove", handleResize);
@@ -96,11 +104,11 @@ const TextEditor = <T extends object>({
   };
 
   const handleResize = (event: MouseEvent) => {
-    if (_arIframe.current) {
-      const rect = _arIframe.current.getBoundingClientRect();
+    if (_harIframe.current) {
+      const rect = _harIframe.current.getBoundingClientRect();
       const height = (rect.height += event.movementY);
 
-      _arIframe.current.style.height = `${height}px`;
+      _harIframe.current.style.height = `${height}px`;
     }
   };
 
@@ -109,7 +117,7 @@ const TextEditor = <T extends object>({
     const key = event.key;
 
     if (key === "Backspace" || key === "Delete") {
-      const selection = _arIframe.current?.contentDocument?.getSelection();
+      const selection = _harIframe.current?.contentDocument?.getSelection();
 
       if (!selection || selection.rangeCount === 0) return;
 
@@ -184,6 +192,10 @@ const TextEditor = <T extends object>({
   }, [onChange]);
 
   useEffect(() => {
+    _disabled.current = disabled;
+  }, [disabled]);
+
+  useEffect(() => {
     // Iframe yüklendikten sonra çalışacaktır.
     if (!iframe) return;
 
@@ -191,10 +203,11 @@ const TextEditor = <T extends object>({
     if (!_iframeDocument) return;
 
     setIframeDocument(_iframeDocument);
-    if (!disabled) _iframeDocument.designMode = "on";
+    _iframeDocument.designMode = _disabled.current ? "off" : "on";
 
     // Herhangi bir değişikliği izlemek için MutationObserver kullan
     const observer = new MutationObserver((mutationsList) => {
+      if (_disabled.current) return;
       if (_onChangeTimeOut.current) clearTimeout(_onChangeTimeOut.current);
 
       _onChangeTimeOut.current = setTimeout(() => {
@@ -261,13 +274,18 @@ const TextEditor = <T extends object>({
   }, [iframe]);
 
   useEffect(() => {
+    if (!iframeDocument) return;
+    iframeDocument.designMode = disabled ? "off" : "on";
+  }, [disabled, iframeDocument]);
+
+  useEffect(() => {
     dynamicList?.onTagged && dynamicList?.onTagged(tagged);
   }, [tagged]);
 
   useEffect(() => {
-    if (!_arIframe.current) return;
+    if (!_harIframe.current) return;
 
-    setIframe(_arIframe.current);
+    setIframe(_harIframe.current);
 
     return () => {
       if (iframeDocument) {
@@ -277,72 +295,111 @@ const TextEditor = <T extends object>({
     };
   }, []);
 
+  useLayoutEffect(() => {
+    const label = _label.current;
+    const iframe = _harIframe.current;
+
+    if (!label || !iframe) return;
+
+    const measure = () => {
+      if (!value || !placeholder) {
+        setLabelMaxWidth(undefined);
+        setLabelClipWidth(0);
+        return;
+      }
+
+      const previousMaxWidth = label.style.maxWidth;
+      label.style.maxWidth = "none";
+      const naturalWidth = label.getBoundingClientRect().width;
+      label.style.maxWidth = previousMaxWidth;
+
+      const leftOffset = label.offsetLeft;
+      const availableWidth = Math.max(0, iframe.offsetWidth - leftOffset - 8);
+
+      setLabelMaxWidth(availableWidth);
+      setLabelClipWidth(Math.min(naturalWidth, availableWidth));
+    };
+
+    measure();
+
+    const resizeObserver = new ResizeObserver(measure);
+    resizeObserver.observe(iframe);
+
+    return () => resizeObserver.disconnect();
+  }, [value, placeholder]);
+
   return (
-    <div ref={_container} className="ar-text-editor">
-      {placeholder && (
-        <label
-          ref={_label}
-          className={value ? "visible" : "hidden"}
-          style={{ maxWidth: _arIframe.current?.getBoundingClientRect().width }}
-        >
-          {validation && "* "}
-          {placeholder}
-        </label>
-      )}
+    <div
+      ref={_container}
+      className={_wrapperClassName.map((c) => c).join(" ")}
+      {...(validation?.text ? { style: { marginBottom: "var(--space-20)" } } : {})}
+    >
+      <div className="har-text-editor">
+        {placeholder && (
+          <label
+            ref={_label}
+            className={value ? "visible" : "hidden"}
+            {...(value && labelMaxWidth !== undefined ? { style: { maxWidth: labelMaxWidth } } : {})}
+          >
+            {validation && "* "}
+            {placeholder}
+          </label>
+        )}
 
-      <iframe
-        ref={_arIframe}
-        name={name}
-        className={_iframeClassName.map((c) => c).join(" ")}
-        height={height}
-        {...(value
-          ? {
-              style: {
-                clipPath: `polygon(
-                            -15px 0,
-                            10px -5px,
-                            10px 5px,
-                            calc(${_label.current?.getBoundingClientRect().width}px + 7px) 5px,
-                            calc(${_label.current?.getBoundingClientRect().width}px + 7px) -5px,
-                            100% -70px,
-                            calc(100% + 5px) calc(100% + 5px),
-                            -5px calc(100% + 5px)
-                          )`,
-              },
-            }
-          : {})}
-      />
+        <iframe
+          ref={_harIframe}
+          name={name}
+          height={height}
+          {...(value && labelClipWidth > 0 && placeholder
+            ? {
+                style: {
+                  clipPath: `polygon(
+                              -15px 0,
+                              10px -5px,
+                              10px 5px,
+                              calc(${labelClipWidth}px + 7px) 5px,
+                              calc(${labelClipWidth}px + 7px) -5px,
+                              100% -70px,
+                              calc(100% + 5px) calc(100% + 5px),
+                              -5px calc(100% + 5px)
+                            )`,
+                },
+              }
+            : {})}
+        />
 
-      <div className="toolbar">
-        {toolbarButtons.map(({ command, icon, tooltip }, index) => (
-          <Tooltip key={`${command}-${index}`} text={tooltip}>
-            <Button
-              key={command}
-              type="button"
-              variant="borderless"
-              color="light"
-              border={{ radius: "none" }}
-              icon={{ element: <ARIcon icon={icon} /> }}
-              onClick={() => execCommand(command)}
-            />
-          </Tooltip>
-        ))}
+        <div className="toolbar">
+          {toolbarButtons.map(({ command, icon, tooltip }, index) => (
+            <Tooltip key={`${command}-${index}`} text={tooltip}>
+              <Button
+                key={command}
+                type="button"
+                variant="borderless"
+                color="gray"
+                border={{ radius: "0" }}
+                shape="square"
+                icon={{ element: <Icon icon={icon} fill="currentColor" /> }}
+                onClick={() => execCommand(command)}
+              />
+            </Tooltip>
+          ))}
+        </div>
+
+        <div className="resize" onMouseDown={handleMouseDown}></div>
+
+        {validation?.text && <span className="har-validation-text">{validation.text}</span>}
       </div>
-
-      <div className="resize" onMouseDown={handleMouseDown}></div>
-
-      {validation?.text && <span className="validation">{validation.text}</span>}
 
       {/* Dynamic List */}
       {dynamicList &&
         atRect &&
         ReactDOM.createPortal(
           <div
-            ref={_arAliasPanel}
-            className="ar-alias-panel"
+            ref={_harAliasPanel}
+            className="har-alias-panel"
             style={{
-              top: (_arIframe.current?.getBoundingClientRect().top ?? 0) + atRect.top + 20,
-              left: (_arIframe.current?.getBoundingClientRect().left ?? 0) + atRect.left,
+              top: (_harIframe.current?.getBoundingClientRect().top ?? 0) + atRect.top + 20,
+              left: (_harIframe.current?.getBoundingClientRect().left ?? 0) + atRect.left,
             }}
             onClick={() => {
               setAtRect(null);

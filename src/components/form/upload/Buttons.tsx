@@ -1,25 +1,30 @@
 import React, { memo } from "react";
-import { ARIcon } from "../../icons";
 import Button from "../button";
+import Flex from "../../layout/grid-system/flex/Flex";
+import { openFilePreview } from "./helpers";
+import { Icon } from "../../icons";
 
 interface IProps {
   selectedFile: File;
-  handleFileToBase64: (file: File) => Promise<string>;
   handleFileRemove: (fileToRemove: File) => void;
 }
 
-const Buttons = ({ selectedFile, handleFileToBase64, handleFileRemove }: IProps) => {
+const Buttons = ({ selectedFile, handleFileRemove }: IProps) => {
   return (
     <div className="buttons">
-      <div>
+      <Flex flexDirection="row" justifyContent="center" alignItems="center" gap="var(--space-4)">
         <Button
           variant="borderless"
           color="purple"
           type="button"
-          icon={{ element: <ARIcon icon={"Download"} fill="currentColor" /> }}
+          shape="square"
+          icon={{
+            element: <Icon icon="Download" size={24} />,
+          }}
           onClick={(e) => {
             e.stopPropagation();
 
+            // Seçili dosyayı tarayıcı üzerinden indir.
             const url = window.URL.createObjectURL(selectedFile);
             const a = document.createElement("a");
 
@@ -31,37 +36,42 @@ const Buttons = ({ selectedFile, handleFileToBase64, handleFileRemove }: IProps)
           }}
         />
 
-        {selectedFile.type.includes("image") && (
-          <Button
-            variant="borderless"
-            color="blue"
-            type="button"
-            icon={{ element: <ARIcon icon={"Eye-Fill"} fill="currentColor" /> }}
-            onClick={async (e) => {
-              e.stopPropagation();
-
-              const base64 = await handleFileToBase64(selectedFile);
-              const newTab = window.open();
-
-              newTab?.document.write(`<img src="${base64}" title="${selectedFile.name}" alt="${selectedFile.name}" />`);
-            }}
-          />
-        )}
+        <Button
+          variant="borderless"
+          color="blue"
+          type="button"
+          shape="square"
+          aria-label={`Preview ${selectedFile.name}`}
+          icon={{
+            element: <Icon icon="Eye-Fill" size={24} />,
+          }}
+          onClick={(e) => {
+            e.stopPropagation();
+            // Dosyayı yeni pencerede önizle.
+            openFilePreview(selectedFile);
+          }}
+        />
 
         <Button
           variant="borderless"
           color="red"
           type="button"
-          icon={{ element: <ARIcon icon={"Trash-Fill"} fill="currentColor" /> }}
+          shape="square"
+          icon={{
+            element: <Icon icon="Trash-Fill" size={24} />,
+          }}
           onClick={(e) => {
             e.stopPropagation();
 
+            // Dosyayı listeden kaldır.
             handleFileRemove(selectedFile);
           }}
         />
-      </div>
+      </Flex>
     </div>
   );
 };
+
+Buttons.displayName = "Buttons";
 
 export default memo(Buttons);

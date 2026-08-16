@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { CalendarEvent } from "../IProps";
 import ReactDOM from "react-dom";
 
@@ -18,26 +18,32 @@ interface IProps<T> {
   };
 }
 
+type PositionedEvent<T> = {
+  event: T & CalendarEvent;
+  originalIndex: number;
+  layout: {
+    top: number;
+    height: number;
+    column: number;
+    totalColumns: number;
+  };
+};
+
 const Week = function <T>({ trackedBy, data, renderItem, states, config }: IProps<T>) {
   // states
-  const [mouseCoordinate, setMouseCoordinate] = useState<{
-    x: number;
-    y: number;
-    isRightHalf: boolean;
-    isBottomHalf: boolean;
-  }>({
-    x: 0,
-    y: 0,
-    isRightHalf: false,
-    isBottomHalf: false,
-  });
   const [activeTooltip, setActiveTooltip] = useState<{ id: number; content: React.JSX.Element } | null>(null);
+
+  // refs
+  // Tooltip pozisyonu artık state yerine ref + doğrudan DOM güncellemesiyle yönetiliyor.
+  // Böylece fare hareket ettikçe tüm Week bileşeni (grid + event hesaplamaları) yeniden render edilmiyor,
+  // sadece tooltip'in kendi stil özellikleri güncelleniyor.
+  const tooltipRef = useRef<HTMLDivElement>(null);
+  const lastMousePosition = useRef({ x: 0, y: 0 });
 
   // variables
   const startHour = 0;
   const endHour = 24;
   const hours = endHour - startHour;
-  // const cellHeight = 60;
 
   // methods
   const weekDays = useMemo(
@@ -45,15 +51,42 @@ const Week = function <T>({ trackedBy, data, renderItem, states, config }: IProp
     [states.currentDate.get, config?.weekStartsOn],
   );
 
+  // Her günün etkinlik yerleşimi artık sadece data/hafta değiştiğinde hesaplanıyor,
+  // hover veya tooltip render'larında tekrar hesaplanmıyor.
+  const eventsByDay = useMemo(
+    () =>
+      weekDays.map((day) => {
+        const dayStart = new Date(day).setHours(0, 0, 0, 0);
+        const dayEnd = new Date(day).setHours(23, 59, 59, 999);
+
+        // 1. Bu güne ait etkinlikleri filtrele ve sırala.
+        const dayEvents = data
+          .filter((event) => event.start.getTime() <= dayEnd && event.end.getTime() >= dayStart)
+          .sort((a, b) => a.start.getTime() - b.start.getTime());
+
+        // 2. Çakışmaları hesapla (Görsel yerleşim için kritik adım).
+        return computeEventLayout(dayEvents, dayStart, dayEnd);
+      }),
+    [data, weekDays],
+  );
+
   // useEffects
+  const positionTooltip = (x: number, y: number) => {
+    const node = tooltipRef.current;
+    if (!node) return;
+
+    const isRightHalf = x > window.innerWidth / 2;
+    const isBottomHalf = y > window.innerHeight / 2;
+
+    node.style.top = `${y}px`;
+    node.style.left = `${x}px`;
+    node.style.transform = `translate(${isRightHalf ? "-110%" : "10%"}, ${isBottomHalf ? "-110%" : "10%"})`;
+  };
+
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
-      setMouseCoordinate({
-        x: event.clientX,
-        y: event.clientY,
-        isRightHalf: event.clientX > window.innerWidth / 2,
-        isBottomHalf: event.clientY > window.innerHeight / 2,
-      });
+      lastMousePosition.current = { x: event.clientX, y: event.clientY };
+      positionTooltip(event.clientX, event.clientY);
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -63,12 +96,19 @@ const Week = function <T>({ trackedBy, data, renderItem, states, config }: IProp
     };
   }, []);
 
+  // Tooltip yeni açıldığında, son bilinen fare konumunu hemen uygula (ilk karede 0,0'a "zıplamayı" önler).
+  useEffect(() => {
+    if (activeTooltip) {
+      positionTooltip(lastMousePosition.current.x, lastMousePosition.current.y);
+    }
+  }, [activeTooltip]);
+
   return (
     <>
       <div className="ar-calendar-week-view">
         <div className="head">
           {weekDays.map((day) => (
-            <div key={day.toISOString()} className="item">
+            <div key={day.toISOString()} className="item" role="columnheader">
               <span className="day-name">
                 {day.toLocaleString(config?.locale ?? "tr", { weekday: "short" }).toUpperCase()}
               </span>
@@ -88,30 +128,17 @@ const Week = function <T>({ trackedBy, data, renderItem, states, config }: IProp
 
           <div role="grid" className="grid">
             {Array.from({ length: hours }).map((_, rowIndex) => (
-              <div key={rowIndex} className="row">
+              <div key={rowIndex} className="row" role="row">
                 {weekDays.map((_, colIndex) => (
-                  <div key={colIndex} className="cell" />
+                  <div key={colIndex} className="cell" role="gridcell" />
                 ))}
               </div>
             ))}
           </div>
 
           <div className="events-layer">
-            {weekDays.map((day, dayIndex) => {
-              const dayStart = new Date(day).setHours(0, 0, 0, 0);
-              const dayEnd = new Date(day).setHours(23, 59, 59, 999);
-
-              // 1. Bu güne ait etkinlikleri filtrele ve sırala.
-              const dayEvents = data
-                .filter((event) => {
-                  return event.start.getTime() <= dayEnd && event.end.getTime() >= dayStart;
-                })
-                .sort((a, b) => a.start.getTime() - b.start.getTime());
-
-              // 2. Çakışmaları hesapla (Görsel yerleşim için kritik adım).
-              const positionedEvents = computeEventLayout(dayEvents, dayStart, dayEnd);
-
-              return positionedEvents.map(({ event, layout, originalIndex }) => {
+            {eventsByDay.map((positionedEvents, dayIndex) =>
+              positionedEvents.map(({ event, layout, originalIndex }: PositionedEvent<T>) => {
                 const uniqueValue = event[trackedBy];
                 const eventColor = getColor(uniqueValue as string | number);
 
@@ -132,29 +159,22 @@ const Week = function <T>({ trackedBy, data, renderItem, states, config }: IProp
                       left: `calc(${(100 / 7) * dayIndex}% + ${(layout.column * (100 / 7)) / layout.totalColumns}%)`,
                       width: `${100 / 7 / layout.totalColumns}%`,
                       border: `1px solid ${eventColor.border}`,
-                      borderRadius: "var(--border-radius-sm)",
+                      borderRadius: "var(--radius-4)",
                       zIndex: 10,
                     }}
                   >
                     {layout.height > 20 && renderItem(event, originalIndex)}
                   </div>
                 );
-              });
-            })}
+              }),
+            )}
           </div>
         </div>
       </div>
 
       {activeTooltip &&
         ReactDOM.createPortal(
-          <div
-            className="ar-calendar-tooltip"
-            style={{
-              top: mouseCoordinate.y,
-              left: mouseCoordinate.x,
-              transform: `translate(${mouseCoordinate.isRightHalf ? "-110%" : "10%"}, ${mouseCoordinate.isBottomHalf ? "-110%" : "10%"})`,
-            }}
-          >
+          <div ref={tooltipRef} className="ar-calendar-tooltip">
             {activeTooltip.content}
           </div>,
           document.body,
@@ -166,12 +186,14 @@ const Week = function <T>({ trackedBy, data, renderItem, states, config }: IProp
 /**
  * Etkinliklerin çakışma durumuna göre konumlarını hesaplayan yardımcı fonksiyon
  */
-function computeEventLayout<T>(events: (T & CalendarEvent)[], dayStart: number, dayEnd: number) {
+function computeEventLayout<T>(events: (T & CalendarEvent)[], dayStart: number, dayEnd: number): PositionedEvent<T>[] {
   const cellHeight = 60;
-  const results: { event: any; originalIndex: number; layout: any }[] = [];
+  const results: PositionedEvent<T>[] = [];
+
+  type ClusterItem = { event: T & CalendarEvent; idx: number; start: number; end: number };
 
   // Gruplandırma (Aynı anda çakışan etkinlik kümeleri)
-  let clusters: any[][] = [];
+  const clusters: ClusterItem[][] = [];
   let lastEventEnd = 0;
 
   events.forEach((event, idx) => {
@@ -189,7 +211,7 @@ function computeEventLayout<T>(events: (T & CalendarEvent)[], dayStart: number, 
 
   // Her küme içindeki kolonları hesapla
   clusters.forEach((cluster) => {
-    const columns: any[][] = [];
+    const columns: ClusterItem[][] = [];
 
     cluster.forEach((item) => {
       let placed = false;
@@ -252,12 +274,12 @@ const getWeekDays = (date: Date, weekStartsOn: number = 1) => {
 
 const getColor = (id: string | number) => {
   const colors = [
-    { bg: "#3174ad", border: "#2a6293" }, // Mavi
-    { bg: "#4caf50", border: "#388e3c" }, // Yeşil
-    { bg: "#ff9800", border: "#f57c00" }, // Turuncu
-    { bg: "#9c27b0", border: "#7b1fa2" }, // Mor
-    { bg: "#e91e63", border: "#c2185b" }, // Pembe
-    { bg: "#00bcd4", border: "#0097a7" }, // Turkuaz
+    { bg: "var(--blue-500)", border: "var(--blue-600)" }, // Mavi
+    { bg: "var(--green-500)", border: "var(--green-600)" }, // Yeşil
+    { bg: "var(--orange-500)", border: "var(--orange-600)" }, // Turuncu
+    { bg: "var(--purple-500)", border: "var(--purple-600)" }, // Mor
+    { bg: "var(--pink-500)", border: "var(--pink-600)" }, // Pembe
+    { bg: "var(--cyan-500)", border: "var(--cyan-600)" }, // Turkuaz
   ];
 
   // Eğer id string ise karakter kodlarının toplamını alarak tutarlı bir index üretiriz

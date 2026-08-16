@@ -1,14 +1,7 @@
-import { Variants, Option, Status, Color } from "../../../libs/infrastructure/types";
-import {
-  IBorderProps,
-  IDisabledProps,
-  IIconProps,
-  ISizeProps,
-  IColorProps,
-  IUpperCaseProps,
-  IValidationProps,
-  IVariantProps,
-} from "../../../libs/infrastructure/types/IGlobalProps";
+import { ComponentProps } from "react";
+import { Variants, Option, Status, Color, Sizes } from "../../../libs/infrastructure/types";
+
+import Input from "../input";
 
 export interface IMultiple {
   status?: {
@@ -16,6 +9,7 @@ export interface IMultiple {
     selected?: {
       variant?: Variants;
       color?: Color;
+      size?: Sizes;
     };
   };
   value: Option[];
@@ -31,12 +25,10 @@ export interface ISingle {
 }
 
 export type Props = {
-  style?: React.CSSProperties | undefined;
   options: Option[];
   onSearch?: (searchText: string) => void;
   onClick?: () => void;
   onCreate?: (option: Option) => void;
-  placeholder?: string;
   readOnly?: boolean;
   config?: {
     clear?: boolean;
@@ -45,11 +37,4 @@ export type Props = {
     };
   };
 } & (IMultiple | ISingle) &
-  IVariantProps &
-  IColorProps &
-  IBorderProps &
-  IIconProps &
-  ISizeProps &
-  IUpperCaseProps &
-  IValidationProps &
-  IDisabledProps;
+  Omit<ComponentProps<typeof Input>, "value" | "onChange">;

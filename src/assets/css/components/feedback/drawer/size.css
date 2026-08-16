@@ -1,0 +1,47 @@
+.har-drawer-wrapper {
+  > .har-drawer {
+    &.size-xs {
+      width: 320px;
+    }
+
+    &.size-sm {
+      width: 384px;
+    }
+
+    &.size-md {
+      width: 512px;
+    }
+
+    &.size-lg {
+      width: 640px;
+    }
+
+    &.size-xl {
+      width: 896px;
+    }
+
+    &.size-2xl {
+      width: 1200px;
+    }
+
+    &.size-3xl {
+      width: 80%;
+    }
+
+    &.size-4xl {
+      width: 85%;
+    }
+
+    &.size-5xl {
+      width: 90%;
+    }
+
+    &.size-6xl {
+      width: 95%;
+    }
+
+    &.size-full {
+      width: 100%;
+    }
+  }
+}

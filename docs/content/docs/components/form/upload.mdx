@@ -1,0 +1,136 @@
+---
+title: Upload
+description: Select files, show progress, and surface type or size errors.
+---
+
+Upload is controlled through a `files` array. `onChange` receives FormData (valid files only), the full selected list, base64 previews for valid files, and whether any selected file failed validation. Keep the second argument in state — invalid files stay visible so users can remove them.
+
+## Import
+
+```tsx
+import { Upload } from "@harjs/react-ui";
+```
+
+```tsx
+<Upload
+  text="Upload files"
+  files={files}
+  onChange={(_formData, nextFiles) => setFiles(nextFiles)}
+/>
+<Upload type="grid" text="Upload files" files={files} onChange={onChange} />
+<Upload type="dropzone" text="Drop files here" files={files} onChange={onChange} />
+```
+
+## Usage
+
+<Example>
+  <UploadBasic />
+</Example>
+
+## Examples
+
+### List
+
+The default `type="list"` stacks each file with its name, size, and type. Download, preview, and remove sit on the right of each row.
+
+<Example>
+  <UploadFiles />
+</Example>
+
+### Grid
+
+`type="grid"` lays the same file cards out in a row. Grid defaults `direction` to `"row"`.
+
+<Example>
+  <UploadGrid />
+</Example>
+
+### Direction
+
+`direction` controls list flow. `column` is the default for `list`. `row` sits cards side by side.
+
+<Example>
+  <UploadDirection />
+</Example>
+
+### Dropzone
+
+`type="dropzone"` is a drag-and-drop surface. `allowedTypes` and `maxSize` show on the empty state.
+
+<Example>
+  <UploadDropzone />
+</Example>
+
+With files selected, the dropzone shows a preview. Click a file in the list to switch.
+
+<Example>
+  <UploadDropzoneFiles />
+</Example>
+
+### Allowed types
+
+`allowedTypes` filters the file picker and rejects anything else. Invalid files stay in the list with an error — `onChange` still returns them in `files`, but they are omitted from FormData and base64.
+
+<Example>
+  <UploadAllowedTypes />
+</Example>
+
+### Max size
+
+`maxSize` is in megabytes. Files over the limit stay visible with a size error.
+
+<Example>
+  <UploadMaxSize />
+</Example>
+
+### Progress
+
+Pass `onRequest` to run the upload yourself. Call `onProgress`, `onSuccess`, or `onError` to drive the per-file bar. `invoice-fail.pdf` below errors on purpose.
+
+<Example>
+  <UploadProgress />
+</Example>
+
+### Sizes
+
+`size` changes the trigger button height. The default is `lg`.
+
+<Example>
+  <UploadSizes />
+</Example>
+
+### Disabled
+
+<Example>
+  <UploadDisabled />
+</Example>
+
+### Validation
+
+`validation.text` shows an error message under the control and paints the trigger red. Clear it when the value is valid.
+
+<Example>
+  <UploadValidation />
+</Example>
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `text` | `string` | — |
+| `files` | `File[]` | — |
+| `onChange` | `(formData, files, base64, isInvalidFileExist) => void` | — |
+| `type` | `"list" \| "grid" \| "dropzone"` | `"list"` |
+| `multiple` | `boolean` | — |
+| `direction` | `"row" \| "column"` | `"column"` (`"row"` for `grid`) |
+| `allowedTypes` | `MimeTypes[]` | — |
+| `maxSize` | `number` | — |
+| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl"` | `"lg"` |
+| `color` | `"blue" \| "purple" \| "pink" \| "red" \| "orange" \| "yellow" \| "green" \| "teal" \| "cyan" \| "gray" \| "white"` | `"blue"` |
+| `fullWidth` | `boolean` | — |
+| `progress` | `Record<fileName, { percent: number; status?: "ready" \| "uploading" \| "success" \| "error" }>` | — |
+| `onRequest` | `(options: { file; onProgress; onSuccess; onError }) => void \| Promise<void>` | — |
+| `disabled` | `boolean` | — |
+| `validation` | `{ text?: string; scrollTo?: boolean }` | — |
+
+`text` and `files` / `onChange` are required. `maxSize` is megabytes. `onChange` `files` is the full selected list; FormData and `base64` contain only files that passed `allowedTypes` and `maxSize`. `isInvalidFileExist` is `true` when at least one selected file failed that check.

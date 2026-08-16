@@ -3,160 +3,328 @@
 import React, { useEffect, useRef } from "react";
 import IProps from "./IProps";
 import "../../../assets/css/components/data-display/dnd/styles.css";
-import { ARIcon } from "../../icons";
+import { Icon } from "../../icons";
 
 let _fromColumn: string | undefined = undefined;
+let _hoverColumn: string | undefined = undefined;
 
-const DnD = function <T>({ data, renderItem, columnKey, onChange, confing = { isMoveIcon: true } }: IProps<T>) {
+const resolveHandle = (config?: IProps<unknown>["config"], confing?: IProps<unknown>["confing"]) =>
+  config?.handle ?? confing?.isMoveIcon ?? true;
+
+const DnD = function <T>({
+  data,
+  renderItem,
+  columnKey,
+  onChange,
+  disabled = false,
+  config,
+  confing,
+  itemKey,
+}: IProps<T>) {
+  // variables
+  const showHandle = resolveHandle(config, confing);
+  const handleOnly = showHandle && (config?.handleOnly ?? true);
+  const color = config?.color ?? "blue";
+  const className = [
+    "har-dnd",
+    color,
+    showHandle ? "has-handle" : undefined,
+    handleOnly ? "is-handle-only" : undefined,
+    disabled ? "is-disabled" : undefined,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   // refs
   const _arDnD = useRef<HTMLDivElement>(null);
-  const _dragItem = useRef<HTMLElement>(null);
+  const _dragItem = useRef<HTMLElement | null>(null);
+  const _order = useRef<T[]>(data);
+  const _placeholder = useRef<HTMLDivElement | null>(null);
+  const _scrollRaf = useRef<number | null>(null);
+  const _initialNodes = useRef<HTMLElement[]>([]);
+  const _escaped = useRef(false);
+  // refs -> Latest
+  const _data = useRef(data);
+  const _onChange = useRef(onChange);
+  const _columnKey = useRef(columnKey);
+  const _disabled = useRef(disabled);
+  const _handleOnly = useRef(handleOnly);
+
+  _data.current = data;
+  _onChange.current = onChange;
+  _columnKey.current = columnKey;
+  _disabled.current = disabled;
+  _handleOnly.current = handleOnly;
+
+  // methods
+  const clearAllPlaceholders = () => {
+    document.querySelectorAll("[data-id='placeholder']").forEach((node) => node.remove());
+  };
 
   // useEffects
   useEffect(() => {
-    if (!_arDnD.current || data.length === 0) return;
+    if (_dragItem.current) return;
+    _order.current = data.slice();
+  }, [data]);
 
-    _arDnD.current.childNodes.forEach((item) => {
-      const _item = item as HTMLElement;
+  useEffect(() => {
+    const container = _arDnD.current;
+    if (!container) return;
 
-      // Events
-      _item.ondragstart = (event) => {
-        const dragItem = event.currentTarget as HTMLElement;
+    const getItemElement = (target: EventTarget | null): HTMLElement | null => {
+      let el: Element | null =
+        target instanceof Element ? target : target instanceof Text ? target.parentElement : null;
 
-        _dragItem.current = dragItem;
-        dragItem.classList.add("drag-item");
-
-        const index = [..._arDnD.current!.children].indexOf(dragItem);
-        const draggedData = data[index];
-
-        if (event.dataTransfer) {
-          // #region Shadow
-          const shadow = document.createElement("div");
-
-          shadow.innerHTML = `
-            <div class="ar-dnd-shadow">
-              <i class="bi bi-gear-wide-connected"></i>
-              <span>Dragging...</span>
-            </div>
-          `;
-          shadow.style.position = "absolute";
-          shadow.style.top = "-9999px";
-          document.body.appendChild(shadow);
-          event.dataTransfer.setDragImage(shadow, 0, 0);
-          // #endregion
-
-          event.dataTransfer.setData("item", JSON.stringify(draggedData));
-          event.dataTransfer.setData("fromColumn", columnKey ?? "");
-          _fromColumn = columnKey ?? undefined;
+      while (el) {
+        if (el.classList.contains("item") && el.parentElement === container) {
+          return el as HTMLElement;
         }
 
-        // Korumaya başla.
-        if (_arDnD.current && columnKey && _fromColumn !== columnKey) {
-          _arDnD.current.childNodes.forEach((item) => {
-            const placeholder = document.createElement("div");
-            placeholder.setAttribute("data-id", "placeholder");
-            placeholder.style.position = "absolute";
-            placeholder.style.inset = "0";
+        el = el.parentElement;
+      }
 
-            item.appendChild(placeholder);
-          });
-        }
-      };
+      return null;
+    };
 
-      _item.ondragover = (event) => {
+    const ensurePlaceholder = (): HTMLDivElement => {
+      if (_placeholder.current?.isConnected) return _placeholder.current;
+
+      const placeholder = document.createElement("div");
+      placeholder.setAttribute("data-id", "placeholder");
+      placeholder.classList.add("placeholder");
+      _placeholder.current = placeholder;
+
+      return placeholder;
+    };
+
+    const handleAutoScroll = (clientY: number) => {
+      if (_scrollRaf.current != null) return;
+
+      _scrollRaf.current = requestAnimationFrame(() => {
+        _scrollRaf.current = null;
+
+        if (clientY < 250) window.scrollBy(0, -20);
+        else if (clientY > window.innerHeight - 150) window.scrollBy(0, 20);
+      });
+    };
+
+    const handleDragStart = (event: DragEvent) => {
+      if (_disabled.current || !event.dataTransfer) {
         event.preventDefault();
+        return;
+      }
 
-        const overItem = event.currentTarget as HTMLElement;
+      const origin = event.target instanceof Element ? event.target : null;
+      if (_handleOnly.current && !origin?.closest(".move")) {
+        event.preventDefault();
+        return;
+      }
+
+      const dragItem = getItemElement(event.target);
+      if (!dragItem) return;
+
+      clearAllPlaceholders();
+      _placeholder.current = null;
+
+      const rect = dragItem.getBoundingClientRect();
+      const ghost = document.createElement("div");
+      ghost.className = "har-dnd-ghost";
+      if (container.closest(".har-kanban-board")) ghost.classList.add("is-kanban");
+      ghost.style.color = getComputedStyle(container).color;
+
+      const clone = dragItem.cloneNode(true) as HTMLElement;
+      clone.classList.remove("drag-item", "end-item");
+      ghost.appendChild(clone);
+      ghost.style.width = `${rect.width}px`;
+      ghost.style.position = "fixed";
+      ghost.style.top = "-1000px";
+      ghost.style.left = "0";
+      document.body.appendChild(ghost);
+      void ghost.offsetWidth;
+
+      const fromHandle = Boolean(origin?.closest(".move"));
+      event.dataTransfer.setDragImage(
+        ghost,
+        fromHandle ? 22 : Math.min(Math.max(event.offsetX || 16, 16), 36),
+        Math.min(rect.height / 2, 22),
+      );
+      setTimeout(() => {
+        if (document.body.contains(ghost)) document.body.removeChild(ghost);
+      }, 0);
+
+      _dragItem.current = dragItem;
+      dragItem.classList.add("drag-item");
+      container.classList.add("is-dragging");
+
+      _initialNodes.current = Array.prototype.slice.call(container.children) as HTMLElement[];
+
+      const children = container.children;
+      const dragIndex = Array.prototype.indexOf.call(children, dragItem);
+      const currentData = _data.current;
+      _order.current = currentData.slice();
+      const draggedData = currentData[dragIndex];
+
+      event.dataTransfer.effectAllowed = "move";
+      event.dataTransfer.setData("text/plain", String(dragIndex));
+      try {
+        event.dataTransfer.setData("item", JSON.stringify(draggedData ?? null));
+      } catch {
+        event.dataTransfer.setData("item", "");
+      }
+      event.dataTransfer.setData("fromColumn", _columnKey.current ?? "");
+      _fromColumn = _columnKey.current ?? undefined;
+      _hoverColumn = _columnKey.current ?? undefined;
+      _escaped.current = false;
+    };
+
+    const handleDragOver = (event: DragEvent) => {
+      event.preventDefault();
+      if (event.dataTransfer) event.dataTransfer.dropEffect = "move";
+
+      handleAutoScroll(event.clientY);
+
+      const overItem = getItemElement(event.target);
+      const currentColumnKey = _columnKey.current;
+
+      if (currentColumnKey) _hoverColumn = currentColumnKey;
+
+      if (currentColumnKey && _fromColumn !== currentColumnKey) {
+        if (!overItem) return;
+
         const rect = overItem.getBoundingClientRect();
+        const isBelow = event.clientY > rect.top + rect.height / 2;
+        const existing = _placeholder.current;
 
-        // Otomatik scroll.
-        if (rect.top < 250) window.scrollBy(0, -20);
-        if (rect.bottom > window.innerHeight - 150) window.scrollBy(0, 20);
-
-        // Sadece aynı kolondaysa drag-drop yap.
-        if (columnKey && _fromColumn !== columnKey) {
-          // Placeholder'ı temizle
-          const nodes = document.querySelectorAll("[data-id='placeholder']");
-          nodes.forEach((node) => node.remove());
-
-          // Placeholder element oluştur.
-          const placeholder = document.createElement("div");
-          placeholder.setAttribute("data-id", "placeholder");
-          placeholder.classList.add("placeholder");
-
-          // Fare pozisyonuna göre yerleştir.
-          const isBelow = event.clientY > rect.top + rect.height / 2;
-          if (isBelow) {
-            overItem.parentNode?.insertBefore(placeholder, overItem.nextSibling);
-          } else {
-            overItem.parentNode?.insertBefore(placeholder, overItem);
-          }
-
-          return; // taşıma yapma ama placeholder gösterilsin.
-        }
-
-        // Gerçek taşıma işlemi.
-        if (_dragItem.current !== overItem) {
-          if (_arDnD.current && _dragItem.current) {
-            const dragItemIndex = [..._arDnD.current.children].indexOf(_dragItem.current!);
-            const dropItemIndex = [..._arDnD.current.children].indexOf(overItem);
-
-            if (dragItemIndex === -1 || dropItemIndex === -1) return;
-
-            _arDnD.current.insertBefore(
-              _dragItem.current,
-              dragItemIndex < dropItemIndex ? overItem.nextSibling : overItem,
-            );
-
-            const movedItem = data.splice(dragItemIndex, 1)[0];
-
-            if (movedItem) {
-              data.splice(dropItemIndex, 0, movedItem);
-              onChange?.(data);
-            }
+        if (existing?.parentNode === container) {
+          if (isBelow ? overItem.nextSibling === existing : existing.nextSibling === overItem) {
+            return;
           }
         }
-      };
 
-      _item.ondragend = (event) => {
-        const item = event.currentTarget as HTMLElement;
+        const placeholder = ensurePlaceholder();
+        if (placeholder.parentNode !== container) {
+          clearAllPlaceholders();
+          _placeholder.current = placeholder;
+        }
+
+        container.insertBefore(placeholder, isBelow ? overItem.nextSibling : overItem);
+        return;
+      }
+
+      if (!overItem || !_dragItem.current || _dragItem.current === overItem) return;
+
+      const children = container.children;
+      const dragItemIndex = Array.prototype.indexOf.call(children, _dragItem.current);
+      const dropItemIndex = Array.prototype.indexOf.call(children, overItem);
+
+      if (dragItemIndex === -1 || dropItemIndex === -1) return;
+
+      container.insertBefore(_dragItem.current, dragItemIndex < dropItemIndex ? overItem.nextSibling : overItem);
+
+      const order = _order.current;
+      const [movedItem] = order.splice(dragItemIndex, 1);
+      if (movedItem !== undefined) order.splice(dropItemIndex, 0, movedItem);
+    };
+
+    const handleDragEnd = (event: DragEvent) => {
+      const item = getItemElement(event.target) ?? _dragItem.current;
+
+      if (item) {
         item.classList.remove("drag-item");
         item.classList.add("end-item");
 
         setTimeout(() => {
           item.classList.remove("end-item");
+        }, 450);
+      }
 
-          if (item.classList.length === 0) item.removeAttribute("class");
-        }, 1000);
-      };
-    });
+      const currentColumnKey = _columnKey.current;
+      const droppedInSameColumn = !currentColumnKey || _hoverColumn === currentColumnKey || _hoverColumn == null;
+      const wasCancelled = _escaped.current;
 
-    _arDnD.current.ondragover = (event) => event.preventDefault();
+      if (wasCancelled) {
+        _initialNodes.current.forEach((node) => {
+          if (node.parentNode === container) container.appendChild(node);
+        });
+        _order.current = _data.current.slice();
+      } else if (droppedInSameColumn) {
+        const original = _data.current;
+        const next = _order.current;
+        let changed = original.length !== next.length;
+
+        if (!changed) {
+          for (let i = 0; i < original.length; i++) {
+            if (original[i] !== next[i]) {
+              changed = true;
+              break;
+            }
+          }
+        }
+
+        if (changed) _onChange.current?.(next.slice());
+      }
+
+      container.classList.remove("is-dragging");
+      clearAllPlaceholders();
+      _placeholder.current = null;
+      _dragItem.current = null;
+      _initialNodes.current = [];
+      _fromColumn = undefined;
+      _hoverColumn = undefined;
+      _escaped.current = false;
+
+      if (_scrollRaf.current != null) {
+        cancelAnimationFrame(_scrollRaf.current);
+        _scrollRaf.current = null;
+      }
+    };
+
+    const handleDrop = (event: DragEvent) => {
+      event.preventDefault();
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") _escaped.current = true;
+    };
+
+    container.addEventListener("dragstart", handleDragStart);
+    container.addEventListener("dragover", handleDragOver);
+    container.addEventListener("drop", handleDrop);
+    container.addEventListener("dragend", handleDragEnd);
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      if (!_arDnD.current) return;
+      container.removeEventListener("dragstart", handleDragStart);
+      container.removeEventListener("dragover", handleDragOver);
+      container.removeEventListener("drop", handleDrop);
+      container.removeEventListener("dragend", handleDragEnd);
+      window.removeEventListener("keydown", handleKeyDown);
 
-      _arDnD.current.childNodes.forEach((item) => {
-        const _item = item as HTMLElement;
+      if (_scrollRaf.current != null) {
+        cancelAnimationFrame(_scrollRaf.current);
+        _scrollRaf.current = null;
+      }
 
-        _item.ondragstart = null;
-        _item.ondragover = null;
-        _item.ondragend = null;
-      });
-
-      _arDnD.current.ondragover = null;
+      clearAllPlaceholders();
+      _placeholder.current = null;
+      container.classList.remove("is-dragging");
     };
-  }, [data]);
+  }, []);
 
   return (
-    <div ref={_arDnD} className="ar-dnd">
+    <div ref={_arDnD} className={className} role="list" aria-disabled={disabled || undefined}>
       {data.map((item, index) => (
-        <div key={index} className="item" draggable>
-          {confing?.isMoveIcon && (
-            <div className="move">
-              <ARIcon icon={"GripVertical"} fill="var(--blue-500)" size={18} />
+        <div
+          key={itemKey ? itemKey(item, index) : index}
+          className="item"
+          draggable={!disabled && !handleOnly}
+          role="listitem"
+        >
+          {showHandle ? (
+            <div className="move" draggable={!disabled && handleOnly} aria-hidden>
+              <Icon icon="GripVertical" size={20} />
             </div>
-          )}
+          ) : null}
           <div className="content">{renderItem(item, index)}</div>
         </div>
       ))}
@@ -164,4 +332,5 @@ const DnD = function <T>({ data, renderItem, columnKey, onChange, confing = { is
   );
 };
 
+DnD.displayName = "DnD";
 export default DnD;

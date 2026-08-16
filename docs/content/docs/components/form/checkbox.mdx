@@ -1,0 +1,175 @@
+---
+title: Checkbox
+description: Toggle a single option, group related choices, or select a card.
+---
+
+Checkboxes turn an option on or off. Compose related options with `Checkbox.Group`, or a selectable surface with `Checkbox.Card`. Import `Checkbox` once — the compounds hang off the same export.
+
+## Import
+
+```tsx
+import { Checkbox } from "@harjs/react-ui";
+```
+
+```tsx
+<Checkbox label="Accept terms" />
+<Checkbox.Group>...</Checkbox.Group>
+<Checkbox.Card title="Pro plan" description="Unlimited projects and priority support." />
+```
+
+## Usage
+
+<Example>
+  <CheckboxBasic />
+</Example>
+
+## Examples
+
+### Variants
+
+`variant` controls the control surface. `borderless` is not available on Checkbox.
+
+<Example>
+  <CheckboxVariants />
+</Example>
+
+### Colors
+
+`color` is independent of `variant`. Each row below is a color token; columns are variants.
+
+<Example>
+  <CheckboxColors />
+</Example>
+
+### Sizes
+
+<Example>
+  <CheckboxSizes />
+</Example>
+
+### Disabled
+
+<Example>
+  <CheckboxDisabled />
+</Example>
+
+### Validation
+
+`validation.text` shows an error message and paints the control red. Clear it when the value is valid.
+
+<Example>
+  <CheckboxValidation />
+</Example>
+
+On `Checkbox.Group`, the same prop paints every child red and shows one message under the group.
+
+<Example>
+  <CheckboxValidationGroup />
+</Example>
+
+## Checkbox.Card
+
+`Checkbox.Card` is a selectable surface. Click anywhere on the card to toggle. Pass `title`, `description`, and optional `icon`. `filled` uses a white checkbox on the saturated surface; other variants use the card color.
+
+<Example>
+  <CheckboxCardBasic />
+</Example>
+
+### Variants
+
+`variant` uses the same tokens as Checkbox. `filled` uses a white checkbox so it stays visible on the saturated surface.
+
+<Example>
+  <CheckboxCardVariants />
+</Example>
+
+### Orientation
+
+`orientation` lays out title and description in a column or a row.
+
+<Example>
+  <CheckboxCardOrientation />
+</Example>
+
+### Icons
+
+`icon` places a graphic above the title. The checkbox sits in the top-right corner.
+
+<Example>
+  <CheckboxCardIcons />
+</Example>
+
+## Checkbox.Group
+
+`Checkbox.Group` arranges `Checkbox` or `Checkbox.Card` children and clones shared props such as `color` and `size`. Selection state stays on each child.
+
+<Example>
+  <CheckboxGroupBasic />
+</Example>
+
+### Orientation
+
+`orientation="horizontal"` places options in a row.
+
+<Example>
+  <CheckboxGroupOrientation />
+</Example>
+
+### Cards
+
+`Checkbox.Group` also accepts `Checkbox.Card` children. `orientation="horizontal"` places the cards in a row.
+
+<Example>
+  <CheckboxGroupCards />
+</Example>
+
+## Props
+
+### Checkbox
+
+| Prop             | Type                                                                                                                | Default      |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------- | ------------ |
+| `label`          | `string`                                                                                                            | —            |
+| `variant`        | `"filled" \| "surface" \| "surface-borderless" \| "outlined" \| "dashed"`                                           | `"outlined"` |
+| `color`          | `"blue" \| "purple" \| "pink" \| "red" \| "orange" \| "yellow" \| "green" \| "teal" \| "cyan" \| "gray" \| "white"` | `"blue"`     |
+| `size`           | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl"`                                                                     | `"sm"`       |
+| `border.radius`  | `"0" \| "2" \| "4" \| "6" \| "8" \| "12" \| "16" \| "20" \| "40" \| "full"`                                         | `"4"`        |
+| `upperCase`      | `boolean`                                                                                                           | —            |
+| `validation`     | `{ text?: string; scrollTo?: boolean }`                                                                             | —            |
+| `checked`        | `boolean`                                                                                                           | —            |
+| `defaultChecked` | `boolean`                                                                                                           | —            |
+| `disabled`       | `boolean`                                                                                                           | —            |
+
+Also accepts standard checkbox `input` attributes (except `children`, `size`, `color`).
+
+### Checkbox.Card
+
+| Prop             | Type                                    | Default      |
+| ---------------- | --------------------------------------- | ------------ |
+| `title`          | `string`                                | —            |
+| `description`    | `string`                                | —            |
+| `icon`           | `ReactNode`                             | —            |
+| `orientation`    | `"horizontal" \| "vertical"`            | `"vertical"` |
+| `variant`        | Checkbox `variant`                      | `"surface"`  |
+| `color`          | Checkbox `color`                        | `"blue"`     |
+| `border.radius`  | border radius tokens                    | `"6"`        |
+| `checked`        | `boolean`                               | —            |
+| `defaultChecked` | `boolean`                               | —            |
+| `disabled`       | `boolean`                               | —            |
+| `validation`     | `{ text?: string; scrollTo?: boolean }` | —            |
+
+### Checkbox.Group
+
+Accepts the same props as `Checkbox` except `children`, and merges them into each child.
+
+| Prop          | Type                         | Default      |
+| ------------- | ---------------------------- | ------------ |
+| `children`    | `Checkbox \| Checkbox.Card`  | —            |
+| `title`       | `string`                     | —            |
+| `orientation` | `"horizontal" \| "vertical"` | `"vertical"` |
+| `columns`     | `number`                     | —            |
+| `color`       | Checkbox `color`             | —            |
+| `size`        | Checkbox `size`              | —            |
+| `variant`     | Checkbox `variant`           | —            |
+| `validation`  | `{ text?: string }`          | —            |
+| `disabled`    | `boolean`                    | —            |

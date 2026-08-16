@@ -1,0 +1,14 @@
+&.white {
+  --upload-accent-300: var(--gray-300);
+  --upload-accent-400: var(--gray-400);
+  --upload-accent-500: var(--white-500);
+  --upload-accent-600: var(--gray-600);
+
+  .file-size {
+    color: var(--gray-700);
+
+    > .size-type {
+      color: var(--gray-700);
+    }
+  }
+}

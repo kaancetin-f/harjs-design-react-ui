@@ -1,0 +1,21 @@
+.har-button {
+  &.fixed {
+    position: fixed;
+  }
+  &.absolute {
+    position: absolute;
+  }
+
+  &.top {
+    top: 0.5rem;
+  }
+  &.right {
+    right: 0.5rem;
+  }
+  &.bottom {
+    bottom: 0.5rem;
+  }
+  &.left {
+    left: 0.5rem;
+  }
+}

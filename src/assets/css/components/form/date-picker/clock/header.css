@@ -1,8 +1,20 @@
-.ar-date-calendar > .clock > .header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-bottom: solid 1px var(--gray-200);
-  text-align: center;
-  /* -webkit-text-stroke: 1px var(--black); */
+.har-date-calendar {
+  > .clock {
+    > .header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 0 0 auto;
+      min-height: 3.75rem;
+      padding: 0 0.5rem;
+      border-bottom: solid 1px var(--gray-200);
+      color: var(--gray-700);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      font-variant-numeric: tabular-nums;
+      text-align: center;
+      line-height: 1;
+    }
+  }
 }

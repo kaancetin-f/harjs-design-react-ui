@@ -7,9 +7,8 @@ import "../../../assets/css/components/charts/pie/pie.css";
 const Pie: React.FC<IProps> = ({ title, data, size }) => {
   // refs
   const _arPieChart = useRef<HTMLDivElement>(null);
-  // const _randomIndex = useRef<number[]>([]);
 
-  // state
+  // states
   const [conic, setConic] = useState<string[]>([]);
 
   // variables
@@ -26,6 +25,7 @@ const Pie: React.FC<IProps> = ({ title, data, size }) => {
     ["#72a9bb", "#fff"], // Açık Mavi-Gri
   ];
 
+  // useEffects
   useEffect(() => {
     if (!_arPieChart.current || data.length === 0) return;
 
@@ -34,13 +34,7 @@ const Pie: React.FC<IProps> = ({ title, data, size }) => {
     let normalizedData = data.map((value) => (value.value / total) * 100);
     let start = 0;
 
-    // Gelen data uzunluğunda rastgele bir sayı dizisi oluşturuyor.
-    // do {
-    //   const r = Math.floor(Math.random() * conicColors.length);
-
-    //   if (!_randomIndex.current.includes(r)) _randomIndex.current.push(r);
-    // } while (_randomIndex.current.length < data.length);
-
+    // Her dilimin conic-gradient aralığını yüzdeye göre hesapla.
     normalizedData.forEach((percent, index) => {
       let end = start + percent;
 
@@ -84,4 +78,5 @@ const Pie: React.FC<IProps> = ({ title, data, size }) => {
   );
 };
 
+Pie.displayName = "Pie";
 export default Pie;

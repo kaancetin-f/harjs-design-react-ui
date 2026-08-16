@@ -1,0 +1,143 @@
+---
+title: Tooltip
+description: Short, contextual help on hover or focus. Use it for a hint, not for actions or long content.
+---
+
+Tooltip is a hint, not a panel. The child is the trigger. Hover or keyboard focus opens it. Mouse leave, blur, or Escape closes it. The layer portals to `document.body` and stays inside the viewport. Prefer `top`. It flips to the opposite side when that side does not fit, then to the roomiest side if nothing fits.
+
+Popover is the richer sibling: titles, custom content, and confirm actions. Keep Tooltip short.
+
+## Import
+
+```tsx
+import { Tooltip } from "@harjs/react-ui";
+```
+
+```tsx
+<Tooltip text="This is a tooltip">
+  <Button>Hover me</Button>
+</Tooltip>
+```
+
+```tsx
+<Tooltip text="Preferred side: right" direction="right">
+  <Button>Right</Button>
+</Tooltip>
+```
+
+## Usage
+
+`children` is the trigger. `text` is the copy. A string is one line. An array is a bullet list. Default `direction` is `"top"`. The portal only renders after mount so it is safe in Next.js.
+
+<Example>
+  <TooltipBasic />
+</Example>
+
+## Examples
+
+### Directions
+
+`top`, `right`, `bottom`, and `left`. The preferred side is a hint. Collision handling still applies.
+
+<Example>
+  <TooltipDirections />
+</Example>
+
+### Long text
+
+Long copy wraps. The layer keeps a max width and stays inside the viewport.
+
+<Example>
+  <TooltipLongText />
+</Example>
+
+### Multiple text
+
+Pass a string array for a bullet list. Use this for a few related hints, not a document.
+
+<Example>
+  <TooltipMultiple />
+</Example>
+
+### Button
+
+Wrap a Button when the label needs a short extra hint.
+
+<Example>
+  <TooltipButton />
+</Example>
+
+### Icon
+
+Icon-only controls need an accessible name as well as a tooltip. The tooltip is the hint. `aria-label` is the name.
+
+<Example>
+  <TooltipIcon />
+</Example>
+
+### Form
+
+Place a hint next to a field when the label is not enough.
+
+<Example>
+  <TooltipForm />
+</Example>
+
+### Real-world example
+
+A settings field with a short “what is this for?” hint.
+
+<Example>
+  <TooltipRealWorld />
+</Example>
+
+### Keyboard
+
+Focus opens the tooltip. Blur closes it. Escape dismisses it without bubbling to a parent overlay.
+
+<Example>
+  <TooltipKeyboard />
+</Example>
+
+### Responsive
+
+Triggers near the viewport edge flip or clamp so the layer stays on screen. Resize and scroll update the position.
+
+<Example>
+  <TooltipResponsive />
+</Example>
+
+## Accessibility
+
+The layer is `role="tooltip"`. While it is open the trigger receives `aria-describedby`. Decorative bullets are `aria-hidden`. Keyboard focus shows the same content as hover. `prefers-reduced-motion: reduce` skips the enter animation.
+
+## Tooltip vs Popover
+
+| | Tooltip | Popover |
+| --- | --- | --- |
+| Purpose | Short hint | Richer, interactive content |
+| Open | Hover or focus | Click |
+| Content | String or bullet list | Title, message, custom nodes, actions |
+| Dismiss | Leave, blur, Escape | Click outside, Escape, confirm |
+
+Use Tooltip for “what is this?”. Use Popover when the user must read more or confirm an action.
+
+## Best practices
+
+- Keep the copy short and tied to the trigger.
+- Do not put primary actions inside a tooltip.
+- Use Popover for long or interactive content.
+- Do not make the tooltip the only way to get the information.
+- Make sure keyboard users can reach the same hint.
+- Avoid covering a screen with many tooltips.
+- Pair icon-only buttons with a tooltip and an accessible name.
+
+## Props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `children` | `ReactNode` | — | Trigger. Hover or focus opens the tooltip. |
+| `text` | `string \| string[]` | — | Copy. A string is one line. An array is a bullet list. |
+| `direction` | `"top" \| "right" \| "bottom" \| "left"` | `"top"` | Preferred side. Flips when that side does not fit. |
+
+The layer is portaled to `document.body`.

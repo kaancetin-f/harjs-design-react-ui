@@ -1,149 +1,292 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import IProps from "./IProps";
 import Typography from "../../data-display/typography";
+import Button from "../../form/button";
+import Tabs from "../../data-display/tabs";
 import "../../../assets/css/components/feedback/drawer/styles.css";
 import { useValidation } from "../../../libs/core/application/hooks";
-import { ValidationProps } from "../../../libs/infrastructure/types";
+import { TabProps, ValidationProps } from "../../../libs/infrastructure/types";
+import Utils from "../../../libs/infrastructure/shared/Utils";
+import { Icon } from "../../icons";
 
 const { Title } = Typography;
 
-const Drawer = function <T extends object>({ title, tabs = [], activeTab, open, validation, onChange }: IProps<T>) {
-  // refs
-  const _arDrawer = useRef<HTMLDivElement>(null);
-  const _drawerWrapperClassName: string[] = ["ar-drawer-wrapper"];
-  const _drawerClassName: string[] = ["ar-drawer"];
+const FOCUSABLE =
+  'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-  if (Object.keys(open).length > 0 && open.get) _drawerWrapperClassName.push("opened");
-  else _drawerWrapperClassName.push("closed");
+const overlayIsClear = () => {
+  const empty = (className: string) => document.getElementsByClassName(className).length === 0;
+  return (
+    empty("har-modal-wrapper opened") &&
+    empty("har-select-options") &&
+    empty("har-date-calendar") &&
+    empty("har-popover")
+  );
+};
+
+const storageKey = (name: string) => `${window.location.pathname}::${name}`;
+
+const readStoredIndex = (name: string, length: number) => {
+  if (typeof window === "undefined" || length === 0) return null;
+  const raw = sessionStorage.getItem(storageKey(name));
+  if (raw == null) return null;
+  const index = Number(raw);
+  if (!Number.isInteger(index) || index < 0 || index >= length) return null;
+  return index;
+};
+
+const injectErrors = <T extends object>(content: React.ReactNode, errors: Partial<{ [key in keyof T]: string }>) =>
+  React.Children.map(content, (child) =>
+    React.isValidElement(child)
+      ? React.cloneElement(child as React.ReactElement<{ errors: Partial<{ [key in keyof T]: string }> }>, { errors })
+      : child,
+  );
+
+const Drawer = function <T extends object>({
+  children,
+  title,
+  name,
+  tabs = [],
+  activeTab,
+  open,
+  size = "2xl",
+  placement = "right",
+  onChange,
+  onClose,
+  validation,
+  config,
+  disableCloseOnBackdrop,
+  disableCloseOnEsc,
+  border,
+  className,
+  style,
+  role,
+  ...attributes
+}: IProps<T>) {
+  // variables
+  const isTabControlled = activeTab !== undefined;
+  const panels: TabProps[] = tabs.length > 0 ? tabs : children != null ? [{ title: "", content: children }] : [];
+  const showTabs = panels.length > 1;
+
+  // refs
+  const _drawer = useRef<HTMLDivElement>(null);
+  const _previousFocus = useRef<HTMLElement | null>(null);
 
   // states
-  const [currentTab, setCurrentTab] = useState<number>(0);
+  const [mounted, setMounted] = useState(false);
+  const [entered, setEntered] = useState(false);
+  const [trackedPlacement, setTrackedPlacement] = useState(placement);
+  const [uncontrolledTab, setUncontrolledTab] = useState(() => {
+    if (isTabControlled) return activeTab;
+    if (name) return readStoredIndex(name, panels.length) ?? config?.tabs?.defaultActiveTab ?? 0;
+    return config?.tabs?.defaultActiveTab ?? 0;
+  });
+
+  if (placement !== trackedPlacement) {
+    setTrackedPlacement(placement);
+    setEntered(false);
+  }
+
+  if (!open.get && entered) setEntered(false);
+
+  // variables -> Derived
+  const currentTab = Math.min(
+    Math.max(isTabControlled ? (activeTab as number) : uncontrolledTab, 0),
+    Math.max(panels.length - 1, 0),
+  );
 
   // hooks
+  const uid = useId();
   const { errors, onSubmit, setSubmit } = useValidation(
     validation?.data as T,
     validation?.rules as ValidationProps<T>[],
     currentTab + 1,
   );
+  const titleId = `${uid}-title`;
 
   // methods
-  const handleValidationControlForClose = useCallback(() => {
+  const persist = (index: number) => {
+    if (!name || typeof window === "undefined") return;
+    sessionStorage.setItem(storageKey(name), String(index));
+  };
+
+  const selectTab = (index: number) => {
+    if (!isTabControlled) setUncontrolledTab(index);
+    persist(index);
+    onChange?.(index);
+  };
+
+  const close = useCallback(() => {
+    const finish = () => {
+      onClose?.(currentTab);
+      open.set(false);
+      setSubmit(false);
+    };
+
     if (validation) {
       onSubmit((result) => {
         if (!result) return;
-
-        open.set(false);
-        setSubmit(false);
+        finish();
       });
-    } else {
-      open.set(false);
+      return;
     }
-  }, [errors, onSubmit, setSubmit]);
+
+    finish();
+  }, [currentTab, onClose, onSubmit, open, setSubmit, validation]);
+
+  const panelContent = (content: React.ReactNode) => (validation ? injectErrors<T>(content, errors) : content);
 
   // useEffects
+  useEffect(() => setMounted(true), []);
+
   useEffect(() => {
     if (!open.get) return;
 
+    let inner = 0;
+    const outer = requestAnimationFrame(() => {
+      inner = requestAnimationFrame(() => setEntered(true));
+    });
+    return () => {
+      cancelAnimationFrame(outer);
+      cancelAnimationFrame(inner);
+    };
+  }, [open.get, placement]);
+
+  useEffect(() => {
+    if (isTabControlled) setUncontrolledTab(activeTab);
+  }, [activeTab, isTabControlled]);
+
+  useEffect(() => {
+    if (!open.get) return;
+
+    _previousFocus.current = document.activeElement as HTMLElement | null;
+    const gutter = window.innerWidth - document.documentElement.clientWidth;
     document.body.style.overflow = "hidden";
+    if (gutter > 0) document.body.style.paddingRight = `${gutter}px`;
 
     const handleKeys = (event: KeyboardEvent) => {
-      const key = event.key;
-      const isArModal = document.getElementsByClassName("ar-modal-wrapper opened").length === 0;
-      const isArSelectOptions = document.getElementsByClassName("ar-select-options").length === 0;
-      const isArCalendar = document.getElementsByClassName("ar-date-calendar").length === 0;
-      const isArPopover = document.getElementsByClassName("ar-popover").length === 0;
-
-      if (key === "Escape" && isArModal && isArCalendar && isArSelectOptions && isArPopover) {
-        event.stopPropagation();
-        handleValidationControlForClose();
+      if (event.key === "Tab" && _drawer.current) {
+        const nodes = [..._drawer.current.querySelectorAll<HTMLElement>(FOCUSABLE)].filter(
+          (node) => node.offsetParent !== null,
+        );
+        if (nodes.length === 0) {
+          event.preventDefault();
+          return;
+        }
+        const first = nodes[0];
+        const last = nodes[nodes.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+        return;
       }
+
+      if (disableCloseOnEsc) return;
+      if (event.key !== "Escape" || !overlayIsClear()) return;
+      event.stopPropagation();
+      close();
     };
 
     document.addEventListener("keydown", handleKeys);
 
     return () => {
       document.body.style.removeProperty("overflow");
+      document.body.style.removeProperty("padding-right");
       document.removeEventListener("keydown", handleKeys);
+      _previousFocus.current?.focus({ preventScroll: true });
     };
-  }, [open, handleValidationControlForClose]);
+  }, [open.get, close, disableCloseOnEsc]);
 
-  useEffect(() => setCurrentTab(activeTab ?? 0), [activeTab]);
+  useEffect(() => {
+    if (!open.get || !entered) return;
+    const focusable = _drawer.current?.querySelector<HTMLElement>(FOCUSABLE);
+    (focusable ?? _drawer.current)?.focus({ preventScroll: true });
+  }, [open.get, entered]);
 
-  return (
-    <div className={_drawerWrapperClassName.map((c) => c).join(" ")}>
+  // variables -> Class names
+  const classNames = [
+    "har-drawer",
+    `size-${size}`,
+    placement === "left" ? "is-left" : "is-right",
+    ...Utils.GetClassName(undefined, undefined, undefined, border, undefined, undefined, className),
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const wrapperClass = ["har-drawer-wrapper", open.get ? "opened" : "closed", entered ? "is-entered" : undefined]
+    .filter(Boolean)
+    .join(" ");
+
+  const node = (
+    <div className={wrapperClass} aria-hidden={!open.get}>
       <div
-        className="ar-drawer-bg"
-        onClick={(event) => {
-          event.stopPropagation();
-
-          const target = event.target as HTMLElement;
-          if (_arDrawer.current && !_arDrawer.current.contains(target)) handleValidationControlForClose();
+        className="har-drawer-bg"
+        onClick={() => {
+          if (disableCloseOnBackdrop) return;
+          close();
         }}
-      ></div>
+      />
 
-      <div ref={_arDrawer} className={_drawerClassName.map((c) => c).join(" ")} role="dialog">
-        {title && (
-          <div className="header">
-            <Title Level="h3">{title}</Title>
-
-            <div className="close" onClick={() => handleValidationControlForClose()}></div>
-          </div>
-        )}
-
-        <div className="tabs">
-          {tabs.length > 1 &&
-            tabs.map((tab, index) => {
-              let className: string[] = ["item"];
-
-              if (currentTab === index) className.push("selection");
-
-              return (
-                <div
-                  key={tab.title ?? index}
-                  className={className.map((c) => c).join(" ")}
-                  onClick={() => {
-                    setCurrentTab(index);
-                    onChange && onChange(index);
-
-                    const key = `${window.location.pathname}::${name}`;
-                    sessionStorage.setItem(key, String(index));
-                  }}
-                >
-                  <span>{tab.title}</span>
-                </div>
-              );
-            })}
+      <div
+        {...attributes}
+        ref={_drawer}
+        className={classNames}
+        style={style}
+        role={role ?? "dialog"}
+        aria-modal={open.get || undefined}
+        aria-labelledby={title ? titleId : undefined}
+        tabIndex={-1}
+      >
+        <div className={["header", title ? undefined : "bare"].filter(Boolean).join(" ")}>
+          {title ? (
+            <Title id={titleId} size="lg">
+              {title}
+            </Title>
+          ) : null}
+          <Button
+            className="close"
+            variant="borderless"
+            color="red"
+            size="xs"
+            shape="circle"
+            border={{ radius: "full" }}
+            aria-label="Close"
+            icon={{ element: <Icon icon="X" size={16} /> }}
+            onClick={close}
+          />
         </div>
 
-        {Object.keys(open).length > 0 && open.get && (
-          <div className="content">
-            {tabs.map((tab, index) => {
-              return (
-                <div key={index}>
-                  {React.Children.map(tab.content, (child) => {
-                    if (React.isValidElement(child) && index === currentTab) {
-                      return validation
-                        ? React.cloneElement(
-                            child as React.ReactElement<{ errors: Partial<{ [key in keyof T]: string }> }>,
-                            {
-                              errors: errors,
-                            },
-                          )
-                        : child;
-                    }
-
-                    return null;
-                  })}
-                </div>
-              );
-            })}
+        {open.get && panels.length > 0 && (
+          <div className={["content", config?.freeContent ? "free" : undefined].filter(Boolean).join(" ")}>
+            {showTabs ? (
+              <Tabs
+                orientation="vertical"
+                {...config?.tabs}
+                name={name ?? uid}
+                tabs={panels.map((tab) => ({ ...tab, content: panelContent(tab.content) }))}
+                activeTab={currentTab}
+                onChange={selectTab}
+                onClose={onClose}
+              />
+            ) : (
+              panelContent(panels[0].content)
+            )}
           </div>
         )}
       </div>
     </div>
   );
+
+  if (!mounted) return null;
+  return createPortal(node, document.body);
 };
 
+Drawer.displayName = "Drawer";
 export default Drawer;

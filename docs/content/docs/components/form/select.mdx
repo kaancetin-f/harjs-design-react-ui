@@ -1,0 +1,86 @@
+---
+title: Select
+description: Choose one or more options from a list.
+---
+
+Select is a searchable dropdown. Options use `{ value, text }`. Single mode uses `Option | undefined`; multiple mode uses `Option[]`.
+
+## Import
+
+```tsx
+import { Select } from "@harjs/react-ui";
+```
+
+```tsx
+<Select placeholder="Framework" options={options} value={value} onChange={setValue} />
+<Select multiple placeholder="Languages" options={options} value={value} onChange={setValue} />
+```
+
+## Usage
+
+<Example>
+  <SelectBasic />
+</Example>
+
+## Examples
+
+### Variants
+
+`variant` uses the same tokens as Input. `surface` is not available on Select.
+
+<Example>
+  <SelectVariants />
+</Example>
+
+### Sizes
+
+`size` changes the field height. The default is `lg`.
+
+<Example>
+  <SelectSizes />
+</Example>
+
+### Multiple
+
+Set `multiple` and pass an `Option[]` value. The dropdown includes search and a **Select all** action for the visible options.
+
+<Example>
+  <SelectMultiple />
+</Example>
+
+### Disabled
+
+`disabled` prevents opening the list and mutes the field.
+
+<Example>
+  <SelectDisabled />
+</Example>
+
+### Validation
+
+`validation.text` shows an error message and paints the field red. Clear it when the value is valid.
+
+<Example>
+  <SelectValidation />
+</Example>
+
+## Props
+
+| Prop          | Type                                                                                                                | Default          |
+| ------------- | ------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| `options`     | `{ value: string \| number \| null; text: string }[]`                                                               | —                |
+| `value`       | `Option \| undefined` or `Option[]`                                                                                 | —                |
+| `onChange`    | `(option) => void`                                                                                                  | —                |
+| `multiple`    | `boolean`                                                                                                           | `false`          |
+| `placeholder` | `string`                                                                                                            | —                |
+| `variant`     | `"filled" \| "outlined" \| "dashed" \| "borderless"`                                                                | `"outlined"`     |
+| `color`       | `"blue" \| "purple" \| "pink" \| "red" \| "orange" \| "yellow" \| "green" \| "teal" \| "cyan" \| "gray" \| "white"` | `"gray"`         |
+| `size`        | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl"`                                                                     | `"lg"`           |
+| `disabled`    | `boolean`                                                                                                           | —                |
+| `readOnly`    | `boolean`                                                                                                           | —                |
+| `onSearch`    | `(searchText: string) => void`                                                                                      | —                |
+| `onCreate`    | `(option: Option) => void`                                                                                          | —                |
+| `config`      | `{ clear?: boolean; validation?: { text: "visible" \| "hidden" } }`                                                 | `{ clear: true }` |
+| `validation`  | `{ text?: string; scrollTo?: boolean }`                                                                             | —                |
+
+`Option` is `{ value: string | number | null; text: string }`. Also accepts Input styling props except `value` and `onChange`.

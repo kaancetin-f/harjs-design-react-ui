@@ -1,19 +1,20 @@
-import { IChildrenProps, IUpperCaseProps } from "../../../../libs/infrastructure/types/IGlobalProps";
+import type { HTMLAttributes } from "react";
+import { ParagraphColors } from "../../../../libs/infrastructure/types";
+import {
+  IChildrenProps,
+  IFontWeightProps,
+  ISizeProps,
+  IUpperCaseProps,
+} from "../../../../libs/infrastructure/types/IGlobalProps";
 
-interface IProps extends IChildrenProps, IUpperCaseProps, React.HTMLAttributes<HTMLHeadingElement> {
-  Level: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+interface IProps
+  extends IChildrenProps,
+    ISizeProps,
+    IUpperCaseProps,
+    IFontWeightProps,
+    Omit<HTMLAttributes<HTMLHeadingElement>, "color"> {
   align?: "left" | "center" | "right";
-  size?:
-    | "xx-small"
-    | "x-small"
-    | "small"
-    | "medium"
-    | "large"
-    | "x-large"
-    | "xx-large"
-    | "xxx-large"
-    | "smaller"
-    | "larger";
+  color?: ParagraphColors | (string & {});
 }
 
 export default IProps;

@@ -1,37 +1,98 @@
-import React from "react";
+import React, { useId } from "react";
 import IProps from "./IProps";
 import Utils from "../../../libs/infrastructure/shared/Utils";
-import { Status } from "../../../libs/infrastructure/types";
-import "../../../assets/css/components/feedback/progress/progress.css";
+import { getProgressColor, normalizeProgressValue } from "./helpers";
+import "../../../assets/css/components/feedback/progress/styles.css";
 
-const Progress: React.FC<IProps> = ({ value, reverse, isVisibleValue = false }) => {
+const Progress: React.FC<IProps> = ({
+  value,
+  reverse = false,
+  isVisibleValue = false,
+  color,
+  size = "md",
+  type = "line",
+}) => {
+  // hooks
+  const shineGradientId = `har-progress-shine-${useId().replace(/:/g, "")}`;
+
   // variables
-  let _status: Status | undefined = undefined;
-  const _arProgressClassName: string[] = [];
-
-  if (value >= 0 && value <= 25) _status = !reverse ? "danger" : "success";
-  else if (value >= 26 && value <= 50) _status = !reverse ? "warning" : "primary";
-  else if (value >= 51 && value <= 75) _status = !reverse ? "primary" : "warning";
-  else if (value >= 76 && value <= 100) _status = !reverse ? "success" : "danger";
-
-  _arProgressClassName.push(
-    ...Utils.GetClassName("filled", _status, undefined, { radius: "pill" }, undefined, undefined, undefined),
+  const normalized = normalizeProgressValue(value);
+  const resolvedColor = getProgressColor(value, color, reverse);
+  const percentLabel = `${Math.round(normalized)}%`;
+  const colorClassName = Utils.GetClassName(
+    undefined,
+    undefined,
+    resolvedColor,
+    { radius: "full" },
+    size,
+    undefined,
+    undefined,
   );
+  const className = [
+    "har-progress",
+    `type-${type}`,
+    isVisibleValue ? "is-visible-value" : undefined,
+    normalized <= 0 ? "is-idle" : undefined,
+    normalized >= 100 ? "is-complete" : undefined,
+    ...colorClassName,
+  ]
+    .filter(Boolean)
+    .join(" ");
+  const style = {
+    "--har-progress-value": String(normalized),
+  } as React.CSSProperties;
 
   return (
-    <div className="ar-progress">
-      <div className={`ar-progress-bar ${_arProgressClassName.map((c) => c).join(" ")}`}></div>
-      <div
-        className={`ar-progress-value ${_arProgressClassName.map((c) => c).join(" ")}`}
-        style={{
-          width: `${value}%`,
-          transition: "width 250ms ease-in-out",
-        }}
-      >
-        {!isVisibleValue && <span>%{value}</span>}
-      </div>
+    <div
+      className={className}
+      style={style}
+      role="progressbar"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={Math.round(normalized)}
+    >
+      {type === "circle" ? (
+        <>
+          <svg viewBox="0 0 36 36" aria-hidden>
+            <defs>
+              <linearGradient
+                id={shineGradientId}
+                x1="0%"
+                y1="0%"
+                x2="100%"
+                y2="0%"
+              >
+                <stop offset="0%" stopColor="var(--white-alpha-50)" stopOpacity="0" />
+                <stop offset="50%" stopColor="var(--white-alpha-50)" />
+                <stop offset="100%" stopColor="var(--white-alpha-50)" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            <circle className="bar" cx="18" cy="18" r="16" pathLength="100" />
+            <circle className="value" cx="18" cy="18" r="16" pathLength="100" />
+            <circle
+              className="shine"
+              cx="18"
+              cy="18"
+              r="16"
+              pathLength="100"
+              stroke={`url(#${shineGradientId})`}
+            />
+          </svg>
+          <span className="percent">{percentLabel}</span>
+        </>
+      ) : (
+        <>
+          <div className={`bar ${colorClassName.join(" ")}`} aria-hidden />
+          <div className={`value ${colorClassName.join(" ")}`} aria-hidden>
+            <span className="shine" />
+            <span>{percentLabel}</span>
+          </div>
+        </>
+      )}
     </div>
   );
 };
+
+Progress.displayName = "Progress";
 
 export default Progress;

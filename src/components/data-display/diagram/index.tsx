@@ -1,465 +1,767 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import "../../../assets/css/components/data-display/diagram/styles.css";
-import Grid from "../grid-system";
+import GridSystem from "../../layout/grid-system";
 import Button from "../../form/button";
 import Tooltip from "../../feedback/tooltip";
-import { ARIcon } from "../../icons";
-import IProps from "./IProps";
+import { Icon } from "../../icons";
+import IProps, { Config } from "./IProps";
 import { EdgeData, NodeData } from "../../../libs/infrastructure/types";
+import { Interaction, LinkDrag, PortSide, Position } from "./types";
+import { useTranslation } from "@harjs/translation";
+import IDiagramLocale from "../../../libs/core/application/locales/diagram/IDiagramLocale";
+import DiagramTR from "../../../libs/core/application/locales/diagram/tr";
+import DiagramEN from "../../../libs/core/application/locales/diagram/en";
 
-type Position = { x: number; y: number };
+const PORTS: PortSide[] = ["top", "right", "bottom", "left"];
+const NEW_NODE_SIZE = { width: 136, height: 58 };
+const SNAP_THRESHOLD = 36;
+const LINK_THRESHOLD = 12;
 
-const { Box } = Grid;
+const resolveInteraction = (config?: Config): Interaction => {
+  if (config?.readOnly) {
+    return {
+      draggable: false,
+      connectable: false,
+      creatable: false,
+      reconnectable: false,
+      disconnectable: false,
+    };
+  }
 
-const Diagram: React.FC<IProps> = ({ nodes, edges }) => {
+  return {
+    draggable: config?.draggable ?? true,
+    connectable: config?.connectable ?? true,
+    creatable: config?.creatable ?? true,
+    reconnectable: config?.reconnectable ?? true,
+    disconnectable: config?.disconnectable ?? true,
+  };
+};
+
+const { Box } = GridSystem;
+
+const graphKey = (nodes: NodeData[], edges: EdgeData[]) =>
+  [
+    nodes.map((node) => `${node.id}:${node.position.x}:${node.position.y}`).join("|"),
+    edges.map((edge) => `${edge.id}:${edge.from.id}.${edge.from.port}->${edge.to.id}.${edge.to.port}`).join("|"),
+  ].join("::");
+
+const sameEndpoint = (a: { id: string | number; port: PortSide }, b: { id: string | number; port: PortSide }) =>
+  a.id === b.id && a.port === b.port;
+
+const portFromApproach = (from: Position, to: Position): PortSide => {
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+
+  if (Math.abs(dx) > Math.abs(dy)) return dx >= 0 ? "left" : "right";
+  return dy >= 0 ? "top" : "bottom";
+};
+
+const positionForNewNode = (drop: Position, port: PortSide): Position => {
+  const { width, height } = NEW_NODE_SIZE;
+
+  switch (port) {
+    case "left":
+      return { x: drop.x, y: drop.y - height / 2 };
+    case "right":
+      return { x: drop.x - width, y: drop.y - height / 2 };
+    case "top":
+      return { x: drop.x - width / 2, y: drop.y };
+    case "bottom":
+      return { x: drop.x - width / 2, y: drop.y - height };
+  }
+};
+
+const Diagram: React.FC<IProps> = ({ nodes, edges, onNodeClick, onNodesChange, onEdgesChange, config }) => {
   // refs
   const _arDiagram = useRef<HTMLDivElement | null>(null);
   const _content = useRef<HTMLDivElement | null>(null);
-  const _arNodes = useRef<Record<string, HTMLSpanElement>>({});
-  const _path = useRef<SVGPathElement | null>(null);
+  const _nodesWrapper = useRef<HTMLDivElement | null>(null);
+  const _tempPath = useRef<SVGPathElement | null>(null);
+  const _nodeEls = useRef<Record<string, HTMLDivElement | null>>({});
+  const _portEls = useRef<Record<string, HTMLSpanElement | null>>({});
+  const _edgeGroups = useRef<Record<string, SVGGElement | null>>({});
+  const _positions = useRef<Record<string, Position>>(
+    Object.fromEntries(nodes.map((node) => [String(node.id), { ...node.position }])),
+  );
+  const _raf = useRef<number | null>(null);
+  const _targetPortKey = useRef<string | null>(null);
   // refs -> Start Position
   const _dragStartMousePosition = useRef<Position>({ x: 0, y: 0 });
   const _dragStartNodePosition = useRef<Position>({ x: 0, y: 0 });
+  // refs -> Pan
+  const _pan = useRef<Position>({ x: 0, y: 0 });
+  const _panning = useRef(false);
+  const _startPan = useRef<Position>({ x: 0, y: 0 });
   // refs -> Zoom
+  const _scale = useRef(1);
   const _zoomIntensity = 0.1;
   const _maxScale = 4;
   const _minScale = 0.1;
+  // refs -> Drag
+  const _draggedNode = useRef<string | number | null>(null);
+  const _nodeMoved = useRef(false);
+  const _clickThreshold = 5;
+  // refs -> Drawing
+  const _linkDrag = useRef<LinkDrag | null>(null);
+  const _linkGrabPoint = useRef<Position | null>(null);
+  const _drawCursor = useRef<Position | null>(null);
+  // refs -> Latest
+  const _nodesLive = useRef<NodeData[]>(nodes);
+  const _edgesLive = useRef<EdgeData[]>(edges);
+  const _onNodesChange = useRef(onNodesChange);
+  const _onEdgesChange = useRef(onEdgesChange);
+  const _onNodeClick = useRef(onNodeClick);
+  const _newNodeLabel = useRef("New node");
+  const _propsGraphKey = useRef(graphKey(nodes, edges));
+  const _interaction = useRef(resolveInteraction(config));
 
   // states
   const [_nodes, setNodes] = useState<NodeData[]>(nodes);
   const [_edges, setEdges] = useState<EdgeData[]>(edges);
-  const [trigger, setTrigger] = useState<boolean>(false);
-  // states -> Pan
-  const [pan, setPan] = useState<Position>({ x: 0, y: 0 });
-  const [panning, setPanning] = useState<boolean>(false);
-  const [startPan, setStartPan] = useState<Position>({ x: 0, y: 0 });
   // states -> Zoom
-  const [scale, setScale] = useState<number>(1);
-  // states -> Drag
-  const [draggedNode, setDraggedNode] = useState<string | number | null>(null);
+  const [scaleLabel, setScaleLabel] = useState(100);
   // states -> Drawing
-  const [drawingEdge, setDrawingEdge] = useState<{
-    id: string | number;
-    port: "top" | "right" | "bottom" | "left";
-    start: Position;
-  } | null>(null);
-  const [mousePos, setMousePos] = useState<Position | null>(null);
+  const [drawingActive, setDrawingActive] = useState(false);
+  const [reconnectId, setReconnectId] = useState<string | number | null>(null);
+
+  // hooks
+  const { t } = useTranslation<IDiagramLocale>(String(config?.locale ?? "tr"), {
+    tr: { ...DiagramTR },
+    en: { ...DiagramEN },
+  });
+
+  _nodesLive.current = _nodes;
+  _edgesLive.current = _edges;
+  _onNodesChange.current = onNodesChange;
+  _onEdgesChange.current = onEdgesChange;
+  _onNodeClick.current = onNodeClick;
+  _newNodeLabel.current = t("Diagram.Node.New");
+  _interaction.current = resolveInteraction(config);
 
   // methods
-  const getPortCenter = (id: string | number, port: "top" | "right" | "bottom" | "left"): Position | null => {
-    const node = _arNodes.current[`${id}_${port}`];
-    const diagram = _arDiagram.current;
+  const syncPositions = (list: NodeData[]) => {
+    const next: Record<string, Position> = {};
+    list.forEach((node) => {
+      next[String(node.id)] = { ...node.position };
+    });
+    _positions.current = next;
+  };
 
-    if (!node || !diagram) return null;
+  const commitNodes = (next: NodeData[]) => {
+    _nodesLive.current = next;
+    setNodes(next);
+    syncPositions(next);
+    _onNodesChange.current?.(next);
+  };
 
-    const diagramRect = diagram.getBoundingClientRect();
-    const nodeRect = node.getBoundingClientRect();
+  const commitEdges = (next: EdgeData[]) => {
+    _edgesLive.current = next;
+    setEdges(next);
+    _onEdgesChange.current?.(next);
+  };
+
+  const applyViewTransform = () => {
+    const wrapper = _nodesWrapper.current;
+    const content = _content.current;
+    if (!wrapper || !content) return;
+
+    const { x, y } = _pan.current;
+    const scale = _scale.current;
+    wrapper.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+    content.style.backgroundPosition = `${x}px ${y}px`;
+  };
+
+  const syncZoomLabel = () => {
+    setScaleLabel(Math.round(_scale.current * 100));
+  };
+
+  const portKey = (id: string | number, port: PortSide) => `${id}:${port}`;
+
+  const getPortCenter = (id: string | number, port: PortSide): Position | null => {
+    const key = String(id);
+    const position = _positions.current[key];
+    if (!position) return null;
+
+    const el = _nodeEls.current[key];
+    const w = el?.offsetWidth || NEW_NODE_SIZE.width;
+    const h = el?.offsetHeight || NEW_NODE_SIZE.height;
+
+    switch (port) {
+      case "top":
+        return { x: position.x + w / 2, y: position.y };
+      case "bottom":
+        return { x: position.x + w / 2, y: position.y + h };
+      case "left":
+        return { x: position.x, y: position.y + h / 2 };
+      case "right":
+        return { x: position.x + w, y: position.y + h / 2 };
+    }
+  };
+
+  const getPortOffset = (port: PortSide, distance: number): Position => {
+    switch (port) {
+      case "top":
+        return { x: 0, y: -distance };
+      case "bottom":
+        return { x: 0, y: distance };
+      case "left":
+        return { x: -distance, y: 0 };
+      case "right":
+        return { x: distance, y: 0 };
+    }
+  };
+
+  const buildCurvePath = (from: Position, fromPort: PortSide, to: Position, toPort: PortSide): string => {
+    const distance = Math.hypot(to.x - from.x, to.y - from.y);
+    const offset = Math.min(60, Math.max(24, distance * 0.35));
+    const c1 = getPortOffset(fromPort, offset);
+    const c2 = getPortOffset(toPort, offset);
+
+    return `M${from.x} ${from.y} C${from.x + c1.x} ${from.y + c1.y}, ${to.x + c2.x} ${to.y + c2.y}, ${to.x} ${to.y}`;
+  };
+
+  const paintEdges = () => {
+    _edgesLive.current.forEach((edge) => {
+      const group = _edgeGroups.current[String(edge.id)];
+      if (!group) return;
+
+      const flow = group.querySelector("path.flow");
+      const hit = group.querySelector("path.hit");
+      const from = getPortCenter(edge.from.id, edge.from.port);
+      const to = getPortCenter(edge.to.id, edge.to.port);
+
+      if (!from || !to) {
+        flow?.setAttribute("d", "");
+        hit?.setAttribute("d", "");
+        return;
+      }
+
+      const d = buildCurvePath(from, edge.from.port, to, edge.to.port);
+      flow?.setAttribute("d", d);
+      hit?.setAttribute("d", d);
+    });
+  };
+
+  const clientToContent = (clientX: number, clientY: number): Position => {
+    const rect = _arDiagram.current!.getBoundingClientRect();
 
     return {
-      x: (nodeRect.left - diagramRect.left + nodeRect.width / 2 - pan.x) / scale,
-      y: (nodeRect.top - diagramRect.top + nodeRect.height / 2 - pan.y) / scale,
+      x: (clientX - rect.left - _pan.current.x) / _scale.current,
+      y: (clientY - rect.top - _pan.current.y) / _scale.current,
     };
   };
 
   const getClosestPort = (
     position: Position,
-    threshold = 20,
-  ): { id: string | number; port: "top" | "bottom" } | null => {
-    for (const key in _arNodes.current) {
-      const el = _arNodes.current[key];
+    ignore?: { id: string | number; port: PortSide },
+    threshold = SNAP_THRESHOLD,
+  ): { id: string | number; port: PortSide } | null => {
+    let best: { id: string | number; port: PortSide; distance: number } | null = null;
 
-      if (!el) continue;
+    for (const node of _nodesLive.current) {
+      for (const port of PORTS) {
+        if (ignore && node.id === ignore.id && port === ignore.port) continue;
 
-      const [idStr, port] = key.split("_");
-      const id = parseInt(idStr, 10);
-      const rect = el.getBoundingClientRect();
-      const diagramRect = _arDiagram.current!.getBoundingClientRect();
+        const center = getPortCenter(node.id, port);
+        if (!center) continue;
 
-      const portCenter: Position = {
-        x: (rect.left - diagramRect.left + rect.width / 2 - pan.x) / scale,
-        y: (rect.top - diagramRect.top + rect.height / 2 - pan.y) / scale,
-      };
+        const distance = Math.hypot(position.x - center.x, position.y - center.y);
+        if (distance > threshold) continue;
 
-      const distance = Math.hypot(position.x - portCenter.x, position.y - portCenter.y);
-
-      if (distance <= threshold) return { id, port: port as "top" | "bottom" };
+        if (!best || distance < best.distance) {
+          best = { id: node.id, port, distance };
+        }
+      }
     }
 
-    return null;
+    return best ? { id: best.id, port: best.port } : null;
   };
 
-  const renderEdges = useMemo(() => {
-    return _edges.map((edge, index) => {
-      const from = getPortCenter(edge.from.id, edge.from.port);
-      const to = getPortCenter(edge.to.id, edge.to.port);
+  const markTargetPort = (target: { id: string | number; port: PortSide } | null) => {
+    const nextKey = target ? portKey(target.id, target.port) : null;
+    if (_targetPortKey.current === nextKey) return;
 
-      if (!from || !to) return null;
+    if (_targetPortKey.current) {
+      _portEls.current[_targetPortKey.current]?.classList.remove("is-target");
+    }
 
-      const dx = to.x - from.x;
-      const dy = to.y - from.y;
-      const distance = Math.hypot(dx, dy);
-      const offset = Math.min(40, distance * 0.25); // maksimum sapma sınırı
+    if (nextKey) {
+      _portEls.current[nextKey]?.classList.add("is-target");
+    }
 
-      // S biçimli kontrol noktaları
-      const controlPoint1 = {
-        x: from.x,
-        y: from.y + (dy < 0 ? -offset : offset),
-      };
+    _targetPortKey.current = nextKey;
+  };
 
-      const controlPoint2 = {
-        x: to.x,
-        y: to.y + (dy < 0 ? offset : -offset),
-      };
+  const paintTempPath = (from: Position, fromPort: PortSide, to: Position) => {
+    if (!_tempPath.current) return;
 
-      const pathData = `M${from.x} ${from.y} C${controlPoint1.x} ${controlPoint1.y}, ${controlPoint2.x} ${controlPoint2.y}, ${to.x} ${to.y}`;
+    const toPort = portFromApproach(from, to);
+    _tempPath.current.setAttribute("d", buildCurvePath(from, fromPort, to, toPort));
+  };
+
+  const isDuplicateEdge = (list: EdgeData[], from: EdgeData["from"], to: EdgeData["to"], ignoreId?: string | number) =>
+    list.some((edge) => {
+      if (ignoreId !== undefined && edge.id === ignoreId) return false;
 
       return (
-        <svg key={index} className="edge">
-          <path
-            ref={_path}
-            d={pathData}
-            fill="none"
-            stroke="var(--purple-500)"
-            strokeWidth={2}
-            strokeDasharray={10}
-            strokeDashoffset={10}
-            strokeLinecap="round"
-          >
-            <animate attributeName="stroke-dashoffset" values={`${20 / scale};0`} dur="1s" repeatCount="indefinite" />
-          </path>
-        </svg>
+        (sameEndpoint(edge.from, from) && sameEndpoint(edge.to, to)) ||
+        (sameEndpoint(edge.from, to) && sameEndpoint(edge.to, from))
       );
     });
-  }, [_nodes, _edges, trigger]);
 
-  const onPanStart = (e: React.MouseEvent) => {
-    // Node sürükleniyorsa pan başlatma.
-    if (draggedNode) return;
+  const setZoomAroundPoint = (newScale: number, pointX: number, pointY: number) => {
+    const scale = _scale.current;
+    const pan = _pan.current;
+    const zoomPointX = (pointX - pan.x) / scale;
+    const zoomPointY = (pointY - pan.y) / scale;
 
-    setPanning(true);
-    setStartPan({ x: e.clientX - pan.x, y: e.clientY - pan.y });
+    _scale.current = newScale;
+    _pan.current = {
+      x: pointX - zoomPointX * newScale,
+      y: pointY - zoomPointY * newScale,
+    };
+
+    applyViewTransform();
+    syncZoomLabel();
   };
 
-  const onPanMove = (e: React.MouseEvent) => {
-    if (panning) {
-      setPan({ x: e.clientX - startPan.x, y: e.clientY - startPan.y });
-    }
+  const capturePointer = (event: React.PointerEvent) => {
+    _arDiagram.current?.setPointerCapture(event.pointerId);
   };
 
-  const onPanEnd = () => setPanning(false);
+  const onPanStart = (event: React.PointerEvent) => {
+    if (event.button !== 0) return;
+    if (_draggedNode.current || _linkDrag.current) return;
+    if ((event.target as Element).closest(".node, .zoom-buttons, .edge")) return;
+
+    event.preventDefault();
+    _panning.current = true;
+    _startPan.current = { x: event.clientX - _pan.current.x, y: event.clientY - _pan.current.y };
+    capturePointer(event);
+  };
+
+  const onPanEnd = () => {
+    _panning.current = false;
+  };
 
   // methods -> Zoom
-  const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
-    const direction = event.deltaY > 0 ? -1 : 1;
+  const handleZoom = (process: "increment" | "decrement") => {
+    let newScale = _scale.current;
 
-    let newScale = scale + direction * _zoomIntensity;
-    newScale = Math.max(_minScale, Math.min(_maxScale, newScale));
+    if (process === "increment") newScale = Math.max(_minScale, Math.min(_maxScale, _scale.current + _zoomIntensity));
+    if (process === "decrement") newScale = Math.max(_minScale, Math.min(_maxScale, _scale.current - _zoomIntensity));
 
-    // Mouse'un container içindeki konumunu al.
-    const rect = _content.current!.getBoundingClientRect();
-    const mouseX = event.clientX - rect.left;
-    const mouseY = event.clientY - rect.top;
+    if (newScale === _scale.current || !_content.current) return;
 
-    // İçerik düzleminde mouse'un bulunduğu noktayı bul.
-    const zoomPointX = (mouseX - pan.x) / scale;
-    const zoomPointY = (mouseY - pan.y) / scale;
+    const containerRect = _content.current.getBoundingClientRect();
+    const centerX = containerRect.width / 2;
+    const centerY = containerRect.height / 2;
 
-    // Yeni pan değerini hesapla ki zoomPoint sabit kalsın.
-    const newPanX = mouseX - zoomPointX * newScale;
-    const newPanY = mouseY - zoomPointY * newScale;
-
-    setScale(newScale);
-    setPan({ x: newPanX, y: newPanY });
+    setZoomAroundPoint(newScale, centerX, centerY);
   };
 
-  const handleZoom = (process: "increment" | "decrement") => {
-    let newScale: number = 0;
+  const handleZoomReset = () => {
+    if (_scale.current === 1 && _pan.current.x === 0 && _pan.current.y === 0) return;
 
-    if (process === "increment") newScale = Math.max(_minScale, Math.min(_maxScale, scale + _zoomIntensity));
-    if (process === "decrement") newScale = Math.max(_minScale, Math.min(_maxScale, scale - _zoomIntensity));
-
-    if (_content.current && _content.current) {
-      const containerRect = _content.current.getBoundingClientRect();
-
-      // Ortadaki noktayı bul (container açısından)
-      const centerX = containerRect.width / 2;
-      const centerY = containerRect.height / 2;
-
-      // İçerik düzleminde bu noktaya karşılık gelen nokta
-      const zoomPointX = (centerX - pan.x) / scale;
-      const zoomPointY = (centerY - pan.y) / scale;
-
-      // Yeni pan hesapla ki center aynı yerde kalsın
-      const newPanX = centerX - zoomPointX * newScale;
-      const newPanY = centerY - zoomPointY * newScale;
-
-      setPan({ x: newPanX, y: newPanY });
-      setScale(newScale);
-    }
+    _scale.current = 1;
+    _pan.current = { x: 0, y: 0 };
+    applyViewTransform();
+    syncZoomLabel();
   };
 
   // methods -> Node
-  const onNodeMouseDown = (event: React.MouseEvent, id: string | number, node: Position) => {
+  const onNodeMouseDown = (event: React.PointerEvent, id: string | number) => {
+    if (event.button !== 0) return;
+
     event.stopPropagation();
 
-    setDraggedNode(id);
+    const position = _positions.current[String(id)] ?? _nodesLive.current.find((node) => node.id === id)?.position;
+    if (!position) return;
+
+    _positions.current[String(id)] = { ...position };
+    _draggedNode.current = id;
+    _nodeMoved.current = false;
     _dragStartMousePosition.current = { x: event.clientX, y: event.clientY };
-    _dragStartNodePosition.current = { x: node.x, y: node.y };
+    _dragStartNodePosition.current = { ...position };
+    capturePointer(event);
   };
 
-  const onMouseMove = (event: React.MouseEvent) => {
-    if (drawingEdge) {
-      const rect = _arDiagram.current!.getBoundingClientRect();
-      const x = (event.clientX - rect.left - pan.x) / scale;
-      const y = (event.clientY - rect.top - pan.y) / scale;
+  const onPortMouseDown = (event: React.PointerEvent, id: string | number, port: PortSide) => {
+    if (event.button !== 0 || !_interaction.current.connectable) return;
 
-      setMousePos({ x, y });
+    event.stopPropagation();
+    event.preventDefault();
+
+    const from = getPortCenter(id, port);
+    if (!from) return;
+
+    _linkDrag.current = { mode: "create", source: { id, port, start: from } };
+    _linkGrabPoint.current = from;
+    _drawCursor.current = from;
+    setReconnectId(null);
+    setDrawingActive(true);
+    capturePointer(event);
+  };
+
+  const onEdgeMouseDown = (event: React.PointerEvent, edge: EdgeData) => {
+    if (event.button !== 0 || !_interaction.current.reconnectable) return;
+
+    event.stopPropagation();
+    event.preventDefault();
+
+    const point = clientToContent(event.clientX, event.clientY);
+    const from = getPortCenter(edge.from.id, edge.from.port);
+    const to = getPortCenter(edge.to.id, edge.to.port);
+    if (!from || !to) return;
+
+    const end =
+      Math.hypot(point.x - from.x, point.y - from.y) <= Math.hypot(point.x - to.x, point.y - to.y) ? "from" : "to";
+    const anchorSide = end === "from" ? to : from;
+    const anchorMeta = end === "from" ? edge.to : edge.from;
+
+    _linkDrag.current = {
+      mode: "reconnect",
+      edgeId: edge.id,
+      end,
+      anchor: { id: anchorMeta.id, port: anchorMeta.port, start: anchorSide },
+    };
+    _linkGrabPoint.current = point;
+    _drawCursor.current = point;
+    setReconnectId(edge.id);
+    setDrawingActive(true);
+    paintTempPath(anchorSide, anchorMeta.port, point);
+    capturePointer(event);
+  };
+
+  const onPointerMove = (event: React.PointerEvent) => {
+    if (_panning.current) {
+      _pan.current = {
+        x: event.clientX - _startPan.current.x,
+        y: event.clientY - _startPan.current.y,
+      };
+      applyViewTransform();
+      return;
     }
 
-    if (draggedNode) {
-      const deltaX = (event.clientX - _dragStartMousePosition.current.x) / scale;
-      const deltaY = (event.clientY - _dragStartMousePosition.current.y) / scale;
+    const link = _linkDrag.current;
+    if (link) {
+      const point = clientToContent(event.clientX, event.clientY);
+      _drawCursor.current = point;
 
-      const newX = _dragStartNodePosition.current.x + deltaX;
-      const newY = _dragStartNodePosition.current.y + deltaY;
+      const origin = link.mode === "create" ? link.source : link.anchor;
+      paintTempPath(origin.start, origin.port, point);
+      markTargetPort(getClosestPort(point, { id: origin.id, port: origin.port }));
+      return;
+    }
 
-      setNodes((prev) =>
-        prev.map((node) => (node.id === draggedNode ? { ...node, position: { x: newX, y: newY } } : node)),
-      );
+    if (!_draggedNode.current || !_interaction.current.draggable) return;
+
+    const deltaX = event.clientX - _dragStartMousePosition.current.x;
+    const deltaY = event.clientY - _dragStartMousePosition.current.y;
+
+    if (!_nodeMoved.current) {
+      if (Math.hypot(deltaX, deltaY) <= _clickThreshold) return;
+      _nodeMoved.current = true;
+    }
+
+    const id = _draggedNode.current;
+    const scale = _scale.current;
+    const newX = _dragStartNodePosition.current.x + deltaX / scale;
+    const newY = _dragStartNodePosition.current.y + deltaY / scale;
+
+    _positions.current[String(id)] = { x: newX, y: newY };
+
+    const nodeEl = _nodeEls.current[String(id)];
+    if (nodeEl) {
+      nodeEl.style.left = `${newX}px`;
+      nodeEl.style.top = `${newY}px`;
+    }
+
+    if (_raf.current == null) {
+      _raf.current = requestAnimationFrame(() => {
+        _raf.current = null;
+        paintEdges();
+      });
     }
   };
 
-  const onMouseUp = () => {
-    if (drawingEdge && mousePos) {
-      const closest = getClosestPort(mousePos);
+  const finishLink = (endPoint: Position) => {
+    const link = _linkDrag.current;
+    if (!link) return;
 
+    const origin = link.mode === "create" ? link.source : link.anchor;
+    const grab = _linkGrabPoint.current ?? origin.start;
+    const dragDistance = Math.hypot(endPoint.x - grab.x, endPoint.y - grab.y);
+    const closest = getClosestPort(endPoint, { id: origin.id, port: origin.port });
+
+    if (link.mode === "create") {
       if (closest) {
-        // Yakın port varsa, oraya bağla
-        const newEdge: EdgeData = {
-          id: crypto.randomUUID(), // _edges[_edges.length - 1]?.id + 1 || 1,
-          from: { id: drawingEdge.id, port: drawingEdge.port },
-          to: { id: closest.id, port: closest.port },
-        };
-
-        // Aynı edge daha önce eklenmiş mi kontrol et
-        const isDuplicate = _edges.some((edge) => {
-          const samePair =
-            (edge.from.id === newEdge.from.id && edge.to.id === newEdge.to.id) ||
-            (edge.from.id === newEdge.to.id && edge.to.id === newEdge.from.id);
-
-          return samePair;
-        });
-
-        if (!isDuplicate) setEdges((prev) => [...prev, newEdge]);
-      } else {
-        // Yakın port yoksa yeni node oluştur
-        const newNodeId = crypto.randomUUID(); // _nodes[_nodes.length - 1]?.id + 1 || 1;
-
+        if (!isDuplicateEdge(_edgesLive.current, { id: origin.id, port: origin.port }, closest)) {
+          commitEdges([
+            ..._edgesLive.current,
+            {
+              id: crypto.randomUUID(),
+              from: { id: origin.id, port: origin.port },
+              to: closest,
+            },
+          ]);
+        }
+      } else if (_interaction.current.creatable && dragDistance > LINK_THRESHOLD) {
+        const newNodeId = crypto.randomUUID();
+        const newPort = portFromApproach(origin.start, endPoint);
         const newNode: NodeData = {
           id: newNodeId,
-          position: mousePos,
-          data: <></>,
+          position: positionForNewNode(endPoint, newPort),
+          data: (
+            <span className="node-placeholder">
+              <span className="node-placeholder-dot" />
+              <span>{_newNodeLabel.current}</span>
+            </span>
+          ),
         };
 
-        const newPort: "top" | "bottom" = mousePos.y < drawingEdge.start.y ? "bottom" : "top";
-
-        const newEdge: EdgeData = {
-          id: crypto.randomUUID(), // _edges[_edges.length - 1]?.id + 1 || 1,
-          from: { id: drawingEdge.id, port: drawingEdge.port },
-          to: { id: newNodeId, port: newPort },
-        };
-
-        setNodes((prev) => [...prev, newNode]);
-        setEdges((prev) => [...prev, newEdge]);
+        commitNodes([..._nodesLive.current, newNode]);
+        commitEdges([
+          ..._edgesLive.current,
+          {
+            id: crypto.randomUUID(),
+            from: { id: origin.id, port: origin.port },
+            to: { id: newNodeId, port: newPort },
+          },
+        ]);
       }
-
-      setDrawingEdge(null);
-      setMousePos(null);
+      return;
     }
 
-    setDraggedNode(null);
-    setTrigger((prev) => !prev);
+    if (closest) {
+      const nextFrom = link.end === "from" ? closest : { id: origin.id, port: origin.port };
+      const nextTo = link.end === "to" ? closest : { id: origin.id, port: origin.port };
+
+      if (!sameEndpoint(nextFrom, nextTo) && !isDuplicateEdge(_edgesLive.current, nextFrom, nextTo, link.edgeId)) {
+        commitEdges(
+          _edgesLive.current.map((edge) => (edge.id === link.edgeId ? { ...edge, from: nextFrom, to: nextTo } : edge)),
+        );
+      }
+      return;
+    }
+
+    if (dragDistance > LINK_THRESHOLD && _interaction.current.disconnectable) {
+      commitEdges(_edgesLive.current.filter((edge) => edge.id !== link.edgeId));
+    }
+  };
+
+  const onPointerUp = (event: React.PointerEvent) => {
+    if (_linkDrag.current) {
+      const endPoint = _drawCursor.current ?? clientToContent(event.clientX, event.clientY);
+      finishLink(endPoint);
+
+      _linkDrag.current = null;
+      _linkGrabPoint.current = null;
+      _drawCursor.current = null;
+      markTargetPort(null);
+      setReconnectId(null);
+      setDrawingActive(false);
+      if (_tempPath.current) _tempPath.current.setAttribute("d", "");
+    }
+
+    if (_draggedNode.current) {
+      const id = _draggedNode.current;
+      const wasClick = !_nodeMoved.current;
+      const position = _positions.current[String(id)];
+
+      if (_nodeMoved.current && position) {
+        commitNodes(_nodesLive.current.map((node) => (node.id === id ? { ...node, position: { ...position } } : node)));
+        paintEdges();
+      }
+
+      _draggedNode.current = null;
+      _nodeMoved.current = false;
+
+      if (wasClick && event.button === 0) {
+        const node = _nodesLive.current.find((item) => item.id === id);
+        if (node) _onNodeClick.current?.(node, event as unknown as React.MouseEvent);
+      }
+    }
+
+    onPanEnd();
   };
 
   // useEffects
   useEffect(() => {
-    setEdges([...edges]);
+    const nextKey = graphKey(nodes, edges);
+    if (nextKey === _propsGraphKey.current) return;
+
+    _propsGraphKey.current = nextKey;
+    _nodesLive.current = nodes;
+    _edgesLive.current = edges;
+    setNodes(nodes);
+    setEdges(edges);
+    syncPositions(nodes);
+  }, [nodes, edges]);
+
+  useEffect(() => {
+    applyViewTransform();
   }, []);
+
+  useEffect(() => {
+    const content = _content.current;
+    if (!content) return;
+
+    const onWheel = (event: WheelEvent) => {
+      event.preventDefault();
+
+      const direction = event.deltaY > 0 ? -1 : 1;
+      let newScale = _scale.current + direction * _zoomIntensity;
+      newScale = Math.max(_minScale, Math.min(_maxScale, newScale));
+
+      if (newScale === _scale.current) return;
+
+      const rect = content.getBoundingClientRect();
+      setZoomAroundPoint(newScale, event.clientX - rect.left, event.clientY - rect.top);
+    };
+
+    content.addEventListener("wheel", onWheel, { passive: false });
+    return () => content.removeEventListener("wheel", onWheel);
+  }, []);
+
+  useLayoutEffect(() => {
+    if (!_draggedNode.current) syncPositions(_nodes);
+    paintEdges();
+  }, [_nodes, _edges, reconnectId]);
+
+  useEffect(() => {
+    return () => {
+      if (_raf.current != null) cancelAnimationFrame(_raf.current);
+    };
+  }, []);
+
+  const interaction = _interaction.current;
+  const className = [
+    "har-diagram",
+    drawingActive ? "is-linking" : undefined,
+    config?.readOnly ? "is-readonly" : undefined,
+    interaction.draggable ? "is-draggable" : undefined,
+    interaction.connectable ? "is-connectable" : undefined,
+    interaction.reconnectable ? "is-reconnectable" : undefined,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <div
       ref={_arDiagram}
-      className="ar-diagram"
-      onMouseDown={onPanStart}
-      onMouseMove={(event) => {
-        onPanMove(event);
-        onMouseMove(event);
-      }}
-      onMouseUp={() => {
-        onMouseUp();
-        onPanEnd();
-      }}
+      className={className}
+      style={config?.color ? ({ "--diagram-edge-color": config.color } as React.CSSProperties) : undefined}
+      onPointerDown={onPanStart}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerUp}
+      onLostPointerCapture={onPointerUp}
     >
-      <div
-        ref={_content}
-        className="content"
-        style={{ backgroundPosition: `${pan.x}px ${pan.y}px` }}
-        onWheel={handleWheel}
-      >
-        <div
-          className="nodes-wrapper"
-          style={{
-            transform: `translate(${pan.x}px, ${pan.y}px) scale(${scale})`,
-          }}
-        >
+      <div ref={_content} className="content">
+        <div ref={_nodesWrapper} className="nodes-wrapper">
           {/* Edges */}
           <div className="edges">
-            {renderEdges}
+            <svg className="edge-layer" width="8000" height="8000">
+              {_edges.map((edge) => (
+                <g
+                  key={edge.id}
+                  ref={(el) => {
+                    const key = String(edge.id);
+                    if (el) _edgeGroups.current[key] = el;
+                    else delete _edgeGroups.current[key];
+                  }}
+                  className="edge"
+                  style={reconnectId === edge.id ? { visibility: "hidden" } : undefined}
+                  onPointerDown={(event) => onEdgeMouseDown(event, edge)}
+                >
+                  <path className="hit" />
+                  <path className="flow" />
+                </g>
+              ))}
+            </svg>
 
-            {drawingEdge && mousePos && (
-              <svg className="edge-temp">
-                <path
-                  ref={_path}
-                  d={`M${drawingEdge.start.x} ${drawingEdge.start.y} L${mousePos.x} ${mousePos.y}`}
-                  fill="none"
-                  stroke="var(--purple-500)"
-                  strokeWidth={2}
-                  strokeDasharray={10}
-                  strokeDashoffset={10}
-                  strokeLinecap="round"
-                />
-              </svg>
-            )}
+            <svg className="edge-temp" width="8000" height="8000" aria-hidden={!drawingActive}>
+              <path ref={_tempPath} style={{ visibility: drawingActive ? "visible" : "hidden" }} />
+            </svg>
           </div>
 
           {/* Nodes */}
           <div className="nodes">
-            {_nodes.map((node, index) => (
+            {_nodes.map((node) => (
               <div
-                key={index}
+                key={node.id}
+                ref={(el) => {
+                  const key = String(node.id);
+                  if (el) _nodeEls.current[key] = el;
+                  else delete _nodeEls.current[key];
+                }}
                 className="node"
                 style={{
                   left: node.position.x,
                   top: node.position.y,
                 }}
-                onMouseDown={(event) => onNodeMouseDown(event, node.id, node.position)}
+                onPointerDown={(event) => onNodeMouseDown(event, node.id)}
               >
-                {/* Top Port */}
-                <span
-                  ref={(el) => {
-                    if (!el) return;
+                {PORTS.map((port) => (
+                  <span
+                    key={port}
+                    ref={(el) => {
+                      const key = portKey(node.id, port);
+                      if (el) _portEls.current[key] = el;
+                      else delete _portEls.current[key];
+                    }}
+                    className={`port ${port}`}
+                    onPointerDown={(event) => onPortMouseDown(event, node.id, port)}
+                  />
+                ))}
 
-                    _arNodes.current[`${node.id}_top`] = el;
-                  }}
-                  className="port top"
-                  onMouseDown={(event) => {
-                    event.stopPropagation();
-
-                    const port = "top";
-                    const from = getPortCenter(node.id, port);
-
-                    if (from) {
-                      setDrawingEdge({
-                        id: node.id,
-                        port,
-                        start: from,
-                      });
-                    }
-                  }}
-                ></span>
-
-                {/* Left Port */}
-                <span
-                  ref={(el) => {
-                    if (!el) return;
-                    _arNodes.current[`${node.id}_left`] = el;
-                  }}
-                  className="port left"
-                  onMouseDown={(event) => {
-                    event.stopPropagation();
-                    const from = getPortCenter(node.id, "left");
-                    if (from) {
-                      setDrawingEdge({ id: node.id, port: "left", start: from });
-                    }
-                  }}
-                ></span>
-
-                {/* Node Content */}
-                <span>{node.data}</span>
-
-                {/* Right Port */}
-                <span
-                  ref={(el) => {
-                    if (!el) return;
-                    _arNodes.current[`${node.id}_right`] = el;
-                  }}
-                  className="port right"
-                  onMouseDown={(event) => {
-                    event.stopPropagation();
-                    const from = getPortCenter(node.id, "right");
-                    if (from) {
-                      setDrawingEdge({ id: node.id, port: "right", start: from });
-                    }
-                  }}
-                ></span>
-
-                {/* Bottom Port */}
-                <span
-                  ref={(el) => {
-                    if (!el) return;
-
-                    _arNodes.current[`${node.id}_bottom`] = el;
-                  }}
-                  className="port bottom"
-                  onMouseDown={(event) => {
-                    event.stopPropagation();
-
-                    const from = getPortCenter(node.id, "bottom");
-
-                    if (from) {
-                      setDrawingEdge({
-                        id: node.id,
-                        port: "bottom",
-                        start: from,
-                      });
-                    }
-                  }}
-                ></span>
+                <span className="node-content">{node.data}</span>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <div className="zoom-buttons" onMouseDown={(event) => event.stopPropagation()}>
+      <div className="zoom-buttons" onPointerDown={(event) => event.stopPropagation()}>
         <Box>
-          <Tooltip text={"Zoom Out"}>
+          <Tooltip text={t("Diagram.Zoom.Out.Tooltip")}>
             <Button
               variant="borderless"
-              color="light"
-              icon={{ element: <ARIcon icon={"Dash"} fill="currentColor" /> }}
+              color="gray"
+              shape="square"
+              icon={{ element: <Icon icon={"Dash"} fill="currentColor" /> }}
               onClick={() => handleZoom("decrement")}
             />
           </Tooltip>
 
-          <div className="zoom-percent">{Math.round(scale * 100)}%</div>
+          <div className="zoom-percent">{scaleLabel}%</div>
 
-          <Tooltip text={"Zoom In"}>
+          <Tooltip text={t("Diagram.Zoom.In.Tooltip")}>
             <Button
               variant="borderless"
-              color="light"
-              icon={{ element: <ARIcon icon={"Add"} fill="currentColor" /> }}
+              color="gray"
+              shape="square"
+              icon={{ element: <Icon icon={"Add"} fill="currentColor" /> }}
               onClick={() => handleZoom("increment")}
             />
           </Tooltip>
+
+          {scaleLabel !== 100 && (
+            <Tooltip text={t("Diagram.Zoom.Reset.Tooltip")}>
+              <Button variant="borderless" color="gray" onClick={handleZoomReset}>
+                {t("Diagram.Zoom.Reset.Text")}
+              </Button>
+            </Tooltip>
+          )}
         </Box>
       </div>
-
-      <div style={{ zIndex: 555 }}>{JSON.stringify(drawingEdge)}</div>
     </div>
   );
 };
+
+Diagram.displayName = "Diagram";
 
 export default Diagram;

@@ -1,0 +1,24 @@
+&:has(> .addon-before),
+&:has(> .addon-after) {
+  &.radius-__RADIUS__ {
+    > .addon-before {
+      border-top-left-radius: var(--radius-__RADIUS__);
+      border-bottom-left-radius: var(--radius-__RADIUS__);
+    }
+
+    > .addon-after {
+      border-top-right-radius: var(--radius-__RADIUS__);
+      border-bottom-right-radius: var(--radius-__RADIUS__);
+    }
+  }
+}
+
+&.radius-__RADIUS__ {
+  > .har-input {
+    > .input {
+      > input {
+        border-radius: var(--radius-__RADIUS__);
+      }
+    }
+  }
+}

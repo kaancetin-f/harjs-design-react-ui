@@ -1,4 +1,4 @@
-.ar-upload {
+.har-upload {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -7,24 +7,37 @@
   width: 100%;
   height: 100%;
 
-  > button {
-    width: max-content !important;
+  > button:not(.full-width) {
+    width: max-content;
+  }
+
+  &.disabled {
+    opacity: 0.65;
+    pointer-events: none;
   }
 
   > ul {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: 0.5rem;
 
     &.list {
-      flex-direction: column;
-
-      &.row,
       &.column {
+        flex-direction: column;
         margin: 0;
 
         > li {
           width: 100%;
+        }
+      }
+
+      &.row {
+        flex-direction: row;
+        margin: 0;
+
+        > li {
+          min-width: 16rem;
+          flex: 1 1 16rem;
         }
       }
     }
@@ -36,7 +49,9 @@
         margin: 0;
 
         > li {
-          max-width: calc(100% / 4);
+          flex: 1 1 14rem;
+          min-width: 14rem;
+          max-width: calc(50% - 0.25rem);
         }
       }
 
@@ -50,132 +65,187 @@
     > li {
       position: relative;
       display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      padding: 0.5rem;
-      border: solid 1px var(--gray-300);
-      border-radius: var(--border-radius-sm);
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.55rem 0.6rem;
+      border: solid 1px var(--gray-200);
+      border-radius: var(--radius-8);
+      background-color: var(--gray-50);
       overflow: hidden;
-
-      &::before {
-        position: absolute;
-        inset: 0;
-        content: "";
-        background-color: transparent;
-        z-index: 1;
-        transition: background-color 250ms ease-in-out;
-      }
+      transition:
+        background-color 180ms ease-in-out,
+        border-color 180ms ease-in-out,
+        box-shadow 180ms ease-in-out;
 
       &:hover {
-        border: solid 1px transparent;
-      }
-      &:hover::before {
-        background-color: rgba(var(--black-rgb), 0.25);
+        background-color: var(--white-500);
+        border-color: var(--gray-300);
       }
 
-      &:has(> .error) {
-        border: solid 1px var(--danger);
+      &.is-error {
+        border-color: color-mix(in srgb, var(--red-400) 55%, var(--gray-200));
       }
 
-      .error {
-        position: absolute;
-        inset: 0;
+      &.is-success {
+        border-color: color-mix(in srgb, var(--green-400) 55%, var(--gray-200));
+      }
+
+      &.is-uploading {
+        border-color: color-mix(in srgb, var(--upload-accent-300) 70%, var(--gray-200));
+      }
+
+      > .file-thumb {
         display: flex;
+        flex-shrink: 0;
+        justify-content: center;
+        align-items: center;
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: var(--radius-6);
+      }
+
+      > .file-body {
+        display: flex;
+        flex: 1 1 auto;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 0.5rem;
-        background-color: rgba(var(--danger-rgb), 0.75);
-        color: var(--white);
-        font-size: 0.75rem;
-        font-weight: 700;
-        text-align: center;
-        z-index: 5;
-      }
+        gap: 0.2rem;
+        min-width: 0;
+        padding-top: 0.1rem;
 
-      .buttons {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        > .file-name {
+          width: 100%;
+          color: var(--gray-800);
+          font-family: var(--system);
+          font-size: 0.8rem;
+          font-weight: 600;
+          line-height: 1.25;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
 
-        &:hover {
-          div {
-            visibility: visible;
-            opacity: 1;
+        > .file-meta {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 0.3rem;
+          color: var(--gray-500);
+          font-family: var(--system);
+          font-size: 0.65rem;
+          font-weight: 600;
+          line-height: 1.2;
+
+          > .file-size,
+          > .file-type {
+            background-color: transparent;
+            padding: 0;
+            border-radius: 0;
+            color: inherit;
+            font-size: inherit;
+            font-weight: inherit;
+            text-wrap: nowrap;
+          }
+
+          > .file-meta-sep {
+            color: var(--gray-400);
           }
         }
 
-        &::before {
-          position: absolute;
-          inset: 0;
-          content: "";
-          background-color: transparent;
-          z-index: 1;
-          transition: background-color 250ms ease-in-out;
+        > .error {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+          gap: 0.3rem;
+          width: max-content;
+          max-width: 100%;
+          border-radius: var(--radius-4);
+          color: var(--red-600);
+          font-family: var(--system);
+          font-size: 0.65rem;
+          font-weight: 600;
+          line-height: 1.2;
+          text-align: left;
         }
 
-        &:hover::before {
-          background-color: rgba(var(--black-rgb), 0.75);
+        > .file-progress {
+          display: flex;
+          flex-direction: column;
+          gap: 0.2rem;
+          width: 100%;
+          margin-top: 0.15rem;
+
+          > .file-progress-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            line-height: 1;
+
+            > .label,
+            > .percent {
+              color: var(--gray-600);
+              font-size: 0.65rem;
+              font-weight: 600;
+            }
+          }
+
+          .har-progress > .value > span:not(.shine) {
+            display: none;
+          }
+
+          &.uploading .har-progress {
+            --har-progress-color: var(--upload-accent-500);
+            --har-progress-track: var(--upload-accent-300);
+          }
+
+          &.success {
+            > .file-progress-meta > .label,
+            > .file-progress-meta > .percent {
+              color: var(--green-600);
+            }
+          }
+
+          &.error {
+            > .file-progress-meta > .label,
+            > .file-progress-meta > .percent {
+              color: var(--red-600);
+            }
+          }
+
+          &.uploading {
+            > .file-progress-meta > .label,
+            > .file-progress-meta > .percent {
+              color: var(--upload-accent-600);
+            }
+          }
+        }
+      }
+
+      > .buttons {
+        position: relative;
+        inset: auto;
+        display: flex;
+        flex-shrink: 0;
+        align-self: center;
+        z-index: 1;
+
+        &::before {
+          display: none;
         }
 
         > div {
-          display: flex;
-          flex-direction: row;
-          visibility: hidden;
-          opacity: 0;
-          z-index: 2;
-          transition:
-            visibility 250ms,
-            opacity 250ms ease-in-out;
+          visibility: visible;
+          opacity: 1;
         }
-      }
 
-      > .file-name {
-        width: 100%;
-        color: var(--gray-700);
-        font-size: 0.75rem;
-        font-weight: 700;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
+        .har-button {
+          width: 2rem;
+          height: 2rem;
 
-      > div {
-        display: flex;
-        gap: 0.25rem;
-
-        > .file-size {
-          background-color: var(--primary);
-          padding: 0.25rem 0 0.25rem 0.25rem;
-          border-radius: var(--border-radius-sm);
-          color: var(--white);
-          font-size: 0.65rem;
-          font-weight: 700;
-          text-wrap: nowrap;
-
-          > .size-type {
-            background-color: rgba(var(--black-rgb), 0.5);
-            margin-left: 0.25rem;
-            border-top-right-radius: var(--border-radius-sm);
-            border-bottom-right-radius: var(--border-radius-sm);
-            padding: 0.25rem;
-            color: var(--primary);
-            font-size: 0.65rem;
-            font-weight: 700;
-            text-wrap: nowrap;
+          svg {
+            width: 1.05rem;
+            height: 1.05rem;
           }
-        }
-
-        > .file-type {
-          background-color: var(--warning);
-          padding: 0.25rem;
-          border-radius: var(--border-radius-sm);
-          color: var(--black);
-          font-size: 0.65rem;
-          font-weight: 700;
-          text-wrap: nowrap;
         }
       }
     }

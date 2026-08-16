@@ -1,0 +1,157 @@
+---
+title: Getting Started
+description: Install @harjs/react-ui, import styles, and render a component.
+---
+
+`@harjs/react-ui` is an ESM React component library. Peer dependencies are React 18+ and React DOM. Styles load when you import from the package root. The library does not import `next/*`.
+
+## Requirements
+
+| Dependency | Version | Source |
+|---|---|---|
+| `react` | `>=18.0.0` | `peerDependencies` |
+| `react-dom` | `>=18.0.0` | `peerDependencies` |
+| TypeScript | recommended | not required by the package |
+| Node.js | — | no `engines` field; use a current LTS |
+
+`@harjs/translation` is a runtime dependency of the package. npm, pnpm, and yarn install it automatically.
+
+## Install
+
+```bash
+npm install @harjs/react-ui
+```
+
+```bash
+pnpm add @harjs/react-ui
+```
+
+```bash
+yarn add @harjs/react-ui
+```
+
+The published package is ESM only (`"type": "module"`). `exports` expose `import` and `types`, not `require`.
+
+## Styles
+
+The root entry imports `har-core.css`. Each component also imports its own stylesheet. Prefer the package root so both layers load:
+
+```tsx
+import { Button, Input, Modal } from "@harjs/react-ui";
+```
+
+There is no separate CSS path to add in `layout.tsx` or `main.tsx`.
+
+`har-core.css` applies a global reset (`margin` and `padding` on `*`) and registers package fonts. If your app already resets the document, expect overlapping rules.
+
+## First component
+
+`Button` defaults: `variant="filled"`, `color="gray"`, `size="lg"`. `color="blue"` is a valid `Color` token.
+
+```tsx
+import { Button } from "@harjs/react-ui";
+
+export function App() {
+  return (
+    <Button variant="filled" color="blue" size="md">
+      Save
+    </Button>
+  );
+}
+```
+
+## Providers
+
+Most components render without a provider.
+
+`NotificationProvider` is required for `useNotification` and `useConfirm`. Those hooks throw if the provider is missing.
+
+```tsx
+"use client";
+
+import { NotificationProvider, Button, useNotification } from "@harjs/react-ui";
+
+function ToastButton() {
+  const notify = useNotification();
+  return (
+    <Button color="teal" onClick={() => notify.success("Saved")}>
+      Notify
+    </Button>
+  );
+}
+
+export function App() {
+  return (
+    <NotificationProvider>
+      <ToastButton />
+    </NotificationProvider>
+  );
+}
+```
+
+`ConfigProvider` is not a theme provider. It stores `{ perPage: 5 }` for consumers that read that context (for example table paging defaults). Theme tokens live on CSS variables.
+
+`Steps` and `Wizard` default `config.locale` to `"tr"` when omitted. Pass `config={{ locale: "en" }}` for English strings.
+
+## Framework notes
+
+Interactive modules use `"use client"`. `sessionStorage` / `localStorage` helpers return early when `typeof window === "undefined"`.
+
+| Environment | Status | What to do |
+|---|---|---|
+| Next.js App Router | Verified in this docs site | Import interactive components in a Client Component, or rely on the `"use client"` directive inside the component file. The package barrel itself is not marked `"use client"`. |
+| Next.js Pages Router | Not tested | No extra `"use client"` boundary. CSS still arrives through JS imports. |
+| Vite + React | Not tested | Vite bundles CSS imported from JavaScript. |
+| Create React App 5 | Not tested | ESM-only package. CRA 5 uses webpack 5. |
+| Remix (Vite) | Not tested | Same CSS-from-JS pattern as Vite. |
+| Blitz.js | Not tested | Follow the Next.js row that matches your Blitz version. |
+| CRA 4 / webpack 4 | Unsupported | No CommonJS export. |
+
+### Next.js App Router
+
+```tsx
+"use client";
+
+import { Button } from "@harjs/react-ui";
+
+export function SaveButton() {
+  return <Button color="blue">Save</Button>;
+}
+```
+
+Use that Client Component from a Server Component. Do not add a Next.js Image or Link wrapper unless your app needs it — the library does not.
+
+## Package exports
+
+| Import path | Contents |
+|---|---|
+| `@harjs/react-ui` | Components, `ConfigProvider`, `NotificationProvider`, `useLayout`, `useNotification`, `useConfirm` |
+| `@harjs/react-ui/config` | Application contexts |
+| `@harjs/react-ui/hooks` | Shared hooks |
+| `@harjs/react-ui/types` | Shared TypeScript types |
+| `@harjs/react-ui/utils` | Utility helpers |
+
+```tsx
+import { Button } from "@harjs/react-ui";
+import type { Color, Sizes } from "@harjs/react-ui/types";
+```
+
+## Troubleshooting
+
+**Styles missing.** Import from `@harjs/react-ui`, not a deep path that skips `src/index.ts`. Bundlers must allow CSS imported from `node_modules`.
+
+**`useNotification` / `useConfirm` throw.** Wrap the tree in `NotificationProvider`.
+
+**Server Component error in App Router.** Move the import into a file that starts with `"use client"`, or import a Client Component that already uses the kit.
+
+**Steps / Wizard copy is Turkish.** Set `config={{ locale: "en" }}`.
+
+**Global styles shifted.** `har-core.css` resets `*` margin and padding. Scope or override if your app depends on user-agent margins.
+
+**`require("@harjs/react-ui")` fails.** The package is ESM-only.
+
+<Cards>
+  <Card title="Button" href="/docs/components/form/button" description="Variants, groups, action menus, split buttons, and the props API." />
+  <Card title="Layout" href="/docs/components/layout/layout" description="Header, sider, content, and footer shells." />
+  <Card title="Notification" href="/docs/components/feedback/notification" description="Toasts and the NotificationProvider hook." />
+</Cards>

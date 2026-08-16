@@ -2,19 +2,13 @@ import React from "react";
 import { Errors, MimeTypes, TableColumnProps } from "../../../libs/infrastructure/types";
 import { IChildrenProps } from "../../../libs/infrastructure/types/IGlobalProps";
 import { FilterOperator } from "../../../libs/infrastructure/shared/Enums";
+import { DateRangeValue } from "../../form/date-picker/Props";
 
 export type Operator =
-  | "Contains"
-  | "DoesNotContains"
-  | "Equals"
-  | "DoesNotEquals"
-  | "BeginsWith"
-  | "EndsWith"
-  | "Blank"
-  | "NotBlank";
+  "Contains" | "DoesNotContains" | "Equals" | "DoesNotEquals" | "BeginsWith" | "EndsWith" | "Blank" | "NotBlank";
 
 export type FilterValue = {
-  value: string | number | boolean;
+  value: string | number | boolean | DateRangeValue;
   operator: FilterOperator;
 };
 
@@ -41,7 +35,7 @@ export type Config<T extends object> = {
     button?: boolean;
     render?: {
       styles: React.CSSProperties;
-      element: (item: T[]) => React.JSX.Element;
+      element: (parentItem: T, subItem: unknown) => React.JSX.Element;
     };
   };
   dnd?: {
@@ -51,6 +45,12 @@ export type Config<T extends object> = {
   validation?: {
     errors: Errors<T>;
     getChangeData?: (items: T[]) => void;
+  };
+  columnManagement?: {
+    enabled?: boolean;
+    storageKey?: string;
+    /** When `false`, hides PDF column toggles in the column manager. Defaults to `true`. */
+    pdfExport?: boolean;
   };
 };
 
@@ -70,7 +70,8 @@ type ExportActionType = {
   title?: string;
   message?: string;
   content?: React.JSX.Element;
-  onClick: () => void;
+  /** Receives the currently selected PDF column keys when confirmed. */
+  onClick: (payload?: { pdfColumns: string[] }) => void;
 };
 
 type CreateActionType = {
@@ -98,6 +99,7 @@ interface IProps<T extends object> extends IChildrenProps {
   previousSelections?: T[];
   sortedParams?: (params: Sort<T>[], query: string) => void;
   searchedParams?: (params: SearchedParam | null, query: string, operator: FilterOperator) => void;
+  onPdfColumnsChange?: (pdfColumns: string[]) => void;
   onEditable?: (item: T, trackByValue: string, currentKey?: keyof T | null) => void;
   onDnD?: (item: T[]) => void;
   pagination?: {

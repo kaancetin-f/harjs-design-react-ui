@@ -1,0 +1,70 @@
+&.__COLOR__ {
+  &.filled {
+    > .addon-before,
+    > .addon-after {
+      &:has(input, select, button, textarea) {
+        background-color: var(--__COLOR__-100);
+        border: var(--stroke-1) solid var(--__COLOR__-300);
+      }
+
+      &:has(.har-select, .har-input) {
+        border: none !important;
+      }
+    }
+  }
+
+  &.surface-borderless {
+    > .addon-before,
+    > .addon-after {
+      &:has(input, select, button, textarea) {
+        background-color: var(--__COLOR__-100);
+      }
+
+      &:has(.har-select, .har-input) {
+        border: none !important;
+      }
+    }
+  }
+
+  &.outlined {
+    > .addon-before,
+    > .addon-after {
+      &:has(input, select, button, textarea) {
+        background-color: transparent;
+        border: var(--stroke-1) solid var(--__COLOR__-300);
+      }
+
+      &:has(.har-select, .har-input) {
+        border: none !important;
+      }
+    }
+  }
+
+  &.dashed {
+    > .addon-before,
+    > .addon-after {
+      &:has(input, select, button, textarea) {
+        background-color: transparent;
+        border: var(--stroke-1) dashed var(--__COLOR__-300);
+      }
+
+      &:has(.har-select, .har-input) {
+        border: none !important;
+      }
+    }
+  }
+
+  &.borderless {
+    > .addon-before,
+    > .addon-after {
+      &:has(input, select, button, textarea) {
+        background-color: transparent;
+        border: var(--stroke-1) solid transparent;
+      }
+
+      &:has(.har-select, .har-input) {
+        border: none !important;
+      }
+    }
+  }
+}

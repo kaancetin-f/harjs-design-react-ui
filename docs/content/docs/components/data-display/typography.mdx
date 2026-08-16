@@ -1,0 +1,187 @@
+---
+title: Typography
+description: Title, paragraph, blockquote, keyboard, and syntax-highlighted code. Colors use palette tokens, so they follow dark mode.
+---
+
+Import `Typography` once and pull `Title`, `Paragraph`, `Blockquote`, `Kbd`, and `Code` off it.
+
+## Import
+
+```tsx
+import { Typography } from "@harjs/react-ui";
+
+const { Title, Paragraph, Blockquote, Kbd, Code } = Typography;
+```
+
+```tsx
+<Title size="lg">Product updates</Title>
+<Paragraph>Body copy</Paragraph>
+<Blockquote cite="Ada Lovelace">A quoted passage.</Blockquote>
+<Kbd>⌘</Kbd>
+<Code lang="tsx">{`import { Button } from "@harjs/react-ui"`}</Code>
+```
+
+## Usage
+
+<Example>
+  <TypographyBasic />
+</Example>
+
+## Title
+
+### Size
+
+`size` sets the type scale. The heading tag follows it (`2xl` → `h1` … `xs` → `h6`).
+
+<Example>
+  <TypographyTitle />
+</Example>
+
+### Font weight
+
+`fontWeight` accepts numeric tokens from `100` to `900`.
+
+<Example>
+  <TypographyTitleFontWeight />
+</Example>
+
+## Paragraph
+
+### Size
+
+`size` styles body copy. The default is `md`.
+
+<Example>
+  <TypographyParagraph />
+</Example>
+
+### Font weight
+
+`fontWeight` accepts numeric tokens from `100` to `900`.
+
+<Example>
+  <TypographyParagraphFontWeight />
+</Example>
+
+## Blockquote
+
+A quoted passage with a left accent bar. `cite` is the attribution.
+
+<Example>
+  <TypographyBlockquote />
+</Example>
+
+### Color
+
+`color` tints the bar and wash. The default is `gray`.
+
+<Example>
+  <TypographyBlockquoteColors />
+</Example>
+
+### Size
+
+`size` follows the paragraph type scale. The default is `md`.
+
+<Example>
+  <TypographyBlockquoteSizes />
+</Example>
+
+## Kbd
+
+A keyboard key. Sit it inline with copy or stack a shortcut.
+
+<Example>
+  <TypographyKbd />
+</Example>
+
+### Color
+
+`color` tints the key chrome. The default is `gray`. `white` keeps a gray border.
+
+<Example>
+  <TypographyKbdColors />
+</Example>
+
+### Size
+
+`size` scales the key. The default is `md`.
+
+<Example>
+  <TypographyKbdSizes />
+</Example>
+
+## Code
+
+Highlighted source. Built-in langs: `tsx`, `js`, `html`, `json`, `bash`. Add more with `Code.registerHighlighter`.
+
+<Example>
+  <TypographyCode />
+</Example>
+
+```tsx
+Code.registerHighlighter("python", (code) => highlightPython(code));
+```
+
+## Props
+
+### Title props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `ReactNode` | — |
+| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl"` | `"md"` |
+| `align` | `"left" \| "center" \| "right"` | `"left"` |
+| `color` | Color, gray scale, or CSS color | — |
+| `upperCase` | `boolean` | `false` |
+| `fontWeight` | `"100" \| … \| "900"` | — |
+
+Also accepts standard heading HTML attributes. Default color is `--gray-900`.
+
+### Paragraph props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `ReactNode` | — |
+| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl"` | `"md"` |
+| `color` | Color, gray scale, or CSS color | — |
+| `align` | `"left" \| "center" \| "right"` | `"left"` |
+| `upperCase` | `boolean` | `false` |
+| `fontWeight` | `"100" \| … \| "900"` | — |
+
+Also accepts standard paragraph HTML attributes. Default color is `--gray-800`.
+
+### Blockquote props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `ReactNode` | — |
+| `cite` | `string` | — |
+| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl"` | `"md"` |
+| `color` | Color, gray scale, or CSS color | `"gray"` |
+| `align` | `"left" \| "center" \| "right"` | `"left"` |
+| `fontWeight` | `"100" \| … \| "900"` | — |
+
+Also accepts standard `blockquote` HTML attributes. Accent uses palette tokens, so it follows dark mode.
+
+### Kbd props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `ReactNode` | — |
+| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl"` | `"md"` |
+| `color` | Color, gray scale, or CSS color | `"gray"` |
+| `fontWeight` | `"100" \| … \| "900"` | — |
+
+Also accepts standard `kbd` HTML attributes. Chrome uses palette tokens, so it follows dark mode.
+
+### Code props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `children` | `string` | — |
+| `code` | `string` | — |
+| `lang` | `string` | `"tsx"` |
+| `highlight` | `(code: string, lang: string) => string` | registered highlighter |
+
+`code` wins over `children`. Also accepts standard `pre` HTML attributes. Token colors are CSS variables on `.har-typography-code` (`--har-code-keyword`, `--har-code-string`, …).

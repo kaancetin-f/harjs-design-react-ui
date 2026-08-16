@@ -1,0 +1,4 @@
+&.radius-__RADIUS__ {
+  --_chip-radius: var(--radius-__RADIUS__);
+  border-radius: var(--_chip-radius);
+}

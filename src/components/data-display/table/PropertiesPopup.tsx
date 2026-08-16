@@ -2,8 +2,9 @@
 
 import React, { Dispatch, memo, MutableRefObject, SetStateAction, useEffect, useMemo, useRef } from "react";
 import ReactDOM from "react-dom";
-import { ARIcon } from "../../icons";
+import { Icon } from "../../icons";
 import { ExtractKey } from "./Helpers";
+import useAnchoredPosition from "./popup/useAnchoredPosition";
 import { Config, Sort } from "./IProps";
 import { TableColumnProps } from "../../../libs/infrastructure/types";
 import ITableLocale from "../../../libs/core/application/locales/table/ITableLocale";
@@ -36,13 +37,15 @@ function PropertiesPopup<T extends object>({ refs, states, methods, coordinate, 
   const _arTablePropertiesPopup = useRef<HTMLDivElement>(null);
 
   // hooks
+  const position = useAnchoredPosition(states.open.get, coordinate, _arTablePropertiesPopup);
   const { t } = useTranslation<ITableLocale>(String(config.locale ?? "tr"), { tr: { ...TableTR }, en: { ...TableEN } });
 
   // methods
-  const handleClickOutSide = (event: MouseEvent) => {
-    const target = event.target as HTMLElement;
-    const clickedInsidePopup = _arTablePropertiesPopup.current && _arTablePropertiesPopup.current.contains(target);
-    const isOneOfButtons = target.closest('[data-properties-button="true"]');
+  const handleClickOutSide = (event: Event) => {
+    const target = event.target instanceof Element ? event.target : null;
+    if (!target) return;
+    const clickedInsidePopup = Boolean(_arTablePropertiesPopup.current?.contains(target));
+    const isOneOfButtons = Boolean(target.closest('[data-properties-button="true"]'));
 
     if (!clickedInsidePopup && !isOneOfButtons) handleClose();
   };
@@ -60,11 +63,6 @@ function PropertiesPopup<T extends object>({ refs, states, methods, coordinate, 
     if (key === "Escape") handleClose();
   };
 
-  const handleOpen = () => {
-    states.open.set(true);
-    methods.handleScroll();
-  };
-
   const handleClose = () => {
     states.open.set(false);
     methods.handleScroll();
@@ -72,36 +70,27 @@ function PropertiesPopup<T extends object>({ refs, states, methods, coordinate, 
 
   // useEffects
   useEffect(() => {
-    const currentButtons = refs.buttons.current;
-    currentButtons.forEach((button) => {
-      if (button) button.addEventListener("click", handleOpen);
-    });
+    if (!states.open.get) return;
 
-    return () => {
-      currentButtons.forEach((button) => {
-        if (button) button.removeEventListener("click", handleOpen);
-      });
-    };
-  }, [refs.buttons]);
-
-  useEffect(() => {
     const tableContentRef = refs.tableContent.current;
     if (tableContentRef) {
       tableContentRef.addEventListener("scroll", handleClose);
     }
 
-    document.addEventListener("click", handleClickOutSide);
+    document.addEventListener("pointerdown", handleClickOutSide);
     document.addEventListener("keydown", handleKeys);
+    window.addEventListener("scroll", handleClose, true);
 
     return () => {
-      document.removeEventListener("click", handleClickOutSide);
+      document.removeEventListener("pointerdown", handleClickOutSide);
       document.removeEventListener("keydown", handleKeys);
+      window.removeEventListener("scroll", handleClose, true);
 
       if (tableContentRef) {
         tableContentRef.removeEventListener("scroll", handleClose);
       }
     };
-  }, []);
+  }, [states.open.get]);
 
   const currentKey = ExtractKey(states.sort.currentColumn?.key);
   const currentSort = states.sort.get?.find((s) => s.key === currentKey);
@@ -111,45 +100,44 @@ function PropertiesPopup<T extends object>({ refs, states, methods, coordinate, 
     ReactDOM.createPortal(
       <div
         ref={_arTablePropertiesPopup}
-        className="ar-table-properties-popup"
-        style={{ top: coordinate.y, left: coordinate.x }}
+        className="har-table-properties-popup"
+        role="menu"
+        aria-label={t("Table.Properties.Popup.Label")}
+        style={{ top: position.y, left: position.x }}
       >
-        <ul>
-          {/* ASC */}
           {currentSort && (!currentSort.direction || currentSort.direction === "desc") && (
-            <li onClick={() => handleSort(currentKey, "asc")}>
+            <button type="button" role="menuitem" onClick={() => handleSort(currentKey, "asc")}>
               <span>
-                <ARIcon icon="ArrowUp" />
+                <Icon icon="ArrowUp" fill="currentColor" />
               </span>
               <span>{t("Table.Properties.Asc.Text")}</span>
-            </li>
+            </button>
           )}
 
-          {/* DESC */}
           {currentSort && (!currentSort.direction || currentSort.direction === "asc") && (
-            <li onClick={() => handleSort(currentKey, "desc")}>
+            <button type="button" role="menuitem" onClick={() => handleSort(currentKey, "desc")}>
               <span>
-                <ARIcon icon="ArrowDown" />
+                <Icon icon="ArrowDown" fill="currentColor" />
               </span>
               <span>{t("Table.Properties.Desc.Text")}</span>
-            </li>
+            </button>
           )}
 
-          {/* CLEAR */}
           {currentSort && currentSort.direction && (
-            <li
+            <button
+              type="button"
+              role="menuitem"
               onClick={() => {
                 states.sort.set((prev) => prev.filter((s) => s.key !== currentKey));
                 states.open.set(false);
               }}
             >
               <span>
-                <ARIcon icon="ChevronExpand" />
+                <Icon icon="ChevronExpand" fill="currentColor" />
               </span>
               <span>{t("Table.Properties.ClearSort.Text")}</span>
-            </li>
+            </button>
           )}
-        </ul>
       </div>,
       document.body,
     )
