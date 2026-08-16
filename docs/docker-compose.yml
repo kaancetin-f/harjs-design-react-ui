@@ -5,6 +5,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        REPO: https://github.com/kaancetin-f/harjs-design-react-ui.git
+        BRANCH: main
     ports:
       - "3000:3000"
     restart: unless-stopped

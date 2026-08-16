@@ -12,6 +12,15 @@ const config = {
   },
   // Docs import `src/` from the repo root; standalone must trace those files.
   outputFileTracingRoot: path.join(__dirname, ".."),
+  webpack: (config) => {
+    // src/ files resolve packages by walking up from /app/src, not docs/.
+    config.resolve.modules = [
+      path.join(__dirname, "node_modules"),
+      path.join(__dirname, "..", "node_modules"),
+      ...(config.resolve.modules ?? ["node_modules"]),
+    ];
+    return config;
+  },
   async redirects() {
     return [
       {

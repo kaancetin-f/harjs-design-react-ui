@@ -1,27 +1,24 @@
-# Build from the docs folder (no local `src/` required):
+# Sunucuda yalnızca bu klasör yeterli:
 #   docker compose up --build
 #   docker build -t harjs-design .
 #   docker run --rm -p 3000:3000 harjs-design
-
-FROM node:22-alpine AS deps
-RUN apk add --no-cache libc6-compat
-WORKDIR /app
-COPY package.json package-lock.json ./docs/
-RUN npm ci --prefix docs
+#
+# src/ ve kütüphane bağımlılıkları image içinde GitHub main'den gelir.
 
 FROM node:22-alpine AS builder
-RUN apk add --no-cache git
-WORKDIR /app
-COPY --from=deps /app/docs/node_modules ./docs/node_modules
+RUN apk add --no-cache git libc6-compat
 
-# Docs demos import the library from ../src. Fetch it from main.
 ARG REPO=https://github.com/kaancetin-f/harjs-design-react-ui.git
 ARG BRANCH=main
-RUN git clone --depth 1 --branch "${BRANCH}" "${REPO}" /tmp/harjs \
-  && mv /tmp/harjs/src /app/src \
-  && rm -rf /tmp/harjs
+RUN git clone --depth 1 --branch "${BRANCH}" "${REPO}" /app
+WORKDIR /app
 
+# Bu build context (sunucudaki docs/) klonlanan docs'un üzerine yazılır.
 COPY . ./docs
+
+# Kök: src'in paketleri (/app/node_modules). Docs: Next ve site paketleri.
+RUN npm ci --omit=dev && npm ci --prefix docs
+
 WORKDIR /app/docs
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
