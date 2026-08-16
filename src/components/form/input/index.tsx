@@ -2,7 +2,6 @@
 
 import React, {
   ChangeEvent,
-  ComponentProps,
   forwardRef,
   useEffect,
   useImperativeHandle,
@@ -300,18 +299,19 @@ const BaseInput = forwardRef<HTMLInputElement, IProps>(
   },
 );
 
-interface InputCompound extends React.ForwardRefExoticComponent<IProps & React.RefAttributes<HTMLInputElement>> {
-  AddonBefore: ({ children }: IChildrenProps) => React.JSX.Element;
-  AddonAfter: ({ children }: IChildrenProps) => React.JSX.Element;
-  Icon: ({ children, position }: ComponentProps<typeof Input> & { position: "start" | "end" }) => React.JSX.Element;
-
+type InputComponent = typeof BaseInput & {
+  AddonBefore: (props: IChildrenProps) => React.JSX.Element;
+  AddonAfter: (props: IChildrenProps) => React.JSX.Element;
+  Icon: (
+    props: IChildrenProps & React.HTMLAttributes<HTMLSpanElement> & { position: "start" | "end" },
+  ) => React.JSX.Element;
   Decimal: typeof Decimal;
   FormattedDecimal: typeof FormattedDecimal;
   Pin: typeof Pin;
   Phone: typeof Phone;
-}
+};
 
-const Input = BaseInput as InputCompound;
+const Input = BaseInput as InputComponent;
 Input.AddonBefore = ({ children }) => <>{children}</>;
 Input.AddonAfter = ({ children }) => <>{children}</>;
 Input.Icon = ({ children, position, ...attributes }) => {
