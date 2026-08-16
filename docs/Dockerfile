@@ -10,6 +10,9 @@ RUN apk add --no-cache git libc6-compat
 
 ARG REPO=https://github.com/kaancetin-f/harjs-design-react-ui.git
 ARG BRANCH=main
+# git clone komutu değişmediği için Docker eski src katmanını cache'ler.
+# main'in HEAD'i değişince bu ADD katmanı (ve clone) yeniden çalışır.
+ADD https://github.com/kaancetin-f/harjs-design-react-ui/commits/${BRANCH}.atom /tmp/repo.atom
 RUN git clone --depth 1 --branch "${BRANCH}" "${REPO}" /app
 WORKDIR /app
 
