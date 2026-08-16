@@ -3,8 +3,8 @@ services:
     image: harjs-design
     container_name: harjs-design
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: docs/Dockerfile
     ports:
       - "3000:3000"
     restart: unless-stopped

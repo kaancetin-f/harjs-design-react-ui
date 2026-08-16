@@ -1,6 +1,7 @@
-# Docs site. Build from the repo root:
-#   docker build -t harjs-design .
+# Docs site. Context is the repo root (needs `src/`):
+#   docker build -f docs/Dockerfile -t harjs-design .
 #   docker run --rm -p 3000:3000 harjs-design
+#   docker compose -f docs/docker-compose.yml up --build
 
 FROM node:22-alpine AS deps
 RUN apk add --no-cache libc6-compat
