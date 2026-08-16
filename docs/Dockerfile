@@ -19,8 +19,9 @@ WORKDIR /app
 # Bu build context (sunucudaki docs/) klonlanan docs'un üzerine yazılır.
 COPY . ./docs
 
-# Kök: src'in paketleri (/app/node_modules). Docs: Next ve site paketleri.
-RUN npm ci --omit=dev && npm ci --prefix docs
+# Kök npm ci --omit=dev @types/react kurmaz; src IProps dosyaları React
+# namespace'ini /app/node_modules/@types'tan arar, onChange any kalır.
+RUN npm ci && npm ci --prefix docs
 
 WORKDIR /app/docs
 ENV NEXT_TELEMETRY_DISABLED=1
