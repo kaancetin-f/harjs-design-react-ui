@@ -1,0 +1,10 @@
+services:
+  docs:
+    image: harjs-design
+    container_name: harjs-design
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    restart: unless-stopped

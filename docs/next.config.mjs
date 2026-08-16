@@ -6,10 +6,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
+  output: "standalone",
   experimental: {
     externalDir: true,
   },
-  outputFileTracingRoot: __dirname,
+  // Docs import `src/` from the repo root; standalone must trace those files.
+  outputFileTracingRoot: path.join(__dirname, ".."),
   async redirects() {
     return [
       {
