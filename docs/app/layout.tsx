@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans, Source_Sans_3, JetBrains_Mono } from "next/font/google";
 import "../../src/assets/css/core/har-core.css";
 import "./globals.css";
@@ -27,6 +27,12 @@ export const metadata: Metadata = {
     template: "%s · HarJS",
   },
   description: "Type-safe React UI components. CSS ships with the package import.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 const themeInitScript = `(function(){try{var k='harjs-docs-theme';var t=localStorage.getItem(k);if(t!=='light'&&t!=='dark'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t}catch(e){}})();`;

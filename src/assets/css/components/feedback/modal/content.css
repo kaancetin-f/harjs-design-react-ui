@@ -7,6 +7,7 @@
       padding: var(--space-20);
       overflow-x: hidden;
       overflow-y: auto;
+      overscroll-behavior: contain;
 
       &.free {
         padding: 0;

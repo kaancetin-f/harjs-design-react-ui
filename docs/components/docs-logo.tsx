@@ -6,7 +6,10 @@ export function DocsLogo() {
     <Link href="/" className="docs-logo">
       <LogoMark size={32} />
       <span className="docs-logo-text">
-        @harjs/<em>react-ui</em>
+        <span className="docs-logo-full">
+          @harjs/<em>react-ui</em>
+        </span>
+        <span className="docs-logo-short">HarJS</span>
       </span>
     </Link>
   );

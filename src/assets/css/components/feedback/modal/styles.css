@@ -11,6 +11,8 @@
   z-index: 1050;
   display: grid;
   place-items: center;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
   padding: var(--space-16);
   pointer-events: none;
 
@@ -31,8 +33,11 @@
     z-index: 1;
     display: flex;
     flex-direction: column;
+    min-width: 0;
+    min-height: 0;
     max-width: 100%;
     max-height: 100%;
+    overflow: hidden;
     background-color: var(--white-500);
     border-radius: var(--radius-4);
     box-shadow: 0 5px 15px -5px var(--black-alpha-30);
