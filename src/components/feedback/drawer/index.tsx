@@ -27,6 +27,14 @@ const overlayIsClear = () => {
   );
 };
 
+const overlayRoot = () =>
+  (document.querySelector(".har-select-options") as HTMLElement | null) ||
+  (document.querySelector(".har-date-calendar") as HTMLElement | null) ||
+  (document.querySelector(".har-popover") as HTMLElement | null);
+
+const visibleFocusable = (root: HTMLElement) =>
+  [...root.querySelectorAll<HTMLElement>(FOCUSABLE)].filter((node) => node.getClientRects().length > 0);
+
 const storageKey = (name: string) => `${window.location.pathname}::${name}`;
 
 const readStoredIndex = (name: string, length: number) => {
@@ -74,6 +82,7 @@ const Drawer = function <T extends object>({
   // refs
   const _drawer = useRef<HTMLDivElement>(null);
   const _previousFocus = useRef<HTMLElement | null>(null);
+  const _close = useRef<() => void>(() => {});
 
   // states
   const [mounted, setMounted] = useState(false);
@@ -136,6 +145,7 @@ const Drawer = function <T extends object>({
 
     finish();
   }, [currentTab, onClose, onSubmit, open, setSubmit, validation]);
+  _close.current = close;
 
   const panelContent = (content: React.ReactNode) => (validation ? injectErrors<T>(content, errors) : content);
 
@@ -167,12 +177,24 @@ const Drawer = function <T extends object>({
     document.body.style.overflow = "hidden";
     if (gutter > 0) document.body.style.paddingRight = `${gutter}px`;
 
+    return () => {
+      document.body.style.removeProperty("overflow");
+      document.body.style.removeProperty("padding-right");
+      _previousFocus.current?.focus({ preventScroll: true });
+    };
+  }, [open.get]);
+
+  useEffect(() => {
+    if (!open.get) return;
+
     const handleKeys = (event: KeyboardEvent) => {
-      if (event.key === "Tab" && _drawer.current) {
-        const nodes = [..._drawer.current.querySelectorAll<HTMLElement>(FOCUSABLE)].filter(
-          (node) => node.offsetParent !== null,
-        );
+      if (event.key === "Tab") {
+        const overlay = overlayRoot();
+        const root = overlay ?? _drawer.current;
+        if (!root) return;
+        const nodes = visibleFocusable(root);
         if (nodes.length === 0) {
+          if (overlay) return;
           event.preventDefault();
           return;
         }
@@ -191,18 +213,12 @@ const Drawer = function <T extends object>({
       if (disableCloseOnEsc) return;
       if (event.key !== "Escape" || !overlayIsClear()) return;
       event.stopPropagation();
-      close();
+      _close.current();
     };
 
     document.addEventListener("keydown", handleKeys);
-
-    return () => {
-      document.body.style.removeProperty("overflow");
-      document.body.style.removeProperty("padding-right");
-      document.removeEventListener("keydown", handleKeys);
-      _previousFocus.current?.focus({ preventScroll: true });
-    };
-  }, [open.get, close, disableCloseOnEsc]);
+    return () => document.removeEventListener("keydown", handleKeys);
+  }, [open.get, disableCloseOnEsc]);
 
   useEffect(() => {
     if (!open.get || !entered) return;

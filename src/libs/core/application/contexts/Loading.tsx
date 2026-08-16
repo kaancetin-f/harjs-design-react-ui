@@ -26,4 +26,6 @@ const LoadingProvider = ({ children }: LoadingProviderProps) => {
   );
 };
 
+LoadingProvider.displayName = "LoadingProvider";
+
 export { LoadingContext, LoadingProvider };

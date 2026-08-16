@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Plus_Jakarta_Sans, Source_Sans_3, JetBrains_Mono } from "next/font/google";
 import "../../src/assets/css/core/har-core.css";
 import "./globals.css";
@@ -40,9 +41,6 @@ const themeInitScript = `(function(){try{var k='harjs-docs-theme';var t=localSto
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`} suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
-      </head>
       <body
         style={
           {
@@ -52,6 +50,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           } as React.CSSProperties
         }
       >
+        <Script id="harjs-docs-theme" strategy="beforeInteractive">
+          {themeInitScript}
+        </Script>
         {children}
       </body>
     </html>

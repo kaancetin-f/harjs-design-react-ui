@@ -66,6 +66,8 @@ Most components render without a provider.
 
 `NotificationProvider` is required for `useNotification` and `useConfirm`. Those hooks throw if the provider is missing.
 
+`LoadingProvider` is required for `useLoading` to actually show the veil. `useLoading` does not throw when the provider is missing — `setIsLoading` is a no-op. See [Loading](/docs/components/feedback/loading).
+
 ```tsx
 "use client";
 
@@ -125,7 +127,7 @@ Use that Client Component from a Server Component. Do not add a Next.js Image or
 
 | Import path | Contents |
 |---|---|
-| `@harjs/react-ui` | Components, `ConfigProvider`, `NotificationProvider`, `useLayout`, `useNotification`, `useConfirm` |
+| `@harjs/react-ui` | Components, `ConfigProvider`, `NotificationProvider`, `LoadingProvider`, `useLayout`, `useNotification`, `useConfirm`, `useLoading` |
 | `@harjs/react-ui/config` | Application contexts |
 | `@harjs/react-ui/hooks` | Shared hooks |
 | `@harjs/react-ui/types` | Shared TypeScript types |
@@ -141,6 +143,8 @@ import type { Color, Sizes } from "@harjs/react-ui/types";
 **Styles missing.** Import from `@harjs/react-ui`, not a deep path that skips `src/index.ts`. Bundlers must allow CSS imported from `node_modules`.
 
 **`useNotification` / `useConfirm` throw.** Wrap the tree in `NotificationProvider`.
+
+**`useLoading` does nothing.** Wrap the tree in `LoadingProvider`. The hook does not throw.
 
 **Server Component error in App Router.** Move the import into a file that starts with `"use client"`, or import a Client Component that already uses the kit.
 

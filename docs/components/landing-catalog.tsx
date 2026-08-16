@@ -20,7 +20,7 @@ export function LandingInstall() {
   return (
     <div className="hero-install">
       <code>{INSTALL}</code>
-      <CopyButton text={INSTALL} className="example-copy" />
+      <CopyButton text={INSTALL} className="hero-install-copy" />
     </div>
   );
 }
@@ -35,30 +35,29 @@ export function LandingWhy() {
         <article>
           <h3>Typed props</h3>
           <p>
-            Shared unions for <code>color</code>, <code>variant</code>, and <code>size</code>. Tables,
-            selects, and uploads use generics instead of <code>any</code>.
+            Shared unions for <code>color</code>, <code>variant</code>, and <code>size</code>. Tables, selects, and
+            uploads use generics instead of <code>any</code>.
           </p>
         </article>
         <article>
           <h3>CSS with the import</h3>
           <p>
-            Importing from <code>@harjs/react-ui</code> loads <code>har-core.css</code> and each
-            component stylesheet. There is no separate CSS entry to remember.
+            Importing from <code>@harjs/react-ui</code> loads <code>har-core.css</code> and each component stylesheet.
+            There is no separate CSS entry to remember.
           </p>
         </article>
         <article>
           <h3>Framework-agnostic</h3>
           <p>
-            The package does not import <code>next/*</code>. Peer dependencies are React 18+ and
-            React DOM. Next.js is optional.
+            The package does not import <code>next/*</code>. Peer dependencies are React 18+ and React DOM. Next.js is
+            optional.
           </p>
         </article>
         <article>
           <h3>Client + SSR guards</h3>
           <p>
-            Interactive modules use <code>&quot;use client&quot;</code>.{" "}
-            <code>sessionStorage</code> and <code>localStorage</code> reads check{" "}
-            <code>typeof window</code> first.
+            Interactive modules use <code>&quot;use client&quot;</code>. <code>sessionStorage</code> and{" "}
+            <code>localStorage</code> reads check <code>typeof window</code> first.
           </p>
         </article>
       </div>
@@ -83,7 +82,7 @@ function CatalogCard({
     <article className="landing-catalog-card">
       <div className="landing-catalog-preview">{children}</div>
       <div className="landing-catalog-meta">
-        <span className="landing-bento-kicker">{kicker}</span>
+        <Chip text={kicker} color="orange" variant="surface" border={{ radius: "full" }} size="sm" />
         <h3>{title}</h3>
         <Link href={href}>Open docs</Link>
       </div>
@@ -97,15 +96,7 @@ function LandingSteps() {
   // states
   const [step, setStep] = useState(0);
 
-  return (
-    <Steps
-      name="landing-steps"
-      currentStep={step}
-      onChange={setStep}
-      config={{ locale: "en" }}
-      steps={STEPS}
-    />
-  );
+  return <Steps name="landing-steps" currentStep={step} onChange={setStep} config={{ locale: "en" }} steps={STEPS} />;
 }
 
 LandingSteps.displayName = "LandingSteps";
@@ -114,9 +105,7 @@ export function LandingCatalog() {
   return (
     <section className="landing-section" aria-labelledby="landing-catalog">
       <h2 id="landing-catalog">Components</h2>
-      <p className="landing-lead">
-        Live previews from the public API. Each card links to the matching docs page.
-      </p>
+      <p className="landing-lead">Live previews from the public API. Each card links to the matching docs page.</p>
       <div className="landing-catalog">
         <CatalogCard kicker="Form" title="Button" href="/docs/components/form/button">
           <Flex flexWrap="wrap" alignItems="center" gap="var(--space-12)">
@@ -161,8 +150,7 @@ export function LandingCompatibility() {
     <section className="landing-section" aria-labelledby="landing-compat">
       <h2 id="landing-compat">Compatibility</h2>
       <p className="landing-lead">
-        Claims below match the package graph. Environments that are not exercised in this repo are
-        marked Not tested.
+        Claims below match the package graph. Environments that are not exercised in this repo are marked Not tested.
       </p>
       <div className="landing-table-wrap">
         <table>
@@ -208,7 +196,9 @@ export function LandingCompatibility() {
             <tr>
               <td>CRA 4 / webpack 4</td>
               <td>Unsupported</td>
-              <td>No CommonJS export (<code>exports.require</code> is absent).</td>
+              <td>
+                No CommonJS export (<code>exports.require</code> is absent).
+              </td>
             </tr>
           </tbody>
         </table>
@@ -235,8 +225,7 @@ export function App() {
     <section className="landing-section" aria-labelledby="landing-install">
       <h2 id="landing-install">Quick start</h2>
       <p className="landing-lead">
-        Peer dependencies are <code>react</code> and <code>react-dom</code> ≥ 18. Styles load from
-        the root entry.
+        Peer dependencies are <code>react</code> and <code>react-dom</code> ≥ 18. Styles load from the root entry.
       </p>
       <div className="landing-code">
         <div className="landing-code-header">
@@ -250,4 +239,3 @@ export function App() {
 }
 
 LandingQuickStart.displayName = "LandingQuickStart";
-

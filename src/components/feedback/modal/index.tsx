@@ -45,6 +45,11 @@ const unlockScroll = () => {
   }
 };
 
+const overlayRoot = () =>
+  (document.querySelector(".har-popover") as HTMLElement | null) ||
+  (document.querySelector(".har-select-options") as HTMLElement | null) ||
+  (document.querySelector(".har-date-calendar") as HTMLElement | null);
+
 const visibleFocusable = (root: HTMLElement) =>
   [...root.querySelectorAll<HTMLElement>(FOCUSABLE)].filter((node) => node.getClientRects().length > 0);
 
@@ -70,6 +75,7 @@ const Modal: React.FC<IProps> = ({
   const _instanceId = useRef(Symbol("har-modal"));
   const _modal = useRef<HTMLDivElement>(null);
   const _previousFocus = useRef<HTMLElement | null>(null);
+  const _close = useRef<() => void>(() => {});
 
   // states
   const [mounted, setMounted] = useState(false);
@@ -91,6 +97,7 @@ const Modal: React.FC<IProps> = ({
     onClose?.();
     setOpen(false);
   }, [onClose, setOpen]);
+  _close.current = close;
 
   // useEffects
   useEffect(() => setMounted(true), []);
@@ -136,15 +143,28 @@ const Modal: React.FC<IProps> = ({
     _previousFocus.current = document.activeElement as HTMLElement | null;
     lockScroll();
 
+    return () => {
+      const index = modalStack.lastIndexOf(id);
+      if (index >= 0) modalStack.splice(index, 1);
+      unlockScroll();
+      _previousFocus.current?.focus({ preventScroll: true });
+    };
+  }, [open.get]);
+
+  useEffect(() => {
+    if (!open.get) return;
+
+    const id = _instanceId.current;
     const handleKeys = (event: KeyboardEvent) => {
       if (modalStack[modalStack.length - 1] !== id) return;
 
       if (event.key === "Tab") {
-        const popover = document.querySelector(".har-popover") as HTMLElement | null;
-        const root = popover ?? _modal.current;
+        const overlay = overlayRoot();
+        const root = overlay ?? _modal.current;
         if (!root) return;
         const nodes = visibleFocusable(root);
         if (nodes.length === 0) {
+          if (overlay) return;
           event.preventDefault();
           return;
         }
@@ -163,19 +183,12 @@ const Modal: React.FC<IProps> = ({
       if (disableCloseOnEsc) return;
       if (event.key !== "Escape" || !overlayIsClear()) return;
       event.stopPropagation();
-      close();
+      _close.current();
     };
 
     document.addEventListener("keydown", handleKeys);
-
-    return () => {
-      const index = modalStack.lastIndexOf(id);
-      if (index >= 0) modalStack.splice(index, 1);
-      unlockScroll();
-      document.removeEventListener("keydown", handleKeys);
-      _previousFocus.current?.focus({ preventScroll: true });
-    };
-  }, [open.get, close, disableCloseOnEsc]);
+    return () => document.removeEventListener("keydown", handleKeys);
+  }, [open.get, disableCloseOnEsc]);
 
   useEffect(() => {
     if (!open.get || !entered) return;

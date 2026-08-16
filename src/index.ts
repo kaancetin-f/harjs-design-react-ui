@@ -42,6 +42,7 @@ import Notification from "./components/feedback/notification";
 import Popover from "./components/feedback/popover";
 import Progress from "./components/feedback/progress";
 import Spinner from "./components/feedback/spinner";
+import Loading from "./components/feedback/loading";
 import PopupConfirm from "./components/feedback/popup-confirm";
 import Tooltip from "./components/feedback/tooltip";
 import Wizard from "./components/navigation/wizard";
@@ -62,8 +63,9 @@ import Icon from "./components/icons";
 import {
   ConfigProvider,
   NotificationProvider,
+  LoadingProvider,
 } from "./libs/core/application/contexts";
-import { useLayout, useNotification, useConfirm } from "./libs/core/application/hooks";
+import { useLayout, useNotification, useConfirm, useLoading } from "./libs/core/application/hooks";
 
 export {
   // Form Elements
@@ -108,6 +110,7 @@ export {
   Popover,
   Progress,
   Spinner,
+  Loading,
   PopupConfirm,
   Tooltip,
   Wizard,
@@ -128,7 +131,9 @@ export {
   // Providers / hooks
   ConfigProvider,
   NotificationProvider,
+  LoadingProvider,
   useLayout,
   useNotification,
   useConfirm,
+  useLoading,
 };

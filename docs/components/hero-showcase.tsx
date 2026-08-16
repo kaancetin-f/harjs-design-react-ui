@@ -24,7 +24,7 @@ export function HeroShowcase() {
       <div className="hero-stage-card hero-stage-panel">
         <div className="hero-stage-bar">
           <span className="hero-stage-dots" />
-          <span>aurora.harjs.design</span>
+          <span>harjs.design</span>
         </div>
         <Flex flexDirection="column" gap="var(--space-16)">
           <Alert status="information" message="Aurora is live. The production slot is yours." />

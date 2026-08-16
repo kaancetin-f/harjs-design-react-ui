@@ -66,8 +66,12 @@ const Select: React.FC<Props> = ({
 
   // methods
   const handleClickOutSide = (event: MouseEvent) => {
-    const target = event.target as HTMLElement;
-    if (_arSelect.current && !_arSelect.current.contains(target)) setOptionsOpen(false);
+    const target = event.target as Node | null;
+    if (!target) return;
+    // Option listesi body'ye portal; tetikleyici dışında sayılırsa menü seçimden önce kapanır.
+    if (_arSelect.current?.contains(target)) return;
+    if (_options.current?.contains(target)) return;
+    setOptionsOpen(false);
   };
 
   const handleKeys = (event: KeyboardEvent) => {

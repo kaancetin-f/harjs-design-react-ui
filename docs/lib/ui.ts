@@ -37,6 +37,7 @@ export { default as Notification } from "../../src/components/feedback/notificat
 export { default as Popover } from "../../src/components/feedback/popover";
 export { default as Progress } from "../../src/components/feedback/progress";
 export { default as Spinner } from "../../src/components/feedback/spinner";
+export { default as Loading } from "../../src/components/feedback/loading";
 export { default as Tooltip } from "../../src/components/feedback/tooltip";
 export { default as PopupConfirm } from "../../src/components/feedback/popup-confirm";
 export { default as Menu } from "../../src/components/navigation/menu";
@@ -47,9 +48,11 @@ export { default as Wizard } from "../../src/components/navigation/wizard";
 export {
   ConfigProvider,
   NotificationProvider,
+  LoadingProvider,
 } from "../../src/libs/core/application/contexts";
 export {
   useLayout,
   useNotification,
   useConfirm,
+  useLoading,
 } from "../../src/libs/core/application/hooks";

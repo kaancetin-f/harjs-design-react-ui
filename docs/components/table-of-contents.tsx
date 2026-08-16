@@ -4,6 +4,20 @@ import { useEffect, useState, type MouseEvent } from "react";
 
 type TocItem = { id: string; text: string; level: number };
 
+function getMainScrollRoot(): HTMLElement | null {
+  return document.querySelector(".docs-root .main");
+}
+
+function scrollMainToId(id: string) {
+  const main = getMainScrollRoot();
+  const heading = document.getElementById(id);
+  if (!main || !heading) return;
+
+  const top =
+    heading.getBoundingClientRect().top - main.getBoundingClientRect().top + main.scrollTop;
+  main.scrollTo({ top, behavior: "auto" });
+}
+
 export function TableOfContents({ items }: { items: TocItem[] }) {
   // states
   const [activeIds, setActiveIds] = useState<string[]>(
@@ -13,7 +27,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
   // methods
   function scrollToHeading(event: MouseEvent<HTMLAnchorElement>, id: string) {
     event.preventDefault();
-    document.getElementById(id)?.scrollIntoView({ behavior: "auto", block: "start" });
+    scrollMainToId(id);
     window.history.replaceState(null, "", `#${id}`);
   }
 
@@ -27,7 +41,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
 
     if (headingElements.length === 0) return;
 
-    // Görünen başlıkları tut; birden fazla kesişince hepsini aktif işaretle.
+    const root = getMainScrollRoot();
     const visible = new Map<string, IntersectionObserverEntry>();
 
     const paintVisible = () => {
@@ -45,7 +59,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
         return;
       }
 
-      const marker = 120;
+      const marker = (root?.getBoundingClientRect().top ?? 0) + 24;
       let current = items[0].id;
       for (const el of headingElements) {
         if (el.getBoundingClientRect().top <= marker) {
@@ -63,22 +77,29 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
         paintVisible();
       },
       {
-        rootMargin: "-56px 0px 0px 0px",
+        root,
+        rootMargin: "0px 0px -70% 0px",
         threshold: [0, 1],
       },
     );
 
     for (const el of headingElements) observer.observe(el);
 
+    const hash = window.location.hash.slice(1);
+    if (hash && items.some((item) => item.id === hash)) {
+      scrollMainToId(hash);
+      setActiveIds((prev) => (prev.includes(hash) ? prev : [...prev, hash]));
+    }
+
     const onHashChange = () => {
-      const hash = window.location.hash.slice(1);
-      if (hash && items.some((item) => item.id === hash)) {
-        setActiveIds((prev) => (prev.includes(hash) ? prev : [...prev, hash]));
+      const nextHash = window.location.hash.slice(1);
+      if (nextHash && items.some((item) => item.id === nextHash)) {
+        scrollMainToId(nextHash);
+        setActiveIds((prev) => (prev.includes(nextHash) ? prev : [...prev, nextHash]));
       }
     };
 
     window.addEventListener("hashchange", onHashChange);
-    onHashChange();
 
     return () => {
       observer.disconnect();

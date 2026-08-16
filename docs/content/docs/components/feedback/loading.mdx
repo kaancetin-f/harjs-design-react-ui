@@ -1,16 +1,115 @@
 ---
 title: Loading
-description: Indicate pending work with loading states.
+description: Fullscreen veil for blocking work. Spinner is the inline mark. Progress is the determinate bar.
 ---
+
+Loading is a viewport overlay, not an inline spinner. It locks the screen with a dimmed veil and a four-dot mark while a request, navigation, or mutation must finish before the user continues. There are no props. Show it by rendering `<Loading />`, or wrap the tree in `LoadingProvider` and call `useLoading().setIsLoading(true)`.
+
+`Spinner` stays in a button, a card, or a toast. `Progress` is for a known `0`–`100` ratio. `notification.promise` is a toast that can sit on top of the page without blocking it.
 
 ## Import
 
 ```tsx
-import { Loading } from '@harjs/react-ui'
+import { Loading, LoadingProvider, useLoading } from "@harjs/react-ui";
 ```
 
-## Overview
+```tsx
+<LoadingProvider>
+  <App />
+</LoadingProvider>
+```
 
-Indicate pending work with loading states.
+```tsx
+const { isLoading, setIsLoading } = useLoading();
 
-Examples and the full props API for `Loading` are coming next. Use the [Button](/docs/components/form/button) page as the reference template.
+setIsLoading(true);
+await saveAurora();
+setIsLoading(false);
+```
+
+```tsx
+{pending ? <Loading /> : null}
+```
+
+`LoadingProvider` also ships from `@harjs/react-ui/config`. `useLoading` also ships from `@harjs/react-ui/hooks`.
+
+## Usage
+
+The overlay is `position: fixed; inset: 0` with `z-index: 1051`, one step above Modal (`1050`). It covers the viewport, including open drawers and dialogs. The mark is a CSS-only animation on `::before` — four dots that fill in sequence. The veil fades in over `250ms`.
+
+<Example>
+  <LoadingBasic />
+</Example>
+
+The live example mounts `<Loading />` for 1.6s. The veil covers the docs chrome on purpose; that is the product behavior.
+
+## Examples
+
+### Provider and hook
+
+In an app, wrap once with `LoadingProvider`. Descendants call `useLoading()`. The provider portals `<Loading />` to `document.body` while `isLoading` is true. You do not render `Loading` yourself in this path.
+
+`useLoading` does not throw when the provider is missing. The default context is `{ isLoading: false, setIsLoading: () => {} }`, so `setIsLoading(true)` is a silent no-op. Wrap the tree.
+
+<Example>
+  <LoadingHook />
+</Example>
+
+### Async work
+
+Set loading true before the promise, false in `finally`. That keeps the veil on if the request rejects.
+
+<Example>
+  <LoadingAsync />
+</Example>
+
+```tsx
+const { setIsLoading } = useLoading();
+
+async function save() {
+  setIsLoading(true);
+  try {
+    await saveAurora();
+  } finally {
+    setIsLoading(false);
+  }
+}
+```
+
+## When to use Loading
+
+Use it when the rest of the UI must not accept input until the work finishes — a login handshake, a destructive save, a route bootstrap.
+
+Do not use it for:
+
+- A button that is still clickable — use Button `loading` or an inline [Spinner](/docs/components/feedback/spinner)
+- A known remaining amount — use [Progress](/docs/components/feedback/progress)
+- A background job the user can ignore — use [Notification](/docs/components/feedback/notification) `promise`
+
+One provider per app is enough. Nested `LoadingProvider`s each keep their own `isLoading`. The overlay from an inner provider still covers the viewport.
+
+## Accessibility
+
+Loading has no `role`, `aria-busy`, or live region. It is a visual lock. Assistive tech does not hear it appear.
+
+- Set `aria-busy="true"` on the region that is waiting, or use a [Spinner](/docs/components/feedback/spinner) with a `label` next to visible copy.
+- Do not trap focus. The veil is `pointer-events` from the full-screen layer; keyboard users can still Tab into controls underneath in some browsers. Prefer disabling the control that started the work (`disabled={isLoading}`).
+- `prefers-reduced-motion` is not implemented on this overlay. The spin and fade still run.
+
+## Best practices
+
+- Toggle from a provider. Do not leave a stray `<Loading />` mounted.
+- Always clear `isLoading` in `finally`.
+- Do not stack Loading on top of a Modal you still expect to use — the veil sits above it.
+- Keep the overlay short. A long block belongs to Progress or a dedicated empty state.
+- One fullscreen veil at a time. If two features both call `setIsLoading`, they share the same boolean and the last `false` wins.
+
+## Props
+
+`Loading` takes no props. Native attributes are not forwarded. The root class is `ar-loading`.
+
+| API | Type | Default | Description |
+| --- | --- | --- | --- |
+| `Loading` | `() => JSX.Element` | — | Fullscreen veil. Render it, or let `LoadingProvider` portal it. |
+| `LoadingProvider` | `{ children: ReactNode }` | — | Holds `isLoading` and portals `Loading` to `document.body`. |
+| `useLoading()` | `{ isLoading: boolean; setIsLoading: Dispatch<SetStateAction<boolean>> }` | `{ isLoading: false, setIsLoading: noop }` | Read and toggle the veil. Must run under `LoadingProvider` to have an effect. |

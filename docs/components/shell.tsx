@@ -1,11 +1,20 @@
 "use client";
 
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import Link from "next/link";
 import { DocsLogo } from "@/components/docs-logo";
 import { getDocCategory, navigation } from "@/lib/navigation";
 import { TableOfContents } from "@/components/table-of-contents";
 import { ThemeToggle } from "@/components/theme-toggle";
+
+const SIDEBAR_SCROLL_KEY = "harjs-docs-sidebar-scroll";
 
 function NavIcon({ open }: { open: boolean }) {
   return (
@@ -53,6 +62,28 @@ function HeaderLinks({ currentPath }: { currentPath: string }) {
 
 HeaderLinks.displayName = "HeaderLinks";
 
+function scrollSidebarToActive(sidebar: HTMLElement): boolean {
+  const active = sidebar.querySelector<HTMLElement>(".nav-link[data-active='true']");
+  if (!active) {
+    try {
+      const saved = sessionStorage.getItem(SIDEBAR_SCROLL_KEY);
+      if (saved) sidebar.scrollTop = Number(saved);
+    } catch {
+      /* private mode */
+    }
+    return true;
+  }
+
+  // Grid yüksekliği oturmadan scrollTop yazılmaz; caller tekrar dener.
+  if (sidebar.scrollHeight <= sidebar.clientHeight + 1) return false;
+
+  const sidebarRect = sidebar.getBoundingClientRect();
+  const activeRect = active.getBoundingClientRect();
+  sidebar.scrollTop +=
+    activeRect.top - sidebarRect.top - sidebar.clientHeight / 2 + activeRect.height / 2;
+  return true;
+}
+
 export function DocsShell({
   children,
   currentPath,
@@ -62,6 +93,9 @@ export function DocsShell({
   currentPath: string;
   toc?: { id: string; text: string; level: number }[];
 }) {
+  // refs
+  const _sidebar = useRef<HTMLElement>(null);
+
   // states
   const [navOpen, setNavOpen] = useState(false);
 
@@ -78,6 +112,40 @@ export function DocsShell({
   useEffect(() => {
     closeNav();
   }, [currentPath, closeNav]);
+
+  useLayoutEffect(() => {
+    const sidebar = _sidebar.current;
+    if (!sidebar) return;
+
+    let done = false;
+    const tryFocus = () => {
+      if (done) return;
+      if (scrollSidebarToActive(sidebar)) done = true;
+    };
+
+    tryFocus();
+    const frame = requestAnimationFrame(tryFocus);
+    const retry = window.setTimeout(tryFocus, 50);
+    const observer = new ResizeObserver(tryFocus);
+    observer.observe(sidebar);
+
+    const onScroll = () => {
+      try {
+        sessionStorage.setItem(SIDEBAR_SCROLL_KEY, String(sidebar.scrollTop));
+      } catch {
+        /* private mode */
+      }
+    };
+
+    sidebar.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      done = true;
+      cancelAnimationFrame(frame);
+      window.clearTimeout(retry);
+      observer.disconnect();
+      sidebar.removeEventListener("scroll", onScroll);
+    };
+  }, [currentPath, navOpen]);
 
   useEffect(() => {
     if (!navOpen) return;
@@ -134,7 +202,7 @@ export function DocsShell({
       />
 
       <div className="shell">
-        <aside id="docs-sidebar" className="sidebar">
+        <aside id="docs-sidebar" className="sidebar" ref={_sidebar}>
           <nav className="nav" aria-label="Documentation">
             <div className="sidebar-links">
               <HeaderLinks currentPath={currentPath} />
@@ -147,6 +215,7 @@ export function DocsShell({
                     href={item.href}
                     className="nav-link"
                     data-active={currentPath === item.href}
+                    scroll={false}
                     onClick={closeNav}
                   >
                     {item.title}
@@ -167,6 +236,7 @@ export function DocsShell({
                       href={child.href}
                       className="nav-link"
                       data-active={currentPath === child.href}
+                      scroll={false}
                       onClick={closeNav}
                     >
                       {child.title}

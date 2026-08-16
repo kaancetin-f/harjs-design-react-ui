@@ -38,7 +38,10 @@ export default function HomePage() {
         <section className="hero">
           <div className="hero-copy">
             <div className="hero-kicker">React 18+ · TypeScript · ESM</div>
-            <h1>Type-safe React UI, CSS included.</h1>
+            <h1>
+              Type-safe React UI,
+              <em>CSS included.</em>
+            </h1>
             <p>
               <code>@harjs/react-ui</code> is a component library for forms, data display, feedback,
               navigation, and layout. Import from the package root and the required CSS comes with

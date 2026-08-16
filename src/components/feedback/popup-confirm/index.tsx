@@ -76,6 +76,7 @@ const PopupConfirm = ({
   // refs
   const _dialogRef = useRef<HTMLDivElement>(null);
   const _previousFocus = useRef<HTMLElement | null>(null);
+  const _finish = useRef<(confirm: boolean) => void>(() => {});
 
   // states
   const [mounted, setMounted] = useState(false);
@@ -99,6 +100,7 @@ const PopupConfirm = ({
     },
     [close],
   );
+  _finish.current = finish;
 
   // useEffects
   useEffect(() => {
@@ -131,6 +133,15 @@ const PopupConfirm = ({
     _previousFocus.current = document.activeElement as HTMLElement | null;
     lockScroll();
 
+    return () => {
+      unlockScroll();
+      _previousFocus.current?.focus({ preventScroll: true });
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
     const handleKeys = (event: KeyboardEvent) => {
       const root = _dialogRef.current;
       if (!root) return;
@@ -157,17 +168,12 @@ const PopupConfirm = ({
       event.preventDefault();
       event.stopPropagation();
       event.stopImmediatePropagation();
-      finish(false);
+      _finish.current(false);
     };
 
     document.addEventListener("keydown", handleKeys, true);
-
-    return () => {
-      document.removeEventListener("keydown", handleKeys, true);
-      unlockScroll();
-      _previousFocus.current?.focus({ preventScroll: true });
-    };
-  }, [isOpen, finish]);
+    return () => document.removeEventListener("keydown", handleKeys, true);
+  }, [isOpen]);
 
   // Yıkıcı işlemde iptale, diğerlerinde onaya odaklan.
   useEffect(() => {

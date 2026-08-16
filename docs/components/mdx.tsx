@@ -248,6 +248,9 @@ import { WizardKeyboard } from '@/components/demos/navigation/wizard/keyboard';
 import { SpinnerSizes } from '@/components/demos/feedback/spinner/sizes';
 import { SpinnerStatus } from '@/components/demos/feedback/spinner/status';
 import { SpinnerLabel } from '@/components/demos/feedback/spinner/label';
+import { LoadingBasic } from '@/components/demos/feedback/loading/basic';
+import { LoadingHook } from '@/components/demos/feedback/loading/hook';
+import { LoadingAsync } from '@/components/demos/feedback/loading/async';
 import { ProgressBasic } from '@/components/demos/feedback/progress/basic';
 import {
   ProgressZero,
@@ -512,6 +515,9 @@ export const mdxComponents = {
   SpinnerSizes,
   SpinnerStatus,
   SpinnerLabel,
+  LoadingBasic,
+  LoadingHook,
+  LoadingAsync,
   TooltipBasic,
   TooltipDirections,
   TooltipLongText,
