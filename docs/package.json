@@ -3,23 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3001",
-    "build": "next build",
-    "start": "next start --port 3001"
+    "dev": "next dev --webpack --port 3001",
+    "build": "next build --webpack",
+    "start": "next start --webpack --port 3001"
   },
   "dependencies": {
     "@harjs/translation": "^1.0.1",
-    "next": "^15.5.4",
-    "next-mdx-remote": "^5.0.0",
+    "next": "^16.3.1",
+    "next-mdx-remote": "^6.0.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "remark-gfm": "^4.0.1",
     "sucrase": "^3.35.1"
   },
   "devDependencies": {
-    "@types/node": "^22.15.0",
+    "@types/node": "^26.2.0",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
-    "typescript": "^5.9.3"
+    "typescript": "^7.0.2"
   }
 }
