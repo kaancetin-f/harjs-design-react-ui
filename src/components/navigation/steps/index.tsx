@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import useTranslation from "@harjs/translation/dist/libs/core/application/hooks/useTranslation";
+import { useTranslation } from "@harjs/translation";
 import IProps from "./IProps";
 import "../../../assets/css/components/navigation/steps/styles.css";
 import Button from "../../form/button";

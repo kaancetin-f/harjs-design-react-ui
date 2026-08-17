@@ -1,7 +1,7 @@
 "use client";
 
 import React, { memo } from "react";
-import useTranslation from "@harjs/translation/dist/libs/core/application/hooks/useTranslation";
+import { useTranslation } from "@harjs/translation";
 import { Color, UploadFileStatus, UploadProgressItem } from "../../../libs/infrastructure/types";
 import IUploadLocale from "../../../libs/core/application/locales/upload/IUploadLocale";
 import UploadTR from "../../../libs/core/application/locales/upload/tr";

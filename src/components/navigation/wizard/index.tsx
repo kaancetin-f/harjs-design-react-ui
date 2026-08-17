@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import useTranslation from "@harjs/translation/dist/libs/core/application/hooks/useTranslation";
+import { useTranslation } from "@harjs/translation";
 import Typography from "../../data-display/typography";
 import "../../../assets/css/components/navigation/wizard/styles.css";
 import { Errors, ValidationProps } from "../../../libs/infrastructure/types";

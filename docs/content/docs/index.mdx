@@ -3,7 +3,7 @@ title: Getting Started
 description: Install @harjs/react-ui, import styles, and render a component.
 ---
 
-`@harjs/react-ui` is an ESM React component library. Peer dependencies are React 18+ and React DOM. Styles load when you import from the package root. The library does not import `next/*`.
+`@harjs/react-ui` is an ESM React component library. Peer dependencies are React 18+ and React DOM. Import the package stylesheet once at your application entry. The library does not import `next/*`.
 
 ## Requirements
 
@@ -34,13 +34,17 @@ The published package is ESM only (`"type": "module"`). `exports` expose `import
 
 ## Styles
 
-The root entry imports `har-core.css`. Each component also imports its own stylesheet. Prefer the package root so both layers load:
+Import the generated stylesheet once in your root layout, `_app`, or JavaScript entry:
+
+```tsx
+import "@harjs/react-ui/styles.css";
+```
+
+Then import components normally:
 
 ```tsx
 import { Button, Input, Modal } from "@harjs/react-ui";
 ```
-
-There is no separate CSS path to add in `layout.tsx` or `main.tsx`.
 
 `har-core.css` applies a global reset (`margin` and `padding` on `*`) and registers package fonts. If your app already resets the document, expect overlapping rules.
 
@@ -49,6 +53,7 @@ There is no separate CSS path to add in `layout.tsx` or `main.tsx`.
 `Button` defaults: `variant="filled"`, `color="gray"`, `size="lg"`. `color="blue"` is a valid `Color` token.
 
 ```tsx
+import "@harjs/react-ui/styles.css";
 import { Button } from "@harjs/react-ui";
 
 export function App() {
@@ -101,12 +106,12 @@ Interactive modules use `"use client"`. `sessionStorage` / `localStorage` helper
 
 | Environment | Status | What to do |
 |---|---|---|
-| Next.js App Router | Verified in this docs site | Import interactive components in a Client Component, or rely on the `"use client"` directive inside the component file. The package barrel itself is not marked `"use client"`. |
-| Next.js Pages Router | Not tested | No extra `"use client"` boundary. CSS still arrives through JS imports. |
-| Vite + React | Not tested | Vite bundles CSS imported from JavaScript. |
-| Create React App 5 | Not tested | ESM-only package. CRA 5 uses webpack 5. |
-| Remix (Vite) | Not tested | Same CSS-from-JS pattern as Vite. |
-| Blitz.js | Not tested | Follow the Next.js row that matches your Blitz version. |
+| Next.js App Router | Verified in this docs site | Import the stylesheet from the root layout and interactive components from a Client Component. |
+| Next.js Pages Router | Verified with Next.js 16 | Import `@harjs/react-ui/styles.css` from `pages/_app`. |
+| Vite + React | Verified with Vite 6 and React 18 | Import the stylesheet from `main.tsx` or the equivalent entry. |
+| Create React App 5 | Verified with React Scripts 5 and React 18 | Import the stylesheet from `src/index.js`. |
+| Remix (Vite) | Verified with Remix 2 and Vite 6 | Import the stylesheet from `app/root`. |
+| Blitz.js | Verified with Blitz 3 and Next.js 15 | Import the stylesheet from `pages/_app`. |
 | CRA 4 / webpack 4 | Unsupported | No CommonJS export. |
 
 ### Next.js App Router
@@ -132,6 +137,7 @@ Use that Client Component from a Server Component. Do not add a Next.js Image or
 | `@harjs/react-ui/hooks` | Shared hooks |
 | `@harjs/react-ui/types` | Shared TypeScript types |
 | `@harjs/react-ui/utils` | Utility helpers |
+| `@harjs/react-ui/styles.css` | Core tokens, reset, fonts, and component styles |
 
 ```tsx
 import { Button } from "@harjs/react-ui";
@@ -140,7 +146,7 @@ import type { Color, Sizes } from "@harjs/react-ui/types";
 
 ## Troubleshooting
 
-**Styles missing.** Import from `@harjs/react-ui`, not a deep path that skips `src/index.ts`. Bundlers must allow CSS imported from `node_modules`.
+**Styles missing.** Import `@harjs/react-ui/styles.css` once from your application entry.
 
 **`useNotification` / `useConfirm` throw.** Wrap the tree in `NotificationProvider`.
 

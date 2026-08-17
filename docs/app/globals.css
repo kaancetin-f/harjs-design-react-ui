@@ -1852,6 +1852,35 @@ html[data-theme="dark"] .landing-grain {
   border-bottom: 0;
 }
 
+.landing-table-wrap .landing-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  font-weight: 650;
+  white-space: nowrap;
+
+  &.verified {
+    color: var(--teal-700);
+  }
+
+  &.unsupported {
+    color: var(--red-700);
+  }
+}
+
+.landing-table-wrap .landing-env {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.landing-table-wrap .landing-env-icon {
+  flex: 0 0 auto;
+  color: var(--ink);
+}
+
 .landing-code {
   position: relative;
   min-width: 0;

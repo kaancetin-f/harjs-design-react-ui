@@ -1,6 +1,6 @@
 {
   "name": "@harjs/react-ui",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "publishConfig": {
     "access": "public"
   },
@@ -29,23 +29,25 @@
     "./utils": {
       "types": "./dist/libs/infrastructure/shared/index.d.ts",
       "import": "./dist/libs/infrastructure/shared/index.js"
-    }
+    },
+    "./styles.css": "./dist/styles.css"
   },
   "files": [
     "dist/"
   ],
-  "homepage": "https://github.com/kaancetin-f/harjs-design-react-ui#readme",
+  "homepage": "https://harjs.design",
   "bugs": {
     "url": "https://github.com/kaancetin-f/harjs-design-react-ui/issues"
   },
   "scripts": {
-    "build": "npm run clean && tsc && cp -r ./src/assets dist/",
-    "no-css-build": "npm run clean && tsc && cp -r ./src/assets dist/",
+    "build": "npm run clean && tsc && cp -r ./src/assets dist/ && node src/scripts/prepare-package.mjs",
+    "no-css-build": "npm run clean && tsc && cp -r ./src/assets dist/ && node src/scripts/prepare-package.mjs",
     "clean": "rm -rf dist/",
     "docs:dev": "npm run dev --prefix docs",
     "docs:build": "npm run build --prefix docs",
     "docs:start": "npm run start --prefix docs",
-    "docs:docker": "docker build -t harjs-design ./docs && docker run --rm -p 3000:3000 --name harjs-design harjs-design"
+    "docs:docker": "docker build -t harjs-design ./docs && docker run --rm -p 3000:3000 --name harjs-design harjs-design",
+    "test:compat": "node src/scripts/compatibility/verify.mjs"
   },
   "repository": {
     "type": "git",

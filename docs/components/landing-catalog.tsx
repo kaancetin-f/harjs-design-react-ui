@@ -2,7 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
-import { Alert, Button, Card, Chip, GridSystem, Steps, Typography } from "@/lib/ui";
+import { Alert, Button, Card, Chip, GridSystem, Icon, Steps, Typography } from "@/lib/ui";
 import { CopyButton } from "@/components/copy-button";
 
 const { Flex, Row, Column } = GridSystem;
@@ -145,12 +145,150 @@ export function LandingCatalog() {
 
 LandingCatalog.displayName = "LandingCatalog";
 
+function CompatStatus({ status }: { status: "Verified" | "Unsupported" }) {
+  // variables
+  const verified = status === "Verified";
+
+  return (
+    <span className={`landing-status${verified ? " verified" : " unsupported"}`}>
+      <Icon
+        icon={verified ? "TickCircle" : "CloseCircle"}
+        size={16}
+        fill="currentColor"
+      />
+      {status}
+    </span>
+  );
+}
+
+CompatStatus.displayName = "CompatStatus";
+
+type CompatBrand = "next" | "vite" | "react" | "remix" | "blitz" | "webpack";
+
+function CompatBrandIcon({ brand }: { brand: CompatBrand }) {
+  // variables
+  const props = {
+    className: "landing-env-icon",
+    width: 16,
+    height: 16,
+    viewBox: "0 0 24 24",
+    fill: "currentColor",
+    "aria-hidden": true as const,
+  };
+
+  switch (brand) {
+    case "next":
+      return (
+        <svg {...props}>
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c1.85 0 3.58-.5 5.08-1.38L8.3 9.12V16.5H6.75V7.5h1.72l9.1 12.03A9.96 9.96 0 0 0 22 12c0-5.52-4.48-10-10-10Zm4.25 13.47-1.55-2.05V7.5h1.55v7.97Z" />
+        </svg>
+      );
+    case "vite":
+      return (
+        <svg {...props}>
+          <path d="M12.94 1.5 22.5 19.12a1 1 0 0 1-.87 1.5H2.37a1 1 0 0 1-.87-1.5L11.06 1.5a1 1 0 0 1 1.88 0ZM12 5.62 4.86 18.12h4.4L12 12.4l2.74 5.72h4.4L12 5.62Z" />
+        </svg>
+      );
+    case "react":
+      return (
+        <svg {...props}>
+          <path d="M12 10.2a1.8 1.8 0 1 0 0 3.6 1.8 1.8 0 0 0 0-3.6Zm0-7.7c-2.9 0-5.5 1-7.4 2.6C2.7 6.7 1.5 9.2 1.5 12s1.2 5.3 3.1 6.9c1.9 1.6 4.5 2.6 7.4 2.6s5.5-1 7.4-2.6c1.9-1.6 3.1-4.1 3.1-6.9s-1.2-5.3-3.1-6.9C17.5 3.5 14.9 2.5 12 2.5Zm0 1.5c2.4 0 4.5.8 6 2.1 1.5 1.2 2.4 3 2.4 5.9s-.9 4.7-2.4 5.9c-1.5 1.3-3.6 2.1-6 2.1s-4.5-.8-6-2.1C4.5 16.7 3.6 14.9 3.6 12s.9-4.7 2.4-5.9C7.5 4.8 9.6 4 12 4Zm7.2 1.8c-1.6-1.1-3.7-1.5-5.9-.9 1.6 1.9 2.6 4.5 2.6 7.1s-1 5.2-2.6 7.1c2.2.6 4.3.2 5.9-.9 1.7-1.2 2.7-3.2 2.7-6.2s-1-5-2.7-6.2ZM4.8 5.8C3.1 7 2.1 9 2.1 12s1 5 2.7 6.2c1.6 1.1 3.7 1.5 5.9.9-1.6-1.9-2.6-4.5-2.6-7.1s1-5.2 2.6-7.1c-2.2-.6-4.3-.2-5.9.9Z" />
+        </svg>
+      );
+    case "remix":
+      return (
+        <svg {...props}>
+          <path d="M4.5 3.5h10.2c2.9 0 5.3 2.3 5.3 5.2 0 2.3-1.5 4.3-3.6 5L21 20.5h-4.6l-4.1-6.2H8.7v6.2H4.5V3.5Zm4.2 3.4v4.4h5.4c1.1 0 2-.9 2-2s-.9-2-2-2H8.7Z" />
+        </svg>
+      );
+    case "blitz":
+      return (
+        <svg {...props}>
+          <path d="M13.8 2.5 4.5 13.2h6.2l-1.5 8.3 10.3-12.2h-6.2l1.5-6.8Z" />
+        </svg>
+      );
+    case "webpack":
+      return (
+        <svg {...props}>
+          <path d="M12 1.8 3.5 6.7v10.6L12 22.2l8.5-4.9V6.7L12 1.8Zm0 2.3 6.2 3.6v1.8L12 13.1 5.8 9.5V7.7L12 4.1Zm-6.2 7.3 5.4 3.1v5.4l-5.4-3.1v-5.4Zm7 8.5v-5.4l5.4-3.1v5.4l-5.4 3.1Z" />
+        </svg>
+      );
+  }
+}
+
+CompatBrandIcon.displayName = "CompatBrandIcon";
+
+function CompatEnv({ brand, label }: { brand: CompatBrand; label: string }) {
+  return (
+    <span className="landing-env">
+      <CompatBrandIcon brand={brand} />
+      {label}
+    </span>
+  );
+}
+
+CompatEnv.displayName = "CompatEnv";
+
+const COMPAT_ROWS: Array<{
+  brand: CompatBrand;
+  label: string;
+  status: "Verified" | "Unsupported";
+  notes: ReactNode;
+}> = [
+  {
+    brand: "next",
+    label: "Next.js App Router",
+    status: "Verified",
+    notes: "This documentation site. Interactive modules are client components.",
+  },
+  {
+    brand: "next",
+    label: "Next.js Pages Router",
+    status: "Verified",
+    notes: "Next.js 16 Pages Router. Import the package stylesheet in _app.",
+  },
+  {
+    brand: "vite",
+    label: "Vite + React",
+    status: "Verified",
+    notes: "Vite 6 production build with React 18.",
+  },
+  {
+    brand: "react",
+    label: "Create React App 5",
+    status: "Verified",
+    notes: "React Scripts 5 production build with React 18.",
+  },
+  {
+    brand: "remix",
+    label: "Remix (Vite)",
+    status: "Verified",
+    notes: "Remix 2 production client and server builds with Vite 6.",
+  },
+  {
+    brand: "blitz",
+    label: "Blitz.js",
+    status: "Verified",
+    notes: "Blitz 3 production build with Next.js 15.",
+  },
+  {
+    brand: "webpack",
+    label: "CRA 4 / webpack 4",
+    status: "Unsupported",
+    notes: (
+      <>
+        No CommonJS export (<code>exports.require</code> is absent).
+      </>
+    ),
+  },
+];
+
 export function LandingCompatibility() {
   return (
     <section className="landing-section" aria-labelledby="landing-compat">
       <h2 id="landing-compat">Compatibility</h2>
       <p className="landing-lead">
-        Claims below match the package graph. Environments that are not exercised in this repo are marked Not tested.
+        Package smoke builds run in CI for each environment listed as Verified.
       </p>
       <div className="landing-table-wrap">
         <table>
@@ -163,43 +301,17 @@ export function LandingCompatibility() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Next.js App Router</td>
-              <td>Verified</td>
-              <td>This documentation site. Interactive modules are client components.</td>
-            </tr>
-            <tr>
-              <td>Next.js Pages Router</td>
-              <td>Not tested</td>
-              <td>No Next.js APIs in the library. CSS still comes from JS imports.</td>
-            </tr>
-            <tr>
-              <td>Vite + React</td>
-              <td>Not tested</td>
-              <td>Vite handles CSS imported from JavaScript.</td>
-            </tr>
-            <tr>
-              <td>Create React App 5</td>
-              <td>Not tested</td>
-              <td>Package is ESM-only. CRA 5 uses webpack 5.</td>
-            </tr>
-            <tr>
-              <td>Remix (Vite)</td>
-              <td>Not tested</td>
-              <td>Same CSS-from-JS pattern as Vite.</td>
-            </tr>
-            <tr>
-              <td>Blitz.js</td>
-              <td>Not tested</td>
-              <td>Built on Next.js. Follow the matching Next.js row.</td>
-            </tr>
-            <tr>
-              <td>CRA 4 / webpack 4</td>
-              <td>Unsupported</td>
-              <td>
-                No CommonJS export (<code>exports.require</code> is absent).
-              </td>
-            </tr>
+            {COMPAT_ROWS.map((row) => (
+              <tr key={row.label}>
+                <td>
+                  <CompatEnv brand={row.brand} label={row.label} />
+                </td>
+                <td>
+                  <CompatStatus status={row.status} />
+                </td>
+                <td>{row.notes}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
@@ -211,7 +323,8 @@ LandingCompatibility.displayName = "LandingCompatibility";
 
 export function LandingQuickStart() {
   // variables
-  const sample = `import { Button } from "@harjs/react-ui";
+  const sample = `import "@harjs/react-ui/styles.css";
+import { Button } from "@harjs/react-ui";
 
 export function App() {
   return (
@@ -225,7 +338,7 @@ export function App() {
     <section className="landing-section" aria-labelledby="landing-install">
       <h2 id="landing-install">Quick start</h2>
       <p className="landing-lead">
-        Peer dependencies are <code>react</code> and <code>react-dom</code> ≥ 18. Styles load from the root entry.
+        Peer dependencies are <code>react</code> and <code>react-dom</code> ≥ 18. Import the stylesheet once at your app entry.
       </p>
       <div className="landing-code">
         <div className="landing-code-header">

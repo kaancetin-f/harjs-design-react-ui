@@ -148,3 +148,6 @@ vite.config.ts.timestamp-*
 .cursor
 .gemini
 GEMINI.md
+
+# Compatibility smoke tests
+.compat-tmp
