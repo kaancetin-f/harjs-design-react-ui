@@ -9,9 +9,11 @@ export function MenuTheme() {
       <Menu
         data={menuDemoData}
         theme={{
+          textColor: "var(--cyan-700)",
+          iconColor: "var(--cyan-600)",
           hover: {
             backgroundColor: "color-mix(in srgb, var(--cyan-500) 12%, transparent)",
-            textColor: "var(--cyan-700)",
+            textColor: "var(--cyan-800)",
           },
           selected: {
             color: "var(--white-alpha-100)",

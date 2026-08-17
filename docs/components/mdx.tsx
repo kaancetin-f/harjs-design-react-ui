@@ -144,6 +144,7 @@ import { TabsIcons } from '@/components/demos/data-display/tabs/icons';
 import { TabsVariants } from '@/components/demos/data-display/tabs/variants';
 import { TabsVertical } from '@/components/demos/data-display/tabs/vertical';
 import { TabsDisabled } from '@/components/demos/data-display/tabs/disabled';
+import { TabsResponsive } from '@/components/demos/data-display/tabs/responsive';
 import { AlertBasic } from '@/components/demos/feedback/alert/basic';
 import { AlertStatus } from '@/components/demos/feedback/alert/status';
 import { AlertVariants } from '@/components/demos/feedback/alert/variants';
@@ -467,6 +468,7 @@ export const mdxComponents = {
   TabsVariants,
   TabsVertical,
   TabsDisabled,
+  TabsResponsive,
   AlertBasic,
   AlertStatus,
   AlertVariants,

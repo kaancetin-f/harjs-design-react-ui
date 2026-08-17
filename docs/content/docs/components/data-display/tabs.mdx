@@ -3,7 +3,7 @@ title: Tabs
 description: Switch between named panels. Persist the active tab, add icons, and choose a layout variant.
 ---
 
-Tabs takes a `name` (used as the session-storage key) and a `tabs` array of title + content. `variant` sets the chrome. `orientation="vertical"` stacks the list. Pass `icon` on a tab for a leading (or trailing) mark.
+Tabs takes a `name` (used as the session-storage key) and a `tabs` array of title + content. `variant` sets the chrome. `orientation="vertical"` stacks the list. Pass `icon` on a tab for a leading (or trailing) mark. On narrow widths the list scrolls with edge fades and chevron controls.
 
 ## Import
 
@@ -72,6 +72,14 @@ The default is `underline`. The active index is stored in `sessionStorage` under
   <TabsDisabled />
 </Example>
 
+### Responsive overflow
+
+When the tab list is wider than its container, soft edge fades and circular chevrons appear. The controls scroll the list by roughly one viewport — they do not change the active tab. You can also drag the list on pointer devices.
+
+<Example>
+  <TabsResponsive />
+</Example>
+
 ## Props
 
 | Prop | Type | Default |
@@ -85,4 +93,4 @@ The default is `underline`. The active index is stored in `sessionStorage` under
 | `onChange` | `(currentTab: number) => void` | — |
 | `onClose` | `(closeTab: number) => void` | — |
 
-`name` is required. When `activeTab` is set, the component is controlled and `sessionStorage` does not override it. Arrow keys move between tabs; `Home` / `End` jump to the ends.
+`name` is required. When `activeTab` is set, the component is controlled and `sessionStorage` does not override it. Arrow keys move between tabs; `Home` / `End` jump to the ends. Overflow chevrons scroll the list without changing the active tab.

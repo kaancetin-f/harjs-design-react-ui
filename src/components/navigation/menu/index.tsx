@@ -46,6 +46,8 @@ const Menu: React.FC<IProps> = ({
     variant === "horizontal" ? true : layoutSider ? layoutSider.expanded : storedLocked;
   const inLayout = layoutSider != null;
   const menuStyle: React.CSSProperties = {
+    ...(theme?.textColor ? { ["--menu-color" as string]: theme.textColor } : {}),
+    ...(theme?.iconColor ? { ["--menu-icon-color" as string]: theme.iconColor } : {}),
     ...(theme?.hover?.backgroundColor
       ? { ["--menu-hover-bg" as string]: theme.hover.backgroundColor }
       : {}),

@@ -67,7 +67,7 @@ The selected leaf gets a quiet accent fill, a 2px left indicator, and `aria-curr
 
 ### Custom theme
 
-`theme.hover` and `theme.selected` map to CSS variables on the `nav`.
+`theme.textColor` sets the idle label color. `theme.iconColor` sets idle icons and arrows (falls back to `textColor`). `theme.hover` and `theme.selected` map to CSS variables on the `nav`. Palette tokens flip under `html[data-theme="dark"]`, so `var(--cyan-700)` stays readable in both modes.
 
 <Example>
   <MenuTheme />
@@ -118,7 +118,8 @@ There is no `href` on `NavigationMenuProps`. Items are actions that select a key
 - Keep labels short.
 - Use groups for hierarchy, not for the current page trail.
 - Put Menu in Layout.Sider when you need lock/unlock.
-- Set `theme.selected` when the sider is not the default blue.
+- Set `theme.textColor` / `theme.hover` / `theme.selected` when the sider is not the default gray/blue.
+- Prefer palette CSS variables (`var(--cyan-700)`) over fixed hex so dark mode stays readable.
 - Give each item a stable `key`. Do not reuse labels as keys.
 - Do not store primary actions only inside a collapsed unlocked Menu.
 
@@ -128,6 +129,8 @@ There is no `href` on `NavigationMenuProps`. Items are actions that select a key
 | --- | --- | --- | --- |
 | `data` | `NavigationMenuProps[]` | — | Tree of items, groups, and dividers. |
 | `variant` | `"vertical" \| "horizontal"` | `"vertical"` | List axis. |
+| `theme.textColor` | `string` | — | Idle label color (`--menu-color`). |
+| `theme.iconColor` | `string` | — | Idle icon / arrow color (`--menu-icon-color`). Falls back to `textColor`, then gray tokens. |
 | `theme.hover.backgroundColor` | `string` | — | Hover fill (`--menu-hover-bg`). |
 | `theme.hover.textColor` | `string` | — | Hover text (`--menu-hover-color`). |
 | `theme.selected.color` | `string` | — | Selected text (`--selected-icon-color`). |

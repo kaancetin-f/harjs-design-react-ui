@@ -98,7 +98,41 @@
 
   > .tabs > .nav {
     position: absolute;
+    z-index: 3;
+    box-shadow:
+      0 1px 2px color-mix(in srgb, var(--gray-900) 6%, transparent),
+      0 4px 12px color-mix(in srgb, var(--gray-900) 8%, transparent);
+    backdrop-filter: blur(8px);
+    transition:
+      color 0.15s ease,
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      box-shadow 0.15s ease,
+      opacity 0.15s ease,
+      transform 0.15s ease;
+
+    &:hover:not(.disabled) {
+      box-shadow:
+        0 1px 2px color-mix(in srgb, var(--gray-900) 8%, transparent),
+        0 6px 14px color-mix(in srgb, var(--gray-900) 10%, transparent);
+    }
+
+    &:active:not(.disabled) {
+      transform: scale(0.96);
+    }
+
+    &.disabled {
+      opacity: 0.35;
+      box-shadow: none;
+    }
+  }
+
+  > .tabs.is-overflow::before,
+  > .tabs.is-overflow::after {
+    position: absolute;
     z-index: 2;
+    pointer-events: none;
+    content: "";
   }
 
   > .content {
@@ -113,26 +147,58 @@
       flex-direction: row;
       overflow-x: auto;
       overflow-y: hidden;
+      scroll-padding-inline: 2.25rem;
     }
 
-    > .tabs:has(.nav.start) > .container {
-      padding-inline-start: 2rem;
+    > .tabs.is-overflow > .container {
+      padding-inline: 2.25rem;
     }
 
-    > .tabs:has(.nav.end) > .container {
-      padding-inline-end: 2rem;
+    > .tabs.is-overflow::before,
+    > .tabs.is-overflow::after {
+      top: 0;
+      bottom: 0;
+      width: 2.5rem;
+    }
+
+    > .tabs.is-overflow::before {
+      left: 0;
+      background: linear-gradient(
+        to right,
+        var(--white-100) 0%,
+        color-mix(in srgb, var(--white-100) 70%, transparent) 55%,
+        transparent 100%
+      );
+    }
+
+    > .tabs.is-overflow::after {
+      right: 0;
+      background: linear-gradient(
+        to left,
+        var(--white-100) 0%,
+        color-mix(in srgb, var(--white-100) 70%, transparent) 55%,
+        transparent 100%
+      );
     }
 
     > .tabs > .nav.start {
       top: 50%;
-      left: 0;
+      left: 0.125rem;
       transform: translateY(-50%);
     }
 
     > .tabs > .nav.end {
       top: 50%;
-      right: 0;
+      right: 0.125rem;
       transform: translateY(-50%);
+    }
+
+    > .tabs > .nav.start:active:not(.disabled) {
+      transform: translateY(-50%) scale(0.96);
+    }
+
+    > .tabs > .nav.end:active:not(.disabled) {
+      transform: translateY(-50%) scale(0.96);
     }
 
     > .content {
@@ -157,6 +223,7 @@
       overflow-x: hidden;
       overflow-y: auto;
       max-height: 22rem;
+      scroll-padding-block: 2.25rem;
     }
 
     > .tabs > .container > .item {
@@ -164,24 +231,55 @@
       min-width: 0;
     }
 
-    > .tabs:has(.nav.start) > .container {
-      padding-block-start: 2rem;
+    > .tabs.is-overflow > .container {
+      padding-block: 2.25rem;
     }
 
-    > .tabs:has(.nav.end) > .container {
-      padding-block-end: 2rem;
+    > .tabs.is-overflow::before,
+    > .tabs.is-overflow::after {
+      right: 0;
+      left: 0;
+      height: 2.5rem;
+    }
+
+    > .tabs.is-overflow::before {
+      top: 0;
+      background: linear-gradient(
+        to bottom,
+        var(--white-100) 0%,
+        color-mix(in srgb, var(--white-100) 70%, transparent) 55%,
+        transparent 100%
+      );
+    }
+
+    > .tabs.is-overflow::after {
+      bottom: 0;
+      background: linear-gradient(
+        to top,
+        var(--white-100) 0%,
+        color-mix(in srgb, var(--white-100) 70%, transparent) 55%,
+        transparent 100%
+      );
     }
 
     > .tabs > .nav.start {
-      top: 0;
+      top: 0.125rem;
       left: 50%;
       transform: translateX(-50%);
     }
 
     > .tabs > .nav.end {
-      bottom: 0;
+      bottom: 0.125rem;
       left: 50%;
       transform: translateX(-50%);
+    }
+
+    > .tabs > .nav.start:active:not(.disabled) {
+      transform: translateX(-50%) scale(0.96);
+    }
+
+    > .tabs > .nav.end:active:not(.disabled) {
+      transform: translateX(-50%) scale(0.96);
     }
 
     > .content {
@@ -240,6 +338,47 @@
     border: var(--stroke-1) solid var(--gray-200);
     border-radius: var(--radius-12);
     background: var(--gray-100);
+  }
+
+  &.segmented.is-horizontal > .tabs.is-overflow::before {
+    background: linear-gradient(
+      to right,
+      var(--gray-100) 0%,
+      color-mix(in srgb, var(--gray-100) 70%, transparent) 55%,
+      transparent 100%
+    );
+  }
+
+  &.segmented.is-horizontal > .tabs.is-overflow::after {
+    background: linear-gradient(
+      to left,
+      var(--gray-100) 0%,
+      color-mix(in srgb, var(--gray-100) 70%, transparent) 55%,
+      transparent 100%
+    );
+  }
+
+  &.segmented.is-vertical > .tabs.is-overflow::before {
+    background: linear-gradient(
+      to bottom,
+      var(--gray-100) 0%,
+      color-mix(in srgb, var(--gray-100) 70%, transparent) 55%,
+      transparent 100%
+    );
+  }
+
+  &.segmented.is-vertical > .tabs.is-overflow::after {
+    background: linear-gradient(
+      to top,
+      var(--gray-100) 0%,
+      color-mix(in srgb, var(--gray-100) 70%, transparent) 55%,
+      transparent 100%
+    );
+  }
+
+  &.segmented > .tabs > .nav {
+    border-color: var(--gray-200);
+    background: color-mix(in srgb, var(--gray-100) 88%, var(--white-100));
   }
 
   &.segmented > .tabs > .container > .item {
@@ -304,5 +443,30 @@
 
   &.minimal > .tabs > .container > .item.is-active {
     color: var(--gray-800);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .har-tabs > .tabs > .container {
+    scroll-behavior: auto;
+  }
+
+  .har-tabs > .tabs > .nav,
+  .har-tabs > .tabs > .container > .item {
+    transition: none;
+  }
+
+  .har-tabs > .tabs > .nav:active:not(.disabled) {
+    transform: none;
+  }
+
+  .har-tabs.is-horizontal > .tabs > .nav.start:active:not(.disabled),
+  .har-tabs.is-horizontal > .tabs > .nav.end:active:not(.disabled) {
+    transform: translateY(-50%);
+  }
+
+  .har-tabs.is-vertical > .tabs > .nav.start:active:not(.disabled),
+  .har-tabs.is-vertical > .tabs > .nav.end:active:not(.disabled) {
+    transform: translateX(-50%);
   }
 }

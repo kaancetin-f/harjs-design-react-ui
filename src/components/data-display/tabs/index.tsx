@@ -33,6 +33,7 @@ const Tabs: React.FC<IProps> = ({
   onClose,
 }) => {
   // refs
+  const _tabs = useRef<HTMLDivElement>(null);
   const _container = useRef<HTMLDivElement>(null);
   const _items = useRef<(HTMLDivElement | null)[]>([]);
   const _isDragging = useRef(false);
@@ -43,7 +44,7 @@ const Tabs: React.FC<IProps> = ({
 
   // states
   const [uncontrolledTab, setUncontrolledTab] = useState(() => clampIndex(defaultActiveTab, tabs.length));
-  const [overflow, setOverflow] = useState({ start: false, end: false });
+  const [overflow, setOverflow] = useState({ active: false, start: false, end: false });
 
   // hooks
   const uid = useId();
@@ -54,6 +55,7 @@ const Tabs: React.FC<IProps> = ({
   const currentTab = clampIndex(isControlled ? (activeTab as number) : uncontrolledTab, tabs.length);
   const active = tabs[currentTab];
   const panelId = `${uid}-panel`;
+  const _tabsClassName = ["tabs", overflow.active ? "is-overflow" : undefined].filter(Boolean) as string[];
 
   // methods
   const persist = (index: number) => {
@@ -77,17 +79,21 @@ const Tabs: React.FC<IProps> = ({
 
     if (isHorizontal) {
       const max = container.scrollWidth - container.clientWidth;
+      const activeOverflow = max > 1;
       setOverflow({
-        start: container.scrollLeft > 1,
-        end: max > 1 && container.scrollLeft < max - 1,
+        active: activeOverflow,
+        start: activeOverflow && container.scrollLeft > 1,
+        end: activeOverflow && container.scrollLeft < max - 1,
       });
       return;
     }
 
     const max = container.scrollHeight - container.clientHeight;
+    const activeOverflow = max > 1;
     setOverflow({
-      start: container.scrollTop > 1,
-      end: max > 1 && container.scrollTop < max - 1,
+      active: activeOverflow,
+      start: activeOverflow && container.scrollTop > 1,
+      end: activeOverflow && container.scrollTop < max - 1,
     });
   }, [isHorizontal]);
 
@@ -98,20 +104,38 @@ const Tabs: React.FC<IProps> = ({
       if (!container || !target) return;
 
       if (isHorizontal) {
-        container.scrollTo({ left: target.offsetLeft - container.offsetLeft, behavior: "smooth" });
+        const left = target.offsetLeft - container.offsetLeft;
+        const right = left + target.offsetWidth;
+        const viewStart = container.scrollLeft;
+        const viewEnd = viewStart + container.clientWidth;
+        if (left < viewStart) container.scrollTo({ left, behavior: "smooth" });
+        else if (right > viewEnd) container.scrollTo({ left: right - container.clientWidth, behavior: "smooth" });
         return;
       }
 
-      container.scrollTo({ top: target.offsetTop - container.offsetTop, behavior: "smooth" });
+      const top = target.offsetTop - container.offsetTop;
+      const bottom = top + target.offsetHeight;
+      const viewStart = container.scrollTop;
+      const viewEnd = viewStart + container.clientHeight;
+      if (top < viewStart) container.scrollTo({ top, behavior: "smooth" });
+      else if (bottom > viewEnd) container.scrollTo({ top: bottom - container.clientHeight, behavior: "smooth" });
     },
     [isHorizontal],
   );
 
-  const scrollStep = (direction: -1 | 1) => {
-    const next = clampIndex(currentTab + direction, tabs.length);
-    selectTab(next);
-    scrollToTab(next);
-    _items.current[next]?.focus();
+  // Oklar seçimi değiştirmez; görünür alanı kaydırır.
+  const scrollByPage = (direction: -1 | 1) => {
+    const container = _container.current;
+    if (!container) return;
+
+    if (isHorizontal) {
+      const amount = Math.max(container.clientWidth * 0.72, 120);
+      container.scrollBy({ left: direction * amount, behavior: "smooth" });
+      return;
+    }
+
+    const amount = Math.max(container.clientHeight * 0.72, 80);
+    container.scrollBy({ top: direction * amount, behavior: "smooth" });
   };
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
@@ -204,8 +228,17 @@ const Tabs: React.FC<IProps> = ({
   }, [currentTab, tabs.length, variant, orientation, scrollToTab, measureOverflow]);
 
   useEffect(() => {
+    const container = _container.current;
+    const root = _tabs.current;
+    if (!container) return;
+
+    const observer = new ResizeObserver(() => measureOverflow());
+    observer.observe(container);
+    if (root) observer.observe(root);
+
     window.addEventListener("resize", measureOverflow);
     return () => {
+      observer.disconnect();
       window.removeEventListener("resize", measureOverflow);
       if (_listeners.current) {
         document.removeEventListener("pointermove", _listeners.current.move);
@@ -216,42 +249,40 @@ const Tabs: React.FC<IProps> = ({
 
   return (
     <div className={["har-tabs", `is-${orientation}`, variant].join(" ")}>
-      <div className="tabs">
-        {overflow.start && (
+      <div ref={_tabs} className={_tabsClassName.map((c) => c).join(" ")}>
+        {overflow.active ? (
           <Button
             className="nav start"
             variant="outlined"
             color="gray"
-            size="xs"
-            shape="square"
-            border={{ radius: "6" }}
-            aria-label="Previous tabs"
+            size="sm"
+            shape="circle"
+            border={{ radius: "full" }}
+            aria-label={isHorizontal ? "Scroll tabs left" : "Scroll tabs up"}
+            disabled={!overflow.start}
             icon={{
-              element: (
-                <Icon icon={isHorizontal ? "ArrowLeft" : "ArrowUp"} />
-              ),
+              element: <Icon icon={isHorizontal ? "ArrowLeft" : "ArrowUp"} size={14} />,
             }}
-            onClick={() => scrollStep(-1)}
+            onClick={() => scrollByPage(-1)}
           />
-        )}
+        ) : null}
 
-        {overflow.end && (
+        {overflow.active ? (
           <Button
             className="nav end"
             variant="outlined"
             color="gray"
-            size="xs"
-            shape="square"
-            border={{ radius: "6" }}
-            aria-label="Next tabs"
+            size="sm"
+            shape="circle"
+            border={{ radius: "full" }}
+            aria-label={isHorizontal ? "Scroll tabs right" : "Scroll tabs down"}
+            disabled={!overflow.end}
             icon={{
-              element: (
-                <Icon icon={isHorizontal ? "ArrowRight" : "ArrowDown"} />
-              ),
+              element: <Icon icon={isHorizontal ? "ArrowRight" : "ArrowDown"} size={14} />,
             }}
-            onClick={() => scrollStep(1)}
+            onClick={() => scrollByPage(1)}
           />
-        )}
+        ) : null}
 
         <div
           ref={_container}
@@ -293,7 +324,9 @@ const Tabs: React.FC<IProps> = ({
                   selectTab(index);
                 }}
               >
-                {tab.icon?.element && iconPosition === "start" ? <span className="icon">{tab.icon.element}</span> : null}
+                {tab.icon?.element && iconPosition === "start" ? (
+                  <span className="icon">{tab.icon.element}</span>
+                ) : null}
                 <span className="label">{tab.title}</span>
                 {tab.icon?.element && iconPosition === "end" ? <span className="icon">{tab.icon.element}</span> : null}
 

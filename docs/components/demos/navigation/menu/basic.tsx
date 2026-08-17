@@ -9,7 +9,8 @@ export const menuPreviewStyle: CSSProperties = {
   padding: "var(--space-8)",
   border: "var(--stroke-1) solid var(--gray-200)",
   borderRadius: "var(--radius-8)",
-  backgroundColor: "var(--white-alpha-100)",
+  // white-alpha sabit beyaz kalır; dark modda yüzey token kullan.
+  backgroundColor: "var(--white-100)",
 };
 
 export function MenuPreview({

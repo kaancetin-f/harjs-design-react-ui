@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  MenuItemVariants,
-  NavigationMenuProps,
-} from "../../../libs/infrastructure/types";
+import { MenuItemVariants, NavigationMenuProps } from "../../../libs/infrastructure/types";
 
 export interface MenuItemProps {
   item: NavigationMenuProps;
@@ -18,6 +15,8 @@ interface IProps extends React.HTMLAttributes<HTMLElement> {
   data: NavigationMenuProps[];
   variant?: MenuItemVariants;
   theme?: {
+    textColor?: string;
+    iconColor?: string;
     hover?: {
       backgroundColor?: string;
       textColor?: string;
