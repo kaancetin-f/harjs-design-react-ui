@@ -73,6 +73,7 @@
     "typescript": "^7.0.2"
   },
   "dependencies": {
+    "@harjs/react-ui": "^2.3.5",
     "@harjs/translation": "^1.0.1"
   }
 }
