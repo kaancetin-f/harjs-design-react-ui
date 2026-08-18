@@ -1,0 +1,58 @@
+---
+description: Repo test infrastructure (helper tests + compatibility smoke test)
+alwaysApply: true
+---
+
+# Testing Rules
+
+The repo does not have a "component rendering" style test infrastructure; instead[cite: 6]:
+
+- helper unit tests via `node:test` for pure logic functions[cite: 6]
+- build/compat smoke test at package level[cite: 6]
+
+## Framework / tooling
+
+- Test framework: Node built-in `node:test`[cite: 6]
+  - example:
+    - `src/components/navigation/pagination/helpers.test.ts`[cite: 6]
+    - `src/components/navigation/steps/helpers.test.ts`[cite: 6]
+    - `src/components/layout/layout/helpers.test.ts`[cite: 6]
+
+File naming:
+
+- `helpers.test.ts` (in the same folder as helper files)[cite: 6]
+
+Coverage/RTL/snapshot:
+
+- No Snapshot / React Testing Library / Jest/Vitest/Playwright present[cite: 6].
+
+## Test execution scripts
+
+As test script in `package.json`[cite: 6]:
+
+- `test:compat`[cite: 6]
+  - `src/scripts/compatibility/verify.mjs`[cite: 6]
+  - This script packs the library with `npm pack` and performs smoke tests via `npm run build` in different application templates[cite: 6].
+
+Reference:
+
+- `package.json` -> `test:compat`[cite: 6]
+- `src/scripts/compatibility/verify.mjs`[cite: 6]
+
+## Test rule for new components
+
+If a new component contains "logic" rather than "UI state"[cite: 6]:
+
+- separate logic helpers into `helpers.ts`[cite: 6]
+- add `helpers.test.ts`[cite: 6]
+- use `node:test` + `assert/strict` pattern[cite: 6]
+
+UI behaviors like Overlay/focus[cite: 6]:
+
+- Since the repo lacks renderer test infrastructure to test such behaviors,
+  - focus on testing helper calculation functions (e.g., `position.ts`, `calculate*`)[cite: 6].
+
+## What is triggered in CI? (repo introspection)
+
+Since there is no script in the repo that runs unit tests,
+the primary assurance is "typecheck + build" and `test:compat` smoke test[cite: 6].

@@ -1,0 +1,117 @@
+---
+description: Repo dependency direction, layer boundaries, and state/context rules
+alwaysApply: true
+---
+
+# Architecture
+
+This document formalizes the "layer dependency" and "state/context" approach of the existing code inside the repo[cite: 2]. The goal is not to redesign the architecture, but to make the existing pattern a rule for AI[cite: 2].
+
+## Layers (derived from real code)
+
+1. `src/components/`[cite: 2]
+   - UI components[cite: 2].
+   - Imports its own styling from under `src/assets/css/components/**`[cite: 2].
+   - Composition between components is free, but `src/libs/**` is preferred for shared abstractions[cite: 2].
+
+2. `src/libs/infrastructure/`[cite: 2]
+   - Shared utility & design tokens & types[cite: 2].
+   - Most commonly used ones[cite: 2]:
+     - `src/libs/infrastructure/shared/Utils.ts`[cite: 2]
+     - `src/libs/infrastructure/shared/DATE.ts`[cite: 2]
+     - `src/libs/infrastructure/shared/Enums.ts`[cite: 2]
+     - `src/libs/infrastructure/types/index.ts`[cite: 2]
+     - `src/libs/infrastructure/types/IGlobalProps.ts`[cite: 2]
+
+3. `src/libs/core/application/`[cite: 2]
+   - Context/provider and hooks layer[cite: 2].
+   - Usage-focused infrastructure[cite: 2]:
+     - `ConfigProvider`, `NotificationProvider`, `LoadingProvider`[cite: 2]
+     - `useConfirm`, `useNotification`, `useValidation`, `useLayout`, `useLoading`[cite: 2]
+
+## Dependency direction (practical rule)
+
+- Components (UI) -> frequently import `libs/infrastructure` types and utilities[cite: 2].
+  - e.g., Inside `Select`: `Utils.GetClassName` + `Option` type[cite: 2].
+    - `src/components/form/select/index.tsx`[cite: 2]
+  - e.g., Inside `Table`: `FilterOperator` enum[cite: 2].
+    - `src/components/data-display/table/index.tsx`[cite: 2]
+
+- `core/application` -> `components` dependency exists in real code (especially in Notification payload render helpers)[cite: 2].
+  - e.g., `useNotification` hook uses `components/feedback/notification/helpers` functions[cite: 2].
+    - `src/libs/core/application/hooks/useNotification.ts`[cite: 2]
+  - Therefore, instead of an "idealistic layer arrow direction": an approach of _not changing the dependencies the existing code works with_ is adopted[cite: 2].
+
+## State management rules
+
+State across the repo is managed in 2 main ways[cite: 2]:
+
+### 1) Controlled state (parent-owned)
+
+- State values such as `value`, `currentStep`, `open.get/set` either come directly from props or are committed to the parent[cite: 2].
+
+Example references[cite: 2]:
+
+- Modal open state is managed externally as "getter/setter"[cite: 2]:
+  - `src/components/feedback/modal/index.tsx`[cite: 2]
+  - `src/components/feedback/modal/IProps.ts` (`open: { get; set }`)[cite: 2]
+- Steps controlled / uncontrolled[cite: 2]:
+  - `src/components/navigation/steps/index.tsx` (`isControlled` + `currentStep`)[cite: 2]
+  - `src/components/navigation/steps/IProps.ts`[cite: 2]
+
+### 2) Uncontrolled / internal state (component-owned)
+
+- Overlay components such as Modal/Popover/Tooltip use "internal mounted/entered/exited" state for animation[cite: 2].
+  - Modal: `mounted/entered/exited` etc[cite: 2].
+    - `src/components/feedback/modal/index.tsx`[cite: 2]
+  - Popover: `open/mounted/entered/exited`[cite: 2]
+    - `src/components/feedback/popover/index.tsx`[cite: 2]
+
+### "Local ref as latest" pattern
+
+To reduce the callback stale closure problem in many large components[cite: 2]:
+
+- "latest prop" values are kept with `useRef`[cite: 2]
+- handlers read the updated value via ref[cite: 2]
+
+Example[cite: 2]:
+
+- KanbanBoard:
+  - `src/components/data-display/kanban-board/index.tsx`[cite: 2]
+
+## Context/Provider pattern
+
+Context/provider layer[cite: 2]:
+
+- `ConfigProvider` (configs like list pagination defaults)[cite: 2]
+  - `src/libs/core/application/contexts/Config.tsx`[cite: 2]
+- `LoadingProvider`[cite: 2]
+  - `src/libs/core/application/contexts/Loading.tsx`[cite: 2]
+- `NotificationProvider`[cite: 2]
+  - `src/libs/core/application/contexts/Notification.tsx`[cite: 2]
+
+NotificationProvider:
+
+- Provides `dispatchToast` and `askConfirm` via context[cite: 2]
+- Related UI components are rendered inside the provider[cite: 2]
+  - `Notification` + `PopupConfirm`[cite: 2]
+  - `src/components/feedback/notification` + `src/components/feedback/popup-confirm`[cite: 2]
+
+## Styling + theme
+
+- Global token CSS[cite: 2]:
+  - `src/index.ts` -> `./assets/css/core/har-core.css`[cite: 2]
+- Component-level CSS[cite: 2]:
+  - Inside component: `../../../assets/css/components/**/styles.css`[cite: 2]
+- Theme is usually applied via CSS variables (inline style)[cite: 2]:
+  - Steps theme:
+    - `src/components/navigation/steps/helpers.ts` (`--steps-current`, `--steps-completed`, `--steps-pending`)[cite: 2]
+
+## Public API boundaries
+
+- The library's public API is determined by `export { ... }` inside `src/index.ts`[cite: 2].
+  - `src/index.ts`[cite: 2]
+
+Rule:
+
+- When a new component is added, updating the public API on `src/index.ts` is a "priority"[cite: 2].

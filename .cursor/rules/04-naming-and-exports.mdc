@@ -1,0 +1,100 @@
+---
+description: Naming convention + public export and barrel export rules
+alwaysApply: true
+---
+
+# Naming & Exports
+
+In this repo, naming and export rules are derived from real code[cite: 5].
+
+## Naming convention (real examples)
+
+### Folder
+
+- Under `src/components/`: category -> component folder[cite: 5]
+- Component folder: `kebab-case`[cite: 5]
+  - `src/components/form/date-picker/`[cite: 5]
+  - `src/components/form/upload/`[cite: 5]
+  - `src/components/feedback/tooltip/`[cite: 5]
+
+### Component name (export)
+
+- Exported component name: `PascalCase`[cite: 5]
+  - `DatePicker`, `Upload`, `Tooltip`, `Modal`, `Steps`[cite: 5]
+
+### Props type file
+
+- Usually `IProps.ts` or `Props.ts`[cite: 5]
+  - Modal: `src/components/feedback/modal/IProps.ts`[cite: 5]
+  - Steps: `src/components/navigation/steps/IProps.ts`[cite: 5]
+  - Select: `src/components/form/select/Props.ts`[cite: 5]
+  - Upload: `src/components/form/upload/Props.ts`[cite: 5]
+
+### Helper / positioning files
+
+- `helpers.ts` (logic)[cite: 5]
+  - `src/components/navigation/steps/helpers.ts`[cite: 5]
+  - `src/components/navigation/pagination/helpers.ts`[cite: 5]
+- `position.ts` (overlay position)[cite: 5]
+  - `src/components/feedback/popover/position.ts`[cite: 5]
+  - `src/components/feedback/tooltip/position.ts`[cite: 5]
+
+### Constants / fixtures
+
+- Constants like `PER_PAGE_OPTIONS`: kept in ALL_CAPS inside `helpers.ts` or helper files[cite: 5]:
+  - `src/components/navigation/pagination/helpers.ts`[cite: 5]
+
+## Export pattern (real examples)
+
+### Inside component
+
+- In every component folder[cite: 5]:
+  - `index.tsx` : `export default` (public component)[cite: 5]
+  - If a compound component exists: static property attach inside `index.tsx`[cite: 5]
+
+Example:
+
+- Button compound attach:
+  - `src/components/form/button/index.tsx` (Button.Group/Action/Split)[cite: 5]
+  - Base:
+    - `src/components/form/button/Button.tsx`[cite: 5]
+
+- Input compound attach:
+  - `src/components/form/input/index.tsx` (AddonBefore/AddonAfter/Icon/Pin, etc.)[cite: 5]
+
+### Public API (library export)
+
+- Public API of the library is `src/index.ts`[cite: 5]:
+  - Individual imports + `export { ... }` inside `src/index.ts`[cite: 5]
+
+Example:
+
+- `src/index.ts`:
+  - `import DatePicker from "./components/form/date-picker";`[cite: 5]
+  - `export { DatePicker, Select, Modal, Tooltip, ... }`[cite: 5]
+
+Rule:
+
+- When creating a new component, update `src/index.ts` first[cite: 5].
+- Category-level barrel (`src/components/charts/index.ts`) _exists_, but primary source for public API is `src/index.ts`[cite: 5].
+  - e.g.,
+    - `src/components/charts/index.ts`[cite: 5]
+
+### Package entry points (package.json exports)
+
+Inside `package.json`, there are only exports for `dist/` and some sub-paths[cite: 5]:
+
+- `.` -> `./dist/index.js`[cite: 5]
+- `./config` -> dist contexts index[cite: 5]
+- `./hooks` -> dist hooks index[cite: 5]
+- `./types` -> dist infrastructure/types index[cite: 5]
+- `./utils` -> dist infrastructure/shared index[cite: 5]
+- `./styles.css` -> dist/styles.css[cite: 5]
+
+Reference:
+
+- `package.json` `exports` section[cite: 5]
+
+Rule:
+
+- If a new public API needs to be added, `src/index.ts` + `package.json exports` are evaluated together[cite: 5].

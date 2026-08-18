@@ -1,0 +1,108 @@
+---
+description: Repo type/enum approach, discriminated unions, and global prop mixins
+alwaysApply: true
+---
+
+# Types & Enums
+
+This file derives the answer to "which types should I add where when developing a new component" from the repo code[cite: 4].
+
+## Design tokens & global prop mixins
+
+Common types[cite: 4]:
+
+- `src/libs/infrastructure/types/index.ts`[cite: 4]
+  - `Variants`, `Status`, `Color`, `Sizes`, `BorderRadiuses`[cite: 4]
+  - `Option`, `Icon`, etc[cite: 4].
+
+Common prop mixins[cite: 4]:
+
+- `src/libs/infrastructure/types/IGlobalProps.ts`[cite: 4]
+  - `IVariantProps`[cite: 4]
+  - `IStatusProps`[cite: 4]
+  - `IColorProps`[cite: 4]
+  - `IBorderProps`[cite: 4]
+  - `IIconProps`[cite: 4]
+  - `ISizeProps`[cite: 4]
+  - `IUpperCaseProps`[cite: 4]
+  - also other common props like input[cite: 4]
+
+Rule:
+
+- When adding a new component, do not invent new variant/status/type under the guise of "best practice"[cite: 4].
+- First check if an appropriate type exists in `IGlobalProps` + `types/index.ts`[cite: 4].
+
+## Enums (string/number enums)
+
+The real enum pattern in the repo[cite: 4]:
+
+- `export enum FilterOperator`[cite: 4]:
+  - `src/libs/infrastructure/shared/Enums.ts`[cite: 4]
+
+This enum is used in filter systems like Table[cite: 4]:
+
+- `src/components/data-display/table/index.tsx` (`FilterOperator`)[cite: 4]
+
+There are also session/storage token enums in the same file[cite: 4]:
+
+- `SessionStorage`[cite: 4]
+- `DispatchEvent`[cite: 4]
+  - `src/libs/infrastructure/shared/Enums.ts`[cite: 4]
+
+Rule:
+
+- Before considering extending an existing enum, find a similar usage example first[cite: 4].
+- Currently, the only "active" enum set in the repo is inside shared/Enums.ts[cite: 4].
+
+## Discriminated unions / controlled props types
+
+Controlled/uncontrolled in the repo is mostly separated using union types[cite: 4].
+
+Example: `Select`[cite: 4]
+
+- `src/components/form/select/Props.ts`[cite: 4]
+  - `IMultiple`:[cite: 4]
+    - `multiple: true`[cite: 4]
+    - `value: Option[]`[cite: 4]
+  - `ISingle`:[cite: 4]
+    - `multiple?: false`[cite: 4]
+    - `value: Option | undefined`[cite: 4]
+
+Example: Table filter value model[cite: 4]
+
+- `src/components/data-display/table/IProps.ts`[cite: 4]
+  - `FilterValue`:[cite: 4]
+    - `value: string | number | boolean | DateRangeValue`[cite: 4]
+    - `operator: FilterOperator`[cite: 4]
+
+Example: Upload progress controlled map[cite: 4]
+
+- `src/libs/infrastructure/types/index.ts`:[cite: 4]
+  - `UploadProgress = Record<string, UploadProgressItem>`[cite: 4]
+  - `UploadProgressItem { percent; status? }`[cite: 4]
+
+Upload component[cite: 4]:
+
+- `src/components/form/upload/Props.ts`[cite: 4]
+
+## Constants pattern
+
+Const patterns in the repo[cite: 4]:
+
+- "constant lists" are kept in helper files[cite: 4]:
+  - Pagination:
+    - `src/components/navigation/pagination/helpers.ts` (`PER_PAGE_OPTIONS`, `TOOLTIP`, etc.)[cite: 4]
+- Calculation constants like overlay positioning are in separate files[cite: 4]:
+  - Tooltip:
+    - `src/components/feedback/tooltip/position.ts` (`TOOLTIP_OFFSET`, `VIEWPORT_PADDING`)[cite: 4]
+
+## Shared utility-driven type checks
+
+Utility example[cite: 4]:
+
+- `Utils.IsNullOrEmpty`[cite: 4]
+  - `src/libs/infrastructure/shared/Utils.ts`[cite: 4]
+
+Rule:
+
+- Most components directly use this in type "exists/does not exist" checks (e.g., `Utils.IsNullOrEmpty(validation?.text)`)[cite: 4].

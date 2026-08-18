@@ -1,0 +1,182 @@
+---
+description: Repository layout source-of-truth for AI context
+alwaysApply: true
+---
+
+# Project Context
+
+This rule set provides a permanent and sustainable **AI development context / architecture system** for this repository[cite: 1].
+
+## Repository root
+
+Repo root[cite: 1]:
+
+- `src/` : actual library source code[cite: 1]
+- `docs/` : docs site (MDX + demo/example pages)[cite: 1]
+- `dist/` : build output (for package publishing)[cite: 1]
+
+## Main source directory
+
+`src/` is the main source[cite: 1].
+
+Specifically[cite: 1]:
+
+- Public entry/export: `src/index.ts`[cite: 1]
+- Public helpers/utilities: `src/libs/infrastructure/shared/*`[cite: 1]
+- Components: `src/components/*`[cite: 1]
+- Provider/Context + hooks: `src/libs/core/application/*`[cite: 1]
+
+## Components / hooks / utilities / types / enums
+
+### Components
+
+Components under `src/components/` are divided into categories[cite: 1]. Example[cite: 1]:
+
+- `src/components/form/date-picker/`[cite: 1]
+- `src/components/feedback/modal/`[cite: 1]
+- `src/components/feedback/tooltip/`[cite: 1]
+- `src/components/navigation/steps/`[cite: 1]
+
+In each component folder, there are usually[cite: 1]:
+
+- `index.tsx` (public component default export)[cite: 1]
+- `IProps.ts` or `Props.ts` (prop types)[cite: 1]
+- `helpers.ts` (helper functions)[cite: 1]
+- related `styles.css` import (component's styling)[cite: 1]
+
+Example references[cite: 1]:
+
+- `src/components/form/button/index.tsx`[cite: 1]
+- `src/components/form/button/Button.tsx`[cite: 1]
+- `src/components/form/select/index.tsx`[cite: 1]
+- `src/components/feedback/modal/index.tsx`[cite: 1]
+
+### Hooks + Context/Provider
+
+Provider/context layer[cite: 1]:
+
+- `src/libs/core/application/contexts/Config.tsx` (`ConfigProvider`)[cite: 1]
+- `src/libs/core/application/contexts/Notification.tsx` (`NotificationProvider`)[cite: 1]
+- `src/libs/core/application/contexts/Loading.tsx` (`LoadingProvider`)[cite: 1]
+
+Hooks[cite: 1]:
+
+- `src/libs/core/application/hooks/useConfirm.ts`[cite: 1]
+- `src/libs/core/application/hooks/useNotification.ts`[cite: 1]
+- `src/libs/core/application/hooks/useValidation.ts`[cite: 1]
+- Hook barrel: `src/libs/core/application/hooks/index.ts`[cite: 1]
+
+Context/hook example references[cite: 1]:
+
+- `NotificationProvider` usage flow: `src/libs/core/application/contexts/Notification.tsx`[cite: 1]
+- `useValidation` usage flow: `src/libs/core/application/hooks/useValidation.ts`[cite: 1]
+
+### Utilities + shared types/enums
+
+Shared utilities[cite: 1]:
+
+- `src/libs/infrastructure/shared/Utils.ts`[cite: 1]
+- `src/libs/infrastructure/shared/DATE.ts`[cite: 1]
+- `src/libs/infrastructure/shared/Enums.ts`[cite: 1]
+- `src/libs/infrastructure/shared/CodingConventions.ts`[cite: 1]
+
+Shared design tokens & types[cite: 1]:
+
+- `src/libs/infrastructure/types/index.ts` (e.g., component-friendly types like `Variants`, `Color`, `Sizes`, `Option`, `FilterOperator`, etc.)[cite: 1]
+- `src/libs/infrastructure/types/IGlobalProps.ts` (common prop mixins: `IVariantProps`, `IIconProps`, `IBorderProps`, etc.)[cite: 1]
+
+Enum reference[cite: 1]:
+
+- `src/libs/infrastructure/shared/Enums.ts` (e.g., `FilterOperator`)[cite: 1]
+
+## Styling / theme system
+
+### Global core CSS
+
+`src/index.ts` imports core tokens/CSS[cite: 1]:
+
+- Inside `src/index.ts`: `import "./assets/css/core/har-core.css";`[cite: 1]
+
+### Component-level CSS
+
+Components import their own CSS files[cite: 1]:
+
+- e.g., Inside `src/components/form/select/index.tsx`: `../../../assets/css/components/form/select/styles.css`[cite: 1]
+- e.g., Inside `src/components/feedback/modal/index.tsx`: `../../../assets/css/components/feedback/modal/styles.css`[cite: 1]
+
+Component style entry example references[cite: 1]:
+
+- `src/assets/css/core/har-core.css`[cite: 1]
+- `src/assets/css/components/feedback/modal/styles.css`[cite: 1]
+
+### Inline theme (example)
+
+Some components apply a "theme" via CSS variables[cite: 1]. E.g., Steps[cite: 1]:
+
+- Inside `src/components/navigation/steps/helpers.ts`: `getStepsThemeStyle`[cite: 1]
+
+## Test infrastructure
+
+In the repo, as the test framework[cite: 1]:
+
+- Node built-in test: `node:test`[cite: 1]
+
+Example[cite: 1]:
+
+- `src/components/navigation/pagination/helpers.test.ts`[cite: 1]
+- `src/components/navigation/steps/helpers.test.ts` (available)[cite: 1]
+
+Important: There is no unit test script in package scripts; `helpers.test.ts` files exist for the "helper level"[cite: 1].
+
+## Story/demo infrastructure
+
+Docs site[cite: 1]:
+
+- Demo sources: `docs/components/demos/**`[cite: 1]
+- MDX component map: `docs/components/mdx.tsx` (e.g., registers exports like `ButtonBasic`, `ModalBasic`)[cite: 1]
+
+Example references[cite: 1]:
+
+- `docs/components/mdx.tsx`[cite: 1]
+- `docs/components/demos/feedback/modal/basic.tsx`[cite: 1]
+
+## Public exports / export graph
+
+The public API of the library is provided as "named exports" via `src/index.ts`[cite: 1].
+
+Examples in `src/index.ts`[cite: 1]:
+
+- `export { Button, Select, Modal, Tooltip, ... }`[cite: 1]
+- Provider/hook exports: `ConfigProvider`, `NotificationProvider`, `LoadingProvider`, `useLayout`, `useNotification`, `useConfirm`, `useLoading`[cite: 1]
+
+There is also a category barrel export pattern, but the primary source public API is `src/index.ts`[cite: 1]:
+
+- `src/components/charts/index.ts`[cite: 1]
+
+## Build system
+
+`package.json` build[cite: 1]:
+
+- TypeScript compilation with `tsc`[cite: 1]
+- Copy `./src/assets`: `cp -r ./src/assets dist/`[cite: 1]
+- `node src/scripts/prepare-package.mjs` (post-build `dist/styles.css` generation / CSS import flattening)[cite: 1]
+
+References[cite: 1]:
+
+- `package.json` scripts[cite: 1]
+- `src/scripts/prepare-package.mjs`[cite: 1]
+
+## Linting / formatting
+
+There is no standard `eslint`/`prettier` script at the repo root (only `prettier` as a dependency)[cite: 1].
+
+The main verification is done through "build (tsc)"[cite: 1].
+
+## Naming convention "source notes"
+
+- Component folder: `kebab-case` (e.g., `date-picker`, `upload`)[cite: 1]
+- Component name (export): `PascalCase` (e.g., `DatePicker`, `Upload`)[cite: 1]
+- Props file:
+  - in most places: `IProps.ts` or `Props.ts`[cite: 1]
+  - example: `src/components/form/select/Props.ts`, `src/components/feedback/modal/IProps.ts`[cite: 1]
+- Component index file: mostly `index.tsx`[cite: 1]

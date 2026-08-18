@@ -143,11 +143,7 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
 
-# CodeGraph
-.codegraph
-.cursor
-.gemini
-GEMINI.md
-
 # Compatibility smoke tests
 .compat-tmp
+
+.DS_Store
