@@ -74,6 +74,7 @@ const Table = forwardRef(
       trackBy,
       title,
       description,
+      extra,
       data,
       columns,
       actions,
@@ -749,62 +750,82 @@ const Table = forwardRef(
       [handleClearFilters],
     );
 
+    const isActionLabeled = (actions?.appearance ?? "labeled") === "labeled";
+
     return (
       <div
         ref={_tableWrapper}
         className={_tableClassName.map((c) => c).join(" ")}
         aria-labelledby={title ? titleId : undefined}
       >
-        {(title || description || actions || React.Children.count(children) > 0) && (
+        {(title || description || extra || actions || React.Children.count(children) > 0) && (
           <Header
             states={{ createTrigger: { get: createTrigger, set: setCreateTrigger } }}
             title={title}
             titleId={titleId}
             description={description}
+            extra={
+              extra || React.Children.count(children) > 0 ? (
+                <>
+                  {extra}
+                  {children}
+                </>
+              ) : undefined
+            }
             actions={resolvedActions}
             locale={config.locale}
-            extra={
-              <Flex alignItems="center" gap="var(--space-8)">
-                {config.isSearchable && hasActiveFilters && (
-                  <Tooltip text={t("Table.Header.Extra.ClearFilters.Button.Text")}>
-                    <Button
-                      variant="outlined"
-                      color="red"
-                      shape="square"
-                      icon={{
-                        element: <Icon icon="Filter" size={24} />,
-                      }}
-                      onClick={(event) => {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        handleClearFilters();
-                      }}
-                    />
-                  </Tooltip>
-                )}
-
-                {config.columnManagement?.enabled !== false && (
-                  <span ref={_columnsButton}>
-                    <Tooltip text={t("Table.Header.Extra.ColumnManager.Button.Text")}>
+            tools={
+              (config.isSearchable && hasActiveFilters) || config.columnManagement?.enabled !== false ? (
+                <Flex alignItems="center" gap="var(--space-8)">
+                  {config.isSearchable && hasActiveFilters && (
+                    <Tooltip text={t("Table.Header.Extra.ClearFilters.Button.Text")}>
                       <Button
                         variant="outlined"
-                        shape="square"
+                        color="red"
+                        size="sm"
+                        shape={isActionLabeled ? undefined : "square"}
                         icon={{
-                          element: <Icon icon="Columns" size={24} />,
+                          element: <Icon icon="Filter" size={16} />,
                         }}
+                        aria-label={t("Table.Header.Extra.ClearFilters.Button.Text")}
                         onClick={(event) => {
                           event.preventDefault();
                           event.stopPropagation();
-
-                          const rect = event.currentTarget.getBoundingClientRect();
-                          setColumnsButtonCoordinate(PlaceTablePopup(rect, COLUMNS_POPUP_WIDTH));
-                          setOpenColumnsPopup((prev) => !prev);
+                          handleClearFilters();
                         }}
-                      />
+                      >
+                        {isActionLabeled ? t("Table.Header.Extra.ClearFilters.Button.Text") : null}
+                      </Button>
                     </Tooltip>
-                  </span>
-                )}
-              </Flex>
+                  )}
+
+                  {config.columnManagement?.enabled !== false && (
+                    <span ref={_columnsButton}>
+                      <Tooltip text={t("Table.Header.Extra.ColumnManager.Button.Text")}>
+                        <Button
+                          variant="outlined"
+                          size="sm"
+                          shape={isActionLabeled ? undefined : "square"}
+                          icon={{
+                            element: <Icon icon="Columns" size={16} />,
+                          }}
+                          aria-label={t("Table.Header.Extra.ColumnManager.Button.Text")}
+                          onClick={(event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+
+                            const rect = event.currentTarget.getBoundingClientRect();
+                            setColumnsButtonCoordinate(PlaceTablePopup(rect, COLUMNS_POPUP_WIDTH));
+                            setOpenColumnsPopup((prev) => !prev);
+                          }}
+                        >
+                          {isActionLabeled ? t("Table.Columns.Title.Text") : null}
+                        </Button>
+                      </Tooltip>
+                    </span>
+                  )}
+                </Flex>
+              ) : undefined
             }
           />
         )}

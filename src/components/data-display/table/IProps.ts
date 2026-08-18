@@ -12,7 +12,11 @@ export type FilterValue = {
   operator: FilterOperator;
 };
 
+export type ActionAppearance = "icon" | "labeled";
+
 export type Actions = {
+  /** `"icon"` is compact with a locale tooltip. `"labeled"` shows `text` (or locale) on the button. */
+  appearance?: ActionAppearance;
   import?: ImportActionType;
   export?: ExportActionType;
   create?: CreateActionType;
@@ -55,9 +59,9 @@ export type Config<T extends object> = {
 };
 
 type ImportActionType = {
-  tooltip: string;
   title?: string;
   message?: string;
+  text?: string;
   buttonText?: string;
   allowedTypes?: MimeTypes[];
   prefixItem?: React.ReactNode;
@@ -66,23 +70,23 @@ type ImportActionType = {
 };
 
 type ExportActionType = {
-  tooltip: string;
   title?: string;
   message?: string;
+  text?: string;
   content?: React.JSX.Element;
   /** Receives the currently selected PDF column keys when confirmed. */
   onClick: (payload?: { pdfColumns: string[] }) => void;
 };
 
 type CreateActionType = {
-  tooltip: string;
+  text?: string;
   onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 };
 
 type DeleteActionType = {
-  tooltip: string;
   title?: string;
   message?: string;
+  text?: string;
   onClick: () => void;
 };
 
@@ -90,6 +94,7 @@ interface IProps<T extends object> extends IChildrenProps {
   trackBy?: (item: T) => string;
   title?: string;
   description?: string;
+  extra?: React.ReactNode;
   data: T[];
   columns: TableColumnProps<T>[];
   actions?: Actions;

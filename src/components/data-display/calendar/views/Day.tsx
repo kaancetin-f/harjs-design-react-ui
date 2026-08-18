@@ -1,8 +1,19 @@
 import React from "react";
+import { CalendarViewProps } from "../IProps";
+import { startOfDay } from "../helpers";
+import TimeGrid from "./TimeGrid";
 
-// Gün görünümü henüz bağlanmadı; Calendar.Body Week görünümünü kullanıyor.
-const Day = () => {
-  return <></>;
+const Day = function <T>({ trackedBy, data, renderItem, states, config, onEventClick }: CalendarViewProps<T>) {
+  return (
+    <TimeGrid
+      days={[startOfDay(states.currentDate.get)]}
+      trackedBy={trackedBy}
+      data={data}
+      renderItem={renderItem}
+      locale={config?.locale}
+      onEventClick={onEventClick}
+    />
+  );
 };
 
 Day.displayName = "Calendar.Day";

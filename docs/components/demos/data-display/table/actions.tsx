@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Chip, GridSystem, Table, Typography } from '@/lib/ui';
+import { Button, Chip, GridSystem, Icon, Table, Typography } from '@/lib/ui';
 
 const { Flex } = GridSystem;
 const { Paragraph } = Typography;
@@ -29,13 +29,13 @@ const statusColor: Record<Status, 'green' | 'orange'> = {
 export function TableActions() {
   const [people, setPeople] = useState(seed);
   const [selected, setSelected] = useState<Person[]>([]);
-  const [note, setNote] = useState('Use Create to add a row, or select rows and Delete.');
+  const [note, setNote] = useState('Use Invite on the left, or Create / Delete on the right.');
 
   return (
     <Flex flexDirection="column" gap="var(--space-12)" width="100%">
       <Table
         title="Team"
-        description="Header actions wrap create, export, import, and delete behind confirm dialogs."
+        description="Custom extra buttons sit on the left. Pass text on an action to label it; the tooltip comes from locale."
         trackBy={(item) => item.id}
         data={people}
         columns={[
@@ -51,9 +51,21 @@ export function TableActions() {
         ]}
         selections={setSelected}
         previousSelections={selected}
+        extra={
+          <Button
+            variant="outlined"
+            size="sm"
+            icon={{ element: <Icon icon="Inbox-Fill" size={16} /> }}
+            onClick={() => {
+              const count = selected.length > 0 ? selected.length : people.length;
+              setNote(`Invite queued for ${count} teammate${count === 1 ? '' : 's'}.`);
+            }}
+          >
+            Invite
+          </Button>
+        }
         actions={{
           create: {
-            tooltip: 'Add a person',
             onClick: () => {
               setPeople((prev) => {
                 const id = String(prev.length + 1);
@@ -63,13 +75,11 @@ export function TableActions() {
             },
           },
           export: {
-            tooltip: 'Export the current view',
             title: 'Export team',
             message: 'Download the visible rows. In an app this would write CSV or PDF.',
             onClick: () => setNote(`Export queued for ${people.length} rows.`),
           },
           delete: {
-            tooltip: 'Remove selected rows',
             title: 'Delete selected',
             message: 'This removes the checked rows from local state.',
             onClick: () => {

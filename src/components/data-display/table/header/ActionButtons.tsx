@@ -12,6 +12,7 @@ import { useTranslation } from "@harjs/translation";
 import ITableLocale from "../../../../libs/core/application/locales/table/ITableLocale";
 import TableTR from "../../../../libs/core/application/locales/table/tr";
 import TableEN from "../../../../libs/core/application/locales/table/en";
+import { Color } from "../../../../libs/infrastructure/types";
 
 interface IProps {
   states: {
@@ -22,12 +23,45 @@ interface IProps {
 }
 
 const icons = {
-  import: <Icon icon="Import" size={24} />,
-  export: <Icon icon="Export" size={24} />,
+  import: <Icon icon="Import" size={16} />,
+  export: <Icon icon="Export" size={16} />,
   create: <Icon icon="Add" size={16} />,
+  delete: <Icon icon="Trash-Fill" size={16} fill="currentColor" />,
 };
 
 const { Row, Column } = GridSystem;
+
+const ActionTrigger = ({
+  labeled,
+  color,
+  icon,
+  label,
+  tooltip,
+  onClick,
+}: {
+  labeled: boolean;
+  color?: Color;
+  icon: React.JSX.Element;
+  label: string;
+  tooltip: string;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+}) => {
+  const button = (
+    <Button
+      variant="outlined"
+      color={color}
+      size="sm"
+      shape={labeled ? undefined : "square"}
+      icon={{ element: icon }}
+      aria-label={labeled ? undefined : tooltip}
+      onClick={onClick}
+    >
+      {labeled ? label : null}
+    </Button>
+  );
+
+  return labeled ? button : <Tooltip text={tooltip}>{button}</Tooltip>;
+};
 
 const ActionButtons = ({ states, actions, locale }: IProps) => {
   // states
@@ -40,6 +74,8 @@ const ActionButtons = ({ states, actions, locale }: IProps) => {
     tr: { ...TableTR },
     en: { ...TableEN },
   });
+
+  const labeled = (actions.appearance ?? "labeled") === "labeled";
 
   return (
     <Flex flexDirection="row" justifyContent="flex-end" alignItems="center" gap="var(--space-8)">
@@ -66,7 +102,6 @@ const ActionButtons = ({ states, actions, locale }: IProps) => {
                       setFiles(files);
                       setBase64(base64);
                     }}
-
                     fullWidth
                   />
                 </Column>
@@ -88,9 +123,13 @@ const ActionButtons = ({ states, actions, locale }: IProps) => {
           config={{ buttons: { okay: t("Table.Actions.Import.Confirm"), cancel: t("Table.Actions.Cancel") } }}
           windowBlur
         >
-          <Tooltip text={actions.import.tooltip}>
-            <Button variant="outlined" color="purple" shape="square" icon={{ element: icons.import }} />
-          </Tooltip>
+          <ActionTrigger
+            labeled={labeled}
+            color="gray"
+            icon={icons.import}
+            label={actions.import.text ?? t("Table.Actions.Import.Button.Text")}
+            tooltip={t("Table.Actions.Import.Button.Text")}
+          />
         </Popover>
       )}
 
@@ -111,28 +150,31 @@ const ActionButtons = ({ states, actions, locale }: IProps) => {
           config={{ buttons: { okay: t("Table.Actions.Export.Confirm"), cancel: t("Table.Actions.Cancel") } }}
           windowBlur
         >
-          <Tooltip text={actions.export.tooltip}>
-            <Button variant="outlined" color="blue" shape="square" icon={{ element: icons.export }} />
-          </Tooltip>
+          <ActionTrigger
+            labeled={labeled}
+            color="gray"
+            icon={icons.export}
+            label={actions.export.text ?? t("Table.Actions.Export.Button.Text")}
+            tooltip={t("Table.Actions.Export.Button.Text")}
+          />
         </Popover>
       )}
 
       {actions.create && (
-        <Tooltip text={actions.create.tooltip}>
-          <Button
-            variant="outlined"
-            color="green"
-            shape="square"
-            icon={{ element: icons.create }}
-            onClick={(event) => {
-              if (!actions.create) return;
+        <ActionTrigger
+          labeled={labeled}
+          color="gray"
+          icon={icons.create}
+          label={actions.create.text ?? t("Table.Actions.Create.Button.Text")}
+          tooltip={t("Table.Actions.Create.Button.Text")}
+          onClick={(event) => {
+            if (!actions.create) return;
 
-              actions.create.onClick(event);
-              // Tablo yeni satır açsın diye create tetikleyicisini çevir.
-              states.createTrigger.set((prev) => !prev);
-            }}
-          />
-        </Tooltip>
+            actions.create.onClick(event);
+            // Tablo yeni satır açsın diye create tetikleyicisini çevir.
+            states.createTrigger.set((prev) => !prev);
+          }}
+        />
       )}
 
       {actions.delete && (
@@ -146,14 +188,13 @@ const ActionButtons = ({ states, actions, locale }: IProps) => {
           }}
           config={{ buttons: { okay: t("Table.Actions.Delete.Confirm"), cancel: t("Table.Actions.Cancel") } }}
         >
-          <Tooltip text={actions.delete.tooltip}>
-            <Button
-              variant="outlined"
-              color="red"
-              shape="square"
-              icon={{ element: <Icon icon="Trash-Fill" fill="currentColor" /> }}
-            />
-          </Tooltip>
+          <ActionTrigger
+            labeled={labeled}
+            color="gray"
+            icon={icons.delete}
+            label={actions.delete.text ?? t("Table.Actions.Delete.Button.Text")}
+            tooltip={t("Table.Actions.Delete.Button.Text")}
+          />
         </Popover>
       )}
     </Flex>

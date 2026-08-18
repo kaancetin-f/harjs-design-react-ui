@@ -1,0 +1,137 @@
+.har-calendar {
+  > .har-calendar-month-view {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
+    background-color: var(--white-500);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-8);
+
+    > .weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      border-bottom: 1px solid var(--gray-200);
+
+      > span {
+        padding: var(--space-10) var(--space-8);
+        color: var(--gray-400);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-align: center;
+      }
+    }
+
+    > .days {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      min-height: 0;
+
+      > .week {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        flex: 1 1 auto;
+        min-height: 7.5rem;
+        border-bottom: 1px solid var(--gray-100);
+
+        &:last-child {
+          border-bottom: 0;
+        }
+
+        > .day {
+          display: flex;
+          flex-direction: column;
+          gap: var(--space-4);
+          min-width: 0;
+          min-height: 7.5rem;
+          padding: var(--space-8);
+          border-left: 1px solid var(--gray-100);
+          background: transparent;
+          text-align: left;
+          cursor: pointer;
+
+          &:first-child {
+            border-left: 0;
+          }
+
+          &:hover {
+            background-color: var(--gray-50);
+          }
+
+          > .date {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            align-self: flex-end;
+            width: 1.75rem;
+            height: 1.75rem;
+            color: var(--gray-800);
+            font-size: 0.8125rem;
+            font-weight: 600;
+            border-radius: var(--radius-full);
+          }
+
+          > .events {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+
+            > .event {
+              display: block;
+              width: 100%;
+              min-width: 0;
+              padding: 1px var(--space-6);
+              border: 0;
+              border-left: 3px solid;
+              border-radius: var(--radius-4);
+              color: var(--white-alpha-100);
+              font-family: inherit;
+              font-size: 0.6875rem;
+              font-weight: 500;
+              line-height: 1.4;
+              text-align: left;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              cursor: pointer;
+            }
+
+            > .more {
+              padding: 0 var(--space-6);
+              color: var(--gray-500);
+              font-size: 0.6875rem;
+              font-weight: 600;
+            }
+          }
+
+          &.is-outside {
+            background-color: var(--gray-50);
+
+            > .date {
+              color: var(--gray-400);
+            }
+          }
+
+          &.is-today > .date {
+            background-color: var(--blue-500);
+            color: var(--white-alpha-100);
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .har-calendar {
+    > .har-calendar-month-view > .days > .week,
+    > .har-calendar-month-view > .days > .week > .day {
+      min-height: 5.5rem;
+    }
+  }
+}

@@ -2,43 +2,19 @@ import React from "react";
 import Day from "./views/Day";
 import Week from "./views/Week";
 import Month from "./views/Month";
-import { CalendarEvent } from "./IProps";
-import { View } from "../../../libs/infrastructure/types";
+import Year from "./views/Year";
+import { CalendarViewProps } from "./IProps";
 
-interface IProps<T> {
-  trackedBy: keyof (T & CalendarEvent);
-  data: (T & CalendarEvent)[];
-  renderItem: (item: T, index: number) => React.JSX.Element;
-  states: {
-    currentDate: {
-      get: Date;
-      set: React.Dispatch<React.SetStateAction<Date>>;
-    };
-    view: { get: View; set: React.Dispatch<React.SetStateAction<View>> };
-  };
-  config?: {
-    locale?: Intl.LocalesArgument;
-  };
-}
+const Body = function <T>(props: CalendarViewProps<T>) {
+  const view = props.states.view.get;
 
-const Body = function <T>({ trackedBy, data, renderItem, states, config }: IProps<T>) {
-  // variables
-  const view = states.view.get;
+  if (view === "Day") return <Day {...props} />;
+  if (view === "Week") return <Week {...props} />;
+  if (view === "Month") return <Month {...props} />;
+  if (view === "Year") return <Year {...props} />;
 
-  if (view === "Day") return <Day />;
-  if (view === "Week")
-    return (
-      <Week
-        trackedBy={trackedBy}
-        data={data}
-        renderItem={renderItem}
-        states={{ currentDate: states.currentDate }}
-        config={config}
-      />
-    );
-  if (view === "Month") return <Month />;
-
-  return <>...</>;
+  return <Week {...props} />;
 };
 
+Body.displayName = "Calendar.Body";
 export default Body;

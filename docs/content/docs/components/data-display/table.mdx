@@ -29,7 +29,7 @@ import { Table } from "@harjs/react-ui";
 
 A titled Table is a header, an optional toolbar, the grid, and a footer.
 
-- **Header** — `title`, `description`, `actions`, and the column manager when a header is shown.
+- **Header** — `title` and `description` on the first row. The toolbar under them holds `extra` on the left and labeled `actions` plus the column manager on the right.
 - **Filter row** — appears when `config.isSearchable` is on. Each column with `filterDataType` gets a field; `filters` adds a checklist.
 - **Column menu** — `config.isProperties` adds sort (asc, desc, clear) on each heading.
 - **Body** — cells from `key`, nested `{ field, nestedKey }`, `render`, or `editable`.
@@ -127,6 +127,10 @@ The manager is on by default whenever the table header is visible. Toggle visibi
 
 ### Header actions
 
+The header keeps `title` and `description` on top. A toolbar row sits under them: pass custom buttons through `extra` (left). Built-in actions align right.
+
+`actions.appearance` is `"labeled"` (default, icon + `text`) or `"icon"` (compact, locale tooltip). Pass `text` on an action to override the locale label. Tooltips are always locale — you do not pass them.
+
 `actions` is `create`, `export`, `import`, and `delete`. Create is immediate. Export, import, and delete open a confirm dialog. Import uses Upload and calls `onClick(formData, files, base64)`. Export receives `{ pdfColumns }` from the manager.
 
 <Example>
@@ -204,7 +208,8 @@ ref.current?.filterCleaner();
 | `trackBy`            | `(item: T) => string`                                | —                   |
 | `title`              | `string`                                             | —                   |
 | `description`        | `string`                                             | —                   |
-| `actions`            | `{ import?; export?; create?; delete? }`             | —                   |
+| `extra`              | `ReactNode`                                          | — left toolbar slot |
+| `actions`            | `{ appearance?; import?; export?; create?; delete? }` | —                   |
 | `selections`         | `(items: T[]) => void`                               | —                   |
 | `selectionDisabled`  | `(item: T) => boolean`                               | —                   |
 | `previousSelections` | `T[]`                                                | —                   |
@@ -215,7 +220,7 @@ ref.current?.filterCleaner();
 | `onDnD`              | `(items: T[]) => void`                               | —                   |
 | `rowBackgroundColor` | `(item: T) => string`                                | —                   |
 | `pagination`         | `{ totalRecords; perPage; currentPage?; onChange? }` | —                   |
-| `children`           | `ReactNode`                                          | — extra header slot |
+| `children`           | `ReactNode`                                          | — also left toolbar |
 
 ### Column
 
@@ -261,9 +266,10 @@ ref.current?.filterCleaner();
 
 ### Actions
 
-| Prop                                                                | Notes                                                   |
-| ------------------------------------------------------------------- | ------------------------------------------------------- |
-| `create.tooltip` / `create.onClick`                                 | Immediate. No dialog.                                   |
-| `export.tooltip` / `title` / `message` / `content` / `onClick`      | Confirm dialog. `onClick` may receive `{ pdfColumns }`. |
-| `import.tooltip` / `title` / `message` / `allowedTypes` / `onClick` | Confirm dialog with Upload.                             |
-| `delete.tooltip` / `title` / `message` / `onClick`                  | Confirm dialog. Combine with `selections`.              |
+| Prop                                                         | Notes                                                   |
+| ------------------------------------------------------------ | ------------------------------------------------------- |
+| `appearance`                                                 | `"labeled"` (default) or `"icon"`.                      |
+| `create.text` / `create.onClick`                             | Immediate. No dialog. Tooltip is locale.                |
+| `export.text` / `title` / `message` / `content` / `onClick`  | Confirm dialog. `onClick` may receive `{ pdfColumns }`. |
+| `import.text` / `title` / `message` / `allowedTypes` / `onClick` | Confirm dialog with Upload.                         |
+| `delete.text` / `title` / `message` / `onClick`              | Confirm dialog. Combine with `selections`.              |

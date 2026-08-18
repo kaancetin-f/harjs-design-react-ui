@@ -35,13 +35,17 @@ interface ITableLocale {
   "Table.Properties.Popup.Label": string;
 
   // Actions
+  "Table.Actions.Create.Button.Text": string;
+  "Table.Actions.Import.Button.Text": string;
   "Table.Actions.Import.Title": string;
   "Table.Actions.Import.Message": string;
   "Table.Actions.Import.Upload": string;
   "Table.Actions.Import.Confirm": string;
+  "Table.Actions.Export.Button.Text": string;
   "Table.Actions.Export.Title": string;
   "Table.Actions.Export.Message": string;
   "Table.Actions.Export.Confirm": string;
+  "Table.Actions.Delete.Button.Text": string;
   "Table.Actions.Delete.Title": string;
   "Table.Actions.Delete.Message": string;
   "Table.Actions.Delete.Confirm": string;

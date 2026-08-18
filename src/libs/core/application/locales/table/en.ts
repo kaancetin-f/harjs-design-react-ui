@@ -26,13 +26,17 @@ const TableEN: ITableLocale = {
   "Table.Properties.Popup.Label": "Sort column",
 
   // Actions
+  "Table.Actions.Create.Button.Text": "Create",
+  "Table.Actions.Import.Button.Text": "Import",
   "Table.Actions.Import.Title": "Import",
   "Table.Actions.Import.Message": "Upload a file to import its data into the table.",
   "Table.Actions.Import.Upload": "Upload file",
   "Table.Actions.Import.Confirm": "Upload",
+  "Table.Actions.Export.Button.Text": "Export",
   "Table.Actions.Export.Title": "Export",
   "Table.Actions.Export.Message": "Download the current table data as a file.",
   "Table.Actions.Export.Confirm": "Export",
+  "Table.Actions.Delete.Button.Text": "Delete",
   "Table.Actions.Delete.Title": "Delete",
   "Table.Actions.Delete.Message": "This removes the selected rows from the table. This cannot be undone.",
   "Table.Actions.Delete.Confirm": "Delete",

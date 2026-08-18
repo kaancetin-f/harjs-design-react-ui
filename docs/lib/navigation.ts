@@ -30,6 +30,7 @@ export const navigation: NavItem[] = [
     { title: "Upload", slug: "form/upload" },
   ]),
   componentLinks("Data Display", [
+    { title: "Calendar", slug: "data-display/calendar" },
     { title: "Card", slug: "data-display/card" },
     { title: "Chip", slug: "data-display/chip" },
     { title: "Diagram", slug: "data-display/diagram" },

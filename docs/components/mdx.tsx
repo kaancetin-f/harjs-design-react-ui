@@ -306,6 +306,9 @@ import { TableNested } from '@/components/demos/data-display/table/nested';
 import { TableSubrows } from '@/components/demos/data-display/table/subrows';
 import { TableRowTone } from '@/components/demos/data-display/table/row-tone';
 import { TableServer } from '@/components/demos/data-display/table/server';
+import { CalendarBasic } from '@/components/demos/data-display/calendar/basic';
+import { CalendarOverlapping } from '@/components/demos/data-display/calendar/overlapping';
+import { CalendarLocale } from '@/components/demos/data-display/calendar/locale';
 import { KanbanBoardBasic } from '@/components/demos/data-display/kanban-board/basic';
 import { KanbanBoardFilters } from '@/components/demos/data-display/kanban-board/filter';
 import { KanbanBoardLoading } from '@/components/demos/data-display/kanban-board/loading';
@@ -634,6 +637,9 @@ export const mdxComponents = {
   TableSubrows,
   TableRowTone,
   TableServer,
+  CalendarBasic,
+  CalendarOverlapping,
+  CalendarLocale,
   KanbanBoardBasic,
   KanbanBoardFilters,
   KanbanBoardLazyLoad,

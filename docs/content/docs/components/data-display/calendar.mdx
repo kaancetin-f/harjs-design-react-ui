@@ -1,0 +1,70 @@
+---
+title: Calendar
+description: Day, week, month, and year views for timed events. Navigate the range, switch views, and render each event yourself.
+---
+
+Calendar takes a typed `data` array. Every item must include `start` and `end` as `Date` values. `trackedBy` is the field used as a stable id — for colors, keys, and overlap columns. `renderItem` paints the event body in the grid and in the hover tooltip.
+
+The header owns Today, previous / next, and the view switcher. Day and week scroll a 24-hour grid and mark the current time. Month lists events on each day. Year is a twelve-month overview; a day opens Day view, a month title opens Month view.
+
+## Import
+
+```tsx
+import { Calendar } from "@harjs/react-ui";
+```
+
+```tsx
+<Calendar
+  trackedBy="id"
+  data={events}
+  renderItem={(item) => <span>{item.title}</span>}
+  height="100vh"
+  config={{ locale: "en" }}
+/>
+```
+
+## Usage
+
+The default view is `Week`. Date and view are uncontrolled unless you pass `currentDate` / `view`. `config.locale` drives chrome copy and date labels (`"tr"` by default). `config.weekStartsOn` is `1` (Monday); pass `0` for Sunday. `height` sizes the whole calendar — use `"100vh"` or `"100%"` to fill the page.
+
+<Example>
+  <CalendarBasic />
+</Example>
+
+## Examples
+
+### Overlapping events
+
+Events that share a time window split into columns. `defaultView="Day"` opens on a single day so the stack is easy to see.
+
+<Example>
+  <CalendarOverlapping />
+</Example>
+
+### Locale
+
+`config.locale="tr"` switches Today, view names, and month labels to Turkish. `defaultView="Month"` opens the month grid.
+
+<Example>
+  <CalendarLocale />
+</Example>
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `trackedBy` | `keyof (T & { start; end })` | — |
+| `data` | `(T & { start: Date; end: Date })[]` | — |
+| `renderItem` | `(item: T, index: number) => ReactElement` | — |
+| `currentDate` | `Date` | — |
+| `defaultDate` | `Date` | `new Date()` |
+| `onDateChange` | `(date: Date) => void` | — |
+| `view` | `"Day" \| "Week" \| "Month" \| "Year"` | — |
+| `defaultView` | `"Day" \| "Week" \| "Month" \| "Year"` | `"Week"` |
+| `onViewChange` | `(view) => void` | — |
+| `onEventClick` | `(item, index) => void` | — |
+| `height` | `string \| number` | `36rem` |
+| `config.locale` | `Intl.LocalesArgument` | `"tr"` |
+| `config.weekStartsOn` | `number` | `1` |
+
+`trackedBy`, `data`, and `renderItem` are required. Pass `currentDate` to own the visible range; pass `view` to own the active view. `height` defaults to `36rem`; `"100vh"` or `"100%"` fills the page. Hover an event for the tooltip. In month view, a day cell opens Day view.

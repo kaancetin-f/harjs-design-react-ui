@@ -11,30 +11,32 @@ type EventItem = {
   end: Date;
 };
 
-const at = (dayOffset: number, startHour: number, startMinute: number, endHour: number, endMinute: number) => {
+const at = (startHour: number, startMinute: number, endHour: number, endMinute: number) => {
   const start = new Date();
-  start.setDate(start.getDate() + dayOffset);
   start.setHours(startHour, startMinute, 0, 0);
   const end = new Date();
-  end.setDate(end.getDate() + dayOffset);
   end.setHours(endHour, endMinute, 0, 0);
   return { start, end };
 };
 
 const events: EventItem[] = [
-  { id: '1', title: 'Design review', ...at(0, 10, 0, 11, 30) },
-  { id: '2', title: 'Sprint planning', ...at(1, 13, 0, 14, 0) },
-  { id: '3', title: 'Customer call', ...at(2, 9, 30, 10, 15) },
-  { id: '4', title: 'Release checklist', ...at(3, 15, 0, 16, 30) },
+  { id: '1', title: 'Standup', ...at(9, 0, 9, 30) },
+  { id: '2', title: 'Pairing', ...at(9, 15, 10, 45) },
+  { id: '3', title: 'Design critique', ...at(9, 30, 11, 0) },
+  { id: '4', title: 'Office hours', ...at(14, 0, 15, 0) },
+  { id: '5', title: 'Incident review', ...at(14, 30, 16, 0) },
 ];
 
-export function CalendarBasic() {
+export function CalendarOverlapping() {
   return (
+    <Flex flexDirection="column" width="100%" height="36rem">
       <Calendar
         trackedBy="id"
         data={events}
+        defaultView="Day"
         renderItem={(item) => <span>{item.title}</span>}
         config={{ locale: 'en' }}
       />
+    </Flex>
   );
 }

@@ -26,13 +26,17 @@ const TableTR: ITableLocale = {
   "Table.Properties.Popup.Label": "Kolonu sırala",
 
   // Actions
+  "Table.Actions.Create.Button.Text": "Oluştur",
+  "Table.Actions.Import.Button.Text": "İçeri Aktar",
   "Table.Actions.Import.Title": "İçeri Aktar",
   "Table.Actions.Import.Message": "Seçtiğiniz dosyayı tabloya aktarmak için yükleyin.",
   "Table.Actions.Import.Upload": "Belge Yükleyin",
   "Table.Actions.Import.Confirm": "Yükle",
+  "Table.Actions.Export.Button.Text": "Dışarı Aktar",
   "Table.Actions.Export.Title": "Dışarı Aktar",
   "Table.Actions.Export.Message": "Tablo verilerini bir dosya olarak indirin.",
   "Table.Actions.Export.Confirm": "Dışarı Aktar",
+  "Table.Actions.Delete.Button.Text": "Sil",
   "Table.Actions.Delete.Title": "Siliniyor",
   "Table.Actions.Delete.Message": "Seçilen satırlar tablodan kaldırılır. Bu işlem geri alınamaz.",
   "Table.Actions.Delete.Confirm": "Sil",

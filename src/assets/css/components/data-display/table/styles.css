@@ -36,11 +36,9 @@
 
   .header {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: var(--space-16);
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-12);
     padding: var(--space-16) var(--space-20);
 
     > .title {
@@ -74,8 +72,37 @@
       display: flex;
       flex-wrap: wrap;
       align-items: center;
+      justify-content: space-between;
       gap: var(--space-8);
-      margin-left: auto;
+      width: auto;
+
+      > .toolbar-start,
+      > .toolbar-end {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--space-8);
+      }
+
+      > .toolbar-end {
+        margin-left: auto;
+      }
+
+      > .toolbar-divider,
+      > .toolbar-end > .toolbar-divider {
+        display: block;
+        width: 1px;
+        align-self: stretch;
+        min-height: 1.5rem;
+        background-color: var(--gray-200);
+        flex-shrink: 0;
+      }
+    }
+
+    &:has(> .title) > .toolbar {
+      margin: 0 calc(var(--space-20) * -1);
+      padding: var(--space-12) var(--space-20) 0;
+      border-top: 1px solid var(--gray-200);
     }
   }
 
@@ -635,13 +662,10 @@
 @media (max-width: 768px) {
   .har-table {
     > .header {
-      flex-direction: column-reverse;
-      align-items: stretch;
-      gap: var(--space-12);
-
       > .toolbar {
-        margin-left: 0;
-        justify-content: flex-start;
+        > .toolbar-end {
+          margin-left: 0;
+        }
       }
     }
   }

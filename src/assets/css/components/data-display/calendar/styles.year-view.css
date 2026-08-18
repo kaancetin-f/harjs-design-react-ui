@@ -1,0 +1,111 @@
+.har-calendar {
+  > .har-calendar-year-view {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-16);
+    min-width: 0;
+    min-height: 0;
+    flex: 1 1 auto;
+
+    > .month {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-8);
+      padding: var(--space-12);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-8);
+      background-color: var(--white-500);
+      cursor: pointer;
+
+      &:hover {
+        border-color: var(--gray-300);
+        background-color: var(--gray-50);
+      }
+
+      > .title {
+        width: fit-content;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: var(--gray-800);
+        font-family: inherit;
+        font-size: 0.875rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        cursor: pointer;
+
+        &:hover {
+          color: var(--blue-600);
+        }
+
+        &:focus-visible {
+          outline: 2px solid var(--blue-500);
+          outline-offset: 2px;
+          border-radius: var(--radius-4);
+        }
+      }
+
+      > .weekdays,
+      > .days {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+      }
+
+      > .weekdays > span {
+        color: var(--gray-400);
+        font-size: 0.625rem;
+        font-weight: 600;
+        text-align: center;
+      }
+
+      > .days > .day {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 1.5rem;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: var(--gray-700);
+        font-family: inherit;
+        font-size: 0.6875rem;
+        border-radius: var(--radius-full);
+        cursor: pointer;
+
+        &:disabled,
+        &.is-outside {
+          color: transparent;
+          pointer-events: none;
+          cursor: default;
+        }
+
+        &.is-today {
+          background-color: var(--blue-500);
+          color: var(--white-alpha-100);
+          font-weight: 600;
+        }
+
+        &.has-events:not(.is-today) {
+          font-weight: 600;
+          box-shadow: inset 0 0 0 1px var(--blue-400);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 960px) {
+  .har-calendar {
+    > .har-calendar-year-view {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .har-calendar {
+    > .har-calendar-year-view {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}
