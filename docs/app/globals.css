@@ -63,6 +63,25 @@ html[data-theme="dark"] {
 
 * {
   box-sizing: border-box;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: var(--bg-subtle);
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: var(--line-strong);
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--line-strong-hover);
+  }
 }
 
 html {
@@ -443,7 +462,6 @@ html[data-theme="dark"] .docs-logo-mark {
     height: 100%;
     min-height: 0;
     padding: 24px 16px 40px;
-    border-right: 1px solid var(--line);
     background: var(--bg);
     overflow: auto;
     overscroll-behavior: contain;
@@ -524,7 +542,7 @@ html[data-theme="dark"] .docs-logo-mark {
   align-self: stretch;
   height: 100%;
   min-height: 0;
-  padding: 40px 0;
+  padding: 40px 20px;
   overflow: auto;
   overscroll-behavior: contain;
 
@@ -1487,7 +1505,11 @@ html[data-theme="dark"] .landing-grain {
 .hero-stage-glow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 55% 45%, color-mix(in srgb, var(--logo-mid) 32%, transparent), transparent 68%);
+  background: radial-gradient(
+    ellipse at 55% 45%,
+    color-mix(in srgb, var(--logo-mid) 32%, transparent),
+    transparent 68%
+  );
   filter: blur(18px);
   pointer-events: none;
 }

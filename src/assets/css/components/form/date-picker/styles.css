@@ -79,8 +79,28 @@
     font-size: 0.75rem;
     line-height: 1;
     letter-spacing: 1px;
-    transition: top 250ms ease-in-out, transform 250ms ease-in-out;
+    transition: top 250ms ease-in-out, transform 250ms ease-in-out, color 250ms ease-in-out;
     z-index: 1;
+  }
+
+  &.invalid > label {
+    color: var(--red-500);
+  }
+
+  /* Native picker: restore the OS calendar control that Input hides on desktop. */
+  &.native-picker {
+    input::-webkit-calendar-picker-indicator {
+      display: block !important;
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      opacity: 0;
+      cursor: pointer;
+      -webkit-appearance: auto;
+    }
   }
 
   > .har-validation-text {

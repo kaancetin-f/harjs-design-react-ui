@@ -238,13 +238,13 @@ const WizardInner = function <TData extends object>({
                         ) : step.icon ? (
                           <Icon icon={step.icon} size={16} fill="var(--gray-400)" />
                         ) : (
-                          <Icon icon="Circle" size={16} fill="var(--gray-300)" />
+                          <Icon icon="Circle" size={16} fill="var(--gray-400)" />
                         )}
                       </span>
                       <span className="step-title">{step.title}</span>
                       {isCurrent ? (
                         <span className="caret" aria-hidden>
-                          <Icon icon="CaretRight" size={16} fill="var(--gray-300)" />
+                          <Icon icon="CaretRight" size={16} fill="var(--gray-400)" />
                         </span>
                       ) : null}
                     </button>

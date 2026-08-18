@@ -1,0 +1,169 @@
+.har-tour {
+  position: fixed;
+  inset: 0;
+  z-index: 2100;
+  pointer-events: none;
+
+  > .har-tour-blocker {
+    position: fixed;
+    inset: 0;
+    pointer-events: auto;
+    background-color: transparent;
+
+    &.is-fallback {
+      background-color: var(--black-alpha-50);
+    }
+  }
+
+  > .har-tour-spotlight {
+    position: fixed;
+    pointer-events: none;
+    border-radius: var(--radius-8);
+    box-shadow:
+      0 0 0 var(--stroke-2) var(--white-500),
+      0 0 0 9999px var(--black-alpha-50);
+    transition:
+      top 180ms ease,
+      left 180ms ease,
+      width 180ms ease,
+      height 180ms ease;
+
+    &.is-hidden {
+      display: none;
+    }
+  }
+
+  > .har-tour-panel {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(var(--space-4)) scale(0.98);
+    background-color: var(--white-500);
+    width: 18rem;
+    max-width: calc(100vw - var(--space-16));
+    border: solid var(--stroke-1) var(--gray-200);
+    border-radius: var(--radius-8);
+    box-shadow: 0 8px 24px -8px var(--black-alpha-30);
+    color: var(--gray-800);
+    outline: none;
+    pointer-events: auto;
+    z-index: 1;
+    transition:
+      opacity 180ms ease,
+      transform 180ms ease,
+      visibility 180ms ease;
+
+    &.is-entered {
+      visibility: visible;
+      opacity: 1;
+      transform: none;
+    }
+
+    &:focus-visible {
+      box-shadow:
+        0 8px 24px -8px var(--black-alpha-30),
+        0 0 0 var(--stroke-2) color-mix(in srgb, var(--blue-500) 35%, transparent);
+    }
+
+    > .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    > .header {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      padding: var(--space-16) var(--space-16) var(--space-8);
+
+      > .progress {
+        color: var(--gray-500);
+        font-family: var(--system);
+        font-size: 0.75rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+      }
+    }
+
+    > .description {
+      margin: 0;
+      padding: var(--space-4) var(--space-16) var(--space-12);
+      color: var(--gray-600);
+      overflow-wrap: anywhere;
+    }
+
+    > .footer {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-8);
+      padding: var(--space-12) var(--space-16) var(--space-16);
+
+      > .actions {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: var(--space-8);
+        margin-left: auto;
+      }
+    }
+
+    &::before {
+      position: absolute;
+      content: "";
+      border: solid 6px transparent;
+    }
+
+    &.top::before {
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-top-color: var(--white-500);
+    }
+
+    &.right::before {
+      top: 50%;
+      right: 100%;
+      transform: translateY(-50%);
+      border-right-color: var(--white-500);
+    }
+
+    &.bottom::before {
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-bottom-color: var(--white-500);
+    }
+
+    &.left::before {
+      top: 50%;
+      left: 100%;
+      transform: translateY(-50%);
+      border-left-color: var(--white-500);
+    }
+
+    &.is-fallback::before {
+      content: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    > .har-tour-spotlight,
+    > .har-tour-panel {
+      transform: none;
+      transition: none;
+    }
+  }
+}

@@ -46,6 +46,8 @@
 
     > iframe {
       width: 100%;
+      color: var(--gray-800);
+      color-scheme: inherit;
       border: solid var(--stroke-1) transparent;
       outline: none;
       box-sizing: border-box;

@@ -1,0 +1,87 @@
+---
+title: Tour
+description: Highlight page elements in sequence. Drive it with open.get / open.set and currentStep. Skip and Finish can persist a one-time run in localStorage.
+---
+
+Tour is a guided overlay. Each step targets a DOM node with a CSS selector or a getter. The active target is spotlighted; title, description, and navigation sit in a panel. Pass `open={{ get, set }}` — the same contract as Modal. `currentStep` is optional: when it is a number the parent owns the index.
+
+Modal and Popover are general overlays. Tooltip is a hover hint. Steps is an in-page process control. Tour walks existing UI.
+
+## Import
+
+```tsx
+import { Tour } from "@harjs/react-ui";
+```
+
+```tsx
+const [open, setOpen] = useState(false);
+const [step, setStep] = useState(0);
+
+<Button onClick={() => setOpen(true)}>Start tour</Button>
+<Tour
+  steps={[
+    { target: "#search", title: "Search", description: "Filter the workspace." },
+    { target: "#create", title: "Create", description: "Start a new record." },
+  ]}
+  currentStep={step}
+  onChange={setStep}
+  open={{ get: open, set: setOpen }}
+  onFinish={() => setOpen(false)}
+/>
+```
+
+## Usage
+
+`steps` is required. `target` is a selector string or `() => Element | null`. First step hides Previous. Last step replaces Next with Finish. Skip stays available until the last step. Escape dismisses the tour like Modal, unless `disableCloseOnEsc` is set.
+
+<Example>
+  <TourBasic />
+</Example>
+
+## Once
+
+Pass `name` to record Skip and Finish in `localStorage` under `har-tour::${name}`. Uncontrolled tours with `config.once` (default `true`) do not auto-open after that. Controlled `open.get` can still replay the tour.
+
+<Example>
+  <TourOnce />
+</Example>
+
+## Missing target
+
+If a selector does not match, Tour does not throw. The overlay stays up and the panel is centered. Next and Previous still move between steps.
+
+<Example>
+  <TourMissing />
+</Example>
+
+## Scroll into view
+
+When the target sits outside the viewport, or inside a nested `overflow` sheet, Tour scrolls each scroll parent so the target is centered in that sheet, then measures the spotlight.
+
+<Example>
+  <TourScroll />
+</Example>
+
+## Props
+
+| Prop | Type | Default |
+| --- | --- | --- |
+| `steps` | `{ target: string \| (() => Element \| null); title?: string; description?: string; placement?: "top" \| "right" \| "bottom" \| "left" }[]` | — |
+| `open.get` | `boolean` | — |
+| `open.set` | `Dispatch<SetStateAction<boolean>>` | — |
+| `currentStep` | `number` | — |
+| `onChange` | `(currentStep: number) => void` | — |
+| `onSkip` | `() => void` | — |
+| `onFinish` | `() => void` | — |
+| `name` | `string` | — |
+| `disableCloseOnEsc` | `boolean` | `false` |
+| `labels.next` | `string` | locale |
+| `labels.previous` | `string` | locale |
+| `labels.skip` | `string` | locale |
+| `labels.finish` | `string` | locale |
+| `labels.step` | `string` | locale |
+| `config.once` | `boolean` | `true` |
+| `config.locale` | `Intl.LocalesArgument` | `"tr"` |
+| `config.padding` | `number` | `8` |
+
+`steps` is required. When `open` is omitted, Tour auto-opens after mount unless `name` is set and already seen. `currentStep` is 0-based. `placement` is a hint; the panel flips when that side does not fit. The overlay portals to `document.body`. Role is `"dialog"` with `aria-modal`.

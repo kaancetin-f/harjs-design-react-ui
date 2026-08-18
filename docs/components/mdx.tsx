@@ -145,6 +145,10 @@ import { TabsVariants } from '@/components/demos/data-display/tabs/variants';
 import { TabsVertical } from '@/components/demos/data-display/tabs/vertical';
 import { TabsDisabled } from '@/components/demos/data-display/tabs/disabled';
 import { TabsResponsive } from '@/components/demos/data-display/tabs/responsive';
+import { TourBasic } from '@/components/demos/data-display/tour/basic';
+import { TourOnce } from '@/components/demos/data-display/tour/once';
+import { TourMissing } from '@/components/demos/data-display/tour/missing';
+import { TourScroll } from '@/components/demos/data-display/tour/scroll';
 import { AlertBasic } from '@/components/demos/feedback/alert/basic';
 import { AlertStatus } from '@/components/demos/feedback/alert/status';
 import { AlertVariants } from '@/components/demos/feedback/alert/variants';
@@ -469,6 +473,10 @@ export const mdxComponents = {
   TabsVertical,
   TabsDisabled,
   TabsResponsive,
+  TourBasic,
+  TourOnce,
+  TourMissing,
+  TourScroll,
   AlertBasic,
   AlertStatus,
   AlertVariants,

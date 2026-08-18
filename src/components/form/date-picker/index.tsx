@@ -8,6 +8,7 @@ import Button from "../button";
 import Alert from "../../feedback/alert";
 import ReactDOM from "react-dom";
 import DATE from "./DATE";
+import { NATIVE_DATE_PICKER_QUERY, shouldUseNativeDatePicker } from "./helpers";
 import DatePickerTR from "../../../libs/core/application/locales/date-picker/tr";
 import DatePickerEN from "../../../libs/core/application/locales/date-picker/en";
 import IDatePickerLocale from "../../../libs/core/application/locales/date-picker/IDatePickerLocale";
@@ -73,6 +74,10 @@ const DatePicker: React.FC<Props> = ({
 
   // states
   const [calendarIsOpen, setCalendarIsOpen] = useState<boolean>(false);
+  const [useNativePicker, setUseNativePicker] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return shouldUseNativeDatePicker(navigator.userAgent, window.matchMedia(NATIVE_DATE_PICKER_QUERY).matches);
+  });
   const [calendarDays, setCalendarDays] = useState<React.ReactNode[]>([]);
   const [years, setYears] = useState<Option[]>([]);
   const [hours, setHours] = useState<React.ReactNode>();
@@ -700,6 +705,22 @@ const DatePicker: React.FC<Props> = ({
     );
   };
 
+  const openCustomCalendar = (field?: "start" | "end") => {
+    if (useNativePicker || attributes.disabled) return;
+    if (field) setActiveField(field);
+    setCalendarIsOpen(true);
+  };
+
+  const handleInputClick = (event: React.MouseEvent<HTMLInputElement>, field?: "start" | "end") => {
+    if (useNativePicker) {
+      if (field) setActiveField(field);
+      return;
+    }
+
+    event.preventDefault();
+    openCustomCalendar(field);
+  };
+
   const closeCalendar = () => {
     if (multiple) {
       const startParsed = value?.start ? DATE.Parse(String(value.start), isClock, isOnlyClock) : null;
@@ -733,6 +754,19 @@ const DatePicker: React.FC<Props> = ({
   };
 
   // useEffects
+  useEffect(() => {
+    const media = window.matchMedia(NATIVE_DATE_PICKER_QUERY);
+    const sync = () => {
+      const next = shouldUseNativeDatePicker(navigator.userAgent, media.matches);
+      setUseNativePicker(next);
+      if (next) setCalendarIsOpen(false);
+    };
+
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
+
   useEffect(() => {
     if (calendarIsOpen) {
       setTimeout(() => {
@@ -943,7 +977,15 @@ const DatePicker: React.FC<Props> = ({
   }, [activeField, calendarIsOpen]);
 
   return (
-    <div className="har-date-picker">
+    <div
+      className={[
+        "har-date-picker",
+        !Utils.IsNullOrEmpty(validation?.text) ? "invalid" : "",
+        useNativePicker ? "native-picker" : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
       {attributes.placeholder && attributes.placeholder.length > 0 && (
         <label ref={_placeholder}>
           {validation ? "* " : ""}
@@ -986,16 +1028,12 @@ const DatePicker: React.FC<Props> = ({
                   if (attributes.disabled) return;
 
                   (() => {
-                    if (!calendarIsOpen) setCalendarIsOpen(true);
+                    if (!useNativePicker && !calendarIsOpen) setCalendarIsOpen(true);
                     setActiveField("start");
                     handleNativeChange(event.target.value, "start");
                   })();
                 }}
-                onClick={(event) => {
-                  event.preventDefault();
-                  setActiveField("start");
-                  setCalendarIsOpen(true);
-                }}
+                onClick={(event) => handleInputClick(event, "start")}
                 autoComplete="off"
               />
 
@@ -1018,16 +1056,12 @@ const DatePicker: React.FC<Props> = ({
                   if (attributes.disabled) return;
 
                   (() => {
-                    if (!calendarIsOpen) setCalendarIsOpen(true);
+                    if (!useNativePicker && !calendarIsOpen) setCalendarIsOpen(true);
                     setActiveField("end");
                     handleNativeChange(event.target.value, "end");
                   })();
                 }}
-                onClick={(event) => {
-                  event.preventDefault();
-                  setActiveField("end");
-                  setCalendarIsOpen(true);
-                }}
+                onClick={(event) => handleInputClick(event, "end")}
                 autoComplete="off"
               />
             </Flex>
@@ -1048,7 +1082,7 @@ const DatePicker: React.FC<Props> = ({
             onChange={(event) => {
               if (attributes.disabled) return;
               (() => {
-                if (!calendarIsOpen) setCalendarIsOpen(true);
+                if (!useNativePicker && !calendarIsOpen) setCalendarIsOpen(true);
                 const val = event.target.value;
                 if (!val) return;
 
@@ -1086,10 +1120,7 @@ const DatePicker: React.FC<Props> = ({
                 onChange(val);
               })();
             }}
-            onClick={(event) => {
-              event.preventDefault();
-              setCalendarIsOpen(true);
-            }}
+            onClick={(event) => handleInputClick(event)}
             autoComplete="off"
           />
         )}
@@ -1098,6 +1129,7 @@ const DatePicker: React.FC<Props> = ({
       {validation?.text ? <div className="har-validation-text">{validation.text}</div> : null}
 
       {calendarIsOpen &&
+        !useNativePicker &&
         ReactDOM.createPortal(
           <div ref={_harCalendar} className={`har-date-calendar${isOnlyClock ? " only-clock" : ""}`}>
             {!isOnlyClock && (

@@ -1,4 +1,8 @@
 .har-wizard {
+  --wizard-surface: var(--white-500);
+  --wizard-border: var(--gray-200);
+  --wizard-current-shadow: 0 5px 15px -5px var(--black-alpha-20);
+
   display: flex;
   flex-direction: row;
   align-items: stretch;
@@ -39,8 +43,8 @@
       margin: 0;
 
       &.is-current > .step-trigger {
-        background-color: var(--white-alpha-100);
-        box-shadow: 0 5px 15px -5px var(--black-alpha-20);
+        background-color: var(--wizard-surface);
+        box-shadow: var(--wizard-current-shadow);
 
         > .step-title {
           color: var(--gray-900);
@@ -80,8 +84,12 @@
       }
 
       &:not(:disabled):hover {
-        background-color: color-mix(in srgb, var(--white-500) 70%, transparent);
+        background-color: color-mix(in srgb, var(--gray-200) 70%, transparent);
       }
+    }
+
+    .step-item.is-current > .step-trigger:not(:disabled):hover {
+      background-color: var(--wizard-surface);
     }
 
     .step-title {
@@ -130,8 +138,8 @@
     min-width: 0;
     min-height: 0;
     gap: var(--space-16);
-    background-color: var(--white-alpha-100);
-    border: solid var(--stroke-1) var(--gray-200);
+    background-color: var(--wizard-surface);
+    border: solid var(--stroke-1) var(--wizard-border);
     border-radius: var(--radius-12);
 
     > .header {
@@ -142,7 +150,7 @@
       align-items: center;
       gap: var(--space-12);
       padding: var(--space-16) var(--space-32);
-      border-bottom: solid var(--stroke-1) var(--gray-200);
+      border-bottom: solid var(--stroke-1) var(--wizard-border);
 
       > .header-right {
         display: flex;
@@ -192,7 +200,7 @@
       justify-content: flex-end;
       margin-top: auto;
       padding: var(--space-16) var(--space-32);
-      border-top: solid var(--stroke-1) var(--gray-200);
+      border-top: solid var(--stroke-1) var(--wizard-border);
     }
   }
 
@@ -240,6 +248,20 @@
       animation: none;
       transition: none;
     }
+  }
+}
+
+html[data-theme="dark"] .har-wizard {
+  --wizard-surface: var(--gray-200);
+  --wizard-border: var(--gray-300);
+  --wizard-current-shadow: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .har-wizard {
+    --wizard-surface: var(--gray-200);
+    --wizard-border: var(--gray-300);
+    --wizard-current-shadow: none;
   }
 }
 

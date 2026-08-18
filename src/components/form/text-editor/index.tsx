@@ -10,6 +10,25 @@ import Utils from "../../../libs/infrastructure/shared/Utils";
 import ReactDOM from "react-dom";
 import Tooltip from "../../feedback/tooltip";
 
+const applyIframeTheme = (doc: Document) => {
+  if (typeof document === "undefined") return;
+
+  const rootStyles = getComputedStyle(document.documentElement);
+  const color = rootStyles.getPropertyValue("--gray-800").trim() || "#1f2937";
+  const fontFamily = rootStyles.getPropertyValue("--system").trim() || "sans-serif";
+  const colorScheme = rootStyles.colorScheme?.trim() || "light";
+  const head = doc.head ?? doc.documentElement.appendChild(doc.createElement("head"));
+  let tag = doc.getElementById("har-text-editor-theme") as HTMLStyleElement | null;
+
+  if (!tag) {
+    tag = doc.createElement("style");
+    tag.id = "har-text-editor-theme";
+    head.appendChild(tag);
+  }
+
+  tag.textContent = `html{color-scheme:${colorScheme}}html,body{background-color:transparent;color:${color};caret-color:${color};font-family:${fontFamily}}`;
+};
+
 const TextEditor = <T extends object>({
   variant = "outlined",
   color = "gray",
@@ -204,6 +223,7 @@ const TextEditor = <T extends object>({
 
     setIframeDocument(_iframeDocument);
     _iframeDocument.designMode = _disabled.current ? "off" : "on";
+    applyIframeTheme(_iframeDocument);
 
     // Herhangi bir değişikliği izlemek için MutationObserver kullan
     const observer = new MutationObserver((mutationsList) => {
@@ -277,6 +297,24 @@ const TextEditor = <T extends object>({
     if (!iframeDocument) return;
     iframeDocument.designMode = disabled ? "off" : "on";
   }, [disabled, iframeDocument]);
+
+  useEffect(() => {
+    if (!iframeDocument) return;
+
+    applyIframeTheme(iframeDocument);
+
+    const observer = new MutationObserver(() => applyIframeTheme(iframeDocument));
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme", "class"] });
+
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const onSchemeChange = () => applyIframeTheme(iframeDocument);
+    media.addEventListener("change", onSchemeChange);
+
+    return () => {
+      observer.disconnect();
+      media.removeEventListener("change", onSchemeChange);
+    };
+  }, [iframeDocument]);
 
   useEffect(() => {
     dynamicList?.onTagged && dynamicList?.onTagged(tagged);

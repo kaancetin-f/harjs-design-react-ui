@@ -39,6 +39,7 @@ export const navigation: NavItem[] = [
     { title: "Paper", slug: "data-display/paper" },
     { title: "Table", slug: "data-display/table" },
     { title: "Tabs", slug: "data-display/tabs" },
+    { title: "Tour", slug: "data-display/tour" },
     { title: "Typography", slug: "data-display/typography" },
   ]),
   componentLinks("Feedback", [

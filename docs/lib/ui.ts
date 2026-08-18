@@ -29,6 +29,7 @@ export { default as KanbanBoard } from "../../src/components/data-display/kanban
 export { default as Paper } from "../../src/components/data-display/paper";
 export { default as Table } from "../../src/components/data-display/table";
 export { default as Tabs } from "../../src/components/data-display/tabs";
+export { default as Tour } from "../../src/components/data-display/tour";
 export { default as Typography } from "../../src/components/data-display/typography";
 export { default as Alert } from "../../src/components/feedback/alert";
 export { default as Drawer } from "../../src/components/feedback/drawer";

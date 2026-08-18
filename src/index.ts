@@ -32,6 +32,7 @@ import KanbanBoard from "./components/data-display/kanban-board";
 import Paper from "./components/data-display/paper";
 import Table from "./components/data-display/table";
 import Tabs from "./components/data-display/tabs";
+import Tour from "./components/data-display/tour";
 import Typography from "./components/data-display/typography";
 
 // Feedback
@@ -100,6 +101,7 @@ export {
   Paper,
   Table,
   Tabs,
+  Tour,
   Typography,
 
   // Feedback
