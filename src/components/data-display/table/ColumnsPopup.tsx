@@ -69,6 +69,12 @@ function ColumnsPopup<T extends object>({ refs, states, coordinate, columns, con
 
   const handleClose = () => states.open.set(false);
 
+  const handleScrollAway = (event: Event) => {
+    const target = event.target instanceof Node ? event.target : null;
+    if (target && _arColumnsPopup.current?.contains(target)) return;
+    handleClose();
+  };
+
   const setAllVisibility = (value: boolean) => {
     columns.forEach((c, cIndex) => {
       const key = getColumnKey(c, cIndex);
@@ -91,12 +97,12 @@ function ColumnsPopup<T extends object>({ refs, states, coordinate, columns, con
 
     document.addEventListener("pointerdown", handleClickOutSide);
     document.addEventListener("keydown", handleKeys);
-    window.addEventListener("scroll", handleClose, true);
+    window.addEventListener("scroll", handleScrollAway, true);
 
     return () => {
       document.removeEventListener("pointerdown", handleClickOutSide);
       document.removeEventListener("keydown", handleKeys);
-      window.removeEventListener("scroll", handleClose, true);
+      window.removeEventListener("scroll", handleScrollAway, true);
       if (tableContentRef) tableContentRef.removeEventListener("scroll", handleClose);
     };
   }, [states.open.get]);

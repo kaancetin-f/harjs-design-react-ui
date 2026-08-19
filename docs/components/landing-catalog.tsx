@@ -2,7 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
-import { Alert, Button, Card, Chip, GridSystem, Icon, Steps, Typography } from "@/lib/ui";
+import { Alert, Badge, Button, Card, Chip, GridSystem, Icon, Steps, Typography } from "@/lib/ui";
 import { CopyButton } from "@/components/copy-button";
 
 const { Flex, Row, Column } = GridSystem;
@@ -113,6 +113,33 @@ export function LandingCatalog() {
             <Button variant="outlined" color="blue">
               Draft
             </Button>
+          </Flex>
+        </CatalogCard>
+        <CatalogCard kicker="Data Display" title="Badge" href="/docs/components/data-display/badge">
+          <Flex flexWrap="wrap" alignItems="flex-end" gap="var(--space-24)">
+            <Badge count={5}>
+              <span
+                style={{
+                  display: "block",
+                  width: 40,
+                  height: 40,
+                  borderRadius: "var(--radius-8)",
+                  background: "var(--gray-200)",
+                }}
+              />
+            </Badge>
+            <Badge count={0} config={{ showZero: true }}>
+              <span
+                style={{
+                  display: "block",
+                  width: 40,
+                  height: 40,
+                  borderRadius: "var(--radius-8)",
+                  background: "var(--gray-200)",
+                }}
+              />
+            </Badge>
+            <Badge status="success" text="Success" />
           </Flex>
         </CatalogCard>
         <CatalogCard kicker="Data Display" title="Chip" href="/docs/components/data-display/chip">

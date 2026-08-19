@@ -8,7 +8,8 @@
   color: var(--gray-800);
   border: 1px solid var(--gray-200);
   border-radius: var(--radius-8);
-  box-shadow: 0 4px 8px color-mix(in srgb, var(--black-alpha-100) 10%, transparent),
+  box-shadow:
+    0 4px 8px color-mix(in srgb, var(--black-alpha-100) 10%, transparent),
     0 12px 24px -3px color-mix(in srgb, var(--black-alpha-100) 20%, transparent);
   z-index: 1052;
   animation: har-table-popup 160ms ease;
@@ -25,7 +26,6 @@
     color: inherit;
     font-family: var(--system);
     font-size: 0.8125rem;
-    font-weight: 550;
     letter-spacing: -0.01em;
     text-align: left;
     cursor: pointer;

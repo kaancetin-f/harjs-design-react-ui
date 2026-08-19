@@ -22,6 +22,7 @@ import Upload from "./components/form/upload";
 import Gantt from "./components/charts/gantt";
 
 // Data Display
+import Badge from "./components/data-display/badge";
 import Calendar from "./components/data-display/calendar";
 import Card from "./components/data-display/card";
 import Chip from "./components/data-display/chip";
@@ -91,6 +92,7 @@ export {
   Gantt,
 
   // Data Display
+  Badge,
   Calendar,
   Card,
   Chip,

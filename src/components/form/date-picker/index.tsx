@@ -8,7 +8,7 @@ import Button from "../button";
 import Alert from "../../feedback/alert";
 import ReactDOM from "react-dom";
 import DATE from "./DATE";
-import { NATIVE_DATE_PICKER_QUERY, shouldUseNativeDatePicker } from "./helpers";
+import { clampCalendarPosition, NATIVE_DATE_PICKER_QUERY, shouldUseNativeDatePicker } from "./helpers";
 import DatePickerTR from "../../../libs/core/application/locales/date-picker/tr";
 import DatePickerEN from "../../../libs/core/application/locales/date-picker/en";
 import IDatePickerLocale from "../../../libs/core/application/locales/date-picker/IDatePickerLocale";
@@ -206,10 +206,23 @@ const DatePicker: React.FC<Props> = ({
 
     const top = (openAbove ? inputRect.top - calendarRect.height : inputRect.top + inputRect.height) + sy;
 
+    const visualWidth = calendarRect.width + leftOverhang + rightOverhang;
+    const originLeft = left - leftOverhang;
+    const clamped = clampCalendarPosition(
+      originLeft,
+      top,
+      visualWidth,
+      calendarRect.height,
+      window.innerWidth,
+      window.innerHeight,
+      sx,
+      sy,
+    );
+
     calendarEl.style.visibility = "visible";
     calendarEl.style.opacity = "1";
-    calendarEl.style.top = `${top}px`;
-    calendarEl.style.left = `${left}px`;
+    calendarEl.style.top = `${clamped.top}px`;
+    calendarEl.style.left = `${clamped.left + leftOverhang}px`;
   };
 
   const handleHeight = () => {
@@ -976,6 +989,25 @@ const DatePicker: React.FC<Props> = ({
     setDateChanged((prev) => !prev);
   }, [activeField, calendarIsOpen]);
 
+  const withNativeDisplay = (raw: string, input: React.ReactNode) => {
+    if (!useNativePicker) return input;
+
+    const formatted = DATE.FormatDisplay(raw, isClock, isOnlyClock);
+    const empty = !formatted;
+
+    return (
+      <div className="native-field">
+        <span className={empty ? "native-display placeholder" : "native-display"}>
+          {formatted || DATE.DisplayPlaceholder(isClock, isOnlyClock)}
+        </span>
+        {input}
+      </div>
+    );
+  };
+
+  const startRaw = String((multiple ? value?.start : value) ?? "");
+  const endRaw = String((multiple ? value?.end : "") ?? "");
+
   return (
     <div
       className={[
@@ -1011,68 +1043,76 @@ const DatePicker: React.FC<Props> = ({
         {multiple ? (
           <div className={_inputsFieldClassNames.map((c) => c).join(" ")} style={attributes.style}>
             <Flex flexDirection={direction || "row"} alignItems="center" width="100%" gap="var(--space-8)">
-              <Input
-                ref={_beginDate}
-                variant="borderless"
-                color={color}
-                disabled={attributes.disabled}
-                style={{ padding: 0 }}
-                value={DATE.ParseValue(String(value?.start ?? ""), isClock, isOnlyClock)}
-                type={isOnlyClock ? "time" : isClock ? "datetime-local" : "date"}
-                size={size}
-                onKeyDown={(event) => {
-                  if (event.code === "Space") event.preventDefault();
-                  else if (event.code === "Enter") handleOk();
-                }}
-                onChange={(event) => {
-                  if (attributes.disabled) return;
+              {withNativeDisplay(
+                startRaw,
+                <Input
+                  ref={_beginDate}
+                  variant="borderless"
+                  color={color}
+                  disabled={attributes.disabled}
+                  style={{ padding: 0 }}
+                  value={DATE.ParseValue(startRaw, isClock, isOnlyClock)}
+                  type={isOnlyClock ? "time" : isClock ? "datetime-local" : "date"}
+                  size={size}
+                  onKeyDown={(event) => {
+                    if (event.code === "Space") event.preventDefault();
+                    else if (event.code === "Enter") handleOk();
+                  }}
+                  onChange={(event) => {
+                    if (attributes.disabled) return;
 
-                  (() => {
-                    if (!useNativePicker && !calendarIsOpen) setCalendarIsOpen(true);
-                    setActiveField("start");
-                    handleNativeChange(event.target.value, "start");
-                  })();
-                }}
-                onClick={(event) => handleInputClick(event, "start")}
-                autoComplete="off"
-              />
+                    (() => {
+                      if (!useNativePicker && !calendarIsOpen) setCalendarIsOpen(true);
+                      setActiveField("start");
+                      handleNativeChange(event.target.value, "start");
+                    })();
+                  }}
+                  onClick={(event) => handleInputClick(event, "start")}
+                  autoComplete="off"
+                />,
+              )}
 
               {direction === "row" && <Icon icon="ArrowRight" size={16} />}
 
-              <Input
-                ref={_endDate}
-                variant="borderless"
-                color={color}
-                disabled={attributes.disabled}
-                style={{ padding: 0 }}
-                value={DATE.ParseValue(String(value?.end ?? ""), isClock, isOnlyClock)}
-                type={isOnlyClock ? "time" : isClock ? "datetime-local" : "date"}
-                size={size}
-                onKeyDown={(event) => {
-                  if (event.code === "Space") event.preventDefault();
-                  else if (event.code === "Enter") handleOk();
-                }}
-                onChange={(event) => {
-                  if (attributes.disabled) return;
+              {withNativeDisplay(
+                endRaw,
+                <Input
+                  ref={_endDate}
+                  variant="borderless"
+                  color={color}
+                  disabled={attributes.disabled}
+                  style={{ padding: 0 }}
+                  value={DATE.ParseValue(endRaw, isClock, isOnlyClock)}
+                  type={isOnlyClock ? "time" : isClock ? "datetime-local" : "date"}
+                  size={size}
+                  onKeyDown={(event) => {
+                    if (event.code === "Space") event.preventDefault();
+                    else if (event.code === "Enter") handleOk();
+                  }}
+                  onChange={(event) => {
+                    if (attributes.disabled) return;
 
-                  (() => {
-                    if (!useNativePicker && !calendarIsOpen) setCalendarIsOpen(true);
-                    setActiveField("end");
-                    handleNativeChange(event.target.value, "end");
-                  })();
-                }}
-                onClick={(event) => handleInputClick(event, "end")}
-                autoComplete="off"
-              />
+                    (() => {
+                      if (!useNativePicker && !calendarIsOpen) setCalendarIsOpen(true);
+                      setActiveField("end");
+                      handleNativeChange(event.target.value, "end");
+                    })();
+                  }}
+                  onClick={(event) => handleInputClick(event, "end")}
+                  autoComplete="off"
+                />,
+              )}
             </Flex>
           </div>
         ) : (
-          <Input
+          withNativeDisplay(
+            startRaw,
+            <Input
             ref={_beginDate}
             variant={variant}
             color={!Utils.IsNullOrEmpty(validation?.text) ? "red" : color}
             {...attributes}
-            value={DATE.ParseValue(String(value ?? ""), isClock, isOnlyClock)}
+            value={DATE.ParseValue(startRaw, isClock, isOnlyClock)}
             type={isOnlyClock ? "time" : isClock ? "datetime-local" : "date"}
             size={size}
             onKeyDown={(event) => {
@@ -1122,7 +1162,8 @@ const DatePicker: React.FC<Props> = ({
             }}
             onClick={(event) => handleInputClick(event)}
             autoComplete="off"
-          />
+          />,
+          )
         )}
       </div>
 

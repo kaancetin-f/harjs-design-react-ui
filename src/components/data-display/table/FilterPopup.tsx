@@ -52,6 +52,8 @@ const FilterPopup = ({ children, refs, states, coordinate, label }: IProps) => {
 
   const handleScrollAway = (event: Event) => {
     if (isPortaledOverlay(event.target)) return;
+    const target = event.target instanceof Node ? event.target : null;
+    if (target && _arTableFilterPopup.current?.contains(target)) return;
     handleClose();
   };
 

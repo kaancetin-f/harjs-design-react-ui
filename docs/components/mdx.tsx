@@ -94,6 +94,18 @@ import { UploadProgress } from '@/components/demos/form/upload/progress';
 import { UploadSizes } from '@/components/demos/form/upload/sizes';
 import { UploadDisabled } from '@/components/demos/form/upload/disabled';
 import { UploadValidation } from '@/components/demos/form/upload/validation';
+import { BadgeBasic } from '@/components/demos/data-display/badge/basic';
+import { BadgeOverflow } from '@/components/demos/data-display/badge/overflow';
+import { BadgeDot } from '@/components/demos/data-display/badge/dot';
+import { BadgeStatus } from '@/components/demos/data-display/badge/status';
+import { BadgeStandalone } from '@/components/demos/data-display/badge/standalone';
+import { BadgeOffset } from '@/components/demos/data-display/badge/offset';
+import { BadgeSizes } from '@/components/demos/data-display/badge/sizes';
+import { BadgeDynamic } from '@/components/demos/data-display/badge/dynamic';
+import { BadgeClickable } from '@/components/demos/data-display/badge/clickable';
+import { BadgeRibbon } from '@/components/demos/data-display/badge/ribbon';
+import { BadgeColors } from '@/components/demos/data-display/badge/colors';
+import { BadgeIcons } from '@/components/demos/data-display/badge/icons';
 import { ChipBasic } from '@/components/demos/data-display/chip/basic';
 import { ChipVariants } from '@/components/demos/data-display/chip/variants';
 import { ChipColors } from '@/components/demos/data-display/chip/colors';
@@ -425,6 +437,18 @@ export const mdxComponents = {
   UploadSizes,
   UploadDisabled,
   UploadValidation,
+  BadgeBasic,
+  BadgeOverflow,
+  BadgeDot,
+  BadgeStatus,
+  BadgeStandalone,
+  BadgeOffset,
+  BadgeSizes,
+  BadgeDynamic,
+  BadgeClickable,
+  BadgeRibbon,
+  BadgeColors,
+  BadgeIcons,
   ChipBasic,
   ChipVariants,
   ChipColors,

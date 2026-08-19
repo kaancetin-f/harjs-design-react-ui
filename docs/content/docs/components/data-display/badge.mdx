@@ -1,0 +1,128 @@
+---
+title: Badge
+description: Small count or status marks on a host. Use a dot when the number does not matter.
+---
+
+Badge sits on a child — an avatar, an icon, or a link — or stands alone as a count. Chip is still the labeled token for tags and filters.
+
+## When to use
+
+- Notification counts on an icon or avatar.
+- Status of a record next to a short label.
+- A standalone count when there is no host.
+
+`status` uses the shared tokens. Error is `danger`. Default/neutral is `secondary`. Processing uses `information` and pulses.
+
+## Import
+
+```tsx
+import { Badge } from "@harjs/react-ui";
+```
+
+```tsx
+<Badge count={5}>
+  <Avatar />
+</Badge>
+<Badge status="success" text="Success" />
+<Badge.Ribbon text="Hippies">
+  <Card title="Release">Ship notes.</Card>
+</Badge.Ribbon>
+```
+
+## Examples
+
+### Basic
+
+Wrap a host. `count={0}` hides the mark unless `config.showZero` is set. Values above `99` become `99+`.
+
+<Example>
+  <BadgeBasic />
+</Example>
+
+### Overflow
+
+`config.overflowCount` sets the cap. The mark shows `{n}+` once `count` is greater than the cap.
+
+<Example>
+  <BadgeOverflow />
+</Example>
+
+### Dot
+
+`dot` is a red mark with no number. Use it when something is new, not how many.
+
+<Example>
+  <BadgeDot />
+</Example>
+
+### Status
+
+A status mark plus a short label. No host.
+
+<Example>
+  <BadgeStatus />
+</Example>
+
+### Standalone
+
+A count with no child. Default is `danger`. Pass `status` for the other hues.
+
+<Example>
+  <BadgeStandalone />
+</Example>
+
+### Offset
+
+`config.offset` is `[x, y]` in pixels from the top-end corner.
+
+<Example>
+  <BadgeOffset />
+</Example>
+
+### Size
+
+`sm`, `md`, and `lg` change the mark. The host stays the same.
+
+<Example>
+  <BadgeSizes />
+</Example>
+
+### Dynamic
+
+The count is just a number. Drive it from state.
+
+<Example>
+  <BadgeDynamic />
+</Example>
+
+### Clickable
+
+Wrap `Badge` in a link. The host and the mark click together.
+
+<Example>
+  <BadgeClickable />
+</Example>
+
+### Ribbon
+
+`Badge.Ribbon` wraps a card. `placement` is `start` or `end`.
+
+<Example>
+  <BadgeRibbon />
+</Example>
+
+### Color
+
+`color` is the same palette as Chip. Status rows use it as the dot.
+
+<Example>
+  <BadgeColors />
+</Example>
+
+### Icon tokens
+
+Pass `icon` when you need a compact labeled token instead of a count. Chip still covers filters and delete.
+
+<Example>
+  <BadgeIcons />
+</Example>

@@ -19,6 +19,7 @@
 
 .har-date-picker {
   position: relative;
+  max-width: 100%;
 
   > .container {
     display: block;
@@ -89,6 +90,75 @@
 
   /* Native picker: restore the OS calendar control that Input hides on desktop. */
   &.native-picker {
+    width: 100%;
+    max-width: 100%;
+
+    > .container {
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
+    }
+
+    .native-field {
+      position: relative;
+      flex: 1 1 0;
+      min-width: 0;
+      width: 100%;
+    }
+
+    .native-display {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      color: var(--gray-800);
+      font-variant-numeric: tabular-nums;
+      font-size: 0.75rem;
+      line-height: 1;
+      letter-spacing: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 0 0.15rem;
+
+      &.placeholder {
+        color: var(--gray-400);
+        font-weight: 300;
+      }
+    }
+
+    .har-input-wrapper,
+    .har-input,
+    .input,
+    input {
+      min-width: 0 !important;
+      max-width: 100%;
+      width: 100%;
+    }
+
+    input[type="date"],
+    input[type="datetime-local"],
+    input[type="time"] {
+      color: transparent !important;
+      caret-color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+
+    input::-webkit-datetime-edit,
+    input::-webkit-datetime-edit-fields-wrapper,
+    input::-webkit-datetime-edit-text,
+    input::-webkit-datetime-edit-month-field,
+    input::-webkit-datetime-edit-day-field,
+    input::-webkit-datetime-edit-year-field,
+    input::-webkit-datetime-edit-hour-field,
+    input::-webkit-datetime-edit-minute-field,
+    input::-webkit-datetime-edit-ampm-field {
+      color: transparent;
+    }
+
     input::-webkit-calendar-picker-indicator {
       display: block !important;
       position: absolute;

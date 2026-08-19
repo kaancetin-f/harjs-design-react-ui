@@ -17,6 +17,7 @@ export { default as TextEditor } from "../../src/components/form/text-editor";
 export { default as Upload } from "../../src/components/form/upload";
 export { default as Layout } from "../../src/components/layout/layout";
 export { default as Icon } from "../../src/components/icons";
+export { default as Badge } from "../../src/components/data-display/badge";
 export { default as Calendar } from "../../src/components/data-display/calendar";
 export { default as Card } from "../../src/components/data-display/card";
 export { default as Chip } from "../../src/components/data-display/chip";

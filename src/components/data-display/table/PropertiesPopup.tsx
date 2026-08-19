@@ -105,39 +105,39 @@ function PropertiesPopup<T extends object>({ refs, states, methods, coordinate, 
         aria-label={t("Table.Properties.Popup.Label")}
         style={{ top: position.y, left: position.x }}
       >
-          {currentSort && (!currentSort.direction || currentSort.direction === "desc") && (
-            <button type="button" role="menuitem" onClick={() => handleSort(currentKey, "asc")}>
-              <span>
-                <Icon icon="ArrowUp" fill="currentColor" />
-              </span>
-              <span>{t("Table.Properties.Asc.Text")}</span>
-            </button>
-          )}
+        {currentSort && (!currentSort.direction || currentSort.direction === "desc") && (
+          <button type="button" role="menuitem" onClick={() => handleSort(currentKey, "asc")}>
+            <span>
+              <Icon icon="ArrowUp" fill="currentColor" />
+            </span>
+            <span>{t("Table.Properties.Asc.Text")}</span>
+          </button>
+        )}
 
-          {currentSort && (!currentSort.direction || currentSort.direction === "asc") && (
-            <button type="button" role="menuitem" onClick={() => handleSort(currentKey, "desc")}>
-              <span>
-                <Icon icon="ArrowDown" fill="currentColor" />
-              </span>
-              <span>{t("Table.Properties.Desc.Text")}</span>
-            </button>
-          )}
+        {currentSort && (!currentSort.direction || currentSort.direction === "asc") && (
+          <button type="button" role="menuitem" onClick={() => handleSort(currentKey, "desc")}>
+            <span>
+              <Icon icon="ArrowDown" fill="currentColor" />
+            </span>
+            <span>{t("Table.Properties.Desc.Text")}</span>
+          </button>
+        )}
 
-          {currentSort && currentSort.direction && (
-            <button
-              type="button"
-              role="menuitem"
-              onClick={() => {
-                states.sort.set((prev) => prev.filter((s) => s.key !== currentKey));
-                states.open.set(false);
-              }}
-            >
-              <span>
-                <Icon icon="ChevronExpand" fill="currentColor" />
-              </span>
-              <span>{t("Table.Properties.ClearSort.Text")}</span>
-            </button>
-          )}
+        {currentSort && currentSort.direction && (
+          <button
+            type="button"
+            role="menuitem"
+            onClick={() => {
+              states.sort.set((prev) => prev.filter((s) => s.key !== currentKey));
+              states.open.set(false);
+            }}
+          >
+            <span>
+              <Icon icon="ChevronExpand" fill="currentColor" />
+            </span>
+            <span>{t("Table.Properties.ClearSort.Text")}</span>
+          </button>
+        )}
       </div>,
       document.body,
     )
