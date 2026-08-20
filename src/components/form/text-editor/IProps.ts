@@ -5,6 +5,7 @@ import {
   IValidationProps,
   IVariantProps,
 } from "../../../libs/infrastructure/types/IGlobalProps";
+import { Color } from "../../../libs/infrastructure/types";
 
 export interface IProps<T>
   extends IValidationProps,
@@ -21,7 +22,8 @@ export interface IProps<T>
       items: T[];
     };
     triggerKey?: string;
-    onTagged: (tagged: any[]) => void;
+    color?: Color;
+    onTagged: (tagged: T[]) => void;
   };
   height?: number;
   multilang?: boolean;

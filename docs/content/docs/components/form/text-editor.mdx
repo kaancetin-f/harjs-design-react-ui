@@ -17,6 +17,16 @@ import { TextEditor } from '@harjs/react-ui'
   <TextEditorBasic />
 </Example>
 
+## Examples
+
+### Mentions
+
+Pass `dynamicList` to open a list when the user types `triggerKey` (default `@`). Filter by typing, move with `↑↓`, select with `Enter`, and close with `Esc`. `onTagged` receives the selected items. `color` paints the inserted mention chip with a design token (`purple` in this example).
+
+<Example>
+  <TextEditorMentions />
+</Example>
+
 ## Props
 
 | Prop | Type | Default | Description |
@@ -31,4 +41,4 @@ import { TextEditor } from '@harjs/react-ui'
 | `name` | `string` | — | iframe name |
 | `disabled` | `boolean` | — | Disable editing |
 | `validation` | `{ text?: string }` | — | Error message |
-| `dynamicList` | `{ render; triggerKey?; onTagged }` | — | Optional @-mention list |
+| `dynamicList` | `{ render; triggerKey?; color?; onTagged }` | — | Optional mention list. `color` styles the inserted `@` chip |

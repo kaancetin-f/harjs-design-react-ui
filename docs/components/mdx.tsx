@@ -82,6 +82,7 @@ import { DatePickerClockOnly } from '@/components/demos/form/date-picker/clock-o
 import { DatePickerDisabled } from '@/components/demos/form/date-picker/disabled';
 import { DatePickerValidation } from '@/components/demos/form/date-picker/validation';
 import { TextEditorBasic } from '@/components/demos/form/text-editor/basic';
+import { TextEditorMentions } from '@/components/demos/form/text-editor/mentions';
 import { UploadBasic } from '@/components/demos/form/upload/basic';
 import { UploadFiles } from '@/components/demos/form/upload/files';
 import { UploadGrid } from '@/components/demos/form/upload/grid';
@@ -425,6 +426,7 @@ export const mdxComponents = {
   DatePickerDisabled,
   DatePickerValidation,
   TextEditorBasic,
+  TextEditorMentions,
   UploadBasic,
   UploadFiles,
   UploadGrid,

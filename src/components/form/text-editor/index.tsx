@@ -5,18 +5,37 @@ import { Icon } from "../../icons";
 import { Icons } from "../../../libs/infrastructure/types";
 import Button from "../button";
 import IProps from "./IProps";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import Utils from "../../../libs/infrastructure/shared/Utils";
 import ReactDOM from "react-dom";
 import Tooltip from "../../feedback/tooltip";
+import {
+  ALIAS_ITEM_HEIGHT,
+  ALIAS_PANEL_MIN_WIDTH,
+  ALIAS_VISIBLE_COUNT,
+  calculateAliasPanelPosition,
+  DEFAULT_TRIGGER_KEY,
+  estimateAliasPanelHeight,
+  filterAliasItems,
+  getAliasWindow,
+  getAvatarTone,
+  getDisplayText,
+  getInitials,
+  getTriggerQuery,
+  resolveAliasTokenColors,
+  scrollIndexIntoView,
+  splitMatchParts,
+  wrapIndex,
+} from "./helpers";
 
-const applyIframeTheme = (doc: Document) => {
+const applyIframeTheme = (doc: Document, aliasColor?: string) => {
   if (typeof document === "undefined") return;
 
   const rootStyles = getComputedStyle(document.documentElement);
   const color = rootStyles.getPropertyValue("--gray-800").trim() || "#1f2937";
   const fontFamily = rootStyles.getPropertyValue("--system").trim() || "sans-serif";
   const colorScheme = rootStyles.colorScheme?.trim() || "light";
+  const token = resolveAliasTokenColors(aliasColor, (name) => rootStyles.getPropertyValue(name).trim());
   const head = doc.head ?? doc.documentElement.appendChild(doc.createElement("head"));
   let tag = doc.getElementById("har-text-editor-theme") as HTMLStyleElement | null;
 
@@ -26,7 +45,7 @@ const applyIframeTheme = (doc: Document) => {
     head.appendChild(tag);
   }
 
-  tag.textContent = `html{color-scheme:${colorScheme}}html,body{background-color:transparent;color:${color};caret-color:${color};font-family:${fontFamily}}`;
+  tag.textContent = `html{color-scheme:${colorScheme}}html,body{background-color:transparent;color:${color};caret-color:${color};font-family:${fontFamily}}span[data-tag]{display:inline;padding:0 .4em;border-radius:4px;background-color:color-mix(in srgb,${token.accent} 14%,transparent);color:${token.text};font-weight:600;white-space:nowrap}`;
 };
 
 const TextEditor = <T extends object>({
@@ -50,9 +69,20 @@ const TextEditor = <T extends object>({
   const _onChange = useRef(onChange);
   const _onChangeTimeOut = useRef<NodeJS.Timeout | null>(null);
   const _disabled = useRef(disabled);
+  const _dynamicList = useRef(dynamicList);
   // refs -> Alias Panel
   const _target = useRef<Node | null>(null);
   const _harAliasPanel = useRef<HTMLDivElement>(null);
+  const _harAliasList = useRef<HTMLDivElement>(null);
+  const _aliasOpen = useRef(false);
+  const _aliasQuery = useRef("");
+  const _aliasFrame = useRef(0);
+  const _aliasScrollFrame = useRef(0);
+  const _navigationIndex = useRef(0);
+  const _filteredItems = useRef<T[]>([]);
+  const _insertAliasItem = useRef<(item: T) => void>(() => undefined);
+  const _closeAliasPanel = useRef<() => void>(() => undefined);
+  const _syncAliasPanel = useRef<() => void>(() => undefined);
 
   // states
   const [iframe, setIframe] = useState<HTMLIFrameElement | null>(null);
@@ -64,6 +94,10 @@ const TextEditor = <T extends object>({
   // states -> Alias Panel
   const [atRect, setAtRect] = useState<DOMRect | null>(null);
   const [filtered, setFiltered] = useState<string | null>(null);
+  const [navigationIndex, setNavigationIndex] = useState(0);
+  const [aliasScrollTop, setAliasScrollTop] = useState(0);
+  const [aliasPos, setAliasPos] = useState<{ top: number; left: number; placement: "top" | "bottom" } | null>(null);
+  const [aliasReady, setAliasReady] = useState(false);
 
   // variables
   const toolbarButtons: { command: string; icon: Icons; tooltip: string }[] = [
@@ -76,6 +110,19 @@ const TextEditor = <T extends object>({
     { command: "justifyCenter", icon: "TextAlingCenter", tooltip: "Align Center" },
     { command: "justifyRight", icon: "TextAlingRight", tooltip: "Align Right" },
   ];
+  const triggerKey = dynamicList?.triggerKey ?? DEFAULT_TRIGGER_KEY;
+  const filteredItems = useMemo(() => {
+    if (!dynamicList || filtered == null) return [] as T[];
+    return filterAliasItems(dynamicList.render.items, dynamicList.render.display, filtered);
+  }, [dynamicList, filtered]);
+  const aliasWindow = useMemo(
+    () => getAliasWindow(filteredItems.length, aliasScrollTop),
+    [filteredItems.length, aliasScrollTop],
+  );
+  const visibleItems = useMemo(
+    () => filteredItems.slice(aliasWindow.start, aliasWindow.end),
+    [filteredItems, aliasWindow.start, aliasWindow.end],
+  );
   const _wrapperClassName: string[] = ["har-text-editor-wrapper"];
   _wrapperClassName.push(
     ...Utils.GetClassName(
@@ -90,6 +137,10 @@ const TextEditor = <T extends object>({
   );
   if (disabled) _wrapperClassName.push("disabled");
 
+  _dynamicList.current = dynamicList;
+  _filteredItems.current = filteredItems;
+  _navigationIndex.current = navigationIndex;
+
   // methods
   const execCommand = (command: string) => {
     if (disabled || !_harIframe.current) return;
@@ -102,7 +153,6 @@ const TextEditor = <T extends object>({
 
   const handleBlur = () => {
     _harIframe.current?.classList.remove("focused");
-    // setAtRect(null);
   };
 
   const handleMouseDown = () => {
@@ -131,53 +181,217 @@ const TextEditor = <T extends object>({
     }
   };
 
+  const closeAliasPanel = useCallback(() => {
+    if (!_aliasOpen.current) return;
+
+    _aliasOpen.current = false;
+    _aliasQuery.current = "";
+    _target.current = null;
+    setAtRect(null);
+    setFiltered(null);
+    setNavigationIndex(0);
+    setAliasScrollTop(0);
+    setAliasPos(null);
+    setAliasReady(false);
+  }, []);
+
+  const insertAliasItem = useCallback(
+    (item: T) => {
+      const list = _dynamicList.current;
+      const iframeDoc = _harIframe.current?.contentDocument || iframeDocument;
+      if (!list || !iframeDoc) return;
+
+      const selection = iframeDoc.getSelection();
+      const node =
+        selection?.anchorNode && selection.anchorNode.nodeType === Node.TEXT_NODE
+          ? selection.anchorNode
+          : _target.current;
+
+      if (!selection || selection.rangeCount === 0 || !node || node.nodeType !== Node.TEXT_NODE) return;
+
+      const text = node.textContent ?? "";
+      const trigger = list.triggerKey ?? DEFAULT_TRIGGER_KEY;
+      const match = getTriggerQuery(text, trigger);
+      if (!match) return;
+
+      const range = selection.getRangeAt(0).cloneRange();
+      range.setStart(node, match.atIndex);
+      range.setEnd(node, match.atIndex + trigger.length + match.query.length);
+      range.deleteContents();
+
+      const itemText = getDisplayText(item, list.render.display);
+      const span = iframeDoc.createElement("span");
+      const spaceNode = iframeDoc.createTextNode(" \u200B");
+
+      span.setAttribute("data-tag", itemText);
+      span.className = "har-alias-token";
+      span.textContent = `${trigger}${itemText}`;
+
+      const fragment = iframeDoc.createDocumentFragment();
+      fragment.appendChild(span);
+      fragment.appendChild(spaceNode);
+      range.insertNode(fragment);
+
+      const next = iframeDoc.createRange();
+      next.setStart(spaceNode, spaceNode.length);
+      next.collapse(true);
+      selection.removeAllRanges();
+      selection.addRange(next);
+      (iframeDoc.activeElement as HTMLElement | null)?.focus();
+
+      closeAliasPanel();
+      setTagged((prev) => {
+        if (prev.some((entry) => getDisplayText(entry, list.render.display) === itemText)) return prev;
+        return [...prev, item];
+      });
+    },
+    [closeAliasPanel, iframeDocument],
+  );
+
+  const syncAliasPanel = useCallback(() => {
+    const list = _dynamicList.current;
+    const iframeDoc = _harIframe.current?.contentDocument;
+
+    if (!list) {
+      closeAliasPanel();
+      return;
+    }
+
+    if (_disabled.current || !iframeDoc) {
+      closeAliasPanel();
+      return;
+    }
+
+    const selection = iframeDoc.getSelection();
+    if (!selection || selection.rangeCount === 0) {
+      closeAliasPanel();
+      return;
+    }
+
+    const node = selection.anchorNode;
+    const parent = node instanceof HTMLElement ? node : node?.parentElement;
+
+    if (!node || node.nodeType !== Node.TEXT_NODE || parent?.dataset?.tag) {
+      closeAliasPanel();
+      return;
+    }
+
+    const text = node.textContent ?? "";
+    const match = getTriggerQuery(text, list.triggerKey ?? DEFAULT_TRIGGER_KEY);
+
+    if (!match) {
+      closeAliasPanel();
+      return;
+    }
+
+    const range = selection.getRangeAt(0).cloneRange();
+    try {
+      range.setStart(node, match.atIndex);
+      range.collapse(true);
+    } catch {
+      range.collapse(true);
+    }
+
+    const rect = range.getBoundingClientRect();
+    const queryChanged = _aliasQuery.current !== match.query;
+
+    _target.current = node;
+    _aliasOpen.current = true;
+    _aliasQuery.current = match.query;
+    setAtRect(rect);
+    setFiltered(match.query);
+
+    if (queryChanged) {
+      _navigationIndex.current = 0;
+      setNavigationIndex(0);
+      setAliasScrollTop(0);
+      if (_harAliasList.current) _harAliasList.current.scrollTop = 0;
+    }
+  }, [closeAliasPanel]);
+
+  _insertAliasItem.current = insertAliasItem;
+  _closeAliasPanel.current = closeAliasPanel;
+  _syncAliasPanel.current = syncAliasPanel;
+
+  const scheduleAliasSync = () => {
+    if (typeof window === "undefined" || !_dynamicList.current) return;
+    if (_aliasFrame.current) return;
+
+    _aliasFrame.current = window.requestAnimationFrame(() => {
+      _aliasFrame.current = 0;
+      _syncAliasPanel.current();
+    });
+  };
+
   // methods -> Alias Panel
-  const handleBackSpaceKeydown = (event: KeyboardEvent) => {
-    const key = event.key;
+  const handleEditorKeydown = (event: KeyboardEvent) => {
+    if (event.isComposing) return;
 
-    if (key === "Backspace" || key === "Delete") {
-      const selection = _harIframe.current?.contentDocument?.getSelection();
+    const list = _dynamicList.current;
+    if (_aliasOpen.current) {
+      const key = event.key;
+      const count = _filteredItems.current.length;
 
-      if (!selection || selection.rangeCount === 0) return;
-
-      const range = selection.getRangeAt(0);
-
-      // 1. Çoklu seçim varsa: clone edip span'ları bul.
-      const contents = range.cloneContents();
-      const multiSpans = contents.querySelectorAll("span[data-tag]");
-
-      if (multiSpans.length > 0) {
+      if (key === "ArrowDown" || key === "ArrowUp") {
         event.preventDefault();
-
-        const tagsToRemove: string[] = [];
-        multiSpans.forEach((span) => {
-          const tag = span.getAttribute("data-tag");
-          if (tag) tagsToRemove.push(tag);
+        setNavigationIndex((prev) => {
+          const next = wrapIndex(key === "ArrowDown" ? prev + 1 : prev - 1, count);
+          _navigationIndex.current = next;
+          return next;
         });
-
-        // DOM'dan temizle
-        range.deleteContents();
-
-        // State'ten temizle
-        setTagged((prev) => prev.filter((x) => tagsToRemove.every((tag) => !JSON.stringify(x).includes(tag))));
         return;
       }
 
-      // 2. Tekli seçim: caret bir span içindeyse sil
-      const node = selection.anchorNode;
-      const container = (node as HTMLElement)?.parentElement;
-
-      if (container?.tagName === "SPAN" && container.dataset.tag) {
+      if (key === "Enter" || key === "Tab") {
+        const item = _filteredItems.current[_navigationIndex.current];
+        if (!item) return;
         event.preventDefault();
-
-        const tag = container.dataset.tag;
-
-        // DOM'dan sil
-        container.remove();
-
-        // State'ten kaldır
-        setTagged((prev) => prev.filter((x) => !JSON.stringify(x).includes(tag ?? "")));
+        _insertAliasItem.current(item);
+        return;
       }
+
+      if (key === "Escape") {
+        event.preventDefault();
+        _closeAliasPanel.current();
+        return;
+      }
+    }
+
+    if (!list) return;
+
+    const key = event.key;
+    if (key !== "Backspace" && key !== "Delete") return;
+
+    const selection = _harIframe.current?.contentDocument?.getSelection();
+    if (!selection || selection.rangeCount === 0) return;
+
+    const range = selection.getRangeAt(0);
+    const contents = range.cloneContents();
+    const multiSpans = contents.querySelectorAll("span[data-tag]");
+    const display = list.render.display;
+
+    if (multiSpans.length > 0) {
+      event.preventDefault();
+
+      const tagsToRemove: string[] = [];
+      multiSpans.forEach((span) => {
+        const tag = span.getAttribute("data-tag");
+        if (tag) tagsToRemove.push(tag);
+      });
+
+      range.deleteContents();
+      setTagged((prev) => prev.filter((item) => !tagsToRemove.includes(getDisplayText(item, display))));
+      return;
+    }
+
+    const node = selection.anchorNode;
+    const container = (node as HTMLElement | null)?.parentElement;
+
+    if (container?.tagName === "SPAN" && container.dataset.tag) {
+      event.preventDefault();
+      const tag = container.dataset.tag ?? "";
+      container.remove();
+      setTagged((prev) => prev.filter((item) => getDisplayText(item, display) !== tag));
     }
   };
 
@@ -223,72 +437,41 @@ const TextEditor = <T extends object>({
 
     setIframeDocument(_iframeDocument);
     _iframeDocument.designMode = _disabled.current ? "off" : "on";
-    applyIframeTheme(_iframeDocument);
+    applyIframeTheme(_iframeDocument, _dynamicList.current?.color);
 
     // Herhangi bir değişikliği izlemek için MutationObserver kullan
-    const observer = new MutationObserver((mutationsList) => {
+    const observer = new MutationObserver(() => {
       if (_disabled.current) return;
       if (_onChangeTimeOut.current) clearTimeout(_onChangeTimeOut.current);
 
       _onChangeTimeOut.current = setTimeout(() => {
-        mutationsList.forEach((record) => {
-          const target = record.target;
-          _target.current = record.target;
-
-          if (dynamicList) {
-            if (target.nodeType === Node.TEXT_NODE) {
-              const text = target.textContent ?? "";
-              const atIndex = text.lastIndexOf(dynamicList?.triggerKey ?? "@");
-
-              if (atIndex !== -1) {
-                const afterAt = text.slice(atIndex + 1); // @ sonrası metin.
-                const hasWhitespace = /\s/.test(afterAt);
-
-                if (!hasWhitespace) {
-                  const selection = _iframeDocument?.getSelection();
-
-                  if (selection && selection.rangeCount > 0) {
-                    const range = selection.getRangeAt(0).cloneRange();
-                    const rect = range.getBoundingClientRect();
-                    range.collapse(true);
-
-                    setAtRect(rect);
-                    setFiltered(afterAt);
-                    return;
-                  }
-                }
-              }
-
-              // Eğer @ yoksa ya da boşluk varsa paneli kapat.
-              setAtRect(null);
-            }
-          }
-
-          _iframeDocument?.body.innerHTML === "<br>"
-            ? _onChange.current(undefined)
-            : _onChange.current(_iframeDocument.body.innerHTML);
-        });
+        _iframeDocument.body.innerHTML === "<br>"
+          ? _onChange.current(undefined)
+          : _onChange.current(_iframeDocument.body.innerHTML);
       }, 500);
     });
 
     // Observer'ı body üzerinde başlat
-    observer.observe(_iframeDocument.body, { childList: true, subtree: true, characterData: true, attributes: true });
+    observer.observe(_iframeDocument.body, { childList: true, subtree: true, characterData: true });
 
     _iframeDocument.body.addEventListener("focus", handleFocus);
     _iframeDocument.body.addEventListener("blur", handleBlur);
-
-    if (dynamicList) {
-      _iframeDocument.body.addEventListener("keydown", handleBackSpaceKeydown);
-    }
+    _iframeDocument.body.addEventListener("input", scheduleAliasSync);
+    _iframeDocument.addEventListener("selectionchange", scheduleAliasSync);
+    _iframeDocument.body.addEventListener("keydown", handleEditorKeydown);
 
     return () => {
       observer.disconnect();
 
       _iframeDocument.body.removeEventListener("focus", handleFocus);
       _iframeDocument.body.removeEventListener("blur", handleBlur);
+      _iframeDocument.body.removeEventListener("input", scheduleAliasSync);
+      _iframeDocument.removeEventListener("selectionchange", scheduleAliasSync);
+      _iframeDocument.body.removeEventListener("keydown", handleEditorKeydown);
 
-      if (dynamicList) {
-        _iframeDocument.body.removeEventListener("keydown", handleBackSpaceKeydown);
+      if (_aliasFrame.current) {
+        window.cancelAnimationFrame(_aliasFrame.current);
+        _aliasFrame.current = 0;
       }
     };
   }, [iframe]);
@@ -301,24 +484,41 @@ const TextEditor = <T extends object>({
   useEffect(() => {
     if (!iframeDocument) return;
 
-    applyIframeTheme(iframeDocument);
+    const applyTheme = () => applyIframeTheme(iframeDocument, _dynamicList.current?.color);
 
-    const observer = new MutationObserver(() => applyIframeTheme(iframeDocument));
+    applyTheme();
+
+    const observer = new MutationObserver(applyTheme);
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme", "class"] });
 
     const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const onSchemeChange = () => applyIframeTheme(iframeDocument);
-    media.addEventListener("change", onSchemeChange);
+    media.addEventListener("change", applyTheme);
 
     return () => {
       observer.disconnect();
-      media.removeEventListener("change", onSchemeChange);
+      media.removeEventListener("change", applyTheme);
     };
-  }, [iframeDocument]);
+  }, [iframeDocument, dynamicList?.color]);
 
   useEffect(() => {
     dynamicList?.onTagged && dynamicList?.onTagged(tagged);
   }, [tagged]);
+
+  useEffect(() => {
+    if (filteredItems.length === 0) {
+      if (navigationIndex !== 0) {
+        _navigationIndex.current = 0;
+        setNavigationIndex(0);
+      }
+      return;
+    }
+
+    if (navigationIndex < filteredItems.length) return;
+
+    const next = filteredItems.length - 1;
+    _navigationIndex.current = next;
+    setNavigationIndex(next);
+  }, [filteredItems.length, navigationIndex]);
 
   useEffect(() => {
     if (!_harIframe.current) return;
@@ -332,6 +532,72 @@ const TextEditor = <T extends object>({
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (!atRect) return;
+
+    const handlePointerDown = (event: MouseEvent) => {
+      const target = event.target as Node | null;
+      if (!target) return;
+      if (_harAliasPanel.current?.contains(target)) return;
+      if (_harIframe.current?.contains(target)) return;
+      _closeAliasPanel.current();
+    };
+
+    document.addEventListener("mousedown", handlePointerDown);
+    return () => document.removeEventListener("mousedown", handlePointerDown);
+  }, [atRect]);
+
+  useLayoutEffect(() => {
+    const list = _harAliasList.current;
+    if (!list || !atRect) return;
+
+    const nextTop = scrollIndexIntoView(list.scrollTop, navigationIndex, list.clientHeight);
+    if (nextTop !== list.scrollTop) list.scrollTop = nextTop;
+  }, [navigationIndex, atRect]);
+
+  useLayoutEffect(() => {
+    if (!atRect || !_harAliasPanel.current || !_harIframe.current) {
+      setAliasReady(false);
+      return;
+    }
+
+    const panelRect = _harAliasPanel.current.getBoundingClientRect();
+    const iframeRect = _harIframe.current.getBoundingClientRect();
+    const next = calculateAliasPanelPosition({
+      caret: {
+        top: atRect.top,
+        left: atRect.left,
+        bottom: atRect.bottom,
+        height: atRect.height,
+      },
+      iframe: { top: iframeRect.top, left: iframeRect.left },
+      panel: {
+        width: Math.max(panelRect.width, ALIAS_PANEL_MIN_WIDTH),
+        height: panelRect.height || estimateAliasPanelHeight(filteredItems.length),
+      },
+      viewport: { width: window.innerWidth, height: window.innerHeight },
+    });
+
+    setAliasPos((prev) =>
+      prev && prev.top === next.top && prev.left === next.left && prev.placement === next.placement ? prev : next,
+    );
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setAliasReady(true);
+      return;
+    }
+
+    let inner = 0;
+    const outer = window.requestAnimationFrame(() => {
+      inner = window.requestAnimationFrame(() => setAliasReady(true));
+    });
+
+    return () => {
+      window.cancelAnimationFrame(outer);
+      window.cancelAnimationFrame(inner);
+    };
+  }, [atRect, filteredItems.length]);
 
   useLayoutEffect(() => {
     const label = _label.current;
@@ -428,96 +694,108 @@ const TextEditor = <T extends object>({
         {validation?.text && <span className="har-validation-text">{validation.text}</span>}
       </div>
 
-      {/* Dynamic List */}
       {dynamicList &&
         atRect &&
         ReactDOM.createPortal(
           <div
             ref={_harAliasPanel}
-            className="har-alias-panel"
+            className={[
+              "har-alias-panel",
+              aliasPos?.placement === "top" ? "is-top" : "is-bottom",
+              aliasReady ? "is-ready" : undefined,
+            ]
+              .filter(Boolean)
+              .join(" ")}
+            role="listbox"
+            aria-label="Mentions"
+            aria-activedescendant={
+              filteredItems[navigationIndex] ? `har-alias-option-${navigationIndex}` : undefined
+            }
             style={{
-              top: (_harIframe.current?.getBoundingClientRect().top ?? 0) + atRect.top + 20,
-              left: (_harIframe.current?.getBoundingClientRect().left ?? 0) + atRect.left,
-            }}
-            onClick={() => {
-              setAtRect(null);
+              top: aliasPos?.top ?? 0,
+              left: aliasPos?.left ?? 0,
+              minWidth: ALIAS_PANEL_MIN_WIDTH,
             }}
           >
-            <ul>
-              {dynamicList &&
-                dynamicList.render.items
-                  // .filter((fItem) => !tagged.some((t: T) => JSON.stringify(fItem) === JSON.stringify(t)))
-                  .filter((item) => {
-                    const displayText = (item[dynamicList.render.display as keyof typeof item] as string) ?? "";
+            <div className="har-alias-panel__header">
+              <span className="har-alias-panel__query">
+                {triggerKey}
+                {filtered}
+              </span>
+              <span className="har-alias-panel__count">{filteredItems.length}</span>
+            </div>
 
-                    return displayText.toLowerCase().includes((filtered as string).toLowerCase());
-                  })
-                  .map((item, index) => (
-                    <li
-                      key={index}
-                      onClick={(event) => {
-                        event.stopPropagation();
+            {filteredItems.length > 0 ? (
+              <div
+                ref={_harAliasList}
+                className="har-alias-panel__list"
+                style={{ maxHeight: ALIAS_VISIBLE_COUNT * ALIAS_ITEM_HEIGHT }}
+                onScroll={(event) => {
+                  const top = event.currentTarget.scrollTop;
+                  if (_aliasScrollFrame.current) window.cancelAnimationFrame(_aliasScrollFrame.current);
+                  _aliasScrollFrame.current = window.requestAnimationFrame(() => {
+                    _aliasScrollFrame.current = 0;
+                    setAliasScrollTop(top);
+                  });
+                }}
+              >
+                <div className="har-alias-panel__spacer" style={{ height: aliasWindow.height }}>
+                  <div className="har-alias-panel__window" style={{ transform: `translateY(${aliasWindow.offsetTop}px)` }}>
+                    {visibleItems.map((item, offset) => {
+                      const index = aliasWindow.start + offset;
+                      const displayText = getDisplayText(item, dynamicList.render.display);
+                      const tone = getAvatarTone(displayText);
+                      const isActive = index === navigationIndex;
 
-                        const selection = iframeDocument?.getSelection();
-                        const target = _target.current;
+                      return (
+                        <div
+                          key={`${displayText}-${index}`}
+                          id={`har-alias-option-${index}`}
+                          role="option"
+                          aria-selected={isActive}
+                          className={["har-alias-panel__option", isActive ? "is-active" : undefined]
+                            .filter(Boolean)
+                            .join(" ")}
+                          style={{ height: ALIAS_ITEM_HEIGHT }}
+                          onMouseEnter={() => {
+                            _navigationIndex.current = index;
+                            setNavigationIndex(index);
+                          }}
+                          onMouseDown={(event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            insertAliasItem(item);
+                          }}
+                        >
+                          <span className={`har-alias-panel__avatar is-${tone}`} aria-hidden="true">
+                            {getInitials(displayText)}
+                          </span>
+                          <span className="har-alias-panel__label">
+                            {splitMatchParts(displayText, filtered ?? "").map((part, partIndex) =>
+                              part.match ? (
+                                <span key={`${index}-m-${partIndex}`} className="har-alias-panel__match">
+                                  {part.text}
+                                </span>
+                              ) : (
+                                <span key={`${index}-t-${partIndex}`}>{part.text}</span>
+                              ),
+                            )}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="har-alias-panel__empty">No matches</div>
+            )}
 
-                        if (selection && selection.rangeCount > 0 && target && target.nodeType === Node.TEXT_NODE) {
-                          const text = target.textContent ?? "";
-                          const atIndex = text.lastIndexOf(dynamicList?.triggerKey ?? "@");
-
-                          if (atIndex !== -1) {
-                            const range = selection.getRangeAt(0).cloneRange();
-                            range.setStart(target, atIndex);
-                            range.setEnd(target, text.length);
-                            range.deleteContents();
-
-                            const itemText = (item[dynamicList.render.display as keyof typeof item] as string) ?? "";
-                            const span = iframeDocument?.createElement("span");
-                            const spaceNode = iframeDocument?.createTextNode(" \u200B");
-
-                            if (span && spaceNode && iframeDocument) {
-                              span.setAttribute("data-tag", `${itemText}`);
-
-                              span.style.backgroundColor = "rgba(114, 15, 103, .1)";
-                              span.style.padding = "0 5px";
-                              span.style.borderRadius = "2px";
-                              span.style.color = "#720f67";
-                              span.style.fontWeight = "bold";
-                              span.textContent = `@${itemText}`;
-
-                              // Yeni bir wrapper fragment oluştur
-                              const fragment = iframeDocument.createDocumentFragment();
-                              fragment.appendChild(span);
-                              fragment.appendChild(spaceNode); // görünmez boş node, ama yazılabilir
-
-                              range.insertNode(fragment);
-
-                              // Cursor'u spaceNode’un sonuna yerleştir
-                              const newRange = iframeDocument.createRange();
-                              newRange.setStart(spaceNode, spaceNode.length);
-                              newRange.collapse(true);
-                              selection.removeAllRanges();
-                              selection.addRange(newRange);
-
-                              // Focus zaten varsa sorun olmayacak
-                              const activeEl = iframeDocument?.activeElement as HTMLElement;
-                              activeEl?.focus();
-                            }
-
-                            setAtRect(null);
-                            setTagged((prev) => {
-                              const exists = prev.some((i) => JSON.stringify(i) === JSON.stringify(item));
-
-                              return exists ? prev : [...prev, item];
-                            });
-                          }
-                        }
-                      }}
-                    >
-                      {(item[dynamicList.render.display as keyof typeof item] as string) ?? ""}
-                    </li>
-                  ))}
-            </ul>
+            <div className="har-alias-panel__hint">
+              <span>↑↓ Navigate</span>
+              <span>↵ Select</span>
+              <span>esc Close</span>
+            </div>
           </div>,
           document.body,
         )}
