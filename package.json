@@ -1,6 +1,6 @@
 {
   "name": "@harjs/react-ui",
-  "version": "2.4.5",
+  "version": "2.4.6",
   "publishConfig": {
     "access": "public"
   },
@@ -73,7 +73,6 @@
     "typescript": "^7.0.2"
   },
   "dependencies": {
-    "@harjs/react-ui": "^2.3.5",
     "@harjs/translation": "^1.0.1"
   }
 }
