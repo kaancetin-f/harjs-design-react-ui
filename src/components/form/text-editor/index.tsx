@@ -113,16 +113,16 @@ const TextEditor = <T extends object>({
   const triggerKey = dynamicList?.triggerKey ?? DEFAULT_TRIGGER_KEY;
   const filteredItems = useMemo(() => {
     if (!dynamicList || filtered == null) return [] as T[];
-    return filterAliasItems(dynamicList.render.items, dynamicList.render.display, filtered);
+    return filterAliasItems(dynamicList.render?.items, dynamicList.render?.display, filtered);
   }, [dynamicList, filtered]);
   const aliasWindow = useMemo(
     () => getAliasWindow(filteredItems.length, aliasScrollTop),
     [filteredItems.length, aliasScrollTop],
   );
-  const visibleItems = useMemo(
-    () => filteredItems.slice(aliasWindow.start, aliasWindow.end),
-    [filteredItems, aliasWindow.start, aliasWindow.end],
-  );
+  const visibleItems = useMemo(() => {
+    const list = Array.isArray(filteredItems) ? filteredItems : [];
+    return list.slice(aliasWindow.start, aliasWindow.end);
+  }, [filteredItems, aliasWindow.start, aliasWindow.end]);
   const _wrapperClassName: string[] = ["har-text-editor-wrapper"];
   _wrapperClassName.push(
     ...Utils.GetClassName(

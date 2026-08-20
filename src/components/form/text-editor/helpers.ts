@@ -58,7 +58,8 @@ export type AliasWindow = {
   height: number;
 };
 
-export const getDisplayText = <T extends object>(item: T, display: keyof T) => {
+export const getDisplayText = <T extends object>(item: T, display?: keyof T) => {
+  if (display == null) return "";
   const value = item[display];
   return value == null ? "" : String(value);
 };
@@ -103,11 +104,19 @@ export const getTriggerQuery = (text: string, triggerKey = DEFAULT_TRIGGER_KEY) 
   return { atIndex, query };
 };
 
-export const filterAliasItems = <T extends object>(items: T[], display: keyof T, query: string) => {
-  const needle = query.trim().toLocaleLowerCase();
-  if (!needle) return items;
+export const asAliasItems = <T extends object>(items: T[] | null | undefined): T[] =>
+  Array.isArray(items) ? items : [];
 
-  return items.filter((item) => getDisplayText(item, display).toLocaleLowerCase().includes(needle));
+export const filterAliasItems = <T extends object>(
+  items: T[] | null | undefined,
+  display: keyof T | undefined,
+  query: string,
+): T[] => {
+  const list = asAliasItems(items);
+  const needle = query.trim().toLocaleLowerCase();
+  if (!needle) return list;
+
+  return list.filter((item) => getDisplayText(item, display).toLocaleLowerCase().includes(needle));
 };
 
 export const splitMatchParts = (text: string, query: string): AliasMatchPart[] => {
