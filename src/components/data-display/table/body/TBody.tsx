@@ -6,7 +6,7 @@ import Checkbox from "../../../form/checkbox";
 import Editable from "./Editable";
 import { Config } from "../IProps";
 import { TableColumnProps } from "../../../../libs/infrastructure/types";
-import { GetColumnValue } from "../Helpers";
+import { GetColumnValue, GetTreeLineLeft, GetTreePaddingLeft, IsSubrowBranchEnd } from "../Helpers";
 import ITableLocale from "../../../../libs/core/application/locales/table/ITableLocale";
 import TableTR from "../../../../libs/core/application/locales/table/tr";
 import TableEN from "../../../../libs/core/application/locales/table/en";
@@ -47,6 +47,8 @@ interface IRenderCell<T> {
   level: number;
   height?: number;
   isSubrows?: boolean;
+  isBranchEnd?: boolean;
+  hasExpandedChildren?: boolean;
 }
 
 interface ISubitemListProps<T extends object> {
@@ -76,7 +78,7 @@ const SubitemList = <T extends object>({
 }: ISubitemListProps<T>) => {
   // variables
   const _subrowSelector = config.subrow?.selector ?? "subitems";
-  const _subrowButton = config.subrow?.button ?? true;
+  const _subrowButton = config.subrow?.button ?? false;
 
   if (config.subrow?.render) {
     return (
@@ -104,10 +106,15 @@ const SubitemList = <T extends object>({
         const key = `${parentKey}.${id}`;
         const _subitem = subitem[_subrowSelector as keyof typeof subitem];
         const isHasSubitems = _subrowSelector in subitem;
+        const hasExpandedChildren = Boolean(states.showSubitems.get[key] && _subitem);
+        const isBranchEnd = IsSubrowBranchEnd(subindex, items.length, hasExpandedChildren);
 
         return (
           <Fragment key={`subitem-wrapper-${key}`}>
-            <tr className={`subrow-item ${_subrowButton ? "type-b" : "type-a"}`} data-level={level}>
+            <tr
+              className={`subrow-item ${_subrowButton ? "type-b" : "type-a"}${isBranchEnd && config.isTreeView ? " branch-end" : ""}`}
+              data-level={level}
+            >
               {methods.selections && (
                 <td
                   className="sticky sticky-left"
@@ -127,7 +134,7 @@ const SubitemList = <T extends object>({
                     style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
                   >
                     <span
-                      className={`${(states.showSubitems.get[key] && "opened") ?? ""} ${!isHasSubitems || !_subitem ? "passive passive-arrow" : ""}`}
+                      className={`subitem-open-button ${(states.showSubitems.get[key] && "opened") ?? ""} ${!isHasSubitems || !_subitem ? "passive passive-arrow" : ""}`}
                       onClick={() => {
                         if (!isHasSubitems || !_subitem) return;
                         states.showSubitems.set((prev: any) => ({ ...prev, [key]: !prev[key] }));
@@ -147,6 +154,8 @@ const SubitemList = <T extends object>({
                   level,
                   height: 0,
                   isSubrows: true,
+                  isBranchEnd,
+                  hasExpandedChildren,
                 }),
               )}
             </tr>
@@ -198,6 +207,8 @@ function TBody<T extends object>({ data, columns, refs, methods, states, config 
     level,
     height = 0,
     isSubrows = false,
+    isBranchEnd = false,
+    hasExpandedChildren = false,
   }: IRenderCell<T>) => {
     if (column.isShow === false) return;
 
@@ -220,6 +231,8 @@ function TBody<T extends object>({ data, columns, refs, methods, states, config 
       (col) => col.config?.sticky === undefined || col.config?.sticky !== "left",
     );
     const isTargetPaddingColumn = firstCleanDataColumn !== undefined && column === firstCleanDataColumn;
+    const showTreeLines = config.isTreeView && isTargetPaddingColumn && isSubrows && level > 0;
+    const treeCellClassName = ["table-cell", showTreeLines ? "tree-cell" : ""].filter(Boolean).join(" ");
 
     return (
       <td
@@ -240,22 +253,33 @@ function TBody<T extends object>({ data, columns, refs, methods, states, config 
       >
         <div
           style={{
-            paddingLeft: isTargetPaddingColumn ? `${depth === 0 ? 1 : depth}rem` : "",
+            paddingLeft:
+              isTargetPaddingColumn && config.isTreeView && isSubrows && level > 0
+                ? GetTreePaddingLeft(level)
+                : isTargetPaddingColumn && !config.isTreeView
+                  ? `${depth === 0 ? 1 : depth}rem`
+                  : undefined,
           }}
-          className="table-cell"
+          className={treeCellClassName}
         >
-          {config.isTreeView && cIndex === 0 && (
-            <>
-              {isSubrows &&
-                Array.from({ length: level }).map((_, i) => (
-                  <div
-                    key={`last-before-${itemTrackId}-${i}`}
-                    style={{ left: `${(i > 0 ? i * 1.655 : i) + 0.65}rem` }}
-                    className="last-before"
-                  ></div>
-                ))}
-              <div className="before"></div>
-            </>
+          {showTreeLines && (
+            <div className="tree-lines" aria-hidden="true">
+              {Array.from({ length: level - 1 }).map((_, i) => (
+                <span
+                  key={`tree-guide-${itemTrackId}-${i}`}
+                  className={`tree-vline is-guide${isBranchEnd && i === level - 2 ? " is-end" : ""}`}
+                  style={{ left: GetTreeLineLeft(i) }}
+                />
+              ))}
+              <span
+                className={`tree-vline is-rail${isBranchEnd ? " is-end" : ""}`}
+                style={{ left: GetTreeLineLeft(level - 1) }}
+              />
+              <span className="tree-fork" style={{ left: GetTreeLineLeft(level - 1) }} />
+              {hasExpandedChildren && (
+                <span className="tree-vline is-descent" style={{ left: GetTreeLineLeft(level) }} />
+              )}
+            </div>
           )}
           {React.isValidElement(render) ? (
             render
@@ -269,12 +293,7 @@ function TBody<T extends object>({ data, columns, refs, methods, states, config 
               config={config}
             />
           ) : (
-            <span>{render}</span>
-          )}
-          {config.isTreeView && cIndex === 0 && (
-            <div className="after">
-              <div className="circle"></div>
-            </div>
+            <span className={showTreeLines ? "tree-cell-content" : undefined}>{render}</span>
           )}
         </div>
       </td>

@@ -53,6 +53,22 @@ function OpenAllSubrows<T extends object>(
   return result;
 }
 
+function IsSubrowBranchEnd(subindex: number, siblingsLength: number, hasExpandedChildren: boolean): boolean {
+  return subindex === siblingsLength - 1 && !hasExpandedChildren;
+}
+
+const TREE_LEVEL_INDENT_REM = 1.875;
+const TREE_LINE_OFFSET_REM = 0.9375;
+const TREE_TEXT_GAP_REM = 0.375;
+
+function GetTreeLineLeft(levelIndex: number): string {
+  return `${levelIndex * TREE_LEVEL_INDENT_REM + TREE_LINE_OFFSET_REM}rem`;
+}
+
+function GetTreePaddingLeft(level: number): string {
+  return `${level * TREE_LEVEL_INDENT_REM + TREE_TEXT_GAP_REM}rem`;
+}
+
 type ColumnVisibilityState = Record<string, boolean>;
 
 type ColumnGroupSegment = {
@@ -223,6 +239,9 @@ export {
   GetColumnValue,
   PatchColumnValue,
   OpenAllSubrows,
+  IsSubrowBranchEnd,
+  GetTreeLineLeft,
+  GetTreePaddingLeft,
   BuildColumnGroups,
   GetColumnStorageKey,
   LoadColumnVisibility,

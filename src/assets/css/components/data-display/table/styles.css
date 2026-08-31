@@ -17,6 +17,10 @@
     0 1px 3px color-mix(in srgb, var(--black-alpha-100) 8%, transparent);
   font-family: var(--system);
   color: var(--gray-800);
+  --table-tree-line: color-mix(in srgb, var(--gray-500) 38%, transparent);
+  --table-tree-indent: 1.875rem;
+  --table-tree-elbow: 6px;
+  --table-tree-fork: 0.625rem;
   overflow: hidden;
   transition:
     background-color 0.15s ease,
@@ -379,18 +383,6 @@
             border-bottom: none;
           }
 
-          &:not(:has(+ tr)),
-          &:last-child {
-            > td {
-              > .table-cell {
-                > .before {
-                  height: 50%;
-                  background: linear-gradient(0deg, var(--gray-600) 0%, var(--gray-200) 100%);
-                }
-              }
-            }
-          }
-
           &.draggable {
             > td {
               &:first-child {
@@ -413,81 +405,32 @@
           }
 
           &.subrow-item {
-            &:not(:has(+ tr.subrow-item)),
-            &:last-child {
-              > td {
-                > .table-cell {
-                  > .before {
-                    height: 50%;
-                    background: linear-gradient(0deg, var(--gray-600) 0%, var(--gray-200) 100%) !important;
-                  }
+            border-bottom: none;
 
-                  > .after {
-                    position: absolute;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    content: "";
-                    background-color: var(--gray-600);
-                    width: 15px;
-                    height: var(--space-2);
-                    margin-left: -17.5px;
+            > td {
+              overflow: visible;
 
-                    > .circle {
-                      position: absolute;
-                      top: 50%;
-                      transform: translateY(-50%);
-                      right: 0;
-                      content: "";
-                      background-color: var(--gray-600);
-                      width: 5px;
-                      height: 5px;
-                      border-radius: var(--radius-full);
-                    }
-                  }
-                }
+              &::after {
+                content: "";
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                height: 1px;
+                background-color: var(--gray-200);
+                pointer-events: none;
+                z-index: 0;
               }
             }
 
-            > td {
-              > .table-cell {
-                > .before {
-                  position: absolute;
-                  top: var(--space-0);
-                  content: "";
-                  background: linear-gradient(
-                    0deg,
-                    var(--gray-200) 0%,
-                    var(--gray-600) 50%,
-                    var(--gray-200) 100%
-                  ) !important;
-                  width: var(--space-2);
-                  height: 100%;
-                  margin-left: -(var(--space-20));
-                }
+            > td:has(> .table-cell.tree-cell) .tree-vline,
+            > td:has(> .table-cell.tree-cell) .tree-fork {
+              z-index: 1;
+            }
 
-                > .last-before {
-                  position: absolute;
-                  top: var(--space-0);
-                  content: "";
-                  background: linear-gradient(
-                    0deg,
-                    var(--gray-200) 0%,
-                    var(--gray-600) 50%,
-                    var(--gray-200) 100%
-                  ) !important;
-                  width: var(--space-2);
-                  height: 100%;
-
-                  :first-child {
-                    background: linear-gradient(
-                      0deg,
-                      var(--gray-200) 0%,
-                      var(--blue-500) 50%,
-                      var(--gray-200) 100%
-                    ) !important;
-                  }
-                }
-              }
+            > td > .table-cell.tree-cell .tree-vline,
+            > td > .table-cell.tree-cell .tree-fork {
+              opacity: 0.9;
             }
           }
 
@@ -532,37 +475,59 @@
               height: 100%;
               padding: 0 var(--space-16);
 
-              > .before {
-                position: absolute;
-                top: var(--space-0);
-                content: "";
-                background: linear-gradient(0deg, var(--gray-200) 0%, var(--blue-500) 50%, var(--gray-200) 100%);
-                width: var(--space-2);
-                height: 100%;
-                margin-left: -(var(--space-20));
+              &.tree-cell {
+                position: relative;
+                overflow: visible;
               }
 
-              > .after {
+              &.tree-cell > .tree-lines {
+                position: absolute;
+                top: -1px;
+                right: 0;
+                bottom: -1px;
+                left: 0;
+                pointer-events: none;
+                z-index: 1;
+              }
+
+              &.tree-cell .tree-vline {
+                position: absolute;
+                top: 0;
+                width: 1px;
+                background-color: var(--table-tree-line);
+                transform: translateX(-50%);
+              }
+
+              &.tree-cell .tree-vline.is-guide,
+              &.tree-cell .tree-vline.is-rail:not(.is-end) {
+                height: 100%;
+              }
+
+              &.tree-cell .tree-vline.is-end {
+                height: 50%;
+              }
+
+              &.tree-cell .tree-vline.is-descent {
+                top: 50%;
+                height: calc(50% + 1px);
+              }
+
+              &.tree-cell .tree-fork {
                 position: absolute;
                 top: 50%;
+                width: var(--table-tree-fork);
+                height: 1px;
+                background-color: var(--table-tree-line);
                 transform: translateY(-50%);
-                content: "";
-                background-color: var(--blue-500);
-                width: 15px;
-                height: var(--space-2);
-                margin-left: -(var(--space-20));
+              }
 
-                > .circle {
-                  position: absolute;
-                  top: 50%;
-                  transform: translateY(-50%);
-                  right: 0;
-                  content: "";
-                  background-color: var(--blue-500);
-                  width: 5px;
-                  height: 5px;
-                  border-radius: var(--radius-full);
-                }
+              &.tree-cell > .tree-cell-content,
+              &.tree-cell > span,
+              &.tree-cell > .har-input-wrapper,
+              &.tree-cell > .har-date-picker,
+              &.tree-cell > .har-select-wrapper {
+                position: relative;
+                z-index: 1;
               }
 
               > span {

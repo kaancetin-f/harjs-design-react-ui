@@ -147,10 +147,16 @@ When the value lives on a nested object, pass `key: { field, nestedKey }` instea
 
 ### Subrows
 
-Put children on `subitems` (or `config.subrow.selector`). `config.subrow.button` shows the expand control. `openAutomatically` expands every node. `isTreeView` tightens nested indent. `config.subrow.render` can replace the child table with a custom panel.
+Put children on `subitems` (or `config.subrow.selector`). `config.subrow.button` shows the expand control. `isTreeView` draws nested indent lines on the first column. `config.subrow.render` can replace the child table with a custom panel.
 
 <Example>
   <TableSubrows />
+</Example>
+
+`openAutomatically` expands every node when the table loads — useful for read-only tree grids. Combine it with `isTreeView` so connector lines stay aligned when all branches are open.
+
+<Example>
+  <TableSubrowsAutoOpen />
 </Example>
 
 ### Row tone

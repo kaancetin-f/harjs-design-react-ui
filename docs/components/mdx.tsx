@@ -317,6 +317,7 @@ import { TableColumns } from '@/components/demos/data-display/table/columns';
 import { TableActions } from '@/components/demos/data-display/table/actions';
 import { TableNested } from '@/components/demos/data-display/table/nested';
 import { TableSubrows } from '@/components/demos/data-display/table/subrows';
+import { TableSubrowsAutoOpen } from '@/components/demos/data-display/table/subrows-auto-open';
 import { TableRowTone } from '@/components/demos/data-display/table/row-tone';
 import { TableServer } from '@/components/demos/data-display/table/server';
 import { CalendarBasic } from '@/components/demos/data-display/calendar/basic';
@@ -661,6 +662,7 @@ export const mdxComponents = {
   TableActions,
   TableNested,
   TableSubrows,
+  TableSubrowsAutoOpen,
   TableRowTone,
   TableServer,
   CalendarBasic,
