@@ -31,7 +31,7 @@ export type Config<T extends object> = {
   isProperties?: boolean;
   isSearchable?: boolean;
   scroll?: {
-    maxHeight: number;
+    maxHeight: string | number;
   };
   subrow?: {
     openAutomatically?: boolean;

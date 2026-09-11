@@ -526,7 +526,7 @@ const Table = forwardRef(
       const maxHeight = config.scroll?.maxHeight;
       if (!content || maxHeight == null) return;
 
-      content.style.maxHeight = `${maxHeight}rem`;
+      content.style.maxHeight = typeof maxHeight === "number" ? `${maxHeight}px` : `${maxHeight}`;
     }, [config.scroll?.maxHeight]);
 
     useEffect(() => {
@@ -740,15 +740,11 @@ const Table = forwardRef(
       pagination?.onChange?.(1, selectedPerPage);
     }, [pagination, selectedPerPage]);
 
-    useImperativeHandle(
-      ref,
-      () => {
-        const node = _innerRef.current as HTMLTableElementWithCustomAttributes | null;
-        if (node) node.filterCleaner = handleClearFilters;
-        return node as HTMLTableElementWithCustomAttributes;
-      },
-      [handleClearFilters],
-    );
+    useImperativeHandle(ref, () => {
+      const node = _innerRef.current as HTMLTableElementWithCustomAttributes | null;
+      if (node) node.filterCleaner = handleClearFilters;
+      return node as HTMLTableElementWithCustomAttributes;
+    }, [handleClearFilters]);
 
     const isActionLabeled = (actions?.appearance ?? "labeled") === "labeled";
 

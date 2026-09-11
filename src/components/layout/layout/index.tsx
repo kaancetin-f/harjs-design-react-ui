@@ -58,6 +58,14 @@ const buildThemeVars = ({
     "--har-layout-footer-text": pickTheme(theme?.footer?.textColor, common?.textColor),
     "--har-layout-header-position": stickyHeader ? "sticky" : "relative",
     "--har-layout-sider-position": stickySider ? "sticky" : "relative",
+    // Sticky sider must not stretch with content height — otherwise sticky lets
+    // the tall aside scroll its top (logo / nav) out of the viewport.
+    "--har-layout-sider-align-self": stickySider ? "flex-start" : "stretch",
+    "--har-layout-sider-top": stickySider ? "var(--har-layout-sider-sticky-inset, 0px)" : "auto",
+    "--har-layout-sider-height": stickySider
+      ? "calc(100dvh - var(--har-layout-sider-sticky-inset, 0px))"
+      : "auto",
+    "--har-layout-sider-max-height": stickySider ? "100%" : "none",
   });
 
   return { ...vars, ...style };

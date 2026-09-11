@@ -34,11 +34,12 @@
 
   > .har-sider {
     position: var(--har-layout-sider-position, sticky);
-    top: 0;
+    top: var(--har-layout-sider-top, var(--har-layout-sider-sticky-inset, 0px));
     display: flex;
     flex-direction: column;
-    align-self: stretch;
-    height: auto;
+    align-self: var(--har-layout-sider-align-self, flex-start);
+    height: var(--har-layout-sider-height, calc(100dvh - var(--har-layout-sider-sticky-inset, 0px)));
+    max-height: var(--har-layout-sider-max-height, 100%);
     min-width: var(--har-layout-sider-width, 280px);
     max-width: var(--har-layout-sider-width, 280px);
     background-color: var(--har-layout-sider-bg, var(--white-500));
@@ -114,6 +115,7 @@
       justify-content: center;
       align-items: center;
       position: relative;
+      flex-shrink: 0;
       width: 100%;
       box-sizing: border-box;
       height: var(--har-layout-header-height, 4.5rem);
@@ -152,16 +154,23 @@
     }
 
     > .har-sider-body {
-      flex: 1;
+      flex: 1 1 auto;
+      min-height: 0;
       padding: 0.65rem;
       overflow-y: auto;
       overflow-x: hidden;
     }
 
     > .har-sider-footer {
+      flex-shrink: 0;
       padding: 0.75rem 1rem 1rem;
       color: var(--har-layout-sider-text, inherit);
     }
+  }
+
+  /* Full-width sticky header above a nested sider row: keep sider under the header. */
+  > .har-header + .har-layout {
+    --har-layout-sider-sticky-inset: var(--har-layout-header-height, 4.5rem);
   }
 
   > .har-header,
