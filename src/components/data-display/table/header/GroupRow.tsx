@@ -3,13 +3,15 @@ import { ColumnGroupSegment } from "../Helpers";
 
 type Props = {
   groups: ColumnGroupSegment[];
+  hasDnd?: boolean;
   hasSelection?: boolean;
   hasSubrow?: boolean;
 };
 
-const GroupRow = ({ groups, hasSelection, hasSubrow }: Props) => {
+const GroupRow = ({ groups, hasDnd, hasSelection, hasSubrow }: Props) => {
   return (
     <tr className="column-groups">
+      {hasDnd && <th className="dnd-col sticky sticky-left" data-sticky-position="left" aria-hidden="true" />}
       {hasSelection && (
         <th className="selection-col sticky sticky-left" data-sticky-position="left" aria-hidden="true" />
       )}

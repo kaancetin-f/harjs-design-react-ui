@@ -101,6 +101,14 @@ Pass `pagination` and Table slices `data` for you. `totalRecords` drives the foo
   <TableEditable />
 </Example>
 
+### Drag and drop
+
+Pass `onDnD` to make rows draggable when there is more than one row. The grip is a left-sticky column, same treatment as selection. Dropping a row calls `onDnD` with the new order — write that array back into state. `config.dnd.renderItem` replaces the default drag ghost.
+
+<Example>
+  <TableDnd />
+</Example>
+
 ### Column groups
 
 Set the same `group.title` on consecutive columns. Table merges them into one band with `colSpan`. `group.color` and `group.align` style that band.

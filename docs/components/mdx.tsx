@@ -311,6 +311,7 @@ import { TablePagination } from '@/components/demos/data-display/table/paginatio
 import { TableSelections } from '@/components/demos/data-display/table/selections';
 import { TableRender } from '@/components/demos/data-display/table/render';
 import { TableEditable } from '@/components/demos/data-display/table/editable';
+import { TableDnd } from '@/components/demos/data-display/table/dnd';
 import { TableGroups } from '@/components/demos/data-display/table/groups';
 import { TableSticky } from '@/components/demos/data-display/table/sticky';
 import { TableColumns } from '@/components/demos/data-display/table/columns';
@@ -656,6 +657,7 @@ export const mdxComponents = {
   TableSelections,
   TableRender,
   TableEditable,
+  TableDnd,
   TableGroups,
   TableSticky,
   TableColumns,

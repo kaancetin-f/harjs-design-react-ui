@@ -206,6 +206,7 @@ const Table = forwardRef(
     }, [orderedColumns, columnsVisibility]);
 
     const columnGroups = useMemo(() => BuildColumnGroups(visibleColumns), [visibleColumns]);
+    const hasDndColumn = typeof onDnD === "function";
     const hasSubrowColumn = data.some((item) => _subrowSelector in item) && _subrowButton;
 
     const selectedPdfColumns = useMemo(() => {
@@ -242,7 +243,7 @@ const Table = forwardRef(
 
     const handleScroll = useStickyColumns(
       _tableContent,
-      `${visibleColumns.length}:${tableRows.length}:${currentPage}:${selectedPerPage}:${columnGroups?.length ?? 0}`,
+      `${visibleColumns.length}:${tableRows.length}:${currentPage}:${selectedPerPage}:${columnGroups?.length ?? 0}:${hasDndColumn ? 1 : 0}`,
     );
 
     useTableDnd({
@@ -830,10 +831,19 @@ const Table = forwardRef(
           <table ref={_innerRef}>
             <thead>
               {columnGroups && (
-                <GroupRow groups={columnGroups} hasSelection={!!selections} hasSubrow={hasSubrowColumn} />
+                <GroupRow
+                  groups={columnGroups}
+                  hasDnd={hasDndColumn}
+                  hasSelection={!!selections}
+                  hasSubrow={hasSubrowColumn}
+                />
               )}
 
               <tr key="selection">
+                {hasDndColumn && (
+                  <th className="dnd-col sticky sticky-left" data-sticky-position="left" style={{ bottom: 0 }} />
+                )}
+
                 {selections && (
                   <th className="selection-col sticky sticky-left" data-sticky-position="left" style={{ bottom: 0 }}>
                     <Checkbox
@@ -872,6 +882,8 @@ const Table = forwardRef(
 
               {config?.isSearchable && (
                 <tr key="isSearchable">
+                  {hasDndColumn && <th className="dnd-col sticky sticky-left" data-sticky-position="left"></th>}
+
                   {selections && <th className="selection-col sticky sticky-left" data-sticky-position="left"></th>}
 
                   {hasSubrowColumn && <th className="subrow-col sticky sticky-left" data-sticky-position="left"></th>}

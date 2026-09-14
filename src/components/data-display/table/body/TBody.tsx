@@ -83,6 +83,9 @@ const SubitemList = <T extends object>({
   if (config.subrow?.render) {
     return (
       <tr className={`subrow-item ${_subrowButton ? "type-b" : "type-a"}`} data-level={level}>
+        {typeof methods.onDnD === "function" && (
+          <td className="dnd-col sticky sticky-left" data-sticky-position="left" />
+        )}
         {methods.selections && <td className="sticky sticky-left" data-sticky-position="left"></td>}
         {_subrowButton && <td className="sticky sticky-left" data-sticky-position="left"></td>}
         <td
@@ -115,6 +118,14 @@ const SubitemList = <T extends object>({
               className={`subrow-item ${_subrowButton ? "type-b" : "type-a"}${isBranchEnd && config.isTreeView ? " branch-end" : ""}`}
               data-level={level}
             >
+              {typeof methods.onDnD === "function" && (
+                <td
+                  className="dnd-col sticky sticky-left"
+                  data-sticky-position="left"
+                  style={{ display: "table-cell", verticalAlign: "middle" }}
+                />
+              )}
+
               {methods.selections && (
                 <td
                   className="sticky sticky-left"
@@ -196,6 +207,7 @@ function TBody<T extends object>({ data, columns, refs, methods, states, config 
   // variables
   const _subrowSelector: string = config.subrow?.selector ?? "subitems";
   const _subrowButton: boolean = config.subrow?.button ?? false;
+  const hasDndColumn = typeof methods.onDnD === "function";
 
   // methods
   const renderCell = ({
@@ -316,6 +328,23 @@ function TBody<T extends object>({ data, columns, refs, methods, states, config 
           {...(methods.rowBackgroundColor ? { style: { backgroundColor: methods.rowBackgroundColor(item) } } : {})}
           {...(methods.onDnD && data.length > 1 ? { className: "draggable", draggable: true } : {})}
         >
+          {hasDndColumn && (
+            <td
+              className="dnd-col sticky sticky-left"
+              data-sticky-position="left"
+              style={{
+                display: "table-cell",
+                verticalAlign: "middle",
+              }}
+            >
+              <div className="flex justify-content-center align-items-center" style={{ width: "100%", height: "100%" }}>
+                <span className="dnd-handle" aria-hidden>
+                  <Icon icon="GripVertical" size={16} />
+                </span>
+              </div>
+            </td>
+          )}
+
           {methods.selections && (
             <td
               ref={(element) => {
