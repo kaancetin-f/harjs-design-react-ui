@@ -118,10 +118,12 @@
       > .nodes {
         position: relative;
         z-index: 1;
+
         .node {
           position: absolute;
-          min-width: 8.5rem;
-          min-height: 2.75rem;
+          width: max-content;
+          height: max-content;
+          max-width: none;
           cursor: grab;
           user-select: none;
           touch-action: none;
@@ -178,25 +180,80 @@
           }
 
           > .node-content {
+            display: block;
+            width: max-content;
+            max-width: 100%;
             color: var(--gray-700);
             font-family: var(--system);
-            text-wrap: nowrap;
+            line-height: 1.25;
             pointer-events: none;
+          }
+
+          /* Compact labeled card — sizes to icon + text */
+          .node-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.625rem;
+            padding: 0.5rem 0.85rem 0.5rem 0.5rem;
+            background: var(--white-alpha-100);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-12);
+            box-shadow:
+              0 1px 2px color-mix(in srgb, var(--black-alpha-100) 8%, transparent),
+              0 6px 16px color-mix(in srgb, var(--black-alpha-100) 5%, transparent);
+            color: var(--gray-800);
+            font-size: 0.8125rem;
+            font-weight: 600;
+            letter-spacing: -0.015em;
+            white-space: nowrap;
+
+            &.is-accent {
+              background: color-mix(in srgb, var(--diagram-edge-color, var(--purple-500)) 8%, var(--white-alpha-100));
+              border-color: color-mix(in srgb, var(--diagram-edge-color, var(--purple-500)) 32%, transparent);
+            }
+          }
+
+          .node-box-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.75rem;
+            height: 1.75rem;
+            flex-shrink: 0;
+            border-radius: var(--radius-8);
+            background: color-mix(in srgb, var(--diagram-edge-color, var(--purple-500)) 14%, transparent);
+            color: var(--diagram-edge-color, var(--purple-500));
+
+            > svg {
+              width: 0.95rem;
+              height: 0.95rem;
+            }
+          }
+
+          /* Solid shape node — no forced card min size */
+          .node-shape {
+            display: block;
+            width: 1.75rem;
+            height: 1.75rem;
+            border-radius: var(--radius-8);
+            background: var(--diagram-edge-color, var(--purple-500));
+            box-shadow: 0 1px 3px color-mix(in srgb, var(--black-alpha-100) 12%, transparent);
           }
 
           .node-placeholder {
             display: inline-flex;
             align-items: center;
             gap: 0.45rem;
-            min-width: 8.5rem;
-            padding: 0.7rem 0.9rem 0.7rem 0.85rem;
+            padding: 0.55rem 0.85rem 0.55rem 0.7rem;
             background: var(--white-alpha-100);
             border: 1px dashed color-mix(in srgb, var(--diagram-edge-color, var(--purple-500)) 45%, transparent);
             border-radius: var(--radius-12);
+            box-shadow: 0 1px 2px color-mix(in srgb, var(--black-alpha-100) 6%, transparent);
             color: var(--gray-600);
             font-size: 0.8125rem;
             font-weight: 600;
             letter-spacing: -0.02em;
+            white-space: nowrap;
           }
 
           .node-placeholder-dot {

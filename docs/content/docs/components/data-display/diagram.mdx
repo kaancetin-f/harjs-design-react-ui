@@ -3,7 +3,7 @@ title: Diagram
 description: A node-and-edge canvas with pan, zoom, and optional editing.
 ---
 
-Pass `nodes` with positions and `edges` that connect ports. Put the node UI in `data`. Click a node (without dragging) to fire `onNodeClick`. `onNodesChange` / `onEdgesChange` receive the next lists when the canvas edits itself.
+Pass `nodes` with positions and `edges` that connect ports. Put the node UI in `data`. Nodes size to their content — there is no forced `min-width` / `min-height` on the shell. Built-in helpers: `node-box` + `node-box-icon` for labeled cards, `node-shape` for compact color blocks. Click a node (without dragging) to fire `onNodeClick`. `onNodesChange` / `onEdgesChange` receive the next lists when the canvas edits itself.
 
 Interaction lives on `config`. Defaults are all on. Set `readOnly` for a display canvas, or turn individual flags off. Pan and zoom always stay available.
 

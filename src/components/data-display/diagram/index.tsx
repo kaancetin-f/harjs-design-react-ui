@@ -15,7 +15,8 @@ import DiagramTR from "../../../libs/core/application/locales/diagram/tr";
 import DiagramEN from "../../../libs/core/application/locales/diagram/en";
 
 const PORTS: PortSide[] = ["top", "right", "bottom", "left"];
-const NEW_NODE_SIZE = { width: 136, height: 58 };
+/** Fallback only until the DOM measures the node; real size comes from content. */
+const NEW_NODE_SIZE = { width: 120, height: 44 };
 const SNAP_THRESHOLD = 36;
 const LINK_THRESHOLD = 12;
 

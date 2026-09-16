@@ -19,7 +19,7 @@ export function DiagramBasic() {
           onNodesChange={(nodes) => setGraph((prev) => ({ ...prev, nodes }))}
           onEdgesChange={(edges) => setGraph((prev) => ({ ...prev, edges }))}
           onNodeClick={(node) => setSelected(String(node.id))}
-          config={{ locale: "en", color: "var(--orange-500)" }}
+          config={{ locale: "en", color: accent }}
         />
       </DiagramFrame>
       <span style={{ fontSize: "0.8rem", color: "var(--gray-500)" }}>

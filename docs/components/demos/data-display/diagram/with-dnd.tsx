@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Card, Diagram, DnD } from "@/lib/ui";
-import { accent, NodeCard } from "./graph";
+import { accent, NodeBox } from "./graph";
 
 type Step = { id: string; title: string; hint: string };
 
@@ -18,7 +18,7 @@ export function DiagramWithDnD() {
   const nodes = steps.map((step, index) => ({
     id: step.id,
     position: { x: 28 + index * 200, y: 48 },
-    data: <NodeCard title={step.title} hint={step.hint} />,
+    data: <NodeBox title={`${step.title} · ${step.hint}`} />,
   }));
 
   const edges = steps.slice(0, -1).map((step, index) => ({
