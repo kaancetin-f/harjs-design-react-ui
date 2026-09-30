@@ -53,10 +53,22 @@ const Tooltip: React.FC<IProps> = ({ children, text, direction = "top" }) => {
     syncOpen();
   }, [syncOpen]);
 
-  const showFromFocus = useCallback(() => {
-    _focused.current = true;
-    syncOpen();
-  }, [syncOpen]);
+  const showFromFocus = useCallback(
+    (event: React.FocusEvent<HTMLDivElement>) => {
+      // Mouse/touch focus should not keep the tooltip open after the pointer leaves.
+      // Only keyboard focus (:focus-visible) participates in the open state.
+      const target = event.target as HTMLElement;
+      if (
+        typeof target.matches === "function" &&
+        !target.matches(":focus-visible")
+      ) {
+        return;
+      }
+      _focused.current = true;
+      syncOpen();
+    },
+    [syncOpen],
+  );
 
   const hideFromFocus = useCallback(
     (event: React.FocusEvent<HTMLDivElement>) => {
@@ -224,6 +236,7 @@ const Tooltip: React.FC<IProps> = ({ children, text, direction = "top" }) => {
         onMouseLeave={hideFromPointer}
         onFocus={showFromFocus}
         onBlur={hideFromFocus}
+        onClick={dismiss}
         onKeyDown={handleKeyDown}
       >
         {trigger}

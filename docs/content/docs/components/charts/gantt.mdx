@@ -1,16 +1,97 @@
 ---
 title: Gantt
-description: Visualize schedules and task timelines.
+description: Plan production orders, operations, and machines on a timeline.
 ---
+
+Gantt is an SVG timeline for ERP / MES style planning. Pass `data` (tasks). Optional `resources`, `dependencies`, `calendar`, and `zoom` unlock machine planning, links, working time, and scale levels.
+
+The legacy API stays valid: `title`, `description`, `data`, `pagination`, and `config` still work.
 
 ## Import
 
 ```tsx
-import { Gantt } from '@harjs/react-ui'
+import { Gantt } from "@harjs/react-ui";
 ```
 
-## Overview
+```tsx
+<Gantt
+  data={tasks}
+  resources={resources}
+  dependencies={dependencies}
+  defaultZoom="day"
+  onTaskChange={handleTaskChange}
+/>
+```
 
-Visualize schedules and task timelines.
+## Usage
 
-Examples and the full props API for `Gantt` are coming next. Use the [Button](/docs/components/form/button) page as the reference template.
+Minimal schedule with drag, resize, zoom, and today line.
+
+<Example>
+  <GanttBasic />
+</Example>
+
+## Examples
+
+### Production planning
+
+Multi-level production orders, setup / downtime, planned vs actual, and critical path.
+
+<Example>
+  <GanttProductionPlanning />
+</Example>
+
+### Resource planning
+
+Plant → work center → machine hierarchy. Tasks sit on machine rows (`viewMode="resource"`).
+
+<Example>
+  <GanttResourcePlanning />
+</Example>
+
+### Dependencies
+
+Finish-to-Start (default) links render as SVG paths with arrowheads. Supported types: `FS`, `SS`, `FF`, `SF`.
+
+<Example>
+  <GanttDependencies />
+</Example>
+
+### Planned vs actual
+
+Planned baseline (top) and actual (bottom) bars make delay obvious.
+
+<Example>
+  <GanttPlannedVsActual />
+</Example>
+
+### Large dataset
+
+Row and timeline virtualization for 1000+ operations. Use pagination or server-side pages for ERP modules.
+
+<Example>
+  <GanttLargeDataset />
+</Example>
+
+## Interaction
+
+- Drag a bar to reschedule; use edge handles to resize.
+- `Ctrl/Cmd + click` and `Shift + click` for multi-select.
+- `Ctrl/Cmd + wheel` changes zoom (`hour` → `quarter`).
+- `Ctrl/Cmd + Z` / `Y` undo and redo when task changes are applied.
+- Right-click fires `onContextMenu(task, event)` — menus stay in the host app.
+
+## Working calendar
+
+```tsx
+<Gantt
+  data={tasks}
+  calendar={{
+    workingDays: [1, 2, 3, 4, 5],
+    shifts: [{ start: "08:00", end: "17:00" }],
+    holidays: ["2026-10-29"],
+  }}
+/>
+```
+
+Non-working days are striped on the timeline. Drag snap respects `snap` and working time when possible.

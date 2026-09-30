@@ -328,6 +328,12 @@ import { KanbanBoardBasic } from '@/components/demos/data-display/kanban-board/b
 import { KanbanBoardFilters } from '@/components/demos/data-display/kanban-board/filter';
 import { KanbanBoardLoading } from '@/components/demos/data-display/kanban-board/loading';
 import { KanbanBoardLazyLoad } from '@/components/demos/data-display/kanban-board/lazy-load';
+import { GanttBasic } from '@/components/demos/charts/gantt/basic';
+import { GanttProductionPlanning } from '@/components/demos/charts/gantt/production-planning';
+import { GanttResourcePlanning } from '@/components/demos/charts/gantt/resource-planning';
+import { GanttDependencies } from '@/components/demos/charts/gantt/dependencies';
+import { GanttPlannedVsActual } from '@/components/demos/charts/gantt/planned-vs-actual';
+import { GanttLargeDataset } from '@/components/demos/charts/gantt/large-dataset';
 import { LayoutBasic } from '@/components/demos/layout/layout/basic';
 import { LayoutStructureTop, LayoutStructureHeaderSider, LayoutStructureHeaderSiderRight, LayoutStructureSide } from '@/components/demos/layout/layout/structures';
 import { LayoutHeaderContentFooter } from '@/components/demos/layout/layout/header-content-footer';
@@ -674,6 +680,12 @@ export const mdxComponents = {
   KanbanBoardFilters,
   KanbanBoardLazyLoad,
   KanbanBoardLoading,
+  GanttBasic,
+  GanttProductionPlanning,
+  GanttResourcePlanning,
+  GanttDependencies,
+  GanttPlannedVsActual,
+  GanttLargeDataset,
   LayoutBasic,
   LayoutStructureTop,
   LayoutStructureHeaderSider,

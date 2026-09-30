@@ -32,6 +32,8 @@ export { default as Table } from "../../src/components/data-display/table";
 export { default as Tabs } from "../../src/components/data-display/tabs";
 export { default as Tour } from "../../src/components/data-display/tour";
 export { default as Typography } from "../../src/components/data-display/typography";
+export { default as Gantt } from "../../src/components/charts/gantt";
+export type { Task as GanttTask } from "../../src/components/charts/gantt/IProps";
 export { default as Alert } from "../../src/components/feedback/alert";
 export { default as Drawer } from "../../src/components/feedback/drawer";
 export { default as Modal } from "../../src/components/feedback/modal";

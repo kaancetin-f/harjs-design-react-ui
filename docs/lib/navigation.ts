@@ -67,6 +67,10 @@ export const navigation: NavItem[] = [
     { title: "Grid System", slug: "layout/grid-system" },
     { title: "Layout", slug: "layout/layout" },
   ]),
+  componentLinks("Charts", [
+    { title: "Gantt", slug: "charts/gantt" },
+    { title: "Pie", slug: "charts/pie" },
+  ]),
 ];
 
 const CATEGORY_LABELS: Record<string, string> = {

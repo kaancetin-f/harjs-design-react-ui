@@ -1,3 +1,4 @@
 import Pie from "./pie";
+import Gantt from "./gantt";
 
-export { Pie };
+export { Pie, Gantt };
