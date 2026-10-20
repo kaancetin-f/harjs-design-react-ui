@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { Plus_Jakarta_Sans, Source_Sans_3, JetBrains_Mono } from "next/font/google";
 import "../../src/assets/css/core/har-core.css";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const display = Plus_Jakarta_Sans({
@@ -23,6 +24,7 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "HarJS · React UI",
     template: "%s · HarJS",
