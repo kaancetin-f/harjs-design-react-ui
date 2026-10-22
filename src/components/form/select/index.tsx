@@ -280,13 +280,13 @@ const Select: React.FC<Props> = ({
       setFilteredOptions(
         (options ?? []).filter((option) => {
           if (!optionsOpen) return true;
-          return option.text.toLocaleLowerCase().includes(searchText.toLocaleLowerCase());
+          return option.text.toLowerCase().includes(searchText.toLowerCase());
         }),
       );
       setIsSearchTextEqual(
         (options ?? []).some((option) => {
           if (!optionsOpen) return false;
-          return option.text.toLocaleLowerCase() === searchText.toLocaleLowerCase();
+          return option.text.toLowerCase() === searchText.toLowerCase();
         }),
       );
     }
@@ -319,9 +319,8 @@ const Select: React.FC<Props> = ({
 
   // variables
   const selectedFilteredCount = multiple
-    ? filteredOptions.filter((option) =>
-        value.some((item) => item.value === option.value && item.text === option.text),
-      ).length
+    ? filteredOptions.filter((option) => value.some((item) => item.value === option.value && item.text === option.text))
+        .length
     : 0;
 
   const allFilteredSelected =
@@ -376,11 +375,7 @@ const Select: React.FC<Props> = ({
                 ))}
               </div>
               <span className="toggle-arrow" aria-hidden="true">
-                {optionsOpen ? (
-                  <Icon icon="ChevronUp" size={16} />
-                ) : (
-                  <Icon icon="ChevronDown" size={16} />
-                )}
+                {optionsOpen ? <Icon icon="ChevronUp" size={16} /> : <Icon icon="ChevronDown" size={16} />}
               </span>
             </div>
 
@@ -455,11 +450,7 @@ const Select: React.FC<Props> = ({
                 size={size}
                 shape="square"
                 icon={{
-                  element: optionsOpen ? (
-                    <Icon icon="ChevronUp" size={16} />
-                  ) : (
-                    <Icon icon="ChevronDown" size={16} />
-                  ),
+                  element: optionsOpen ? <Icon icon="ChevronUp" size={16} /> : <Icon icon="ChevronDown" size={16} />,
                 }}
                 onClick={(event) => {
                   if (disabled) return;
