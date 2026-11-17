@@ -387,6 +387,14 @@
             background-color: var(--gray-100);
           }
 
+          &.is-clickable {
+            cursor: pointer;
+          }
+
+          &.is-clickable:focus-visible > td {
+            background-color: color-mix(in srgb, var(--blue-500) 10%, var(--gray-100));
+          }
+
           &:last-child {
             border-bottom: none;
           }

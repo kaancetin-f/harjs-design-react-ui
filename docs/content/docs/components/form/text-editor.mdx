@@ -19,6 +19,14 @@ import { TextEditor } from '@harjs/react-ui'
 
 ## Examples
 
+### Toolbar
+
+`toolbar` defaults to `true`. Set it to `false` to hide the formatting tools under the editor. The resize handle stays.
+
+<Example>
+  <TextEditorToolbar />
+</Example>
+
 ### Mentions
 
 Pass `dynamicList` to open a list when the user types `triggerKey` (default `@`). Filter by typing, move with `↑↓`, select with `Enter`, and close with `Esc`. `onTagged` receives the selected items. `color` paints the inserted mention chip with a design token (`purple` in this example).
@@ -40,5 +48,6 @@ Pass `dynamicList` to open a list when the user types `triggerKey` (default `@`)
 | `border.radius` | radius tokens | `"4"` | Corner radius |
 | `name` | `string` | — | iframe name |
 | `disabled` | `boolean` | — | Disable editing |
+| `toolbar` | `boolean` | `true` | Show the formatting toolbar under the editor |
 | `validation` | `{ text?: string }` | — | Error message |
 | `dynamicList` | `{ render; triggerKey?; color?; onTagged }` | — | Optional mention list. `color` styles the inserted `@` chip |

@@ -87,6 +87,7 @@ const Table = forwardRef(
       onPdfColumnsChange,
       onEditable,
       onDnD,
+      onRowClick,
       pagination,
       config = { isSearchable: false },
     }: IProps<T>,
@@ -1083,6 +1084,7 @@ const Table = forwardRef(
                   selectionDisabled: selectionDisabled,
                   onDnD: onDnD,
                   onEditable: onEditable,
+                  onRowClick: onRowClick,
                   rowBackgroundColor: rowBackgroundColor,
                 }}
                 config={config}

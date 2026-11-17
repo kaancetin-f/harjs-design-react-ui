@@ -82,6 +82,7 @@ import { DatePickerClockOnly } from '@/components/demos/form/date-picker/clock-o
 import { DatePickerDisabled } from '@/components/demos/form/date-picker/disabled';
 import { DatePickerValidation } from '@/components/demos/form/date-picker/validation';
 import { TextEditorBasic } from '@/components/demos/form/text-editor/basic';
+import { TextEditorToolbar } from '@/components/demos/form/text-editor/toolbar';
 import { TextEditorMentions } from '@/components/demos/form/text-editor/mentions';
 import { UploadBasic } from '@/components/demos/form/upload/basic';
 import { UploadFiles } from '@/components/demos/form/upload/files';
@@ -320,6 +321,7 @@ import { TableNested } from '@/components/demos/data-display/table/nested';
 import { TableSubrows } from '@/components/demos/data-display/table/subrows';
 import { TableSubrowsAutoOpen } from '@/components/demos/data-display/table/subrows-auto-open';
 import { TableRowTone } from '@/components/demos/data-display/table/row-tone';
+import { TableRowClick } from '@/components/demos/data-display/table/row-click';
 import { TableServer } from '@/components/demos/data-display/table/server';
 import { CalendarBasic } from '@/components/demos/data-display/calendar/basic';
 import { CalendarOverlapping } from '@/components/demos/data-display/calendar/overlapping';
@@ -434,6 +436,7 @@ export const mdxComponents = {
   DatePickerDisabled,
   DatePickerValidation,
   TextEditorBasic,
+  TextEditorToolbar,
   TextEditorMentions,
   UploadBasic,
   UploadFiles,
@@ -672,6 +675,7 @@ export const mdxComponents = {
   TableSubrows,
   TableSubrowsAutoOpen,
   TableRowTone,
+  TableRowClick,
   TableServer,
   CalendarBasic,
   CalendarOverlapping,

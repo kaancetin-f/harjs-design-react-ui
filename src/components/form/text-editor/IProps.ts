@@ -28,6 +28,8 @@ export interface IProps<T>
   height?: number;
   multilang?: boolean;
   placeholder?: string;
+  /** When `false`, hides the formatting toolbar under the editor. Defaults to `true`. */
+  toolbar?: boolean;
 }
 
 export default IProps;

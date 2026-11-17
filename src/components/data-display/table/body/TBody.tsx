@@ -7,6 +7,7 @@ import Editable from "./Editable";
 import { Config } from "../IProps";
 import { TableColumnProps } from "../../../../libs/infrastructure/types";
 import { GetColumnValue, GetTreeLineLeft, GetTreePaddingLeft, IsSubrowBranchEnd } from "../Helpers";
+import { IsInteractiveRowTarget, IsRowPointerDrag } from "../rowClick";
 import ITableLocale from "../../../../libs/core/application/locales/table/ITableLocale";
 import TableTR from "../../../../libs/core/application/locales/table/tr";
 import TableEN from "../../../../libs/core/application/locales/table/en";
@@ -30,6 +31,10 @@ interface IProps<T extends object> {
     selectionDisabled?: (item: T) => boolean;
     onDnD?: (item: T[]) => void;
     onEditable?: (item: T, trackByValue: string, currentKey?: keyof T | null) => void;
+    onRowClick?: (
+      item: T,
+      event: React.MouseEvent<HTMLTableRowElement> | React.KeyboardEvent<HTMLTableRowElement>,
+    ) => void;
     rowBackgroundColor?: (item: T) => string;
   };
   config: Config<T>;
@@ -37,6 +42,39 @@ interface IProps<T extends object> {
 
 type TBodyMethods<T extends object> = IProps<T>["methods"];
 type TBodyStates<T extends object> = IProps<T>["states"];
+
+let rowPointerDown: { x: number; y: number } | null = null;
+
+function rowActivation<T extends object>(
+  item: T,
+  onRowClick?: TBodyMethods<T>["onRowClick"],
+): Pick<React.HTMLAttributes<HTMLTableRowElement>, "tabIndex" | "onPointerDown" | "onClick" | "onKeyDown"> {
+  if (typeof onRowClick !== "function") return {};
+
+  return {
+    tabIndex: 0,
+    onPointerDown: (event) => {
+      rowPointerDown = { x: event.clientX, y: event.clientY };
+    },
+    onClick: (event) => {
+      const dragged = IsRowPointerDrag(rowPointerDown, { x: event.clientX, y: event.clientY });
+      rowPointerDown = null;
+      if (dragged || IsInteractiveRowTarget(event.target)) return;
+      onRowClick(item, event);
+    },
+    onKeyDown: (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      if (event.target !== event.currentTarget) return;
+      event.preventDefault();
+      onRowClick(item, event);
+    },
+  };
+}
+
+function rowClassName(className: string, clickable: boolean): string | undefined {
+  const value = [className, clickable ? "is-clickable" : ""].filter(Boolean).join(" ");
+  return value || undefined;
+}
 
 interface IRenderCell<T> {
   item: T;
@@ -115,8 +153,12 @@ const SubitemList = <T extends object>({
         return (
           <Fragment key={`subitem-wrapper-${key}`}>
             <tr
-              className={`subrow-item ${_subrowButton ? "type-b" : "type-a"}${isBranchEnd && config.isTreeView ? " branch-end" : ""}`}
+              className={rowClassName(
+                `subrow-item ${_subrowButton ? "type-b" : "type-a"}${isBranchEnd && config.isTreeView ? " branch-end" : ""}`,
+                typeof methods.onRowClick === "function",
+              )}
               data-level={level}
+              {...rowActivation(subitem, methods.onRowClick)}
             >
               {typeof methods.onDnD === "function" && (
                 <td
@@ -325,8 +367,13 @@ function TBody<T extends object>({ data, columns, refs, methods, states, config 
           ref={(element) => {
             _tBodyTR.current[index] = element;
           }}
-          {...(methods.rowBackgroundColor ? { style: { backgroundColor: methods.rowBackgroundColor(item) } } : {})}
-          {...(methods.onDnD && data.length > 1 ? { className: "draggable", draggable: true } : {})}
+          className={rowClassName(
+            methods.onDnD && data.length > 1 ? "draggable" : "",
+            typeof methods.onRowClick === "function",
+          )}
+          style={methods.rowBackgroundColor ? { backgroundColor: methods.rowBackgroundColor(item) } : undefined}
+          draggable={methods.onDnD && data.length > 1 ? true : undefined}
+          {...rowActivation(item, methods.onRowClick)}
         >
           {hasDndColumn && (
             <td

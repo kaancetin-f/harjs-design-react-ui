@@ -61,6 +61,7 @@ const TextEditor = <T extends object>({
   // multilang,
   validation,
   disabled,
+  toolbar = true,
 }: IProps<T>) => {
   // refs
   const _container = useRef<HTMLDivElement>(null);
@@ -672,21 +673,21 @@ const TextEditor = <T extends object>({
             : {})}
         />
 
-        <div className="toolbar">
-          {toolbarButtons.map(({ command, icon, tooltip }, index) => (
-            <Tooltip key={`${command}-${index}`} text={tooltip}>
-              <Button
-                key={command}
-                type="button"
-                variant="borderless"
-                color="gray"
-                border={{ radius: "0" }}
-                shape="square"
-                icon={{ element: <Icon icon={icon} fill="currentColor" /> }}
-                onClick={() => execCommand(command)}
-              />
-            </Tooltip>
-          ))}
+        <div className="toolbar" hidden={!toolbar}>
+          {toolbar &&
+            toolbarButtons.map(({ command, icon, tooltip }, index) => (
+              <Tooltip key={`${command}-${index}`} text={tooltip}>
+                <Button
+                  type="button"
+                  variant="borderless"
+                  color="gray"
+                  border={{ radius: "0" }}
+                  shape="square"
+                  icon={{ element: <Icon icon={icon} fill="currentColor" /> }}
+                  onClick={() => execCommand(command)}
+                />
+              </Tooltip>
+            ))}
         </div>
 
         <div className="resize" onMouseDown={handleMouseDown}></div>

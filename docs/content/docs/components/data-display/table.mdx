@@ -32,7 +32,7 @@ A titled Table is a header, an optional toolbar, the grid, and a footer.
 - **Header** — `title` and `description` on the first row. The toolbar under them holds `extra` on the left and labeled `actions` plus the column manager on the right.
 - **Filter row** — appears when `config.isSearchable` is on. Each column with `filterDataType` gets a field; `filters` adds a checklist.
 - **Column menu** — `config.isProperties` adds sort (asc, desc, clear) on each heading.
-- **Body** — cells from `key`, nested `{ field, nestedKey }`, `render`, or `editable`.
+- **Body** — cells from `key`, nested `{ field, nestedKey }`, `render`, or `editable`. `onRowClick` activates a data row.
 - **Footer** — range copy plus `pagination` when you pass it.
 
 `data` and `columns` are required. Keep `trackBy` unique so selection, edit, and subrows do not collide.
@@ -175,6 +175,14 @@ Put children on `subitems` (or `config.subrow.selector`). `config.subrow.button`
   <TableRowTone />
 </Example>
 
+### Row click
+
+`onRowClick` receives the row item when the row is clicked, or when it is focused and Enter or Space is pressed. Selection checkboxes, the expand control, drag handles, editors, links, and buttons inside the row do not fire it.
+
+<Example>
+  <TableRowClick />
+</Example>
+
 ### Server-side
 
 `config.isServerSide` stops Table from filtering, sorting, or slicing. You own the query:
@@ -232,6 +240,7 @@ ref.current?.filterCleaner();
 | `onEditable`         | `(item, trackByValue, key) => void`                  | —                   |
 | `onPdfColumnsChange` | `(keys: string[]) => void`                           | —                   |
 | `onDnD`              | `(items: T[]) => void`                               | —                   |
+| `onRowClick`         | `(item, event) => void`                              | —                   |
 | `rowBackgroundColor` | `(item: T) => string`                                | —                   |
 | `pagination`         | `{ totalRecords; perPage; currentPage?; onChange? }` | —                   |
 | `children`           | `ReactNode`                                          | — also left toolbar |

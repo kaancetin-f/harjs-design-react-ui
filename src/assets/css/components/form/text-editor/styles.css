@@ -63,6 +63,14 @@
       gap: 0.25rem;
       margin-top: -1px;
       border: solid var(--stroke-1) transparent;
+
+      &[hidden] {
+        display: none;
+      }
+
+      &[hidden] + .resize {
+        margin-top: -1px;
+      }
     }
 
     > .resize {
@@ -110,6 +118,7 @@
       }
     }
   }
+
 }
 
 .har-alias-panel {

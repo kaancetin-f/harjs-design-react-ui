@@ -107,6 +107,14 @@ interface IProps<T extends object> extends IChildrenProps {
   onPdfColumnsChange?: (pdfColumns: string[]) => void;
   onEditable?: (item: T, trackByValue: string, currentKey?: keyof T | null) => void;
   onDnD?: (item: T[]) => void;
+  /**
+   * Fires for a data row on click, Enter, or Space.
+   * Controls inside the row (selection, expand, editors, links, buttons) do not activate it.
+   */
+  onRowClick?: (
+    item: T,
+    event: React.MouseEvent<HTMLTableRowElement> | React.KeyboardEvent<HTMLTableRowElement>,
+  ) => void;
   pagination?: {
     totalRecords: number;
     perPage: number;
