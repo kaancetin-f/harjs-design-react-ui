@@ -40,6 +40,15 @@
           gap: 0.25rem;
           flex: 1;
           min-width: 0;
+
+          > .selection-count {
+            overflow: hidden;
+            color: var(--gray-700);
+            font-weight: 400;
+            line-height: 1.2;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
         }
 
         > .toggle-arrow {

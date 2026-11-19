@@ -15,6 +15,8 @@ export interface IMultiple {
   value: Option[];
   onChange: (option: Option[]) => void;
   multiple: true;
+  /** Seçilen değerleri chip yerine alan içinde adet olarak gösterir. Değerler `value` üzerinde kalır. */
+  selectionCount?: boolean;
 }
 
 export interface ISingle {
@@ -32,6 +34,7 @@ export type Props = {
   readOnly?: boolean;
   config?: {
     clear?: boolean;
+    locale?: Intl.LocalesArgument;
     validation?: {
       text: "visible" | "hidden";
     };

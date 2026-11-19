@@ -66,6 +66,7 @@ import { SelectBasic } from '@/components/demos/form/select/basic';
 import { SelectVariants } from '@/components/demos/form/select/variants';
 import { SelectSizes } from '@/components/demos/form/select/sizes';
 import { SelectMultiple } from '@/components/demos/form/select/multiple';
+import { SelectSelectionCount } from '@/components/demos/form/select/selection-count';
 import { SelectDisabled } from '@/components/demos/form/select/disabled';
 import { SelectValidation } from '@/components/demos/form/select/validation';
 import { SwitchBasic } from '@/components/demos/form/switch/basic';
@@ -420,6 +421,7 @@ export const mdxComponents = {
   SelectVariants,
   SelectSizes,
   SelectMultiple,
+  SelectSelectionCount,
   SelectDisabled,
   SelectValidation,
   SwitchBasic,

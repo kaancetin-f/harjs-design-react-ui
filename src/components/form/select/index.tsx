@@ -11,28 +11,34 @@ import Utils from "../../../libs/infrastructure/shared/Utils";
 import ReactDOM from "react-dom";
 import Button from "../button";
 import { Icon } from "../../icons";
+import { useTranslation } from "@harjs/translation";
+import ISelectLocale from "../../../libs/core/application/locales/select/ISelectLocale";
+import SelectTR from "../../../libs/core/application/locales/select/tr";
+import SelectEN from "../../../libs/core/application/locales/select/en";
 
-const Select: React.FC<Props> = ({
-  variant = "outlined",
-  status,
-  color = "gray",
-  border = { radius: "4" },
-  size = "lg",
-  style,
-  options,
-  value,
-  onChange,
-  onSearch,
-  onClick,
-  onCreate,
-  multiple,
-  placeholder,
-  validation,
-  upperCase,
-  disabled,
-  readOnly,
-  config = { clear: true, validation: { text: "visible" } },
-}) => {
+const Select: React.FC<Props> = (props) => {
+  const selectionCount = props.multiple === true && props.selectionCount === true;
+  const {
+    variant = "outlined",
+    status,
+    color = "gray",
+    border = { radius: "4" },
+    size = "lg",
+    style,
+    options,
+    value,
+    onChange,
+    onSearch,
+    onClick,
+    onCreate,
+    multiple,
+    placeholder,
+    validation,
+    upperCase,
+    disabled,
+    readOnly,
+    config = { clear: true, validation: { text: "visible" } },
+  } = props;
   // refs
   const _mWrapperClassName: string[] = ["wrapper"];
   const _selectionClassName: string[] = ["selections"];
@@ -58,6 +64,10 @@ const Select: React.FC<Props> = ({
   // options referans kararlılığı için JSON key
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const optionsKey = useMemo(() => JSON.stringify(options), [options]);
+  const { t } = useTranslation<ISelectLocale>(String(config?.locale ?? "tr"), {
+    tr: { ...SelectTR },
+    en: { ...SelectEN },
+  });
 
   // variables
   _selectionClassName.push(
@@ -187,7 +197,7 @@ const Select: React.FC<Props> = ({
         }}
       >
         {options.length === 0 && (singleInputText.length === 0 || searchText.length === 0) ? (
-          <span className="text">Herhangi bir kayıt bulunumadı.</span>
+          <span className="text">{t("Select.Empty.Text")}</span>
         ) : (
           <span className="add-item">
             <span className="plus">+</span>
@@ -357,22 +367,26 @@ const Select: React.FC<Props> = ({
               }}
             >
               <div className="items">
-                {value.map((_value, index) => (
-                  <Chip
-                    key={index}
-                    variant={status?.selected?.variant || "filled"}
-                    color={status?.selected?.color || status?.color}
-                    text={_value.text}
-                    size={status?.selected?.size || size}
-                    border={{ radius: "full" }}
-                    {...(!disabled &&
-                      !readOnly && {
-                        onDelete: () => {
-                          onChange(value.filter((v) => !(v.value === _value.value && v.text === _value.text)));
-                        },
-                      })}
-                  />
-                ))}
+                {selectionCount
+                  ? value.length > 0 && (
+                      <span className="selection-count">{t("Select.SelectionCount.Text", value.length)}</span>
+                    )
+                  : value.map((_value, index) => (
+                      <Chip
+                        key={index}
+                        variant={status?.selected?.variant || "filled"}
+                        color={status?.selected?.color || status?.color}
+                        text={_value.text}
+                        size={status?.selected?.size || size}
+                        border={{ radius: "full" }}
+                        {...(!disabled &&
+                          !readOnly && {
+                            onDelete: () => {
+                              onChange(value.filter((v) => !(v.value === _value.value && v.text === _value.text)));
+                            },
+                          })}
+                      />
+                    ))}
               </div>
               <span className="toggle-arrow" aria-hidden="true">
                 {optionsOpen ? <Icon icon="ChevronUp" size={16} /> : <Icon icon="ChevronDown" size={16} />}
@@ -502,7 +516,7 @@ const Select: React.FC<Props> = ({
                 <Input
                   ref={_searchField}
                   variant="outlined"
-                  placeholder="Search..."
+                  placeholder={t("Select.Search.Placeholder")}
                   value={searchText}
                   onChange={(event) => setSearchText(event.target.value)}
                   onClick={(event) => event.stopPropagation()}
@@ -526,7 +540,9 @@ const Select: React.FC<Props> = ({
                 }}
               >
                 <Checkbox checked={!!allFilteredSelected} color={allFilteredSelected ? "blue" : "gray"} disabled />
-                <span className="label">{allFilteredSelected ? "Tümünü Kaldır" : "Tümünü Seç"}</span>
+                <span className="label">
+                  {allFilteredSelected ? t("Select.ClearAll.Text") : t("Select.SelectAll.Text")}
+                </span>
                 <span className="count">
                   {selectedFilteredCount}/{filteredOptions.length}
                 </span>
@@ -561,7 +577,7 @@ const Select: React.FC<Props> = ({
               </ul>
             ) : !onCreate ? (
               <div className="no-options-field">
-                <span className="text">Herhangi bir kayıt bulunumadı.</span>
+                <span className="text">{t("Select.Empty.Text")}</span>
               </div>
             ) : (
               createField()

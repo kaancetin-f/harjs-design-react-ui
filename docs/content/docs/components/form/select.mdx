@@ -48,6 +48,14 @@ Set `multiple` and pass an `Option[]` value. The dropdown includes search and a 
   <SelectMultiple />
 </Example>
 
+### Selection count
+
+`selectionCount` works with `multiple`. The field shows a locale count, for example `3 adet seçim yapılmıştır.` in Turkish, and leaves the selected `Option[]` on `value`. Search, select all, and the empty state use the same copy. Set `config.locale` to `"en"` or `"tr"` (default `"tr"`).
+
+<Example>
+  <SelectSelectionCount />
+</Example>
+
 ### Disabled
 
 `disabled` prevents opening the list and mutes the field.
@@ -72,6 +80,7 @@ Set `multiple` and pass an `Option[]` value. The dropdown includes search and a 
 | `value`       | `Option \| undefined` or `Option[]`                                                                                 | —                |
 | `onChange`    | `(option) => void`                                                                                                  | —                |
 | `multiple`    | `boolean`                                                                                                           | `false`          |
+| `selectionCount` | `boolean`                                                                                                        | —                |
 | `placeholder` | `string`                                                                                                            | —                |
 | `variant`     | `"filled" \| "outlined" \| "dashed" \| "borderless"`                                                                | `"outlined"`     |
 | `color`       | `"blue" \| "purple" \| "pink" \| "red" \| "orange" \| "yellow" \| "green" \| "teal" \| "cyan" \| "gray" \| "white"` | `"gray"`         |
@@ -80,7 +89,7 @@ Set `multiple` and pass an `Option[]` value. The dropdown includes search and a 
 | `readOnly`    | `boolean`                                                                                                           | —                |
 | `onSearch`    | `(searchText: string) => void`                                                                                      | —                |
 | `onCreate`    | `(option: Option) => void`                                                                                          | —                |
-| `config`      | `{ clear?: boolean; validation?: { text: "visible" \| "hidden" } }`                                                 | `{ clear: true }` |
+| `config`      | `{ clear?: boolean; locale?: Intl.LocalesArgument; validation?: { text: "visible" \| "hidden" } }`                  | `{ clear: true, locale: "tr" }` |
 | `validation`  | `{ text?: string; scrollTo?: boolean }`                                                                             | —                |
 
 `Option` is `{ value: string | number | null; text: string }`. Also accepts Input styling props except `value` and `onChange`.
