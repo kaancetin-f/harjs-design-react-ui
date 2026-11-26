@@ -169,6 +169,33 @@ const DatePicker: React.FC<Props> = ({
   const setActiveSelectedHours = isEndActive ? setSelectedEndHours : setSelectedHours;
   const setActiveSelectedMinutes = isEndActive ? setSelectedEndMinutes : setSelectedMinutes;
 
+  const minRaw =
+    attributes.min === undefined || attributes.min === null || attributes.min === ""
+      ? ""
+      : String(attributes.min);
+
+  const externalMinBound = (() => {
+    if (!minRaw || multiple) return null;
+
+    const parsed = DATE.Parse(minRaw, isClock, isOnlyClock);
+
+    if (isOnlyClock) {
+      return {
+        day: null as CalendarDay | null,
+        time: { hours: parsed.hours, minutes: parsed.minutes } as ClockTime,
+      };
+    }
+
+    if (!Number.isFinite(parsed.year) || !Number.isFinite(parsed.month) || !Number.isFinite(parsed.day)) {
+      return null;
+    }
+
+    return {
+      day: { year: parsed.year, month: parsed.month - 1, day: parsed.day } as CalendarDay,
+      time: { hours: parsed.hours || 0, minutes: parsed.minutes || 0 } as ClockTime,
+    };
+  })();
+
   const getStartDay = (): CalendarDay | null =>
     _day.current !== null ? { year: _year.current, month: _month.current, day: _day.current } : null;
 
@@ -179,16 +206,36 @@ const DatePicker: React.FC<Props> = ({
 
   const getStartTime = (): ClockTime => ({ hours: _hours.current, minutes: _minutes.current });
 
-  const getEndTimeMin = (): ClockTime | null =>
-    getEndTimeMinConstraint({
-      isOnlyClock,
-      startDay: getStartDay(),
-      endDay: getEndDay(),
-      startTime: getStartTime(),
-    });
+  const getMinDayForDisable = (): CalendarDay | null => {
+    if (multiple && isEndActive) return getStartDay();
+    if (!multiple) return externalMinBound?.day ?? null;
+    return null;
+  };
+
+  const getActiveTimeMin = (): ClockTime | null => {
+    if (multiple && isEndActive) {
+      return getEndTimeMinConstraint({
+        isOnlyClock,
+        startDay: getStartDay(),
+        endDay: getEndDay(),
+        startTime: getStartTime(),
+      });
+    }
+
+    if (!multiple && externalMinBound) {
+      return getEndTimeMinConstraint({
+        isOnlyClock,
+        startDay: externalMinBound.day,
+        endDay: getStartDay(),
+        startTime: externalMinBound.time,
+      });
+    }
+
+    return null;
+  };
 
   const clampEndTimeToStart = () => {
-    const minTime = getEndTimeMin();
+    const minTime = getActiveTimeMin();
     if (!minTime) return;
     if (!isTimeBefore({ hours: _endHours.current, minutes: _endMinutes.current }, minTime)) return;
 
@@ -198,8 +245,63 @@ const DatePicker: React.FC<Props> = ({
     setSelectedEndMinutes(minTime.minutes);
   };
 
+  const clampSingleToMin = () => {
+    if (!externalMinBound) return;
+
+    if (isOnlyClock) {
+      if (!isTimeBefore({ hours: _hours.current, minutes: _minutes.current }, externalMinBound.time)) return;
+      _hours.current = externalMinBound.time.hours;
+      _minutes.current = externalMinBound.time.minutes;
+      setSelectedHours(_hours.current);
+      setSelectedMinutes(_minutes.current);
+      return;
+    }
+
+    const currentDay = getStartDay();
+    if (!currentDay || !externalMinBound.day) return;
+
+    if (
+      isEndBeforeStart(
+        { ...currentDay, hours: isClock ? _hours.current : 0, minutes: isClock ? _minutes.current : 0 },
+        {
+          ...externalMinBound.day,
+          hours: isClock ? externalMinBound.time.hours : 0,
+          minutes: isClock ? externalMinBound.time.minutes : 0,
+        },
+        isClock,
+      )
+    ) {
+      _year.current = externalMinBound.day.year;
+      _month.current = externalMinBound.day.month;
+      _day.current = externalMinBound.day.day;
+      setSelectedYear(_year.current);
+      setSelectedMonth(_month.current);
+      setSelectedDay(_day.current);
+
+      if (isClock) {
+        _hours.current = externalMinBound.time.hours;
+        _minutes.current = externalMinBound.time.minutes;
+        setSelectedHours(_hours.current);
+        setSelectedMinutes(_minutes.current);
+      }
+      return;
+    }
+
+    const minTime = getActiveTimeMin();
+    if (!minTime) return;
+    if (!isTimeBefore({ hours: _hours.current, minutes: _minutes.current }, minTime)) return;
+
+    _hours.current = minTime.hours;
+    _minutes.current = minTime.minutes;
+    setSelectedHours(_hours.current);
+    setSelectedMinutes(_minutes.current);
+  };
+
   const ensureEndNotBeforeStart = () => {
-    if (!multiple) return;
+    if (!multiple) {
+      clampSingleToMin();
+      return;
+    }
 
     if (isOnlyClock) {
       clampEndTimeToStart();
@@ -325,11 +427,10 @@ const DatePicker: React.FC<Props> = ({
 
   const handleOk = (isShutdownOn: boolean = true) => {
     if (isOnlyClock) {
-      setSelectedHours(_hours.current);
-      setSelectedMinutes(_minutes.current);
-
       if (multiple) {
         ensureEndNotBeforeStart();
+        setSelectedHours(_hours.current);
+        setSelectedMinutes(_minutes.current);
         setSelectedEndHours(_endHours.current);
         setSelectedEndMinutes(_endMinutes.current);
 
@@ -341,6 +442,9 @@ const DatePicker: React.FC<Props> = ({
         return;
       }
 
+      clampSingleToMin();
+      setSelectedHours(_hours.current);
+      setSelectedMinutes(_minutes.current);
       onChange(DATE.FormatTime(_hours.current, _minutes.current));
       isShutdownOn && setCalendarIsOpen(false);
       return;
@@ -395,6 +499,8 @@ const DatePicker: React.FC<Props> = ({
     }
 
     if (_day.current === null) return;
+
+    clampSingleToMin();
 
     setSelectedYear(_year.current);
     setSelectedMonth(_month.current);
@@ -515,7 +621,18 @@ const DatePicker: React.FC<Props> = ({
       setViewYear(_year.current);
       setViewMonth(_month.current);
     } else {
-      onChange(startString);
+      clampSingleToMin();
+      const clampedStart = new Date(
+        Date.UTC(
+          _year.current,
+          _month.current,
+          _day.current!,
+          !isClock ? 0 : _hours.current,
+          !isClock ? 0 : _minutes.current,
+          0,
+        ),
+      ).toISOString();
+      onChange(clampedStart);
 
       // Takvim görünümünü başlangıç tarihine çek.
       setViewYear(_year.current);
@@ -555,11 +672,12 @@ const DatePicker: React.FC<Props> = ({
 
       _hours.current = now.getHours();
       _minutes.current = now.getMinutes();
-      setSelectedHours(now.getHours());
-      setSelectedMinutes(now.getMinutes());
+      clampSingleToMin();
+      setSelectedHours(_hours.current);
+      setSelectedMinutes(_minutes.current);
       setTimeChanged((prev) => !prev);
       setCalendarIsOpen(false);
-      onChange(DATE.FormatTime(now.getHours(), now.getMinutes()));
+      onChange(DATE.FormatTime(_hours.current, _minutes.current));
       return;
     }
 
@@ -628,29 +746,30 @@ const DatePicker: React.FC<Props> = ({
       return;
     }
 
-    setSelectedYear(now.getFullYear());
-    setSelectedMonth(now.getMonth());
-    setSelectedDay(now.getDate());
-    setSelectedHours(now.getHours());
-    setSelectedMinutes(now.getMinutes());
-
     _year.current = now.getFullYear();
     _month.current = now.getMonth();
     _day.current = now.getDate();
     _hours.current = now.getHours();
     _minutes.current = now.getMinutes();
+    clampSingleToMin();
 
-    setViewYear(now.getFullYear());
-    setViewMonth(now.getMonth());
+    setSelectedYear(_year.current);
+    setSelectedMonth(_month.current);
+    setSelectedDay(_day.current);
+    setSelectedHours(_hours.current);
+    setSelectedMinutes(_minutes.current);
+
+    setViewYear(_year.current);
+    setViewMonth(_month.current);
     setCalendarIsOpen(false);
 
     const inputDate = new Date(
       Date.UTC(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate(),
-        !isClock ? 0 : now.getHours(),
-        !isClock ? 0 : now.getMinutes(),
+        _year.current,
+        _month.current,
+        _day.current!,
+        !isClock ? 0 : _hours.current,
+        !isClock ? 0 : _minutes.current,
         0,
       ),
     );
@@ -895,7 +1014,7 @@ const DatePicker: React.FC<Props> = ({
         days.push(<span key={`prev-${i}`} className="empty-day"></span>);
       }
 
-      const startDayForDisable = multiple ? getStartDay() : null;
+      const minDayForDisable = getMinDayForDisable();
 
       for (let i = firstDayOfMonth.getDate(); i <= lastDayOfMonth.getDate(); i++) {
         let dayClassName = "";
@@ -903,11 +1022,7 @@ const DatePicker: React.FC<Props> = ({
 
         // Hücrenin tarihi takvimin gezinme (view) yılı ve ayına göre hesaplanır
         const cellDate = Date.UTC(viewYear, viewMonth, i);
-        const isEndDayDisabled =
-          Boolean(multiple) &&
-          activeField === "end" &&
-          startDayForDisable !== null &&
-          isDayBefore(cellDay, startDayForDisable);
+        const isDayDisabled = minDayForDisable !== null && isDayBefore(cellDay, minDayForDisable);
 
         if (multiple) {
           const hasStart = _day.current !== null;
@@ -926,7 +1041,7 @@ const DatePicker: React.FC<Props> = ({
             isInRange = cellDate > minDate && cellDate < maxDate;
           }
 
-          if (isEndDayDisabled) {
+          if (isDayDisabled) {
             dayClassName = "disabled-day";
           } else if (isStartDay || isEndDay) {
             dayClassName = "selection-day";
@@ -937,17 +1052,21 @@ const DatePicker: React.FC<Props> = ({
           const isSelected =
             _day.current !== null && viewYear === _year.current && viewMonth === _month.current && i === _day.current;
 
-          dayClassName = isSelected ? "selection-day" : "";
+          if (isDayDisabled) {
+            dayClassName = "disabled-day";
+          } else {
+            dayClassName = isSelected ? "selection-day" : "";
+          }
         }
 
         days.push(
           <span
             key={`current-${i}`}
             className={dayClassName}
-            aria-disabled={isEndDayDisabled || undefined}
+            aria-disabled={isDayDisabled || undefined}
             onClick={(event) => {
               event.preventDefault();
-              if (isEndDayDisabled) return;
+              if (isDayDisabled) return;
 
               if (multiple && activeField === "end") {
                 _endYear.current = viewYear;
@@ -1002,10 +1121,10 @@ const DatePicker: React.FC<Props> = ({
       document.removeEventListener("click", handleClickOutSide);
       document.removeEventListener("keydown", handleKeys);
     };
-  }, [dateChanged, calendarIsOpen, activeField, viewYear, viewMonth]);
+  }, [dateChanged, calendarIsOpen, activeField, viewYear, viewMonth, minRaw]);
 
   useEffect(() => {
-    const endTimeMin = isEndActive ? getEndTimeMin() : null;
+    const timeMin = getActiveTimeMin();
 
     const generateList = (
       count: number,
@@ -1018,8 +1137,8 @@ const DatePicker: React.FC<Props> = ({
 
         const isDisabled =
           kind === "hours"
-            ? shouldDisableEndHour(i, endTimeMin)
-            : shouldDisableEndMinute(i, activeHoursRef.current, endTimeMin);
+            ? shouldDisableEndHour(i, timeMin)
+            : shouldDisableEndMinute(i, activeHoursRef.current, timeMin);
 
         const classNames = [current === i ? "selection-time" : "", isDisabled ? "disabled-time" : ""]
           .filter(Boolean)
@@ -1042,6 +1161,7 @@ const DatePicker: React.FC<Props> = ({
                 activeHoursRef.current = i;
                 setActiveSelectedHours(i);
                 if (isEndActive) clampEndTimeToStart();
+                else if (!multiple) clampSingleToMin();
               } else {
                 setTimeChanged((prev) => !prev);
                 activeMinutesRef.current = i;
@@ -1083,7 +1203,62 @@ const DatePicker: React.FC<Props> = ({
         behavior: "smooth",
       });
     }
-  }, [timeChanged, calendarIsOpen, isClock, config?.step?.minutes, activeField, dateChanged]);
+  }, [timeChanged, calendarIsOpen, isClock, config?.step?.minutes, activeField, dateChanged, minRaw]);
+
+  useEffect(() => {
+    if (multiple || !minRaw || !value) return;
+
+    const current = DATE.Parse(String(value), isClock, isOnlyClock);
+    const minParsed = DATE.Parse(minRaw, isClock, isOnlyClock);
+
+    if (isOnlyClock) {
+      if (
+        !isTimeBefore(
+          { hours: current.hours, minutes: current.minutes },
+          { hours: minParsed.hours, minutes: minParsed.minutes },
+        )
+      ) {
+        return;
+      }
+
+      onChange(DATE.FormatTime(minParsed.hours, minParsed.minutes));
+      return;
+    }
+
+    if (
+      !Number.isFinite(current.year) ||
+      !Number.isFinite(current.month) ||
+      !Number.isFinite(current.day) ||
+      !Number.isFinite(minParsed.year) ||
+      !Number.isFinite(minParsed.month) ||
+      !Number.isFinite(minParsed.day)
+    ) {
+      return;
+    }
+
+    const currentBound = {
+      year: current.year,
+      month: current.month - 1,
+      day: current.day,
+      hours: isClock ? current.hours : 0,
+      minutes: isClock ? current.minutes : 0,
+    };
+    const minBound = {
+      year: minParsed.year,
+      month: minParsed.month - 1,
+      day: minParsed.day,
+      hours: isClock ? minParsed.hours : 0,
+      minutes: isClock ? minParsed.minutes : 0,
+    };
+
+    if (!isEndBeforeStart(currentBound, minBound, isClock)) return;
+
+    onChange(
+      new Date(
+        Date.UTC(minBound.year, minBound.month, minBound.day, minBound.hours, minBound.minutes, 0),
+      ).toISOString(),
+    );
+  }, [minRaw, value, multiple, isClock, isOnlyClock]);
 
   useEffect(() => {
     if (isNaN(viewYear)) return;
@@ -1235,6 +1410,7 @@ const DatePicker: React.FC<Props> = ({
             variant={variant}
             color={!Utils.IsNullOrEmpty(validation?.text) ? "red" : color}
             {...attributes}
+            min={minRaw ? DATE.ParseValue(minRaw, isClock, isOnlyClock) : undefined}
             value={DATE.ParseValue(startRaw, isClock, isOnlyClock)}
             type={isOnlyClock ? "time" : isClock ? "datetime-local" : "date"}
             size={size}
@@ -1253,6 +1429,7 @@ const DatePicker: React.FC<Props> = ({
                   const [hours, minutes] = val.split(":").map(Number);
                   _hours.current = Number.isFinite(hours) ? hours : 0;
                   _minutes.current = Number.isFinite(minutes) ? minutes : 0;
+                  clampSingleToMin();
                   setSelectedHours(_hours.current);
                   setSelectedMinutes(_minutes.current);
                   setTimeChanged((prev) => !prev);
@@ -1274,13 +1451,28 @@ const DatePicker: React.FC<Props> = ({
                   _minutes.current = minutes;
                 }
 
+                clampSingleToMin();
                 setSelectedYear(_year.current);
                 setSelectedMonth(_month.current);
+                setSelectedDay(_day.current);
+                setSelectedHours(_hours.current);
+                setSelectedMinutes(_minutes.current);
                 setViewYear(_year.current);
                 setViewMonth(_month.current);
                 setDateChanged((prev) => !prev);
                 setTimeChanged((prev) => !prev);
-                onChange(val);
+                onChange(
+                  new Date(
+                    Date.UTC(
+                      _year.current,
+                      _month.current,
+                      _day.current!,
+                      !isClock ? 0 : _hours.current,
+                      !isClock ? 0 : _minutes.current,
+                      0,
+                    ),
+                  ).toISOString(),
+                );
               })();
             }}
             onClick={(event) => handleInputClick(event)}

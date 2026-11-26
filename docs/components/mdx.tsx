@@ -80,6 +80,7 @@ import { DatePickerBasic } from '@/components/demos/form/date-picker/basic';
 import { DatePickerRange } from '@/components/demos/form/date-picker/range';
 import { DatePickerTime } from '@/components/demos/form/date-picker/time';
 import { DatePickerClockOnly } from '@/components/demos/form/date-picker/clock-only';
+import { DatePickerMin } from '@/components/demos/form/date-picker/min';
 import { DatePickerDisabled } from '@/components/demos/form/date-picker/disabled';
 import { DatePickerValidation } from '@/components/demos/form/date-picker/validation';
 import { TextEditorBasic } from '@/components/demos/form/text-editor/basic';
@@ -435,6 +436,7 @@ export const mdxComponents = {
   DatePickerRange,
   DatePickerTime,
   DatePickerClockOnly,
+  DatePickerMin,
   DatePickerDisabled,
   DatePickerValidation,
   TextEditorBasic,

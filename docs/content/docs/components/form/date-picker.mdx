@@ -54,6 +54,19 @@ In range mode, the end picker cannot go before the start:
   <DatePickerRange />
 </Example>
 
+### Min (separate pickers)
+
+When you use two single DatePickers, pass the start value as `min` on the end picker. Days and times before `min` are disabled; if start moves past end, end is clamped up.
+
+```tsx
+<DatePicker value={start} onChange={setStart} />
+<DatePicker value={end} onChange={setEnd} min={start} />
+```
+
+<Example>
+  <DatePickerMin />
+</Example>
+
 ### Disabled
 
 <Example>
@@ -82,6 +95,7 @@ In range mode, the end picker cannot go before the start:
 | `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "2xl"` | `"lg"` |
 | `border.radius` | `"0" \| "2" \| "4" \| "6" \| "8" \| "12" \| "16" \| "20" \| "40" \| "full"` | `"4"` |
 | `disabled` | `boolean` | — |
+| `min` | `string` | — |
 | `validation` | `{ text?: string; scrollTo?: boolean }` | — |
 | `config.locale` | `Intl.LocalesArgument` | `"tr"` |
 | `config.isClock` | `boolean` | — |
@@ -89,4 +103,4 @@ In range mode, the end picker cannot go before the start:
 | `config.isShortcutButtons` | `boolean` | `true` |
 | `config.isFooterButton` | `boolean` | `true` |
 
-`surface` is not available — same as Input. When `multiple` is set, `direction` is required and `value` / `onChange` use `{ start, end }`.
+`surface` is not available — same as Input. When `multiple` is set, `direction` is required and `value` / `onChange` use `{ start, end }`. Use `min` on a single picker to block values before another picker’s value (e.g. end ≥ start).

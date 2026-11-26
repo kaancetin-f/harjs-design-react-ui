@@ -21,6 +21,12 @@ export interface ISingle {
 }
 
 type Props = {
+  /**
+   * Minimum selectable bound (same string shape as `value`).
+   * Days/times before this are disabled — useful when wiring two single DatePickers
+   * (pass the start picker’s value as `min` on the end picker).
+   */
+  min?: string;
   config?: {
     locale?: Intl.LocalesArgument;
     isShortcutButtons?: boolean;
@@ -30,6 +36,6 @@ type Props = {
     step?: { minutes?: number };
   };
 } & (IMultiple | ISingle) &
-  Omit<ComponentProps<typeof Input>, "onChange" | "value">;
+  Omit<ComponentProps<typeof Input>, "onChange" | "value" | "min">;
 
 export default Props;
