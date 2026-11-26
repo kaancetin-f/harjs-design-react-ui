@@ -41,7 +41,7 @@
           cursor: pointer;
           transition: background-color 180ms ease-in-out;
 
-          &:not(.empty-day):not(.selection-day) {
+          &:not(.empty-day):not(.selection-day):not(.disabled-day) {
             &:hover {
               > span {
                 background-color: var(--gray-200);
@@ -55,6 +55,16 @@
                 background-color: var(--gray-300);
                 transform: scale(0.92);
               }
+            }
+          }
+
+          &.disabled-day {
+            cursor: not-allowed;
+            pointer-events: none;
+
+            > span {
+              color: var(--gray-300);
+              opacity: 0.55;
             }
           }
 

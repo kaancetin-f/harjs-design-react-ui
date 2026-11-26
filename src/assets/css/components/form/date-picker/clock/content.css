@@ -52,7 +52,7 @@
           cursor: pointer;
           transition: background-color 180ms ease-in-out;
 
-          &:not(.selection-time) {
+          &:not(.selection-time):not(.disabled-time) {
             &:hover {
               background-color: var(--gray-50);
 
@@ -81,6 +81,18 @@
                 font-weight: 700;
                 letter-spacing: 0.06em;
                 font-variant-numeric: tabular-nums;
+              }
+            }
+          }
+
+          &.disabled-time {
+            cursor: not-allowed;
+            pointer-events: none;
+            opacity: 0.4;
+
+            > span {
+              > span {
+                color: var(--gray-400);
               }
             }
           }

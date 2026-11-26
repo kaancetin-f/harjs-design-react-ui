@@ -8,7 +8,19 @@ import Button from "../button";
 import Alert from "../../feedback/alert";
 import ReactDOM from "react-dom";
 import DATE from "./DATE";
-import { clampCalendarPosition, NATIVE_DATE_PICKER_QUERY, shouldUseNativeDatePicker } from "./helpers";
+import {
+  clampCalendarPosition,
+  getEndTimeMinConstraint,
+  isDayBefore,
+  isEndBeforeStart,
+  isTimeBefore,
+  NATIVE_DATE_PICKER_QUERY,
+  shouldDisableEndHour,
+  shouldDisableEndMinute,
+  shouldUseNativeDatePicker,
+  type CalendarDay,
+  type ClockTime,
+} from "./helpers";
 import DatePickerTR from "../../../libs/core/application/locales/date-picker/tr";
 import DatePickerEN from "../../../libs/core/application/locales/date-picker/en";
 import IDatePickerLocale from "../../../libs/core/application/locales/date-picker/IDatePickerLocale";
@@ -157,6 +169,73 @@ const DatePicker: React.FC<Props> = ({
   const setActiveSelectedHours = isEndActive ? setSelectedEndHours : setSelectedHours;
   const setActiveSelectedMinutes = isEndActive ? setSelectedEndMinutes : setSelectedMinutes;
 
+  const getStartDay = (): CalendarDay | null =>
+    _day.current !== null ? { year: _year.current, month: _month.current, day: _day.current } : null;
+
+  const getEndDay = (): CalendarDay | null =>
+    _endDay.current !== null
+      ? { year: _endYear.current, month: _endMonth.current, day: _endDay.current }
+      : null;
+
+  const getStartTime = (): ClockTime => ({ hours: _hours.current, minutes: _minutes.current });
+
+  const getEndTimeMin = (): ClockTime | null =>
+    getEndTimeMinConstraint({
+      isOnlyClock,
+      startDay: getStartDay(),
+      endDay: getEndDay(),
+      startTime: getStartTime(),
+    });
+
+  const clampEndTimeToStart = () => {
+    const minTime = getEndTimeMin();
+    if (!minTime) return;
+    if (!isTimeBefore({ hours: _endHours.current, minutes: _endMinutes.current }, minTime)) return;
+
+    _endHours.current = minTime.hours;
+    _endMinutes.current = minTime.minutes;
+    setSelectedEndHours(minTime.hours);
+    setSelectedEndMinutes(minTime.minutes);
+  };
+
+  const ensureEndNotBeforeStart = () => {
+    if (!multiple) return;
+
+    if (isOnlyClock) {
+      clampEndTimeToStart();
+      return;
+    }
+
+    const startDay = getStartDay();
+    const endDay = getEndDay();
+    if (!startDay || !endDay) return;
+
+    if (
+      isEndBeforeStart(
+        { ...endDay, hours: isClock ? _endHours.current : 0, minutes: isClock ? _endMinutes.current : 0 },
+        { ...startDay, hours: isClock ? _hours.current : 0, minutes: isClock ? _minutes.current : 0 },
+        isClock,
+      )
+    ) {
+      _endYear.current = startDay.year;
+      _endMonth.current = startDay.month;
+      _endDay.current = startDay.day;
+      setSelectedEndYear(startDay.year);
+      setSelectedEndMonth(startDay.month);
+      setSelectedEndDay(startDay.day);
+
+      if (isClock) {
+        _endHours.current = _hours.current;
+        _endMinutes.current = _minutes.current;
+        setSelectedEndHours(_hours.current);
+        setSelectedEndMinutes(_minutes.current);
+      }
+      return;
+    }
+
+    clampEndTimeToStart();
+  };
+
   // methods
   const handleClickOutSide = (event: MouseEvent) => {
     const target = event.target as HTMLElement;
@@ -250,6 +329,7 @@ const DatePicker: React.FC<Props> = ({
       setSelectedMinutes(_minutes.current);
 
       if (multiple) {
+        ensureEndNotBeforeStart();
         setSelectedEndHours(_endHours.current);
         setSelectedEndMinutes(_endMinutes.current);
 
@@ -267,6 +347,8 @@ const DatePicker: React.FC<Props> = ({
     }
 
     if (multiple) {
+      ensureEndNotBeforeStart();
+
       setSelectedYear(_year.current);
       setSelectedMonth(_month.current);
       setSelectedDay(_day.current);
@@ -453,11 +535,13 @@ const DatePicker: React.FC<Props> = ({
           _endMinutes.current = now.getMinutes();
           setSelectedEndHours(now.getHours());
           setSelectedEndMinutes(now.getMinutes());
+          clampEndTimeToStart();
         } else {
           _hours.current = now.getHours();
           _minutes.current = now.getMinutes();
           setSelectedHours(now.getHours());
           setSelectedMinutes(now.getMinutes());
+          ensureEndNotBeforeStart();
         }
 
         setTimeChanged((prev) => !prev);
@@ -492,6 +576,7 @@ const DatePicker: React.FC<Props> = ({
         setSelectedEndDay(now.getDate());
         setSelectedEndHours(now.getHours());
         setSelectedEndMinutes(now.getMinutes());
+        ensureEndNotBeforeStart();
       } else {
         _year.current = now.getFullYear();
         _month.current = now.getMonth();
@@ -504,6 +589,7 @@ const DatePicker: React.FC<Props> = ({
         setSelectedDay(now.getDate());
         setSelectedHours(now.getHours());
         setSelectedMinutes(now.getMinutes());
+        ensureEndNotBeforeStart();
       }
 
       setViewYear(now.getFullYear());
@@ -639,6 +725,7 @@ const DatePicker: React.FC<Props> = ({
       minutesRef.current = Number.isFinite(minutes) ? minutes : 0;
       setHoursState(hoursRef.current);
       setMinutesState(minutesRef.current);
+      ensureEndNotBeforeStart();
       setTimeChanged((prev) => !prev);
 
       onChange({
@@ -672,6 +759,7 @@ const DatePicker: React.FC<Props> = ({
 
     setYear(yearRef.current);
     setMonth(monthRef.current);
+    ensureEndNotBeforeStart();
 
     setViewYear(yearRef.current);
     setViewMonth(monthRef.current);
@@ -807,11 +895,19 @@ const DatePicker: React.FC<Props> = ({
         days.push(<span key={`prev-${i}`} className="empty-day"></span>);
       }
 
+      const startDayForDisable = multiple ? getStartDay() : null;
+
       for (let i = firstDayOfMonth.getDate(); i <= lastDayOfMonth.getDate(); i++) {
         let dayClassName = "";
+        const cellDay: CalendarDay = { year: viewYear, month: viewMonth, day: i };
 
         // Hücrenin tarihi takvimin gezinme (view) yılı ve ayına göre hesaplanır
         const cellDate = Date.UTC(viewYear, viewMonth, i);
+        const isEndDayDisabled =
+          Boolean(multiple) &&
+          activeField === "end" &&
+          startDayForDisable !== null &&
+          isDayBefore(cellDay, startDayForDisable);
 
         if (multiple) {
           const hasStart = _day.current !== null;
@@ -830,7 +926,9 @@ const DatePicker: React.FC<Props> = ({
             isInRange = cellDate > minDate && cellDate < maxDate;
           }
 
-          if (isStartDay || isEndDay) {
+          if (isEndDayDisabled) {
+            dayClassName = "disabled-day";
+          } else if (isStartDay || isEndDay) {
             dayClassName = "selection-day";
           } else if (isInRange) {
             dayClassName = "in-range-day";
@@ -846,8 +944,10 @@ const DatePicker: React.FC<Props> = ({
           <span
             key={`current-${i}`}
             className={dayClassName}
+            aria-disabled={isEndDayDisabled || undefined}
             onClick={(event) => {
               event.preventDefault();
+              if (isEndDayDisabled) return;
 
               if (multiple && activeField === "end") {
                 _endYear.current = viewYear;
@@ -856,6 +956,7 @@ const DatePicker: React.FC<Props> = ({
                 setSelectedEndYear(viewYear);
                 setSelectedEndMonth(viewMonth);
                 setSelectedEndDay(i);
+                clampEndTimeToStart();
               } else {
                 _year.current = viewYear;
                 _month.current = viewMonth;
@@ -863,6 +964,7 @@ const DatePicker: React.FC<Props> = ({
                 setSelectedYear(viewYear);
                 setSelectedMonth(viewMonth);
                 setSelectedDay(i);
+                ensureEndNotBeforeStart();
               }
 
               setDateChanged(!dateChanged);
@@ -903,9 +1005,25 @@ const DatePicker: React.FC<Props> = ({
   }, [dateChanged, calendarIsOpen, activeField, viewYear, viewMonth]);
 
   useEffect(() => {
-    const generateList = (count: number, current: number, setFunc: React.Dispatch<React.SetStateAction<any>>) => {
+    const endTimeMin = isEndActive ? getEndTimeMin() : null;
+
+    const generateList = (
+      count: number,
+      current: number,
+      setFunc: React.Dispatch<React.SetStateAction<any>>,
+      kind: "hours" | "minutes",
+    ) => {
       const items = Array.from({ length: count }, (_, i) => {
         if (count === 60 && config?.step?.minutes && i % config.step.minutes !== 0) return;
+
+        const isDisabled =
+          kind === "hours"
+            ? shouldDisableEndHour(i, endTimeMin)
+            : shouldDisableEndMinute(i, activeHoursRef.current, endTimeMin);
+
+        const classNames = [current === i ? "selection-time" : "", isDisabled ? "disabled-time" : ""]
+          .filter(Boolean)
+          .join(" ");
 
         return (
           <li
@@ -914,12 +1032,16 @@ const DatePicker: React.FC<Props> = ({
               count === 24 ? (_hoursLiElements.current[i] = element) : (_minutesLiElements.current[i] = element);
             }}
             key={i}
-            {...(current === i ? { className: "selection-time" } : {})}
+            className={classNames || undefined}
+            aria-disabled={isDisabled || undefined}
             onClick={() => {
+              if (isDisabled) return;
+
               if (count === 24) {
                 setTimeChanged((prev) => !prev);
                 activeHoursRef.current = i;
                 setActiveSelectedHours(i);
+                if (isEndActive) clampEndTimeToStart();
               } else {
                 setTimeChanged((prev) => !prev);
                 activeMinutesRef.current = i;
@@ -939,8 +1061,8 @@ const DatePicker: React.FC<Props> = ({
       setFunc(items);
     };
 
-    generateList(24, activeHoursRef.current, setHours);
-    generateList(60, activeMinutesRef.current, setMinutes);
+    generateList(24, activeHoursRef.current, setHours, "hours");
+    generateList(60, activeMinutesRef.current, setMinutes, "minutes");
 
     if (!isClock) return;
     if (calendarIsOpen) handleHeight();
@@ -961,7 +1083,7 @@ const DatePicker: React.FC<Props> = ({
         behavior: "smooth",
       });
     }
-  }, [timeChanged, calendarIsOpen, isClock, config?.step?.minutes, activeField]);
+  }, [timeChanged, calendarIsOpen, isClock, config?.step?.minutes, activeField, dateChanged]);
 
   useEffect(() => {
     if (isNaN(viewYear)) return;
@@ -1085,6 +1207,7 @@ const DatePicker: React.FC<Props> = ({
                   value={DATE.ParseValue(endRaw, isClock, isOnlyClock)}
                   type={isOnlyClock ? "time" : isClock ? "datetime-local" : "date"}
                   size={size}
+                  min={startRaw ? DATE.ParseValue(startRaw, isClock, isOnlyClock) : undefined}
                   onKeyDown={(event) => {
                     if (event.code === "Space") event.preventDefault();
                     else if (event.code === "Enter") handleOk();

@@ -34,7 +34,7 @@ import { DatePicker } from '@harjs/react-ui'
 
 ### Time only
 
-`config.isOnlyClock` hides the calendar and shows only the clock.
+`config.isOnlyClock` hides the calendar and shows only the clock. With `multiple`, the end clock disables hours and minutes before the start time.
 
 <Example>
   <DatePickerClockOnly />
@@ -43,6 +43,12 @@ import { DatePicker } from '@harjs/react-ui'
 ### Range
 
 `multiple` selects a start and end date. `direction` lays the two fields out in a row or a column.
+
+In range mode, the end picker cannot go before the start:
+
+- Days before the start date are disabled on the end calendar
+- On the same day (or with `isOnlyClock`), hours and minutes before the start time are disabled
+- Native pickers set `min` from the start value; invalid end values are clamped to start
 
 <Example>
   <DatePickerRange />

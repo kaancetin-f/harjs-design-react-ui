@@ -1,6 +1,6 @@
 {
   "name": "@harjs/react-ui",
-  "version": "2.7.15",
+  "version": "2.8.15",
   "publishConfig": {
     "access": "public"
   },
