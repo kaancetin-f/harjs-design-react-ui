@@ -1,8 +1,12 @@
 "use client";
 
 import React from "react";
+import { useTranslation } from "@harjs/translation";
 import type { FlatRow, GanttColumn, GanttTaskStatus } from "../IProps";
-import { formatGanttDateTime, parseGanttDate } from "../helpers";
+import { formatGanttDateTime, parseGanttDate, resolveGanttLanguage } from "../helpers";
+import IGanttLocale from "../../../../libs/core/application/locales/gantt/IGanttLocale";
+import GanttTR from "../../../../libs/core/application/locales/gantt/tr";
+import GanttEN from "../../../../libs/core/application/locales/gantt/en";
 
 export interface ResourcePanelProps {
   rows: FlatRow[];
@@ -24,14 +28,14 @@ const DEFAULT_COLUMNS: GanttColumn[] = [
   { key: "status", title: "Status", width: 110, field: "status" },
 ];
 
-const STATUS_LABEL: Record<GanttTaskStatus, string> = {
-  planned: "Planned",
-  released: "Released",
-  "in-progress": "In progress",
-  completed: "Completed",
-  paused: "Paused",
-  cancelled: "Cancelled",
-  delayed: "Delayed",
+const STATUS_KEY: Record<GanttTaskStatus, keyof IGanttLocale> = {
+  planned: "Gantt.Status.Planned",
+  released: "Gantt.Status.Released",
+  "in-progress": "Gantt.Status.InProgress",
+  completed: "Gantt.Status.Completed",
+  paused: "Gantt.Status.Paused",
+  cancelled: "Gantt.Status.Cancelled",
+  delayed: "Gantt.Status.Delayed",
 };
 
 const cellValue = (row: FlatRow, column: GanttColumn, locale?: Intl.LocalesArgument): string => {
@@ -69,9 +73,9 @@ const cellValue = (row: FlatRow, column: GanttColumn, locale?: Intl.LocalesArgum
   }
 };
 
-const StatusChip = ({ status }: { status?: GanttTaskStatus }) => {
-  if (!status) return <span className="ar-gantt-muted">—</span>;
-  return <span className={`ar-gantt-status ar-gantt-status--${status}`}>{STATUS_LABEL[status]}</span>;
+const StatusChip = ({ status, label }: { status?: GanttTaskStatus; label?: string }) => {
+  if (!status || !label) return <span className="ar-gantt-muted">—</span>;
+  return <span className={`ar-gantt-status ar-gantt-status--${status}`}>{label}</span>;
 };
 
 const ResourcePanel: React.FC<ResourcePanelProps> = ({
@@ -88,7 +92,17 @@ const ResourcePanel: React.FC<ResourcePanelProps> = ({
   onRowClick,
   renderResourceRow,
 }) => {
-  const cols = columns.length ? columns : DEFAULT_COLUMNS;
+  const language = resolveGanttLanguage(locale);
+  const { t } = useTranslation<IGanttLocale>(language, {
+    tr: { ...GanttTR },
+    en: { ...GanttEN },
+  });
+  const cols = (columns.length ? columns : DEFAULT_COLUMNS).map((col) => {
+    if (columns.length) return col;
+    if (col.key === "name") return { ...col, title: t("Gantt.Column.Name") };
+    if (col.key === "status") return { ...col, title: t("Gantt.Column.Status") };
+    return col;
+  });
   const bodyRef = React.useRef<HTMLDivElement>(null);
   const resolvedHeaderHeight = headerHeight ?? rowHeight;
 
@@ -99,7 +113,7 @@ const ResourcePanel: React.FC<ResourcePanelProps> = ({
   }, [scrollTop]);
 
   return (
-    <div className="ar-gantt-panel" style={{ width: panelWidth }} role="treegrid" aria-label="Task list">
+    <div className="ar-gantt-panel" style={{ width: panelWidth }} role="treegrid" aria-label={t("Gantt.Panel.Label")}>
       <div className="ar-gantt-panel-header" style={{ height: resolvedHeaderHeight }}>
         {cols.map((col) => (
           <div
@@ -185,7 +199,7 @@ const ResourcePanel: React.FC<ResourcePanelProps> = ({
                             <button
                               type="button"
                               className={`ar-gantt-collapse${row.collapsed ? " is-collapsed" : ""}`}
-                              aria-label={row.collapsed ? "Expand" : "Collapse"}
+                              aria-label={row.collapsed ? t("Gantt.Expand") : t("Gantt.Collapse")}
                               onClick={(e) => {
                                 e.stopPropagation();
                                 onToggleCollapse(
@@ -206,7 +220,7 @@ const ResourcePanel: React.FC<ResourcePanelProps> = ({
                           </span>
                         </>
                       ) : isStatus ? (
-                        <StatusChip status={row.task?.status} />
+                        <StatusChip status={row.task?.status} label={row.task?.status ? t(STATUS_KEY[row.task.status]) : undefined} />
                       ) : (
                         <span className="ar-gantt-panel-text">{cellValue(row, col, locale)}</span>
                       )}

@@ -103,12 +103,20 @@ export const parseGanttDate = (value: GanttDateInput | undefined | null): Date |
 export const toLocaleTag = (locale?: Intl.LocalesArgument): string => {
   if (!locale) return "tr-TR";
   if (typeof locale === "string") {
-    if (locale === "tr") return "tr-TR";
-    if (locale === "en") return "en-US";
-    return locale;
+    const value = locale.trim().replace(/_/g, "-");
+    const lower = value.toLowerCase();
+    if (lower === "tr" || lower.startsWith("tr-")) return lower === "tr" ? "tr-TR" : value;
+    if (lower === "en" || lower.startsWith("en-")) return lower === "en" ? "en-US" : value;
+    return value;
   }
-  if (Array.isArray(locale) && locale[0]) return String(locale[0]);
+  if (Array.isArray(locale) && locale[0]) return toLocaleTag(String(locale[0]));
   return "tr-TR";
+};
+
+/** Dictionary key for built-in copy. `tr`, `tr-TR`, and `TR` all resolve to Turkish. */
+export const resolveGanttLanguage = (locale?: Intl.LocalesArgument): "tr" | "en" => {
+  const tag = toLocaleTag(locale).toLowerCase();
+  return tag.startsWith("en") ? "en" : "tr";
 };
 
 export const startOfDay = (date: Date): Date =>

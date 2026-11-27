@@ -36,18 +36,31 @@ import {
   visibleRowRange,
   visibleUnitRange,
   buildTimelineUnits,
+  resolveGanttLanguage,
 } from "./helpers";
-import type { GanttHistoryState } from "./IProps";
+import type { GanttHistoryState, GanttTaskStatus } from "./IProps";
 import GanttToolbar from "./toolbar";
 import ResourcePanel from "./resource-panel";
 import Checkbox from "../../form/checkbox";
 import { useTranslation } from "@harjs/translation";
-import ITableLocale from "../../../libs/core/application/locales/table/ITableLocale";
-import TableTR from "../../../libs/core/application/locales/table/tr";
-import TableEN from "../../../libs/core/application/locales/table/en";
+import IGanttLocale from "../../../libs/core/application/locales/gantt/IGanttLocale";
+import GanttTR from "../../../libs/core/application/locales/gantt/tr";
+import GanttEN from "../../../libs/core/application/locales/gantt/en";
 
 const HEADER_BAND = 56;
 const MIN_DURATION_DEFAULT = 15 * 60_000;
+
+const STATUS_KEY: Record<GanttTaskStatus, keyof IGanttLocale> = {
+  planned: "Gantt.Status.Planned",
+  released: "Gantt.Status.Released",
+  "in-progress": "Gantt.Status.InProgress",
+  completed: "Gantt.Status.Completed",
+  paused: "Gantt.Status.Paused",
+  cancelled: "Gantt.Status.Cancelled",
+  delayed: "Gantt.Status.Delayed",
+};
+
+const FILTER_STATUSES = ["planned", "in-progress", "completed", "delayed"] as const;
 
 type DragMode = "pan" | "move" | "resize-start" | "resize-end" | null;
 
@@ -95,7 +108,7 @@ const Gantt: React.FC<IProps> = ({
   config = { isSearchable: false },
   defaultTasks,
   loading,
-  emptyText = "No tasks to display",
+  emptyText,
   onTaskClick,
   onTaskDoubleClick,
   onTaskChange,
@@ -150,9 +163,10 @@ const Gantt: React.FC<IProps> = ({
   const [dragPreview, setDragPreview] = useState<Map<string, { start: Date; end: Date }>>(new Map());
 
   // hooks
-  const { t } = useTranslation<ITableLocale>(String(config?.locale ?? "tr"), {
-    tr: { ...TableTR },
-    en: { ...TableEN },
+  const language = resolveGanttLanguage(config?.locale);
+  const { t } = useTranslation<IGanttLocale>(language, {
+    tr: { ...GanttTR },
+    en: { ...GanttEN },
   });
 
   // variables
@@ -750,23 +764,33 @@ const Gantt: React.FC<IProps> = ({
         {task.code ? `${task.code} · ` : ""}
         {task.name}
       </div>
-      {task.status ? <div>Status: {task.status}</div> : null}
+      {task.status ? (
+        <div>
+          {t("Gantt.Tooltip.Status")}: {t(STATUS_KEY[task.status])}
+        </div>
+      ) : null}
       <div>
-        Planned: {formatSafe(task.plannedStart ?? task.start)} → {formatSafe(task.plannedEnd ?? task.end)}
+        {t("Gantt.Tooltip.Planned")}: {formatSafe(task.plannedStart ?? task.start)} → {formatSafe(task.plannedEnd ?? task.end)}
       </div>
       {(task.actualStart || task.actualEnd) && (
         <div>
-          Actual: {formatSafe(task.actualStart)} → {formatSafe(task.actualEnd)}
+          {t("Gantt.Tooltip.Actual")}: {formatSafe(task.actualStart)} → {formatSafe(task.actualEnd)}
         </div>
       )}
-      {task.progress !== undefined ? <div>Progress: {task.progress}%</div> : null}
+      {task.progress !== undefined ? (
+        <div>
+          {t("Gantt.Tooltip.Progress")}: {task.progress}%
+        </div>
+      ) : null}
       {task.quantity !== undefined ? (
         <div>
-          Quantity: {task.completedQuantity ?? 0} / {task.quantity}
+          {t("Gantt.Tooltip.Quantity")}: {task.completedQuantity ?? 0} / {task.quantity}
         </div>
       ) : null}
       {(task.machineId || task.resourceId) && (
-        <div>Resource: {String(task.machineId ?? task.resourceId)}</div>
+        <div>
+          {t("Gantt.Tooltip.Resource")}: {String(task.machineId ?? task.resourceId)}
+        </div>
       )}
     </div>
   );
@@ -777,7 +801,7 @@ const Gantt: React.FC<IProps> = ({
       className={`ar-gantt-chart${loading ? " is-loading" : ""}`}
       style={themeStyle}
       role="application"
-      aria-label={title ?? "Gantt chart"}
+      aria-label={title ?? t("Gantt.Label")}
     >
       {showToolbar && (
         <GanttToolbar
@@ -799,17 +823,18 @@ const Gantt: React.FC<IProps> = ({
           }}
           onToggleFilters={() => setShowFilters((v) => !v)}
           renderHeader={renderHeader}
+          locale={config.locale}
         />
       )}
 
       {showFilters && (
-        <div className="ar-gantt-filters" role="region" aria-label="Filters">
-          {(["planned", "in-progress", "completed", "delayed"] as const).map((status) => {
+        <div className="ar-gantt-filters" role="region" aria-label={t("Gantt.Filters.Label")}>
+          {FILTER_STATUSES.map((status) => {
             const active = filters.statuses?.includes(status);
             return (
               <Checkbox
                 key={status}
-                label={status}
+                label={t(STATUS_KEY[status])}
                 size="sm"
                 color="blue"
                 checked={!!active}
@@ -826,7 +851,7 @@ const Gantt: React.FC<IProps> = ({
             );
           })}
           <Checkbox
-            label="Critical only"
+            label={t("Gantt.Filters.CriticalOnly")}
             size="sm"
             color="blue"
             checked={!!filters.criticalOnly}
@@ -878,7 +903,7 @@ const Gantt: React.FC<IProps> = ({
           onWheel={handleWheel}
         >
           {!geometry || rows.length === 0 ? (
-            <div className="ar-gantt-empty">{loading ? "Loading…" : emptyText}</div>
+            <div className="ar-gantt-empty">{loading ? t("Gantt.Loading") : (emptyText ?? t("Gantt.Empty"))}</div>
           ) : (
             <svg
               ref={_svgRef}
@@ -886,7 +911,7 @@ const Gantt: React.FC<IProps> = ({
               width="100%"
               height={HEADER_BAND + bodyViewport}
               role="img"
-              aria-label="Timeline"
+              aria-label={t("Gantt.Timeline.Label")}
               onMouseDown={handleTimelineMouseDown}
               onContextMenu={(e) => {
                 e.preventDefault();
@@ -1046,22 +1071,22 @@ const Gantt: React.FC<IProps> = ({
                             strokeWidth={theme?.todayLine?.width ?? 1.5}
                           />
                           <rect
-                            x={todayX + 4}
+                            x={todayX + 2}
                             y={4}
-                            width={42}
+                            width={52}
                             height={16}
                             rx={3}
                             fill="var(--gantt-today)"
                           />
                           <text
-                            x={todayX + 25}
+                            x={todayX + 28}
                             y={15}
                             textAnchor="middle"
                             fill="#fff"
                             fontSize={9}
                             fontWeight={700}
                           >
-                            TODAY
+                            {t("Gantt.Today")}
                           </text>
                         </g>
                       )}
@@ -1284,13 +1309,16 @@ const Gantt: React.FC<IProps> = ({
         <span>
           {isMobile ? (
             <strong>
-              {(currentPage - 1) * selectedPerPage + 1} -{" "}
-              {Math.min(currentPage * selectedPerPage, pagination?.totalRecords || filteredTasks.length)} of{" "}
-              {pagination?.totalRecords || filteredTasks.length}
+              {t(
+                "Gantt.Pagination.Range",
+                (currentPage - 1) * selectedPerPage + 1,
+                Math.min(currentPage * selectedPerPage, pagination?.totalRecords || filteredTasks.length),
+                pagination?.totalRecords || filteredTasks.length,
+              )}
             </strong>
           ) : (
             t(
-              "Table.Pagination.Information.Text",
+              "Gantt.Pagination.Information",
               (currentPage - 1) * selectedPerPage + 1,
               Math.min(currentPage * selectedPerPage, pagination?.totalRecords || filteredTasks.length),
               pagination?.totalRecords || filteredTasks.length,
@@ -1303,7 +1331,7 @@ const Gantt: React.FC<IProps> = ({
             totalRecords={config.isServerSide ? pagination.totalRecords : (filteredTasks.length ?? 0)}
             currentPage={currentPage}
             perPage={selectedPerPage}
-            locale={config.locale}
+            locale={language}
             showTotal={false}
             onChange={(page, perPage) => {
               setCurrentPage(page);

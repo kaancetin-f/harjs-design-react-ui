@@ -1,12 +1,16 @@
 "use client";
 
 import React from "react";
+import { useTranslation } from "@harjs/translation";
 import type { GanttZoomLevel } from "../IProps";
-import { ZOOM_ORDER } from "../helpers";
+import { resolveGanttLanguage, ZOOM_ORDER } from "../helpers";
 import Button from "../../../form/button";
 import Input from "../../../form/input";
 import Select from "../../../form/select";
 import type { Option } from "../../../../libs/infrastructure/types";
+import IGanttLocale from "../../../../libs/core/application/locales/gantt/IGanttLocale";
+import GanttTR from "../../../../libs/core/application/locales/gantt/tr";
+import GanttEN from "../../../../libs/core/application/locales/gantt/en";
 
 export interface GanttToolbarProps {
   title?: string;
@@ -24,21 +28,17 @@ export interface GanttToolbarProps {
   onSearchChange: (query: string) => void;
   onToggleFilters: () => void;
   renderHeader?: () => React.ReactNode;
+  locale?: Intl.LocalesArgument;
 }
 
-const ZOOM_LABELS: Record<GanttZoomLevel, string> = {
-  hour: "Hour",
-  "4hour": "4 Hours",
-  day: "Day",
-  week: "Week",
-  month: "Month",
-  quarter: "Quarter",
+const ZOOM_KEY: Record<GanttZoomLevel, keyof IGanttLocale> = {
+  hour: "Gantt.Zoom.Hour",
+  "4hour": "Gantt.Zoom.FourHour",
+  day: "Gantt.Zoom.Day",
+  week: "Gantt.Zoom.Week",
+  month: "Gantt.Zoom.Month",
+  quarter: "Gantt.Zoom.Quarter",
 };
-
-const ZOOM_OPTIONS: Option[] = ZOOM_ORDER.map((level) => ({
-  value: level,
-  text: ZOOM_LABELS[level],
-}));
 
 const GanttToolbar: React.FC<GanttToolbarProps> = ({
   title,
@@ -56,13 +56,24 @@ const GanttToolbar: React.FC<GanttToolbarProps> = ({
   onSearchChange,
   onToggleFilters,
   renderHeader,
+  locale,
 }) => {
+  const language = resolveGanttLanguage(locale);
+  const { t } = useTranslation<IGanttLocale>(language, {
+    tr: { ...GanttTR },
+    en: { ...GanttEN },
+  });
+
   if (renderHeader) return <>{renderHeader()}</>;
 
-  const zoomValue = ZOOM_OPTIONS.find((option) => option.value === zoom);
+  const zoomOptions: Option[] = ZOOM_ORDER.map((level) => ({
+    value: level,
+    text: t(ZOOM_KEY[level]),
+  }));
+  const zoomValue = zoomOptions.find((option) => option.value === zoom);
 
   return (
-    <div className="ar-gantt-toolbar" role="toolbar" aria-label="Gantt toolbar">
+    <div className="ar-gantt-toolbar" role="toolbar" aria-label={t("Gantt.Toolbar.Label")}>
       <div className="ar-gantt-toolbar-leading">
         {(title || description) && (
           <div className="ar-gantt-toolbar-titles">
@@ -78,28 +89,28 @@ const GanttToolbar: React.FC<GanttToolbarProps> = ({
             size="sm"
             variant="outlined"
             color="gray"
-            placeholder="Zoom"
-            options={ZOOM_OPTIONS}
+            placeholder={t("Gantt.Toolbar.Zoom")}
+            options={zoomOptions}
             value={zoomValue}
             onChange={(option) => {
               if (!option?.value) return;
               onZoomChange(String(option.value) as GanttZoomLevel);
             }}
-            config={{ clear: false }}
+            config={{ clear: false, locale: language }}
           />
         </div>
 
         <Button variant="outlined" color="gray" size="sm" onClick={onToday}>
-          Today
+          {t("Gantt.Toolbar.Today")}
         </Button>
         <Button variant="outlined" color="gray" size="sm" onClick={onFit}>
-          Fit
+          {t("Gantt.Toolbar.Fit")}
         </Button>
         <Button variant="outlined" color="gray" size="sm" onClick={onUndo} disabled={!canUndo}>
-          Undo
+          {t("Gantt.Toolbar.Undo")}
         </Button>
         <Button variant="outlined" color="gray" size="sm" onClick={onRedo} disabled={!canRedo}>
-          Redo
+          {t("Gantt.Toolbar.Redo")}
         </Button>
         <Button
           variant={showFilters ? "filled" : "outlined"}
@@ -108,7 +119,7 @@ const GanttToolbar: React.FC<GanttToolbarProps> = ({
           onClick={onToggleFilters}
           aria-pressed={showFilters}
         >
-          Filters
+          {t("Gantt.Toolbar.Filters")}
         </Button>
 
         <div className="ar-gantt-toolbar-search">
@@ -117,9 +128,9 @@ const GanttToolbar: React.FC<GanttToolbarProps> = ({
             variant="outlined"
             color="gray"
             value={searchQuery}
-            placeholder="Search tasks…"
+            placeholder={t("Gantt.Toolbar.Search")}
             onChange={(event) => onSearchChange(event.target.value)}
-            aria-label="Search tasks"
+            aria-label={t("Gantt.Toolbar.Search.Label")}
           />
         </div>
       </div>
